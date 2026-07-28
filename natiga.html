@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موقع أحمد حسني لنتائج الثانوية العامة | الاستعلام بالاسم ورقم الجلوس</title>
+    
+    <!-- Google Fonts: Cairo & Tajawal -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-dark: #0b1329;
+            --bg-card: #152238;
+            --bg-card-hover: #1c2d4a;
+            --border-color: #263859;
+            --accent-gold: #f59e0b;
+            --accent-emerald: #10b981;
+            --accent-cyan: #06b6d4;
+            --accent-rose: #ef4444;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --radius-lg: 16px;
+            --radius-md: 10px;
+            --shadow-glow: 0 0 25px rgba(245, 158, 11, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            direction: rtl;
+        }
+
+        /* Header Navigation */
+        .header {
+            background: rgba(21, 34, 56, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo-badge {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.6rem;
+            box-shadow: 0 4px 18px rgba(37, 99, 235, 0.35);
+        }
+
+        .brand-text h1 {
+            font-size: 1.35rem;
+            font-weight: 900;
+            color: var(--text-main);
+            letter-spacing: -0.3px;
+        }
+
+        .brand-text p {
+            font-size: 0.85rem;
+            color: var(--accent-gold);
+            font-weight: 700;
+        }
+
+        .year-tag {
+            background: rgba(37, 99, 235, 0.15);
+            color: #60a5fa;
+            border: 1px solid #3b82f6;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.88rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Main Container */
+        .main-content {
+            flex: 1;
+            max-width: 920px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 35px 20px;
+        }
+
+        /* Hero Search Card */
+        .search-hero-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.35);
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .search-hero-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #1e3a8a, #3b82f6, #10b981);
+        }
+
+        .hero-title {
+            text-align: center;
+            margin-bottom: 22px;
+        }
+
+        .hero-title h2 {
+            font-size: 1.7rem;
+            font-weight: 900;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .hero-title p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        /* Search Input Box */
+        .search-box-wrap {
+            display: flex;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .input-group {
+            flex: 1;
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-gold);
+            font-size: 1.15rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 50px 15px 18px;
+            background: #0b1329;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            color: var(--text-main);
+            font-size: 1.1rem;
+            font-weight: 700;
+            transition: all 0.25s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-search {
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            color: #ffffff;
+            border: none;
+            padding: 0 32px;
+            border-radius: var(--radius-md);
+            font-weight: 800;
+            font-size: 1.05rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 18px rgba(37, 99, 235, 0.35);
+        }
+
+        .btn-search:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 22px rgba(37, 99, 235, 0.45);
+        }
+
+        /* Hints Bar */
+        .search-hints {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 14px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Results List Section */
+        .results-section {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .results-header-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 6px;
+            font-size: 0.92rem;
+            color: var(--text-muted);
+        }
+
+        /* Student Result Card */
+        .student-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            transition: all 0.25s ease;
+            position: relative;
+        }
+
+        .student-card:hover {
+            border-color: #3b82f6;
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.2);
+        }
+
+        .student-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .student-name-wrap h3 {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .seating-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(6, 182, 212, 0.12);
+            color: var(--accent-cyan);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-weight: 700;
+        }
+
+        .status-badge {
+            padding: 7px 16px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 0.88rem;
+        }
+
+        .status-badge.passed {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-emerald);
+            border: 1px solid var(--accent-emerald);
+        }
+
+        .status-badge.second-round {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--accent-gold);
+            border: 1px solid var(--accent-gold);
+        }
+
+        .status-badge.failed {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--accent-rose);
+            border: 1px solid var(--accent-rose);
+        }
+
+        /* Score Display Grid */
+        .score-display-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 14px;
+            background: #0b1329;
+            padding: 16px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .score-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .score-box .label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .score-box .val {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--accent-gold);
+            margin-top: 3px;
+        }
+
+        .score-box .val.percentage {
+            color: var(--accent-emerald);
+        }
+
+        /* Score Progress Bar */
+        .progress-bar-wrap {
+            height: 9px;
+            background: #1e2d45;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #10b981);
+            border-radius: 5px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Print Action Button */
+        .card-actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .btn-print-card {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 7px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-print-card:hover {
+            background: var(--bg-card-hover);
+            border-color: #3b82f6;
+            color: #60a5fa;
+        }
+
+        /* Loading Spinner */
+        .loading-box {
+            text-align: center;
+            padding: 45px;
+            color: var(--text-muted);
+        }
+
+        .loading-box i {
+            font-size: 2.8rem;
+            color: #3b82f6;
+            margin-bottom: 14px;
+        }
+
+        /* Empty / Initial State */
+        .empty-state {
+            text-align: center;
+            padding: 55px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 3.2rem;
+            color: var(--border-color);
+            margin-bottom: 16px;
+        }
+
+        /* Printable Result Certificate Layout */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .student-card, .student-card * {
+                visibility: visible;
+            }
+            .student-card {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                box-shadow: none !important;
+                border: 1px solid #000 !important;
+                color: #000 !important;
+                background: #fff !important;
+            }
+            .btn-print-card { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Header Navigation -->
+    <header class="header">
+        <div class="header-container">
+            <div class="brand-logo">
+                <div class="logo-badge">
+                    <i class="fa-solid fa-user-graduate"></i>
+                </div>
+                <div class="brand-text">
+                    <h1>موقع أحمد حسني لنتائج الثانوية العامة</h1>
+                    <p>البوابة الإلكترونية الاستعلامية لنتائج الطلاب (الدرجة الكلية من 320)</p>
+                </div>
+            </div>
+            <span class="year-tag"><i class="fa-solid fa-award"></i> أحمد حسني 2026</span>
+        </div>
+    </header>
+
+    <!-- Main Search Body Container -->
+    <main class="main-content">
+
+        <!-- Hero Search Card -->
+        <div class="search-hero-card">
+            <div class="hero-title">
+                <h2>استعلام نتيجة الثانوية العامة برقم الجلوس أو الاسم</h2>
+                <p>أدخل رقم الجلوس (مثال: 2001970) أو اكتب اسم الطالب ثلاثي/رباعي للبحث الفوري</p>
+            </div>
+
+            <form id="searchForm" onsubmit="event.preventDefault(); performSearch();">
+                <div class="search-box-wrap">
+                    <div class="input-group">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="searchInput" class="search-input" placeholder="اكتب رقم الجلوس أو اسم الطالب هنا..." autofocus autocomplete="off">
+                    </div>
+                    <button type="submit" class="btn-search">
+                        <i class="fa-solid fa-search"></i>
+                        <span>بحث الآن</span>
+                    </button>
+                </div>
+            </form>
+
+            <div class="search-hints">
+                <span><i class="fa-solid fa-circle-info" style="color:#f59e0b;"></i> يتم حساب النسبة المئوية بدقة من 320 درجة</span>
+                <span id="dbStatsText">جاري الاتصال بالسيرفر...</span>
+            </div>
+        </div>
+
+        <!-- Search Results Area -->
+        <div id="resultsContainer" class="results-section">
+            
+            <!-- Default Initial State -->
+            <div class="empty-state">
+                <i class="fa-solid fa-id-card-clip"></i>
+                <h3>مرحباً بك في موقع أحمد حسني لنتائج الثانوية العامة</h3>
+                <p>يرجى كتابة رقم الجلوس أو اسم الطالب في مربع البحث أعلاه لعرض نتيجة الطالب بالتفصيل.</p>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+        // Fetch Database Stats on Load
+        async function fetchStats() {
+            try {
+                const res = await fetch('/api/stats');
+                const data = await res.json();
+                if (data.success && data.stats) {
+                    const total = data.stats.total_students ? data.stats.total_students.toLocaleString('ar-EG') : 'جميع الطلاب';
+                    document.getElementById('dbStatsText').innerHTML = `<i class="fa-solid fa-database" style="color:#10b981;"></i> قاعدة بيانات موقع أحمد حسني تضم ${total} طالب وطالبة`;
+                }
+            } catch (e) {
+                document.getElementById('dbStatsText').textContent = 'قاعدة البيانات متصلة وجاهزة للبحث';
+            }
+        }
+
+        fetchStats();
+
+        // Perform Search via API
+        async function performSearch() {
+            const query = document.getElementById('searchInput').value.trim();
+            const container = document.getElementById('resultsContainer');
+
+            if (!query) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-solid fa-triangle-exclamation" style="color:#f59e0b;"></i>
+                        <h3>يرجى كتابة رقم الجلوس أو اسم الطالب أولاً</h3>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="loading-box">
+                    <i class="fa-solid fa-circle-notch fa-spin"></i>
+                    <p>جاري البحث في نتائج موقع أحمد حسني...</p>
+                </div>
+            `;
+
+            try {
+                const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+                const data = await res.json();
+
+                if (!data.success || !data.results || data.results.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fa-solid fa-user-slash" style="color:#ef4444;"></i>
+                            <h3>لم يتم العثور على نتائج مطابقة لـ "${query}"</h3>
+                            <p>تأكد من كتابة رقم الجلوس صحيحاً أو كتابة جزء من الاسم بشكل دقيق.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Render Results
+                let html = `
+                    <div class="results-header-info">
+                        <span>تم العثور على <strong>${data.results.length}</strong> نتيجة مطابقة لـ "${query}"</span>
+                        <span>موقع أحمد حسني - مرتبة حسب المجموع</span>
+                    </div>
+                `;
+
+                html += data.results.map((student) => {
+                    const isPassed = student.student_case_desc.includes('ناجح');
+                    const isSecondRound = student.student_case_desc.includes('دور ثاني') || student.student_case_desc.includes('مؤجل');
+
+                    let statusClass = 'passed';
+                    if (isSecondRound) statusClass = 'second-round';
+                    if (!isPassed && !isSecondRound) statusClass = 'failed';
+
+                    // Accurate calculation out of 320 marks
+                    const pct = ((student.total_degree / 320) * 100).toFixed(2);
+
+                    return `
+                        <div class="student-card">
+                            <div class="student-top">
+                                <div class="student-name-wrap">
+                                    <h3>${student.arabic_name}</h3>
+                                    <span class="seating-badge">
+                                        <i class="fa-solid fa-hashtag"></i> رقم الجلوس: ${student.seating_no}
+                                    </span>
+                                </div>
+                                <span class="status-badge ${statusClass}">
+                                    <i class="fa-solid ${isPassed ? 'fa-circle-check' : 'fa-circle-exclamation'}"></i> ${student.student_case_desc}
+                                </span>
+                            </div>
+
+                            <div class="score-display-grid">
+                                <div class="score-box">
+                                    <span class="label">المجموع الكلي للدرجات</span>
+                                    <span class="val">${student.total_degree} / 320</span>
+                                </div>
+                                <div class="score-box">
+                                    <span class="label">النسبة المئوية (من 320)</span>
+                                    <span class="val percentage">${pct}%</span>
+                                </div>
+                                <div class="score-box">
+                                    <span class="label">النتيجة والتقدير</span>
+                                    <span class="val" style="font-size: 1.1rem;">${student.student_case_desc}</span>
+                                </div>
+                            </div>
+
+                            <div class="progress-bar-wrap">
+                                <div class="progress-bar-fill" style="width: ${Math.min(100, Math.max(0, pct))}%;"></div>
+                            </div>
+
+                            <div class="card-actions">
+                                <button class="btn-print-card" onclick="window.print()">
+                                    <i class="fa-solid fa-print"></i> طباعة النتيجة
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                container.innerHTML = html;
+
+            } catch (e) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-solid fa-triangle-exclamation" style="color:#ef4444;"></i>
+                        <h3>حدث خطأ أثناء الاتصال بقاعدة البيانات</h3>
+                        <p>${e.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Auto Live Search on typing (debounce)
+        let searchTimeout;
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            const val = e.target.value.trim();
+            if (val.length >= 3 || /^\d+$/.test(val)) {
+                searchTimeout = setTimeout(performSearch, 400);
+            }
+        });
+    </script>
+</body>
+</html>
