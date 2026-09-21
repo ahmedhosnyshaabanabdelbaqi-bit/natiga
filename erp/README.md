@@ -34,6 +34,8 @@ docker compose exec api php artisan erp:install
 
 تفاصيل التشغيل بلا Docker وعلى شبكة داخلية: `docs/06-OPERATIONS.md`.
 
+**لرفع النظام على خادمك خطوة بخطوة (Docker أو تثبيت مباشر على Ubuntu): [`DEPLOY.md`](DEPLOY.md).**
+
 ---
 
 ## ما يميز هذا التنفيذ

@@ -9,9 +9,9 @@
 ## ١. النتيجة الإجمالية
 
 ```
-Tests:      56 passed
-Assertions: 296
-Duration:   54.3 ثانية
+Tests:      58 passed
+Assertions: 309
+Duration:   55.5 ثانية
 ```
 
 | الملف | اختبارات | تحققات | النتيجة |
@@ -21,7 +21,7 @@ Duration:   54.3 ثانية
 | `ConcurrencyTest` | 3 | 8 | ✅ |
 | `SyncIdempotencyTest` | 7 | 32 | ✅ |
 | `CreditAndClosureTest` | 11 | 42 | ✅ |
-| `ApiSecurityTest` | 12 | 95 | ✅ |
+| `ApiSecurityTest` | 14 | 108 | ✅ |
 | `ReportsSmokeTest` | 7 | 41 | ✅ |
 | `ExceptionSignalsTest` | 5 | 13 | ✅ |
 | `ExampleTest` | 2 | 2 | ✅ |
@@ -141,6 +141,8 @@ Duration:   54.3 ثانية
 | `test_revoking_a_permission_does_not_erase_past_audit_records` | السجل والفاتورة باقيان بعد سحب كل الأدوار |
 | `test_login_returns_permission_list_and_enforces_password_change` | `must_change_password` وقائمة صلاحيات بلا `reports.cost.view` |
 | `test_login_with_wrong_password_is_rejected_and_throttled` | 401 خمس مرات ثم **429** |
+| `test_unauthenticated_request_without_json_header_returns_401_not_500` | طلب بلا `Accept: application/json` يعيد 401 بصيغة JSON لا صفحة خطأ ٥٠٠ |
+| `test_temporary_password_blocks_every_route_until_it_is_changed` | كلمة المرور المؤقتة تمنع كل المسارات (403 `auth.password_change_required`) عدا `auth/me` و`auth/logout` و`auth/change-password`، ويعود النظام بعد التغيير |
 
 ---
 
@@ -296,7 +298,32 @@ Duration:   54.3 ثانية
 
 ---
 
-## ١٣. ما لم يُختبَر
+## ١٣. تجربة النشر الفعلية
+
+الحزمة المرسلة للخادم فُكَّت في `/opt/mohamed-fayad-erp` وشُغِّلت بـ `deploy/install.sh`
+على قاعدة بيانات فارغة، ثم اختُبرت عبر Nginx من المتصفح:
+
+| الخطوة | النتيجة |
+|---|---|
+| فحص المتطلبات وإنشاء قاعدة البيانات والمستخدم | ✅ |
+| كتابة `.env` وتوليد `APP_KEY` و`ERP_BACKUP_KEY` | ✅ |
+| ترحيل ١٣ هجرة على قاعدة فارغة | ✅ |
+| `erp:install` — ٢٦٣ صلاحية، ٤٤ حسابًا، ٥٥ قاعدة ترحيل، حساب مدير بكلمة مرور مولّدة | ✅ |
+| `config:cache` و`route:cache` و`event:cache` | ✅ |
+| إعادة تشغيل السكربت على تثبيت قائم | ✅ لم يحذف بيانات ولم يستبدل `.env` |
+| `nginx -t` على الإعداد المرسل | ✅ |
+| الواجهة على `/` وروابط عميقة مثل `/sales/invoices` | ✅ 200 |
+| `/api/v1/health` عبر Nginx | ✅ |
+| دخول ← شاشة تغيير كلمة المرور الإجبارية ← بقاؤها بعد تحديث الصفحة ← لوحة التحكم | ✅ بلا أخطاء في وحدة التحكم |
+| اتجاه العربية والقائمة الجانبية على اليمين | ✅ `dir=rtl`، القائمة عند `right=1440` من عرض `1440` |
+
+**ما لم يُختبَر في النشر:** `php-fpm` (غير متاح في بيئة الاختبار — جُرِّب مسار الطلبات
+عبر `proxy_pass` بدلًا منه، وسطر `fastcgi_pass` وحده غير مُشغَّل)، وخدمات systemd
+(البيئة بلا systemd كـ PID 1)، وحزمة Docker Compose (لا يمكن سحب الصور).
+
+---
+
+## ١٤. ما لم يُختبَر
 
 - **تطبيق Flutter** — لم يُبنَ ولم يُشغَّل (لا SDK). لا توجد حزمة APK.
 - **اختبار اختراق** — لم يُجرَ.

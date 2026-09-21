@@ -119,6 +119,8 @@ class AuthController extends ApiController
             'company_name' => $user->company?->name_ar,
             'branch_id' => $user->branch_id,
             'is_super_admin' => (bool) $user->is_super_admin,
+            // تُقرأ عند استعادة الجلسة أيضًا، لا عند الدخول فقط
+            'must_change_password' => (bool) $user->must_change_password,
             'roles' => $user->roles()->get(['roles.id', 'roles.code', 'roles.name_ar']),
             // الواجهة تبني القوائم والأزرار من هذه القائمة، والسيرفر يتحقق مجددًا
             'permissions' => array_keys($user->permissionCodes()),

@@ -93,6 +93,18 @@ class ApiSecurityTest extends TestCase
             ->assertJsonPath('error_code', 'auth.unauthenticated');
     }
 
+    /**
+     * ظهر عند تجربة النشر: طلب بلا ترويسة Accept: application/json كان يعيد
+     * صفحة خطأ 500 لأن Laravel يحاول التحويل إلى مسار اسمه login وهو غير موجود.
+     * النظام واجهة برمجية بحتة، فالمتوقع 401 بصيغة JSON في كل الأحوال.
+     */
+    public function test_unauthenticated_request_without_json_header_returns_401_not_500(): void
+    {
+        $this->get('/api/v1/customers', ['Accept' => 'text/html'])
+            ->assertStatus(401)
+            ->assertJsonPath('error_code', 'auth.unauthenticated');
+    }
+
     public function test_health_endpoint_reports_the_system_name(): void
     {
         $this->getJson('/api/v1/health')
@@ -301,6 +313,45 @@ class ApiSecurityTest extends TestCase
         $this->assertContains('sales_invoice.create', $permissions);
         $this->assertNotContains('reports.cost.view', $permissions);
         $this->assertFalse($response->json('data.user.can_see_cost'));
+    }
+
+    /**
+     * كلمة المرور المؤقتة تُعرض مرة واحدة على شاشة التثبيت، فمن قرأها يستطيع
+     * الدخول. المنع هنا في السيرفر: لا شيء متاح غير تغييرها.
+     */
+    public function test_temporary_password_blocks_every_route_until_it_is_changed(): void
+    {
+        $this->salesmanUser->must_change_password = true;
+        $this->salesmanUser->save();
+
+        Sanctum::actingAs($this->salesmanUser);
+
+        // كل المسارات مرفوضة
+        $this->getJson('/api/v1/customers')
+            ->assertStatus(403)
+            ->assertJsonPath('error_code', 'auth.password_change_required');
+        $this->getJson('/api/v1/dashboard')
+            ->assertStatus(403)
+            ->assertJsonPath('error_code', 'auth.password_change_required');
+        $this->postJson('/api/v1/sales-invoices', [])
+            ->assertStatus(403)
+            ->assertJsonPath('error_code', 'auth.password_change_required');
+
+        // ما عدا معرفة الهوية وتغيير كلمة المرور
+        $this->getJson('/api/v1/auth/me')
+            ->assertOk()
+            ->assertJsonPath('data.must_change_password', true);
+
+        $this->postJson('/api/v1/auth/change-password', [
+            'current_password' => 'salesman-test-password',
+            'new_password' => 'a-much-longer-password-9',
+            'new_password_confirmation' => 'a-much-longer-password-9',
+        ])->assertOk();
+
+        // وبعد التغيير يعود النظام متاحًا بحدود صلاحيات المستخدم
+        $this->getJson('/api/v1/customers')->assertOk();
+        $this->getJson('/api/v1/auth/me')
+            ->assertJsonPath('data.must_change_password', false);
     }
 
     public function test_login_with_wrong_password_is_rejected_and_throttled(): void

@@ -22,7 +22,13 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'permission' => \App\Http\Middleware\RequirePermission::class,
             'company.scope' => \App\Http\Middleware\EnsureCompanyScope::class,
+            'password.changed' => \App\Http\Middleware\EnforcePasswordChange::class,
         ]);
+
+        // النظام واجهة برمجية بحتة ولا يملك مسارًا باسم login.
+        // بدون هذا السطر يحاول Laravel تحويل الزائر غير المسجّل إلى route('login')
+        // فيرمي خطأ 500 بدل 401 عند أي طلب لا يحمل ترويسة Accept: application/json.
+        $middleware->redirectGuestsTo(fn () => null);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         // أخطاء قواعد العمل تُترجم إلى رسالة عربية واضحة ورمز خطأ ثابت

@@ -6,6 +6,7 @@ import { LoadingState, EmptyState } from './components/ui';
 import { useI18n, applyDirection, useI18nStore } from './lib/i18n';
 
 import Login from './pages/Login';
+import ChangePassword from './pages/ChangePassword';
 import Dashboard from './pages/Dashboard';
 import Customers from './pages/Customers';
 import CustomerDetail from './pages/CustomerDetail';
@@ -52,7 +53,7 @@ function ScrollReset() {
 }
 
 function Shell() {
-  const { user, loading, loadMe } = useAuth();
+  const { user, loading, loadMe, mustChangePassword } = useAuth();
   const { t } = useI18n();
 
   useEffect(() => { void loadMe(); }, [loadMe]);
@@ -68,6 +69,11 @@ function Shell() {
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     );
+  }
+
+  // كلمة مرور مؤقتة: لا شيء غير هذه الشاشة. السيرفر يرفض بقية المسارات أصلًا.
+  if (mustChangePassword) {
+    return <ChangePassword />;
   }
 
   return (

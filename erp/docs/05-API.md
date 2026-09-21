@@ -72,6 +72,9 @@ Accept: application/json
 | `closure.sync_incomplete` | الإقفال قبل اكتمال المزامنة بلا استثناء موثق |
 | `quota.exceeded` | تجاوز حصة الجهاز الأوفلاين (مخزون أو ائتمان) |
 | `posting.rule_missing` | مصفوفة الترحيل غير مكتملة |
+| `auth.unauthenticated` | طلب بلا رمز دخول صالح |
+| `auth.forbidden` | الرمز صالح لكن الصلاحية غير ممنوحة |
+| `auth.password_change_required` | كلمة المرور المؤقتة لم تُغيَّر بعد — لا يُسمح إلا بـ `auth/me` و`auth/logout` و`auth/change-password` |
 
 ## المسارات
 

@@ -9,6 +9,7 @@ export interface CurrentUser {
   company_name: string | null;
   branch_id: number | null;
   is_super_admin: boolean;
+  must_change_password?: boolean;
   roles: Array<{ id: number; code: string; name_ar: string }>;
   permissions: string[];
   salesman: { id: number; code: string; warehouse_id: number | null; primary_role: string } | null;
@@ -24,6 +25,7 @@ interface AuthState {
   login: (username: string, password: string) => Promise<boolean>;
   logout: () => Promise<void>;
   loadMe: () => Promise<void>;
+  clearPasswordFlag: () => void;
   can: (permission: string) => boolean;
   canAny: (permissions: string[]) => boolean;
 }
@@ -75,6 +77,8 @@ export const useAuth = create<AuthState>((set, get) => ({
     set({ user: null, mustChangePassword: false });
   },
 
+  clearPasswordFlag: () => set({ mustChangePassword: false }),
+
   loadMe: async () => {
     if (!tokenStore.get()) {
       set({ user: null, loading: false });
@@ -82,7 +86,12 @@ export const useAuth = create<AuthState>((set, get) => ({
     }
     try {
       const { data } = await api.get('/auth/me');
-      set({ user: data.data, loading: false });
+      // الراية تُقرأ عند استعادة الجلسة أيضًا، وإلا تجاوزها المستخدم بتحديث الصفحة
+      set({
+        user: data.data,
+        mustChangePassword: Boolean(data.data.must_change_password),
+        loading: false,
+      });
     } catch {
       tokenStore.clear();
       set({ user: null, loading: false });

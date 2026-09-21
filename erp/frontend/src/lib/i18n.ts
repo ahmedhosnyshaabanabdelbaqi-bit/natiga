@@ -144,6 +144,21 @@ const ar = {
   'login.installNote': 'يُنشأ حساب الإدارة بأمر {cmd} ولا توجد كلمة مرور ثابتة في المستودع.',
   'login.checkingSession': 'جارٍ التحقق من الجلسة…',
 
+  // شاشة تغيير كلمة المرور المؤقتة — إجبارية والسيرفر يمنع أي طلب آخر قبلها
+  'pwd.title': 'تغيير كلمة المرور',
+  'pwd.intro': 'دخلت بكلمة مرور مؤقتة. غيّرها الآن قبل استخدام النظام.',
+  'pwd.current': 'كلمة المرور الحالية',
+  'pwd.new': 'كلمة المرور الجديدة',
+  'pwd.confirm': 'تأكيد كلمة المرور الجديدة',
+  'pwd.rule': 'اثنا عشر حرفًا على الأقل.',
+  'pwd.submit': 'حفظ كلمة المرور',
+  'pwd.submitting': 'جارٍ الحفظ…',
+  'pwd.tooShort': 'كلمة المرور الجديدة أقصر من اثني عشر حرفًا.',
+  'pwd.mismatch': 'التأكيد لا يطابق كلمة المرور الجديدة.',
+  'pwd.sameAsOld': 'كلمة المرور الجديدة مطابقة للحالية.',
+  'pwd.done': 'تم تغيير كلمة المرور.',
+  'pwd.signOut': 'خروج',
+
   // ---------- اللوحة ----------
   'dash.title': 'لوحة التحكم',
   'dash.roleView': 'عرض مخصص لدور: {role}',
@@ -731,6 +746,20 @@ const en: Record<MessageKey, string> = {
   'login.passwordRequired': 'Enter your password.',
   'login.installNote': 'The admin account is created by {cmd}; no fixed password exists in the repository.',
   'login.checkingSession': 'Checking session…',
+
+  'pwd.title': 'Change password',
+  'pwd.intro': 'You signed in with a temporary password. Change it before using the system.',
+  'pwd.current': 'Current password',
+  'pwd.new': 'New password',
+  'pwd.confirm': 'Confirm new password',
+  'pwd.rule': 'At least twelve characters.',
+  'pwd.submit': 'Save password',
+  'pwd.submitting': 'Saving…',
+  'pwd.tooShort': 'The new password is shorter than twelve characters.',
+  'pwd.mismatch': 'The confirmation does not match the new password.',
+  'pwd.sameAsOld': 'The new password is the same as the current one.',
+  'pwd.done': 'Password changed.',
+  'pwd.signOut': 'Sign out',
 
   'dash.title': 'Dashboard',
   'dash.roleView': 'View tailored for: {role}',

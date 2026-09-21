@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 | كل مسار محمي يمر بـ:
 |   auth:sanctum       تحقق الهوية
 |   company.scope      تثبيت الشركة من المستخدم لا من مدخلات العميل
+|   password.changed   منع الاستخدام بكلمة مرور مؤقتة لم تُغيَّر بعد
 |   permission:...     تحقق الصلاحية في السيرفر (رفض افتراضي)
 */
 
@@ -31,7 +32,7 @@ Route::prefix('v1')->group(function () {
 
     Route::post('auth/login', [AuthController::class, 'login'])->middleware('throttle:10,1');
 
-    Route::middleware(['auth:sanctum', 'company.scope'])->group(function () {
+    Route::middleware(['auth:sanctum', 'company.scope', 'password.changed'])->group(function () {
         // --- الهوية ---
         Route::get('auth/me', [AuthController::class, 'me']);
         Route::post('auth/logout', [AuthController::class, 'logout']);

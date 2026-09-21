@@ -1,0 +1,28 @@
+# عامل الطوابير — يعالج التصدير والتقارير الثقيلة والتكاملات.
+# انسخه إلى /etc/systemd/system/erp-worker.service ثم:
+#   systemctl daemon-reload && systemctl enable --now erp-worker
+
+[Unit]
+Description=محمد فياض ERP — عامل الطوابير
+After=network.target postgresql.service
+Requires=postgresql.service
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/mohamed-fayad-erp/backend
+ExecStart=/usr/bin/php artisan queue:work --tries=3 --backoff=10 --timeout=300 --sleep=3 --max-time=3600
+Restart=always
+RestartSec=5
+StandardOutput=append:/var/log/erp/worker.log
+StandardError=append:/var/log/erp/worker.log
+
+# تقييد الصلاحيات
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target
