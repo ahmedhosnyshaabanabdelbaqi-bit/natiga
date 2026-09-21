@@ -214,7 +214,17 @@ class DashboardService
             ->selectRaw('COALESCE(SUM((grl.qty_base - grl.qty_invoiced_base) * grl.unit_cost), 0) AS v')
             ->value('v');
 
+        $sales = $this->salesTotals($from, $to);
+
         return [
+            $this->card('net_sales', 'صافي المبيعات', $sales['net'],
+                'إجمالي الفواتير المرحّلة بعد الخصم والمرتجعات، بدون الضريبة.',
+                'currency', '/sales/invoices?from='.$from.'&to='.$to),
+
+            $this->card('gross_profit', 'مجمل الربح', $sales['gross_profit'],
+                'صافي المبيعات − تكلفة البضاعة المباعة. لا يشمل المصروفات التشغيلية، وليس صافي الربح.',
+                'currency', '/reports/income-statement?from='.$from.'&to='.$to),
+
             $this->card('receivables', 'ذمم مدينة', $this->receivablesTotal()['total'],
                 'رصيد العملاء المدين.', 'currency', '/reports/aging'),
 

@@ -379,7 +379,14 @@ class DayClosingService
     /**
      * The rep submits their counted stock and counted cash.
      *
-     * @param  array<int, array{line_id: int, counted_qty: string}>  $countedStock
+     * Counts arrive keyed by the line ids the client was shown, but submit()
+     * recomputes first — a late-syncing sale must be reflected before the
+     * variance is struck — and recomputing rebuilds the stock lines with new
+     * ids. So the incoming line ids are resolved to (item, batch) BEFORE the
+     * recompute and re-matched after it. Callers may also key a count by
+     * item_id directly.
+     *
+     * @param  array<int, array{line_id?: int, item_id?: int, batch_id?: int|null, counted_qty: string}>  $countedStock
      */
     public function submit(DayClosing $closing, string $actualCash, array $countedStock = []): DayClosing
     {
@@ -391,18 +398,38 @@ class DayClosingService
                     'اليوم معتمد بالفعل.', ['status' => $closing->status]);
             }
 
-            $this->compute($closing);
-            $closing->refresh()->load('stockLines');
+            // Translate line ids to their item/batch identity while they still exist.
+            $existing = $closing->stockLines->keyBy('id');
+            $counts = [];
 
-            $byId = collect($countedStock)->keyBy('line_id');
-            $varianceValue = '0';
-
-            foreach ($closing->stockLines as $line) {
-                if (! $byId->has($line->id)) {
+            foreach ($countedStock as $input) {
+                if (isset($input['line_id']) && $existing->has($input['line_id'])) {
+                    $line = $existing->get($input['line_id']);
+                    $itemId = $line->item_id;
+                    $batchId = $line->batch_id;
+                } elseif (isset($input['item_id'])) {
+                    $itemId = $input['item_id'];
+                    $batchId = $input['batch_id'] ?? null;
+                } else {
                     continue;
                 }
 
-                $counted = Num::qty($byId->get($line->id)['counted_qty']);
+                $counts[$itemId.':'.($batchId ?? 0)] = $input['counted_qty'];
+            }
+
+            $this->compute($closing);
+            $closing->refresh()->load('stockLines');
+
+            $varianceValue = '0';
+
+            foreach ($closing->stockLines as $line) {
+                $key = $line->item_id.':'.($line->batch_id ?? 0);
+
+                if (! array_key_exists($key, $counts)) {
+                    continue;
+                }
+
+                $counted = Num::qty($counts[$key]);
                 $variance = Num::qty(Num::sub($counted, $line->expected_qty, Num::QTY_SCALE));
 
                 $line->forceFill([

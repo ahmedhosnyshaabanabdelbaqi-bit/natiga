@@ -362,9 +362,16 @@ class SyncService
         $receipt = $this->collections->post($receipt);
 
         if (! empty($payload['allocations'])) {
+            /**
+             * Any allocation failure is absorbed. The receipt is already
+             * created and posted; letting an allocation problem propagate would
+             * roll the whole operation back and discard money a rep physically
+             * took from a customer. The amount is kept as an unallocated credit
+             * and flagged for review instead.
+             */
             try {
                 $this->collections->allocate($receipt, $payload['allocations']);
-            } catch (DomainException $e) {
+            } catch (\Throwable $e) {
                 // Keep the money, flag the mismatch.
                 SyncConflict::firstOrCreate(
                     ['company_id' => $operation->company_id, 'sync_operation_id' => $operation->id],

@@ -26,7 +26,7 @@ class AccountResolver
         'inventory', 'accounts_receivable', 'accounts_payable', 'sales_revenue',
         'sales_returns', 'sales_discount', 'cogs', 'vat_output', 'vat_input',
         'grni', 'inventory_adjustment', 'damage_expense', 'rounding_difference',
-        'cash_on_hand', 'customer_advances', 'delivery_income',
+        'cash_on_hand', 'customer_advances', 'delivery_income', 'cheques_receivable',
     ];
 
     /** @var array<string, int> */
@@ -107,13 +107,25 @@ class AccountResolver
             ->where('is_active', true)
             ->first();
 
-        if (! $custody) {
-            throw DomainException::make('gl.custody_unmapped',
-                'لا يوجد حساب عهدة مرتبط بهذا المستخدم. أنشئه من شاشة العهد قبل تسجيل التحصيل.',
-                ['user_id' => $userId, 'kind' => $kind]);
+        if ($custody) {
+            return $custody->account_id;
         }
 
-        return $custody->account_id;
+        /**
+         * Cheques fall back to the company-level cheques-receivable account.
+         * A cheque is company property whatever pocket it is in, and the rep is
+         * recorded as the partner on the line — so per-rep cheque custody
+         * accounts are an optional refinement, not a precondition for trading.
+         * Cash has no such fallback: physical cash held by a person must be
+         * attributable to that person.
+         */
+        if ($kind === 'cheque') {
+            return $this->key('cheques_receivable');
+        }
+
+        throw DomainException::make('gl.custody_unmapped',
+            'لا يوجد حساب عهدة نقدية مرتبط بهذا المستخدم. أنشئه من شاشة العهد قبل تسجيل التحصيل.',
+            ['user_id' => $userId, 'kind' => $kind]);
     }
 
     /** Treasury containers addressed uniformly by the posting rules. */

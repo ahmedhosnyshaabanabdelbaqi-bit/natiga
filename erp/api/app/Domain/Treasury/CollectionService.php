@@ -111,7 +111,15 @@ class CollectionService
             $total = '0';
 
             foreach ($allocations as $input) {
-                $invoice = SalesInvoice::lockForUpdate()->findOrFail($input['sales_invoice_id']);
+                $invoice = SalesInvoice::lockForUpdate()->find($input['sales_invoice_id']);
+
+                // Raised as a domain error rather than a model-not-found, so a
+                // caller that must keep the money (offline sync) can catch it.
+                if (! $invoice) {
+                    throw DomainException::make('treasury.allocation_invoice_missing',
+                        'الفاتورة المطلوب السداد عنها غير موجودة أو تخص شركة أخرى.',
+                        ['sales_invoice_id' => $input['sales_invoice_id']]);
+                }
 
                 if ($invoice->customer_id !== $receipt->customer_id) {
                     throw DomainException::make('treasury.allocation_customer_mismatch',

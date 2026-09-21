@@ -104,6 +104,12 @@ class LedgerService
                 'لا يمكن عكس قيد غير مرحّل.', ['entry_id' => $entry->id, 'status' => $entry->status]);
         }
 
+        if ($entry->reversed_by_id) {
+            throw DomainException::make('gl.already_reversed',
+                "القيد {$entry->entry_no} معكوس بالفعل.",
+                ['entry_id' => $entry->id, 'reversal_id' => $entry->reversed_by_id]);
+        }
+
         $date ??= now()->toDateString();
         $this->openPeriodFor($date);
 
@@ -128,9 +134,14 @@ class LedgerService
         $reversal = $this->post($draft);
         $reversal->forceFill(['reversal_of_id' => $entry->id])->save();
 
-        // Marking the original 'reversed' also frees its source-uniqueness slot,
-        // so a corrected document can be posted afresh against the same source.
-        $entry->forceFill(['status' => 'reversed'])->save();
+        /**
+         * The original stays 'posted'. Both entries remain in every balance
+         * query and net to zero, which is what reversal means in double entry —
+         * hiding the original would leave only the reversal and misstate the
+         * account. Pointing reversed_by_id at the reversal frees the
+         * source-uniqueness slot so a corrected document can be posted.
+         */
+        $entry->forceFill(['reversed_by_id' => $reversal->id])->save();
 
         return $reversal;
     }
@@ -142,7 +153,7 @@ class LedgerService
             ->where('source_type', $sourceType)
             ->where('source_id', $sourceId)
             ->where('purpose', $purpose)
-            ->where('status', '<>', 'reversed')
+            ->whereNull('reversed_by_id')
             ->first();
     }
 

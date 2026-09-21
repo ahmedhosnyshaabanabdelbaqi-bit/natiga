@@ -35,6 +35,17 @@ class JournalEntry extends BaseModel
         return $this->belongsTo(JournalEntry::class, 'reversal_of_id');
     }
 
+    public function reversedBy(): BelongsTo
+    {
+        return $this->belongsTo(JournalEntry::class, 'reversed_by_id');
+    }
+
+    /** A reversed entry is still on the books; it is simply offset by its mirror. */
+    public function isReversed(): bool
+    {
+        return $this->reversed_by_id !== null;
+    }
+
     public function isBalanced(): bool
     {
         return Num::cmp($this->total_debit, $this->total_credit, Num::MONEY_SCALE) === 0;

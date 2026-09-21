@@ -112,30 +112,35 @@ class SalesOrderService
      */
     public function approve(SalesOrder $order, bool $creditOverrideApproved = false): SalesOrder
     {
-        return DB::transaction(function () use ($order, $creditOverrideApproved) {
-            $order = SalesOrder::lockForUpdate()->findOrFail($order->id);
+        $order = $order->fresh(['lines', 'customer']);
 
-            if ($order->status === 'approved') {
-                return $order;   // idempotent: a retried approval is a no-op
-            }
-            if (! $order->isEditable()) {
-                throw DomainException::make('sales.order_not_approvable',
-                    "أمر البيع «{$order->code}» غير قابل للاعتماد في حالته الحالية.",
-                    ['status' => $order->status]);
-            }
-            if ($order->lines()->count() === 0) {
-                throw DomainException::make('sales.order_empty',
-                    'لا يمكن اعتماد أمر بيع بدون أصناف.', ['order_id' => $order->id]);
-            }
+        if ($order->status === 'approved') {
+            return $order;   // idempotent: a retried approval is a no-op
+        }
+        if (! $order->isEditable()) {
+            throw DomainException::make('sales.order_not_approvable',
+                "أمر البيع «{$order->code}» غير قابل للاعتماد في حالته الحالية.",
+                ['status' => $order->status]);
+        }
+        if ($order->lines->isEmpty()) {
+            throw DomainException::make('sales.order_empty',
+                'لا يمكن اعتماد أمر بيع بدون أصناف.', ['order_id' => $order->id]);
+        }
 
-            $customer = $order->customer;
+        /**
+         * The credit check runs BEFORE the reserving transaction opens.
+         *
+         * A failure has to leave something behind — the approval request a
+         * supervisor will act on — and that record would be rolled back with
+         * everything else if it were written inside the transaction the refusal
+         * aborts. So the request is committed in its own transaction and the
+         * refusal is raised afterwards.
+         */
+        if ($order->payment_type !== 'cash' && ! $creditOverrideApproved) {
+            $check = $this->credit->check($order->customer, (string) $order->total);
 
-            if ($order->payment_type !== 'cash') {
-                $check = $this->credit->check($customer, (string) $order->total);
-
-                if (! $check['allowed'] && ! $creditOverrideApproved) {
-                    // Raise the approval request rather than silently blocking,
-                    // so a supervisor has something to act on.
+            if (! $check['allowed']) {
+                DB::transaction(function () use ($order, $check) {
                     $order->forceFill(['status' => 'pending_approval'])->save();
 
                     Approval::firstOrCreate([
@@ -150,24 +155,34 @@ class SalesOrderService
                         'requested_by' => auth()->id(),
                         'note' => $check['message'],
                     ]);
+                });
 
-                    throw DomainException::make($check['reason'], $check['message'], [
-                        'order_id' => $order->id,
-                        'requires_approval' => true,
-                        'exposure' => $check['exposure'],
-                    ]);
-                }
+                throw DomainException::make($check['reason'], $check['message'], [
+                    'order_id' => $order->id,
+                    'requires_approval' => true,
+                    'exposure' => $check['exposure'],
+                ]);
+            }
+        }
+
+        return DB::transaction(function () use ($order) {
+            // Re-read under a lock: two approvals of the same order must not
+            // both reserve stock.
+            $locked = SalesOrder::lockForUpdate()->findOrFail($order->id);
+
+            if ($locked->status === 'approved') {
+                return $locked->fresh(['lines']);
             }
 
-            $this->reserveStock($order);
+            $this->reserveStock($locked);
 
-            $order->forceFill([
+            $locked->forceFill([
                 'status' => 'approved',
                 'approved_by' => auth()->id(),
                 'approved_at' => now(),
             ])->save();
 
-            return $order->fresh(['lines']);
+            return $locked->fresh(['lines']);
         });
     }
 

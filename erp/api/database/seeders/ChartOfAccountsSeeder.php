@@ -50,7 +50,36 @@ class ChartOfAccountsSeeder extends Seeder
             }
         }
 
+        $this->linkTreasuryContainers($company);
         $this->seedFiscalCalendar($company);
+    }
+
+    /**
+     * Point cash boxes and banks at their control accounts.
+     *
+     * Done here rather than in CompanySeeder because that seeder runs first, to
+     * create the company the accounts belong to — so the accounts do not exist
+     * yet at that point. This pass is idempotent and also repairs an install
+     * whose containers were created before the chart.
+     */
+    protected function linkTreasuryContainers(Company $company): void
+    {
+        $cashAccountId = Account::where('company_id', $company->id)->where('code', '1110')->value('id');
+        $bankAccountId = Account::where('company_id', $company->id)->where('code', '1121')->value('id');
+
+        if ($cashAccountId) {
+            \App\Models\CashBox::withoutGlobalScope('company')
+                ->where('company_id', $company->id)
+                ->whereNull('account_id')
+                ->update(['account_id' => $cashAccountId]);
+        }
+
+        if ($bankAccountId) {
+            \App\Models\Bank::withoutGlobalScope('company')
+                ->where('company_id', $company->id)
+                ->whereNull('account_id')
+                ->update(['account_id' => $bankAccountId]);
+        }
     }
 
     protected function accounts(): array

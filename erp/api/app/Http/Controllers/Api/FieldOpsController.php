@@ -157,7 +157,9 @@ class FieldOpsController extends BaseApiController
         $data = $request->validate([
             'actual_cash' => ['required', 'numeric', 'min:0'],
             'counted_stock' => ['nullable', 'array'],
-            'counted_stock.*.line_id' => ['required', 'integer'],
+            'counted_stock.*.line_id' => ['nullable', 'integer'],
+            'counted_stock.*.item_id' => ['nullable', 'integer', 'exists:items,id'],
+            'counted_stock.*.batch_id' => ['nullable', 'integer', 'exists:batches,id'],
             'counted_stock.*.counted_qty' => ['required', 'numeric', 'min:0'],
         ]);
 

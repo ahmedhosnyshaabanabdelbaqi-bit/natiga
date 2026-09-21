@@ -101,6 +101,7 @@ class InventoryService
         ?string $reason = null,
         ?string $forcedUnitCost = null,
         bool $allowReservedConsumption = false,
+        bool $updateAverageCost = true,
     ): StockMovement {
         $this->assertInTransaction();
         $qtyBase = Num::qty($qtyBase);
@@ -137,7 +138,9 @@ class InventoryService
             'updated_at' => now(),
         ]);
 
-        $this->rollAverageCostOut($itemId, $qtyBase, $unitCost);
+        if ($updateAverageCost) {
+            $this->rollAverageCostOut($itemId, $qtyBase, $unitCost);
+        }
 
         return $this->writeMovement(
             'out', $warehouseId, $itemId, $qtyBase, $unitCost, $docType, $docId,
@@ -173,16 +176,23 @@ class InventoryService
                 'لا يمكن التحويل إلى نفس المخزن.', compact('fromWarehouseId'));
         }
 
+        /**
+         * Neither leg touches item_costs. The average cost is held per
+         * (company, item), so relocating goods inside the company changes
+         * neither the quantity the company owns nor its value. Rolling the cost
+         * out on one leg without rolling it back in on the other would destroy
+         * inventory value on every transfer.
+         */
         $out = $this->issue(
             $fromWarehouseId, $itemId, $qtyBase, $docType, $docId, $docLineId,
             $batchId, null, $movedAt, $reason ?? 'transfer_out',
-            null, $allowReservedConsumption
+            null, $allowReservedConsumption, updateAverageCost: false,
         );
 
         $in = $this->receive(
             $toWarehouseId, $itemId, $qtyBase, (string) $out->unit_cost, $docType, $docId,
             $docLineId, $batchId, null, $movedAt, $reason ?? 'transfer_in',
-            updateAverageCost: false,   // the goods never left the company
+            updateAverageCost: false,
         );
 
         return ['out' => $out, 'in' => $in];
@@ -578,6 +588,10 @@ class InventoryService
      * Stock changes are only ever valid as part of a document's transaction.
      * Calling one of these outside a transaction is a programming error, not a
      * runtime condition, so it fails loudly.
+     *
+     * Note for anyone adding coverage: this guard cannot be asserted from a
+     * test using RefreshDatabase, because that trait already holds an open
+     * transaction for the whole test. It is exercised in production paths only.
      */
     protected function assertInTransaction(): void
     {

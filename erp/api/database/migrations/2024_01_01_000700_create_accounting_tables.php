@@ -88,6 +88,15 @@ return new class extends Migration
             $t->decimal('total_credit', 18, 2)->default(0);
             $t->text('memo')->nullable();
             $t->foreignId('reversal_of_id')->nullable()->constrained('journal_entries')->nullOnDelete();
+            /**
+             * Set on the ORIGINAL entry when a reversal is posted against it.
+             * The original keeps status 'posted' and stays in every balance
+             * query — a reversal works by the two entries netting to zero, not
+             * by hiding the first one. This column exists so the
+             * source-uniqueness index below can free its slot for a corrected
+             * document without removing history from the books.
+             */
+            $t->foreignId('reversed_by_id')->nullable()->constrained('journal_entries')->nullOnDelete();
             $t->timestamp('posted_at')->nullable();
             $t->foreignId('posted_by')->nullable()->constrained('users')->nullOnDelete();
             $t->timestamps();
@@ -96,9 +105,11 @@ return new class extends Migration
             $t->index(['source_type', 'source_id']);
         });
 
+        // One live entry per (document, purpose). A reversed entry releases its
+        // slot so a corrected document can be posted, while remaining on the books.
         DB::statement('CREATE UNIQUE INDEX journal_entries_source_uniq ON journal_entries
             (company_id, source_type, source_id, purpose)
-            WHERE source_type IS NOT NULL AND status <> \'reversed\'');
+            WHERE source_type IS NOT NULL AND reversed_by_id IS NULL');
 
         Schema::create('journal_lines', function (Blueprint $t) {
             $t->id();

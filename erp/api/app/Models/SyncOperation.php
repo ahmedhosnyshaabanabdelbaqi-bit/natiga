@@ -12,6 +12,20 @@ class SyncOperation extends BaseModel
 
     protected $keyType = 'string';
 
+    /**
+     * The primary key is a client-generated UUID and must be assignable — the
+     * device chooses it so a retry can be recognised as the same operation.
+     * BaseModel guards 'id', so it is explicitly unguarded here.
+     */
+    protected $guarded = [];
+
+    public static function booted(): void
+    {
+        static::creating(function (self $operation) {
+            $operation->id ??= (string) \Illuminate\Support\Str::uuid();
+        });
+    }
+
     protected function casts(): array
     {
         return [
