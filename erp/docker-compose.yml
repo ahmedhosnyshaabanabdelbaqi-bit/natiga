@@ -1,0 +1,98 @@
+# Local development stack.
+#
+# Everything the system needs to sell, hold stock and keep books runs here with
+# no external service and no paid dependency. Only genuinely external features
+# (e-invoicing, SMS, maps) need the internet, and they are disabled by default.
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: erp
+      POSTGRES_USER: erp
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-erp}
+      # Arabic collation, so ORDER BY on names reads correctly.
+      LANG: ar_EG.utf8
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./docker/init-test-db.sh:/docker-entrypoint-initdb.d/10-test-db.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U erp -d erp"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: ./api
+      dockerfile: ../docker/api.Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_TIMEZONE: Africa/Cairo
+      APP_LOCALE: ar
+      DB_CONNECTION: pgsql
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_DATABASE: erp
+      DB_USERNAME: erp
+      DB_PASSWORD: ${DB_PASSWORD:-erp}
+      QUEUE_CONNECTION: database
+      ERP_OWNER_EMAIL: ${ERP_OWNER_EMAIL:-owner@example.test}
+      ERP_OWNER_PASSWORD: ${ERP_OWNER_PASSWORD:?set ERP_OWNER_PASSWORD before starting}
+    ports:
+      - "${API_PORT:-8000}:8000"
+    volumes:
+      - ./api:/app
+      - api-vendor:/app/vendor
+    command: >
+      sh -c "php artisan migrate --force &&
+             php artisan db:seed --force &&
+             php artisan serve --host=0.0.0.0 --port=8000"
+
+  # Background worker for exports, imports and outbound integrations. These run
+  # AFTER a document's transaction commits, never inside it, so a slow external
+  # service cannot fail a sale.
+  queue:
+    build:
+      context: ./api
+      dockerfile: ../docker/api.Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_CONNECTION: pgsql
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_DATABASE: erp
+      DB_USERNAME: erp
+      DB_PASSWORD: ${DB_PASSWORD:-erp}
+      QUEUE_CONNECTION: database
+    volumes:
+      - ./api:/app
+      - api-vendor:/app/vendor
+    command: php artisan queue:work --tries=3 --sleep=3
+
+  web:
+    image: node:20-alpine
+    working_dir: /app
+    depends_on:
+      - api
+    environment:
+      VITE_API_URL: http://localhost:${API_PORT:-8000}/api/v1
+    ports:
+      - "${WEB_PORT:-5173}:5173"
+    volumes:
+      - ./web:/app
+      - web-modules:/app/node_modules
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+
+volumes:
+  db-data:
+  api-vendor:
+  web-modules:
