@@ -1,12 +1,14 @@
 import { type ReactNode, useEffect, useRef, useState } from 'react';
+import { useI18n } from '../lib/i18n';
 
 /* ---------- الحالات: تحميل / فراغ / خطأ / نجاح ---------- */
 
-export function LoadingState({ label = 'جارٍ التحميل…' }: { label?: string }) {
+export function LoadingState({ label }: { label?: string }) {
+  const { t } = useI18n();
   return (
     <div className="state">
       <span className="spinner" />
-      <div className="mt-2 small">{label}</div>
+      <div className="mt-2 small">{label ?? t('common.loading')}</div>
     </div>
   );
 }
@@ -26,7 +28,7 @@ export function TableSkeleton({ rows = 6, cols = 5 }: { rows?: number; cols?: nu
 }
 
 export function EmptyState({
-  title = 'لا توجد بيانات',
+  title,
   description,
   icon = '□',
   action,
@@ -36,10 +38,11 @@ export function EmptyState({
   icon?: string;
   action?: ReactNode;
 }) {
+  const { t } = useI18n();
   return (
     <div className="state">
       <div className="ico">{icon}</div>
-      <div className="title">{title}</div>
+      <div className="title">{title ?? t('common.noData')}</div>
       {description && <div className="desc">{description}</div>}
       {action}
     </div>
@@ -47,13 +50,14 @@ export function EmptyState({
 }
 
 export function ErrorState({ error, onRetry }: { error: { message: string; code?: string }; onRetry?: () => void }) {
+  const { t } = useI18n();
   return (
     <div className="state">
       <div className="ico" style={{ color: 'var(--danger)' }}>!</div>
-      <div className="title">تعذّر إتمام العملية</div>
+      <div className="title">{t('common.error')}</div>
       <div className="desc">{error.message}</div>
-      {error.code && <div className="tiny faint mb-3">رمز الخطأ: {error.code}</div>}
-      {onRetry && <button className="btn" onClick={onRetry}>إعادة المحاولة</button>}
+      {error.code && <div className="tiny faint mb-3">{t('common.errorCode')}: {error.code}</div>}
+      {onRetry && <button className="btn" onClick={onRetry}>{t('common.retry')}</button>}
     </div>
   );
 }
@@ -146,6 +150,9 @@ export function Modal({
   footer?: ReactNode;
   wide?: boolean;
 }) {
+  const { t } = useI18n();
+  const closeLabel = t('common.close');
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
     window.addEventListener('keydown', onKey);
@@ -157,7 +164,7 @@ export function Modal({
       <div className={`modal ${wide ? 'wide' : ''}`} role="dialog" aria-modal="true">
         <div className="modal-head">
           <h3>{title}</h3>
-          <button className="close" onClick={onClose} aria-label="إغلاق">×</button>
+          <button className="close" onClick={onClose} aria-label={closeLabel}>×</button>
         </div>
         <div className="modal-body">{children}</div>
         {footer && <div className="modal-foot">{footer}</div>}
@@ -183,14 +190,16 @@ export function StatCard({
   caveat?: string | null;
   onClick?: () => void;
 }) {
+  const { t } = useI18n();
   const [showFormula, setShowFormula] = useState(false);
+  const formulaTitle = t('dash.formulaTitle');
 
   return (
     <div className={`stat ${onClick ? 'clickable' : ''}`} onClick={onClick}>
       {formula && (
         <button
           className="info-btn"
-          title="التعريف الحسابي"
+          title={formulaTitle}
           onClick={(e) => {
             e.stopPropagation();
             setShowFormula((v) => !v);

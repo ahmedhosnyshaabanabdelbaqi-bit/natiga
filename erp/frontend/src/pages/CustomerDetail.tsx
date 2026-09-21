@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { api, toApiError, type ApiError } from '../lib/api';
 import { money, date, moneyPlain } from '../lib/format';
 import { Alert, Badge, ErrorState, LoadingState, StatCard } from '../components/ui';
+import { useI18n } from '../lib/i18n';
 
 interface Credit {
   outstanding_invoices: string;
@@ -25,6 +26,7 @@ interface StatementLine {
 
 export default function CustomerDetail() {
   const { id } = useParams();
+  const { t } = useI18n();
   const [customer, setCustomer] = useState<Record<string, any> | null>(null);
   const [credit, setCredit] = useState<Credit | null>(null);
   const [statement, setStatement] = useState<StatementLine[]>([]);
@@ -56,7 +58,7 @@ export default function CustomerDetail() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  if (loading) return <LoadingState label="جارٍ تحميل بيانات العميل…" />;
+  if (loading) return <LoadingState label={t('customer.loading')} />;
   if (error) return <ErrorState error={error} onRetry={() => void load()} />;
   if (!customer) return null;
 
@@ -69,70 +71,72 @@ export default function CustomerDetail() {
           <h1>{customer.name}</h1>
           <div className="desc">
             <span className="num">{customer.code}</span>
-            {customer.is_blocked && <> · <Badge tone="danger">موقوف: {customer.block_reason}</Badge></>}
+            {customer.is_blocked && <> · <Badge tone="danger">{t('customers.blocked')}: {customer.block_reason}</Badge></>}
           </div>
         </div>
         <div className="actions no-print">
-          <button className="btn" onClick={() => window.print()}>طباعة كشف الحساب</button>
-          <Link className="btn btn-primary" to={`/sales-invoices/new?customer=${customer.id}`}>فاتورة جديدة</Link>
+          <button className="btn" onClick={() => window.print()}>{t('customer.printStatement')}</button>
+          <Link className="btn btn-primary" to={`/sales-invoices/new?customer=${customer.id}`}>{t('customer.newInvoice')}</Link>
         </div>
       </div>
 
       {overLimit && (
         <Alert tone="warn">
-          التعرض الائتماني الحالي ({moneyPlain(credit!.total_exposure)}) يتجاوز الحد المقرر ({moneyPlain(credit!.credit_limit)}).
-          أي بيع آجل جديد سيحتاج موافقة مسجلة.
+          {t('customer.overLimit', {
+            exposure: moneyPlain(credit!.total_exposure),
+            limit: moneyPlain(credit!.credit_limit),
+          })}
         </Alert>
       )}
 
       {credit && (
         <div className="grid auto mb-4">
           <StatCard
-            label="مستحقات مفوترة"
+            label={t('customer.outstanding')}
             value={money(credit.outstanding_invoices)}
-            formula="مجموع (إجمالي الفاتورة − المسدد − المرتجع) للفواتير المرحّلة"
+            formula={t('customer.outstandingFormula')}
           />
           <StatCard
-            label="طلبات معتمدة غير مفوترة"
+            label={t('customer.uninvoicedOrders')}
             value={money(credit.approved_uninvoiced_orders)}
-            formula="الجزء غير المفوتر من أوامر البيع المعتمدة الآجلة"
-            note="لا يُحتسب مرتين مع الفواتير"
+            formula={t('customer.uninvoicedFormula')}
+            note={t('customer.noDoubleCount')}
           />
           <StatCard
-            label="حصص أوفلاين محجوزة"
+            label={t('customer.offlineReserved')}
             value={money(credit.offline_reserved)}
-            formula="المتبقي من حصص الائتمان الممنوحة لأجهزة المناديب"
+            formula={t('customer.offlineFormula')}
           />
           <StatCard
-            label="إجمالي التعرض"
+            label={t('customer.totalExposure')}
             value={money(credit.total_exposure)}
-            formula="المستحقات + الطلبات غير المفوترة + الحصص المحجوزة، دون عدّ مزدوج"
+            formula={t('customer.exposureFormula')}
           />
-          <StatCard label="الحد الائتماني" value={money(credit.credit_limit)} />
-          <StatCard label="المتاح للبيع الآجل" value={money(credit.available_credit)} />
+          <StatCard label={t('customers.creditLimit')} value={money(credit.credit_limit)} />
+          <StatCard label={t('customer.availableCredit')} value={money(credit.available_credit)} />
           <StatCard
-            label="المتأخرات"
+            label={t('customer.overdue')}
             value={money(credit.overdue_amount)}
-            formula="المديونيات التي تجاوز تاريخ استحقاقها اليوم"
+            formula={t('customer.overdueFormula')}
           />
         </div>
       )}
 
       <div className="card">
-        <div className="card-head"><h2>كشف الحساب</h2></div>
+        <div className="card-head"><h2>{t('customer.statement')}</h2></div>
         {statement.length === 0 ? (
-          <div className="state"><div className="title">لا توجد حركات في الفترة</div></div>
+          <div className="state"><div className="title">{t('customer.noMovements')}</div></div>
         ) : (
           <div className="table-wrap">
             <table className="data">
               <thead>
                 <tr>
-                  <th>التاريخ</th>
-                  <th>نوع المستند</th>
-                  <th>الرقم</th>
-                  <th className="n">مدين</th>
-                  <th className="n">دائن</th>
-                  <th className="n">الرصيد</th>
+                  <th>{t('common.date')}</th>
+                  <th>{t('customer.docType')}</th>
+                  <th>{t('customer.docNo')}</th>
+                  <th className="n">{t('customer.debit')}</th>
+                  <th className="n">{t('customer.credit')}</th>
+                  <th className="n">{t('customer.balance')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -149,7 +153,7 @@ export default function CustomerDetail() {
               </tbody>
               <tfoot>
                 <tr>
-                  <td colSpan={5}>رصيد آخر المدة</td>
+                  <td colSpan={5}>{t('customer.closingBalance')}</td>
                   <td className="n num">{money(closing)}</td>
                 </tr>
               </tfoot>

@@ -4,6 +4,7 @@ import { api, toApiError, type ApiError } from '../lib/api';
 import { Alert, Button, Field, useDraft, useUnsavedGuard } from '../components/ui';
 import { money, moneyPlain, today } from '../lib/format';
 import { useAuth } from '../lib/auth';
+import { useI18n } from '../lib/i18n';
 
 interface LineDraft {
   key: string;
@@ -33,6 +34,7 @@ export default function NewInvoice() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const { user, can } = useAuth();
+  const { t } = useI18n();
 
   const [draft, setDraft, clearDraft] = useDraft('new-invoice', {
     customer_id: params.get('customer') ?? '',
@@ -130,9 +132,9 @@ export default function NewInvoice() {
   const validLines = draft.lines.filter((l) => l.item_id !== '' && Number(l.qty_uom) > 0);
 
   const problems: string[] = [];
-  if (!draft.customer_id) problems.push('اختر العميل.');
-  if (!draft.warehouse_id) problems.push('اختر المخزن أو سيارة المندوب.');
-  if (validLines.length === 0) problems.push('أضف صنفًا واحدًا على الأقل بكمية موجبة.');
+  if (!draft.customer_id) problems.push(t('newInvoice.selectCustomer'));
+  if (!draft.warehouse_id) problems.push(t('newInvoice.selectWarehouse'));
+  if (validLines.length === 0) problems.push(t('newInvoice.needLine'));
 
   const selectItem = async (lineKey: string, item: Record<string, any>) => {
     const { data } = await api.get(`/items/${item.id}`);
@@ -208,26 +210,24 @@ export default function NewInvoice() {
     <div>
       <div className="page-head">
         <div>
-          <h1>فاتورة بيع جديدة</h1>
-          <div className="desc">
-            المسودة تُحفظ تلقائيًا في هذا المتصفح. الفاتورة لا تخصم المخزون إلا عند الاعتماد.
-          </div>
+          <h1>{t('newInvoice.title')}</h1>
+          <div className="desc">{t('newInvoice.desc')}</div>
         </div>
         <div className="actions">
           <Button onClick={() => { clearDraft(); setDraft({ customer_id: '', warehouse_id: '', invoice_date: today(), payment_type: 'credit', notes: '', lines: [emptyLine()] }); }}>
-            مسح المسودة
+            {t('newInvoice.clearDraft')}
           </Button>
           <Button
             variant="primary"
             loading={submitting}
             disabledReason={
-              !can('sales_invoice.create') ? 'لا تملك صلاحية إنشاء فاتورة.'
+              !can('sales_invoice.create') ? t('invoices.noPermissionCreate')
                 : problems.length > 0 && touched ? problems[0]
                   : null
             }
             onClick={() => void submit()}
           >
-            حفظ واعتماد
+            {t('newInvoice.savePost')}
           </Button>
         </div>
       </div>
@@ -247,7 +247,7 @@ export default function NewInvoice() {
 
       {touched && problems.length > 0 && (
         <Alert tone="warn">
-          <div className="bold mb-2">أكمل البيانات التالية:</div>
+          <div className="bold mb-2">{t('newInvoice.completeFields')}</div>
           <ul style={{ paddingInlineStart: 18 }}>
             {problems.map((p) => <li key={p}>{p}</li>)}
           </ul>
@@ -256,50 +256,52 @@ export default function NewInvoice() {
 
       {overLimit && (
         <Alert tone="warn">
-          هذه الفاتورة ستتجاوز الحد الائتماني للعميل. المتاح الآن {moneyPlain(credit!.available_credit)} والمطلوب {moneyPlain(totals.total)}.
-          الاعتماد سيُرفض ما لم تُسجَّل موافقة مخوّل.
+          {t('newInvoice.overLimitWarning', {
+            available: moneyPlain(credit!.available_credit),
+            required: moneyPlain(totals.total),
+          })}
         </Alert>
       )}
 
       <div className="card mb-4">
-        <div className="card-head"><h2>بيانات الفاتورة</h2></div>
+        <div className="card-head"><h2>{t('newInvoice.invoiceData')}</h2></div>
         <div className="card-body">
           <div className="form-row">
-            <Field label="العميل" required error={touched && !draft.customer_id ? 'مطلوب' : undefined}>
+            <Field label={t('common.customer')} required error={touched && !draft.customer_id ? t('common.required') : undefined}>
               <select value={draft.customer_id} onChange={(e) => setDraft((d) => ({ ...d, customer_id: e.target.value }))}>
-                <option value="">— اختر —</option>
+                <option value="">{t('newInvoice.choose')}</option>
                 {customers.map((c) => <option key={c.id} value={c.id}>{c.code} — {c.name}</option>)}
               </select>
             </Field>
 
-            <Field label="المخزن / السيارة" required error={touched && !draft.warehouse_id ? 'مطلوب' : undefined}>
+            <Field label={t('newInvoice.warehouseLabel')} required error={touched && !draft.warehouse_id ? t('common.required') : undefined}>
               <select value={draft.warehouse_id} onChange={(e) => setDraft((d) => ({ ...d, warehouse_id: e.target.value }))}>
-                <option value="">— اختر —</option>
+                <option value="">{t('newInvoice.choose')}</option>
                 {warehouses.map((w) => (
-                  <option key={w.id} value={w.id}>{w.name}{w.type === 'van' ? ' (سيارة)' : ''}</option>
+                  <option key={w.id} value={w.id}>{w.name}{w.type === 'van' ? ` (${t('stock.van')})` : ''}</option>
                 ))}
               </select>
             </Field>
 
-            <Field label="التاريخ" required>
+            <Field label={t('common.date')} required>
               <input type="date" value={draft.invoice_date} onChange={(e) => setDraft((d) => ({ ...d, invoice_date: e.target.value }))} />
             </Field>
 
-            <Field label="نوع السداد" required help={draft.payment_type === 'credit' ? 'يخضع لمراقبة الحد الائتماني' : 'لا يخضع للحد الائتماني'}>
+            <Field label={t('invoice.paymentType')} required help={draft.payment_type === 'credit' ? t('newInvoice.creditHint') : t('newInvoice.cashHint')}>
               <select value={draft.payment_type} onChange={(e) => setDraft((d) => ({ ...d, payment_type: e.target.value as 'credit' | 'cash' }))}>
-                <option value="credit">آجل</option>
-                <option value="cash">نقدي</option>
+                <option value="credit">{t('invoices.credit')}</option>
+                <option value="cash">{t('invoices.cash')}</option>
               </select>
             </Field>
           </div>
 
           {credit && (
             <div className="row small muted mt-2">
-              <span>الحد الائتماني: <span className="num">{moneyPlain(credit.credit_limit)}</span></span>
+              <span>{t('customers.creditLimit')}: <span className="num">{moneyPlain(credit.credit_limit)}</span></span>
               <span>·</span>
-              <span>التعرض الحالي: <span className="num">{moneyPlain(credit.total_exposure)}</span></span>
+              <span>{t('newInvoice.currentExposure')}: <span className="num">{moneyPlain(credit.total_exposure)}</span></span>
               <span>·</span>
-              <span>المتاح: <span className="num bold">{moneyPlain(credit.available_credit)}</span></span>
+              <span>{t('newInvoice.available')}: <span className="num bold">{moneyPlain(credit.available_credit)}</span></span>
             </div>
           )}
         </div>
@@ -307,22 +309,22 @@ export default function NewInvoice() {
 
       <div className="card mb-4">
         <div className="card-head">
-          <h2>الأصناف</h2>
+          <h2>{t('invoice.lines')}</h2>
           <div className="spacer" />
-          <Button size="sm" onClick={() => setDraft((d) => ({ ...d, lines: [...d.lines, emptyLine()] }))}>+ سطر</Button>
+          <Button size="sm" onClick={() => setDraft((d) => ({ ...d, lines: [...d.lines, emptyLine()] }))}>{t('newInvoice.addLine')}</Button>
         </div>
 
         <div className="table-wrap">
           <table className="data">
             <thead>
               <tr>
-                <th style={{ minWidth: 240 }}>الصنف</th>
-                <th style={{ width: 130 }}>الوحدة</th>
-                <th className="n" style={{ width: 100 }}>الكمية</th>
-                <th className="n" style={{ width: 120 }}>السعر</th>
-                <th className="n" style={{ width: 90 }}>خصم %</th>
-                <th style={{ width: 70 }}>هدية</th>
-                <th className="n" style={{ width: 120 }}>الإجمالي</th>
+                <th style={{ minWidth: 240 }}>{t('common.item')}</th>
+                <th style={{ width: 130 }}>{t('common.unit')}</th>
+                <th className="n" style={{ width: 100 }}>{t('common.qty')}</th>
+                <th className="n" style={{ width: 120 }}>{t('common.price')}</th>
+                <th className="n" style={{ width: 90 }}>{t('newInvoice.discountPct')}</th>
+                <th style={{ width: 70 }}>{t('newInvoice.free')}</th>
+                <th className="n" style={{ width: 120 }}>{t('common.total')}</th>
                 <th style={{ width: 50 }}></th>
               </tr>
             </thead>
@@ -343,12 +345,12 @@ export default function NewInvoice() {
                               ...d,
                               lines: d.lines.map((l) => (l.key === line.key ? { ...emptyLine(), key: l.key } : l)),
                             }))}
-                          >تغيير</button>
+                          >{t('newInvoice.changeItem')}</button>
                         </div>
                       ) : (
                         <>
                           <input
-                            placeholder="ابحث بالاسم أو الكود…"
+                            placeholder={t('newInvoice.searchItem')}
                             value={activeLine === line.key ? itemQuery : ''}
                             onFocus={() => setActiveLine(line.key)}
                             onChange={(e) => setItemQuery(e.target.value)}
@@ -359,7 +361,7 @@ export default function NewInvoice() {
                               {itemResults.map((item) => (
                                 <div key={item.id} className="row" onMouseDown={() => void selectItem(line.key, item)}>
                                   <div>{item.name_ar}</div>
-                                  <div className="meta">{item.code} · متاح: {item.available}</div>
+                                  <div className="meta">{item.code} · {t('newInvoice.availableQty')}: {item.available}</div>
                                 </div>
                               ))}
                             </div>
@@ -416,7 +418,7 @@ export default function NewInvoice() {
                     <td className="center">
                       <input
                         type="checkbox" checked={line.is_free}
-                        title="الكمية المجانية تُخصم فعليًا من المخزون وتُثبت تكلفتها"
+                        title={t('newInvoice.freeHint')}
                         onChange={(e) => setDraft((d) => ({
                           ...d, lines: d.lines.map((l) => (l.key === line.key ? { ...l, is_free: e.target.checked } : l)),
                         }))}
@@ -443,13 +445,11 @@ export default function NewInvoice() {
       <div className="card">
         <div className="card-body">
           <div className="row" style={{ justifyContent: 'flex-start', gap: 32 }}>
-            <div><div className="small muted">الإجمالي قبل الخصم</div><div className="num bold">{money(totals.subtotal)}</div></div>
-            <div><div className="small muted">الخصم</div><div className="num bold">{money(totals.discount)}</div></div>
-            <div><div className="small muted">الصافي</div><div className="num bold" style={{ fontSize: 20 }}>{money(totals.total)}</div></div>
+            <div><div className="small muted">{t('newInvoice.beforeDiscount')}</div><div className="num bold">{money(totals.subtotal)}</div></div>
+            <div><div className="small muted">{t('common.discount')}</div><div className="num bold">{money(totals.discount)}</div></div>
+            <div><div className="small muted">{t('newInvoice.net')}</div><div className="num bold" style={{ fontSize: 20 }}>{money(totals.total)}</div></div>
           </div>
-          <div className="tiny faint mt-3">
-            القيم المعروضة هنا تقديرية للعرض؛ القيم المعتمدة هي ما يحسبه الخادم ويُحفظ في الفاتورة عند الاعتماد.
-          </div>
+          <div className="tiny faint mt-3">{t('newInvoice.estimateNote')}</div>
         </div>
       </div>
     </div>

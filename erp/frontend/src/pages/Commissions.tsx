@@ -2,8 +2,16 @@ import { useEffect, useState } from 'react';
 import { api, toApiError, type ApiError } from '../lib/api';
 import { money, moneyPlain, pct, date, statusOf, startOfMonth, today } from '../lib/format';
 import { Alert, Badge, ErrorState, LoadingState, StatCard } from '../components/ui';
+import { useI18n, type MessageKey } from '../lib/i18n';
+
+const BASE_KEYS: Record<string, MessageKey> = {
+  net_sales: 'commissions.base.net_sales',
+  collections: 'commissions.base.collections',
+  realized_profit: 'commissions.base.realized_profit',
+};
 
 export default function Commissions() {
+  const { t } = useI18n();
   const [from, setFrom] = useState(startOfMonth());
   const [to, setTo] = useState(today());
   const [data, setData] = useState<any>(null);
@@ -32,40 +40,39 @@ export default function Commissions() {
     <div>
       <div className="page-head">
         <div>
-          <h1>كشف العمولات</h1>
-          <div className="desc">كل مبلغ يمكن تتبعه إلى الفاتورة أو المرتجع والقاعدة وإصدارها.</div>
+          <h1>{t('commissions.title')}</h1>
+          <div className="desc">{t('commissions.desc')}</div>
         </div>
         <div className="actions">
           <input type="date" className="btn" value={from} onChange={(e) => setFrom(e.target.value)} />
           <input type="date" className="btn" value={to} onChange={(e) => setTo(e.target.value)} />
-          <button className="btn" onClick={() => window.print()}>طباعة</button>
+          <button className="btn" onClick={() => window.print()}>{t('common.print')}</button>
         </div>
       </div>
 
-      <Alert tone="info">
-        العمولة <strong>المقدّرة</strong> لم تُستحق بعد (تنتظر التحصيل حسب القاعدة)، و<strong>المستحقة</strong> قابلة للصرف.
-        المرتجعات تُعالج بحركة تسوية عكسية موثقة، لا بإعادة حساب صامت.
-      </Alert>
+      <Alert tone="info">{t('commissions.hint')}</Alert>
 
       {error ? <ErrorState error={error} onRetry={() => void load()} />
         : loading ? <LoadingState />
           : data && (
             <>
               <div className="grid cols-4 mb-4">
-                <StatCard label="مقدّرة" value={money(data.totals.estimated)} formula="عمولات لم تُستحق بعد لعدم اكتمال التحصيل" />
-                <StatCard label="مستحقة" value={money(data.totals.earned)} formula="عمولات استوفت شروط الاستحقاق" />
-                <StatCard label="مُسوّاة" value={money(data.totals.settled)} formula="عمولات صُرفت ضمن تسوية معتمدة" />
-                <StatCard label="القابل للصرف الآن" value={money(data.totals.payable_now)} />
+                <StatCard label={t('commissions.estimated')} value={money(data.totals.estimated)} formula={t('commissions.estimatedFormula')} />
+                <StatCard label={t('commissions.earned')} value={money(data.totals.earned)} formula={t('commissions.earnedFormula')} />
+                <StatCard label={t('commissions.settled')} value={money(data.totals.settled)} formula={t('commissions.settledFormula')} />
+                <StatCard label={t('commissions.payableNow')} value={money(data.totals.payable_now)} />
               </div>
 
               <div className="card">
-                <div className="card-head"><h2>التفاصيل</h2></div>
+                <div className="card-head"><h2>{t('commissions.details')}</h2></div>
                 <div className="table-wrap">
                   <table className="data">
                     <thead>
                       <tr>
-                        <th>التاريخ</th><th>المستند</th><th>القاعدة</th><th>الإصدار</th><th>الأساس</th>
-                        <th className="n">مبلغ الأساس</th><th className="n">النسبة</th><th className="n">العمولة</th><th>الحالة</th>
+                        <th>{t('common.date')}</th><th>{t('commissions.doc')}</th><th>{t('commissions.rule')}</th>
+                        <th>{t('commissions.version')}</th><th>{t('commissions.base')}</th>
+                        <th className="n">{t('commissions.baseAmount')}</th><th className="n">{t('commissions.rate')}</th>
+                        <th className="n">{t('commissions.amount')}</th><th>{t('common.status')}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -77,7 +84,7 @@ export default function Commissions() {
                             <td className="num">{l.source_no}</td>
                             <td>{l.rule ?? '—'}</td>
                             <td className="num">{l.rule_version}</td>
-                            <td className="small">{l.rule_base === 'net_sales' ? 'صافي المبيعات' : l.rule_base === 'collections' ? 'التحصيلات' : 'الربح المحقق'}</td>
+                            <td className="small">{BASE_KEYS[l.rule_base] ? t(BASE_KEYS[l.rule_base]) : l.rule_base}</td>
                             <td className="n num">{moneyPlain(l.base_amount)}</td>
                             <td className="n num">{pct(l.rate_pct)}</td>
                             <td className={`n num bold ${Number(l.amount) < 0 ? 'neg' : ''}`}>{moneyPlain(l.amount)}</td>
@@ -88,7 +95,7 @@ export default function Commissions() {
                     </tbody>
                   </table>
                 </div>
-                {data.lines.length === 0 && <div className="state"><div className="title">لا توجد عمولات في هذه الفترة</div></div>}
+                {data.lines.length === 0 && <div className="state"><div className="title">{t('commissions.empty')}</div></div>}
               </div>
             </>
           )}

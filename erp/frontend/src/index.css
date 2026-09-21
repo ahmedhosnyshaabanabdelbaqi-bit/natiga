@@ -114,12 +114,14 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; }
   width: var(--sidebar-w);
   flex-shrink: 0;
   background: var(--surface);
-  border-inline-start: 1px solid var(--border);
+  /* الحد على الجهة المواجهة للمحتوى */
+  border-inline-end: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   position: fixed;
   inset-block: 0;
-  inset-inline-end: 0;
+  /* inline-start = يمين في العربية، شمال في الإنجليزية */
+  inset-inline-start: 0;
   z-index: 40;
   overflow-y: auto;
 }
@@ -168,7 +170,7 @@ button, input, select, textarea { font-family: inherit; font-size: inherit; }
 .nav-item .star { margin-inline-start: auto; opacity: .35; font-size: 12px; }
 .nav-item .star.on { opacity: 1; color: var(--warn); }
 
-.main { flex: 1; margin-inline-end: var(--sidebar-w); min-width: 0; display: flex; flex-direction: column; }
+.main { flex: 1; margin-inline-start: var(--sidebar-w); min-width: 0; display: flex; flex-direction: column; }
 
 .topbar {
   height: var(--header-h);
@@ -469,13 +471,29 @@ table.data .row-link { cursor: pointer; }
   /* القائمة المغلقة تخرج خارج الشاشة — نمنع التمرير الأفقي الناتج عنها */
   html, body { overflow-x: hidden; max-width: 100%; }
   .app { overflow-x: clip; }
-  .sidebar { transform: translateX(100%); transition: transform .2s; box-shadow: var(--shadow-lg); }
-  .sidebar.open { transform: translateX(0); }
-  .main { margin-inline-end: 0; }
+  .sidebar { transition: transform .2s; box-shadow: var(--shadow-lg); }
+  /* لا يوجد transform منطقي في CSS، فنحدد الجهة صراحةً حسب اتجاه الصفحة */
+  html[dir="rtl"] .sidebar { transform: translateX(100%); }
+  html[dir="ltr"] .sidebar { transform: translateX(-100%); }
+  html[dir="rtl"] .sidebar.open,
+  html[dir="ltr"] .sidebar.open { transform: translateX(0); }
+  /* القائمة خارج الشاشة على الموبايل، فلا هامش محجوز لها */
+  .main { margin-inline-start: 0; }
   .content { padding: 14px; }
   .grid.cols-2, .grid.cols-3, .grid.cols-4 { grid-template-columns: 1fr; }
-  .global-search input { width: 150px; }
   .page-head h1 { font-size: 17px; }
+
+  /* الشريط العلوي على الموبايل: مساحة ضيقة، فنُبقي الأساسي فقط */
+  .topbar { padding: 0 10px; gap: 8px; }
+  /* مسار التنقل يتكرر مع عنوان الصفحة — يُخفى على الشاشات الضيقة */
+  .crumbs { display: none; }
+  .global-search { flex: 1; min-width: 0; margin-inline-start: 0; }
+  .global-search input { width: 100%; min-width: 0; }
+  .search-results { width: min(320px, calc(100vw - 20px)); }
+  /* تبقى الصورة الرمزية وزر الخروج، ويُخفى الاسم والدور */
+  .user-chip .tiny { display: none; }
+  .user-chip { gap: 4px; flex-shrink: 0; }
+  .lang-toggle { flex-shrink: 0; }
 }
 
 .menu-toggle { display: none; border: none; background: none; font-size: 20px; cursor: pointer; padding: 4px; }
@@ -491,4 +509,17 @@ table.data .row-link { cursor: pointer; }
   body { background: #fff; font-size: 12px; }
   table.data th { background: #f2f2f2 !important; -webkit-print-color-adjust: exact; }
   @page { size: A4; margin: 14mm; }
+}
+
+/* ---------- تبديل اللغة ---------- */
+
+.lang-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  white-space: nowrap; font-weight: 600;
+}
+.lang-toggle .globe { opacity: .6; font-size: 12px; }
+
+@media (max-width: 860px) {
+  .lang-toggle { padding: 4px 8px; font-size: 12px; }
+  .lang-toggle .globe { display: none; }
 }

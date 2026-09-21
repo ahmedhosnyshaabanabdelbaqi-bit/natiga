@@ -1,5 +1,6 @@
 import { type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { EmptyState, ErrorState, TableSkeleton } from './ui';
+import { useI18n } from '../lib/i18n';
 
 export interface Column<T> {
   key: string;
@@ -52,6 +53,7 @@ export function DataTable<T>({
   onPage, onSort, sort, onRowClick, rowKey,
   emptyTitle, emptyDescription, emptyAction, pageTotals, toolbar,
 }: Props<T>) {
+  const { t } = useI18n();
   const settingsKey = `erp.table.${storageKey}`;
 
   const [hidden, setHidden] = useState<string[]>(() => {
@@ -97,7 +99,7 @@ export function DataTable<T>({
           <div className="spacer" />
           <div style={{ position: 'relative' }} ref={menuRef}>
             <button className="btn btn-sm btn-ghost" onClick={() => setShowColumnMenu((v) => !v)}>
-              الأعمدة ▾
+              {t('common.columns')} ▾
             </button>
             {showColumnMenu && (
               <div className="col-toggle">
@@ -115,7 +117,7 @@ export function DataTable<T>({
                 ))}
                 <div className="divider" style={{ margin: '6px 0' }} />
                 <button className="btn btn-sm btn-ghost" style={{ width: '100%' }} onClick={() => setHidden([])}>
-                  إظهار الكل
+                  {t('common.showAll')}
                 </button>
               </div>
             )}
@@ -169,7 +171,7 @@ export function DataTable<T>({
                   <tr>
                     {visible.map((c, i) => (
                       <td key={c.key} className={c.numeric ? 'n' : ''}>
-                        {i === 0 ? 'مجموع الصفحة المعروضة' : (pageTotals[c.key] ?? '')}
+                        {i === 0 ? t('common.pageTotals') : (pageTotals[c.key] ?? '')}
                       </td>
                     ))}
                   </tr>
@@ -178,7 +180,7 @@ export function DataTable<T>({
                   <tr>
                     {visible.map((c, i) => (
                       <td key={c.key} className={c.numeric ? 'n' : ''}>
-                        {i === 0 ? `مجموع كل النتائج (${meta.total})` : (meta.totals_all_results?.[c.key] ?? '')}
+                        {i === 0 ? `${t('common.allResultsTotals')} (${meta.total})` : (meta.totals_all_results?.[c.key] ?? '')}
                       </td>
                     ))}
                   </tr>
@@ -192,21 +194,21 @@ export function DataTable<T>({
       {meta && meta.last_page > 1 && (
         <div className="pagination no-print">
           <button className="btn btn-sm" disabled={meta.current_page <= 1} onClick={() => onPage?.(meta.current_page - 1)}>
-            السابق
+            {t('common.previous')}
           </button>
           <span className="small muted">
-            صفحة <span className="num">{meta.current_page}</span> من <span className="num">{meta.last_page}</span>
+            {t('common.page')} <span className="num">{meta.current_page}</span> {t('common.of')} <span className="num">{meta.last_page}</span>
           </span>
           <button
             className="btn btn-sm"
             disabled={meta.current_page >= meta.last_page}
             onClick={() => onPage?.(meta.current_page + 1)}
           >
-            التالي
+            {t('common.next')}
           </button>
           <div className="spacer" />
           <span className="small muted">
-            الإجمالي: <span className="num">{meta.total}</span> سجل
+            {t('common.totalRecords')}: <span className="num">{meta.total}</span> {t('common.record')}
           </span>
         </div>
       )}

@@ -2,81 +2,83 @@ import { type ReactNode, useEffect, useMemo, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../lib/auth';
 import { api } from '../lib/api';
+import { useI18n, type MessageKey } from '../lib/i18n';
 
 interface NavEntry {
   path: string;
-  label: string;
+  labelKey: MessageKey;
   icon: string;
   /** يظهر فقط إذا ملك المستخدم إحدى هذه الصلاحيات */
   permissions?: string[];
 }
 
 interface NavGroup {
-  title: string;
+  titleKey: MessageKey;
   items: NavEntry[];
 }
 
 const NAV: NavGroup[] = [
   {
-    title: 'الرئيسية',
-    items: [{ path: '/', label: 'لوحة التحكم', icon: '▦' }],
+    titleKey: 'nav.group.main',
+    items: [{ path: '/', labelKey: 'nav.dashboard', icon: '▦' }],
   },
   {
-    title: 'المبيعات',
+    titleKey: 'nav.group.sales',
     items: [
-      { path: '/customers', label: 'العملاء', icon: '◉', permissions: ['customer.view'] },
-      { path: '/sales-invoices', label: 'فواتير البيع', icon: '▤', permissions: ['sales_invoice.view'] },
-      { path: '/sales-invoices/new', label: 'فاتورة جديدة', icon: '＋', permissions: ['sales_invoice.create'] },
-      { path: '/receipts', label: 'سندات القبض', icon: '⛁', permissions: ['customer_receipt.view'] },
+      { path: '/customers', labelKey: 'nav.customers', icon: '◉', permissions: ['customer.view'] },
+      { path: '/sales-invoices', labelKey: 'nav.invoices', icon: '▤', permissions: ['sales_invoice.view'] },
+      { path: '/sales-invoices/new', labelKey: 'nav.newInvoice', icon: '＋', permissions: ['sales_invoice.create'] },
+      { path: '/receipts', labelKey: 'nav.receipts', icon: '⛁', permissions: ['customer_receipt.view'] },
     ],
   },
   {
-    title: 'المخازن',
+    titleKey: 'nav.group.inventory',
     items: [
-      { path: '/items', label: 'الأصناف', icon: '◈', permissions: ['item.view'] },
-      { path: '/stock', label: 'الأرصدة', icon: '▥', permissions: ['stock.view'] },
-      { path: '/transfers', label: 'التحويلات', icon: '⇄', permissions: ['stock.view'] },
+      { path: '/items', labelKey: 'nav.items', icon: '◈', permissions: ['item.view'] },
+      { path: '/stock', labelKey: 'nav.stock', icon: '▥', permissions: ['stock.view'] },
+      { path: '/transfers', labelKey: 'nav.transfers', icon: '⇄', permissions: ['stock.view'] },
     ],
   },
   {
-    title: 'المشتريات',
+    titleKey: 'nav.group.purchasing',
     items: [
-      { path: '/suppliers', label: 'الموردون', icon: '◐', permissions: ['supplier.view'] },
-      { path: '/goods-receipts', label: 'الاستلام', icon: '⊞', permissions: ['goods_receipt.view'] },
-      { path: '/supplier-invoices', label: 'فواتير الموردين', icon: '▣', permissions: ['supplier_invoice.view'] },
+      { path: '/suppliers', labelKey: 'nav.suppliers', icon: '◐', permissions: ['supplier.view'] },
+      { path: '/goods-receipts', labelKey: 'nav.goodsReceipts', icon: '⊞', permissions: ['goods_receipt.view'] },
+      { path: '/supplier-invoices', labelKey: 'nav.supplierInvoices', icon: '▣', permissions: ['supplier_invoice.view'] },
     ],
   },
   {
-    title: 'الميدان',
+    titleKey: 'nav.group.field',
     items: [
-      { path: '/day-closure', label: 'إقفال اليوم', icon: '◷', permissions: ['day_closure.view'] },
-      { path: '/commissions', label: 'العمولات', icon: '％', permissions: ['commission.view'] },
-      { path: '/sync', label: 'حالة المزامنة', icon: '⟳', permissions: ['sync.view', 'device.view'] },
+      { path: '/day-closure', labelKey: 'nav.dayClosure', icon: '◷', permissions: ['day_closure.view'] },
+      { path: '/commissions', labelKey: 'nav.commissions', icon: '％', permissions: ['commission.view'] },
+      { path: '/sync', labelKey: 'nav.sync', icon: '⟳', permissions: ['sync.view', 'device.view'] },
     ],
   },
   {
-    title: 'التقارير',
+    titleKey: 'nav.group.reports',
     items: [
-      { path: '/reports/sales', label: 'المبيعات', icon: '◫', permissions: ['reports.sales'] },
-      { path: '/reports/inventory', label: 'تقييم المخزون', icon: '◪', permissions: ['reports.inventory'] },
-      { path: '/reports/aging', label: 'أعمار الديون', icon: '◨', permissions: ['reports.accounting'] },
-      { path: '/reports/trial-balance', label: 'ميزان المراجعة', icon: '◧', permissions: ['reports.accounting'] },
-      { path: '/reports/income-statement', label: 'قائمة الدخل', icon: '◩', permissions: ['reports.accounting'] },
-      { path: '/reports/salesmen', label: 'أداء المناديب', icon: '◎', permissions: ['reports.salesmen'] },
+      { path: '/reports/sales', labelKey: 'nav.reportSales', icon: '◫', permissions: ['reports.sales'] },
+      { path: '/reports/inventory', labelKey: 'nav.reportInventory', icon: '◪', permissions: ['reports.inventory'] },
+      { path: '/reports/aging', labelKey: 'nav.reportAging', icon: '◨', permissions: ['reports.accounting'] },
+      { path: '/reports/trial-balance', labelKey: 'nav.reportTrialBalance', icon: '◧', permissions: ['reports.accounting'] },
+      { path: '/reports/income-statement', labelKey: 'nav.reportIncome', icon: '◩', permissions: ['reports.accounting'] },
+      { path: '/reports/salesmen', labelKey: 'nav.reportSalesmen', icon: '◎', permissions: ['reports.salesmen'] },
     ],
   },
   {
-    title: 'النظام',
-    items: [{ path: '/settings', label: 'الإعدادات', icon: '⚙', permissions: ['settings.view'] }],
+    titleKey: 'nav.group.system',
+    items: [{ path: '/settings', labelKey: 'nav.settings', icon: '⚙', permissions: ['settings.view'] }],
   },
 ];
 
-const CRUMB_LABELS: Record<string, string> = Object.fromEntries(
-  NAV.flatMap((g) => g.items.map((i) => [i.path, i.label])),
+const CRUMB_KEYS: Record<string, MessageKey> = Object.fromEntries(
+  NAV.flatMap((g) => g.items.map((i) => [i.path, i.labelKey])),
 );
 
 export function Layout({ children }: { children: ReactNode }) {
   const { user, logout, canAny } = useAuth();
+  const { t, lang, toggle } = useI18n();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -122,7 +124,8 @@ export function Layout({ children }: { children: ReactNode }) {
   useEffect(() => {
     const term = query.trim();
     if (term.length < 2) {
-      setResults([]);
+      // تعيين مصفوفة جديدة عند كل رسم يُسبب حلقة تحديث — نُبقي المرجع كما هو
+      setResults((prev) => (prev.length === 0 ? prev : []));
       return;
     }
 
@@ -137,7 +140,7 @@ export function Layout({ children }: { children: ReactNode }) {
             api.get('/customers', { params: { search: term, per_page: 5 }, signal: controller.signal })
               .then(({ data }) => {
                 for (const c of data.data) {
-                  found.push({ type: 'عميل', label: c.name, meta: c.code, path: `/customers/${c.id}` });
+                  found.push({ type: t('nav.resultCustomer'), label: c.name, meta: c.code, path: `/customers/${c.id}` });
                 }
               }).catch(() => undefined),
           );
@@ -147,7 +150,7 @@ export function Layout({ children }: { children: ReactNode }) {
             api.get('/items', { params: { search: term, per_page: 5 }, signal: controller.signal })
               .then(({ data }) => {
                 for (const i of data.data) {
-                  found.push({ type: 'صنف', label: i.name_ar, meta: i.code, path: `/items?search=${encodeURIComponent(i.code)}` });
+                  found.push({ type: t('nav.resultItem'), label: i.name_ar, meta: i.code, path: `/items?search=${encodeURIComponent(i.code)}` });
                 }
               }).catch(() => undefined),
           );
@@ -157,7 +160,7 @@ export function Layout({ children }: { children: ReactNode }) {
             api.get('/sales-invoices', { params: { search: term, per_page: 5 }, signal: controller.signal })
               .then(({ data }) => {
                 for (const inv of data.data) {
-                  found.push({ type: 'فاتورة', label: inv.invoice_no, meta: inv.customer?.name ?? '', path: `/sales-invoices/${inv.id}` });
+                  found.push({ type: t('nav.resultInvoice'), label: inv.invoice_no, meta: inv.customer?.name ?? '', path: `/sales-invoices/${inv.id}` });
                 }
               }).catch(() => undefined),
           );
@@ -172,7 +175,7 @@ export function Layout({ children }: { children: ReactNode }) {
       controller.abort();
       window.clearTimeout(timer);
     };
-  }, [query, canAny]);
+  }, [query, canAny, t]);
 
   const groups = useMemo(
     () =>
@@ -188,29 +191,33 @@ export function Layout({ children }: { children: ReactNode }) {
     [groups, favorites],
   );
 
-  const crumb = CRUMB_LABELS[location.pathname] ?? '';
+  const crumbKey = CRUMB_KEYS[location.pathname];
+  const crumb = crumbKey ? t(crumbKey) : '';
 
   return (
     <div className="app">
       <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-brand">
-          <div className="mark">م ف</div>
+          <div className="mark">{t('app.mark')}</div>
           <div>
-            <div className="name">{user?.company_name ?? 'محمد فياض'}</div>
-            <div className="sub">نظام إدارة التوزيع</div>
+            <div className="name">{user?.company_name ?? t('app.company')}</div>
+            <div className="sub">{t('app.tagline')}</div>
           </div>
         </div>
 
         <nav className="nav">
           {favoriteItems.length > 0 && (
             <>
-              <div className="nav-group-title">المفضلة</div>
+              <div className="nav-group-title">{t('nav.favorites')}</div>
               {favoriteItems.map((item) => (
                 <NavLinkRow
                   key={`fav-${item.path}`}
-                  item={item}
+                  label={t(item.labelKey)}
+                  icon={item.icon}
+                  path={item.path}
                   active={location.pathname === item.path}
                   favorite
+                  favoriteTitle={t('nav.removeFavorite')}
                   onToggleFavorite={() => setFavorites((f) => f.filter((p) => p !== item.path))}
                   onNavigate={() => setSidebarOpen(false)}
                 />
@@ -219,20 +226,26 @@ export function Layout({ children }: { children: ReactNode }) {
           )}
 
           {groups.map((group) => (
-            <div key={group.title}>
-              <div className="nav-group-title">{group.title}</div>
-              {group.items.map((item) => (
-                <NavLinkRow
-                  key={item.path}
-                  item={item}
-                  active={location.pathname === item.path}
-                  favorite={favorites.includes(item.path)}
-                  onToggleFavorite={() =>
-                    setFavorites((f) => (f.includes(item.path) ? f.filter((p) => p !== item.path) : [...f, item.path]))
-                  }
-                  onNavigate={() => setSidebarOpen(false)}
-                />
-              ))}
+            <div key={group.titleKey}>
+              <div className="nav-group-title">{t(group.titleKey)}</div>
+              {group.items.map((item) => {
+                const isFavorite = favorites.includes(item.path);
+                return (
+                  <NavLinkRow
+                    key={item.path}
+                    label={t(item.labelKey)}
+                    icon={item.icon}
+                    path={item.path}
+                    active={location.pathname === item.path}
+                    favorite={isFavorite}
+                    favoriteTitle={isFavorite ? t('nav.removeFavorite') : t('nav.addFavorite')}
+                    onToggleFavorite={() =>
+                      setFavorites((f) => (f.includes(item.path) ? f.filter((p) => p !== item.path) : [...f, item.path]))
+                    }
+                    onNavigate={() => setSidebarOpen(false)}
+                  />
+                );
+              })}
             </div>
           ))}
         </nav>
@@ -240,11 +253,11 @@ export function Layout({ children }: { children: ReactNode }) {
 
       <div className="main">
         <header className="topbar">
-          <button className="menu-toggle" onClick={() => setSidebarOpen((v) => !v)} aria-label="القائمة">☰</button>
+          <button className="menu-toggle" onClick={() => setSidebarOpen((v) => !v)} aria-label={t('nav.menu')}>☰</button>
 
           <div className="crumbs">
-            <Link to="/">الرئيسية</Link>
-            {crumb && crumb !== 'لوحة التحكم' && (
+            <Link to="/">{t('nav.home')}</Link>
+            {crumb && crumbKey !== 'nav.dashboard' && (
               <>
                 <span className="sep">/</span>
                 <span className="current">{crumb}</span>
@@ -255,7 +268,7 @@ export function Layout({ children }: { children: ReactNode }) {
           <div className="global-search">
             <input
               id="global-search"
-              placeholder="بحث عن عميل أو صنف أو فاتورة…"
+              placeholder={t('nav.globalSearch')}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onBlur={() => window.setTimeout(() => setResults([]), 180)}
@@ -281,13 +294,26 @@ export function Layout({ children }: { children: ReactNode }) {
             )}
           </div>
 
+          {/* تبديل اللغة — يقلب اتجاه الواجهة وموضع القائمة الجانبية */}
+          <button
+            className="btn btn-sm lang-toggle"
+            onClick={toggle}
+            title={t('settings.languageDesc')}
+            aria-label={t('common.language')}
+          >
+            <span className="globe">⇄</span>
+            {lang === 'ar' ? 'English' : 'العربية'}
+          </button>
+
           <div className="user-chip">
-            <div className="avatar">{user?.name?.slice(0, 1) ?? '؟'}</div>
+            <div className="avatar">{user?.name?.slice(0, 1) ?? '?'}</div>
             <div className="tiny" style={{ lineHeight: 1.3 }}>
               <div className="bold">{user?.name}</div>
-              <div className="faint">{user?.roles?.[0]?.name_ar ?? 'مستخدم'}</div>
+              <div className="faint">{user?.roles?.[0]?.name_ar ?? t('common.user')}</div>
             </div>
-            <button className="btn btn-sm btn-ghost" onClick={() => logout()} title="تسجيل الخروج">خروج</button>
+            <button className="btn btn-sm btn-ghost" onClick={() => logout()} title={t('common.logout')}>
+              {t('common.logout')}
+            </button>
           </div>
         </header>
 
@@ -298,21 +324,24 @@ export function Layout({ children }: { children: ReactNode }) {
 }
 
 function NavLinkRow({
-  item, active, favorite, onToggleFavorite, onNavigate,
+  label, icon, path, active, favorite, favoriteTitle, onToggleFavorite, onNavigate,
 }: {
-  item: NavEntry;
+  label: string;
+  icon: string;
+  path: string;
   active: boolean;
   favorite: boolean;
+  favoriteTitle: string;
   onToggleFavorite: () => void;
   onNavigate: () => void;
 }) {
   return (
-    <Link to={item.path} className={`nav-item ${active ? 'active' : ''}`} onClick={onNavigate}>
-      <span className="ico">{item.icon}</span>
-      <span>{item.label}</span>
+    <Link to={path} className={`nav-item ${active ? 'active' : ''}`} onClick={onNavigate}>
+      <span className="ico">{icon}</span>
+      <span>{label}</span>
       <span
         className={`star ${favorite ? 'on' : ''}`}
-        title={favorite ? 'إزالة من المفضلة' : 'إضافة للمفضلة'}
+        title={favoriteTitle}
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();

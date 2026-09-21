@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api, toApiError, type ApiError } from '../lib/api';
-import { money, pct, relativeTime, startOfMonth, today } from '../lib/format';
+import { money, integer, pct, relativeTime, startOfMonth, today } from '../lib/format';
+import { useI18n, type MessageKey } from '../lib/i18n';
 import { Alert, ErrorState, StatCard, TableSkeleton } from '../components/ui';
 import { useAuth } from '../lib/auth';
 
@@ -28,22 +29,23 @@ interface DashboardData {
 function formatValue(card: Card): string {
   switch (card.format) {
     case 'percent': return pct(card.value);
-    case 'integer': return new Intl.NumberFormat('en-US').format(Number(card.value));
+    case 'integer': return integer(card.value);
     default: return money(card.value);
   }
 }
 
-const ROLE_LABELS: Record<string, string> = {
-  management: 'الإدارة',
-  salesman: 'المندوب',
-  supervisor: 'المشرف',
-  warehouse: 'المخازن',
-  accounting: 'الحسابات',
+const ROLE_KEYS: Record<string, MessageKey> = {
+  management: 'dash.role.management',
+  salesman: 'dash.role.salesman',
+  supervisor: 'dash.role.supervisor',
+  warehouse: 'dash.role.warehouse',
+  accounting: 'dash.role.accounting',
 };
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { t } = useI18n();
 
   const [from, setFrom] = useState(startOfMonth());
   const [to, setTo] = useState(today());
@@ -73,23 +75,21 @@ export default function Dashboard() {
     <div>
       <div className="page-head">
         <div>
-          <h1>لوحة التحكم</h1>
+          <h1>{t('dash.title')}</h1>
           <div className="desc">
-            عرض مخصص لدور: <strong>{ROLE_LABELS[data?.role_view ?? ''] ?? '—'}</strong>
-            {data && <> · آخر تحديث {relativeTime(data.generated_at)}</>}
+            {t('dash.roleView', { role: '' })}
+            <strong>{ROLE_KEYS[data?.role_view ?? ''] ? t(ROLE_KEYS[data!.role_view]) : '—'}</strong>
+            {data && <> · {t('common.lastUpdate')} {relativeTime(data.generated_at)}</>}
           </div>
         </div>
         <div className="actions">
-          <input type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="btn" aria-label="من تاريخ" />
-          <input type="date" value={to} onChange={(e) => setTo(e.target.value)} className="btn" aria-label="إلى تاريخ" />
-          <button className="btn" onClick={() => void load()}>تحديث</button>
+          <input type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="btn" aria-label={t('common.from')} />
+          <input type="date" value={to} onChange={(e) => setTo(e.target.value)} className="btn" aria-label={t('common.to')} />
+          <button className="btn" onClick={() => void load()}>{t('common.refresh')}</button>
         </div>
       </div>
 
-      <Alert tone="info">
-        كل مؤشر له تعريف حسابي — اضغط <strong>ⓘ</strong> على البطاقة لعرضه، واضغط البطاقة لفتح المستندات المكوّنة له.
-        المبيعات غير التحصيلات، ومجمل الربح غير صافي الربح.
-      </Alert>
+      <Alert tone="info">{t('dash.hint')}</Alert>
 
       {error ? (
         <ErrorState error={error} onRetry={() => void load()} />
@@ -113,9 +113,7 @@ export default function Dashboard() {
 
           {!user?.can_see_cost && (
             <div className="mt-4">
-              <Alert tone="warn">
-                مؤشرات التكلفة والربح غير معروضة لأن حسابك لا يملك صلاحية مشاهدتها. هذه القيم لا تُرسل من الخادم أصلًا.
-              </Alert>
+              <Alert tone="warn">{t('dash.noCostWarning')}</Alert>
             </div>
           )}
         </>

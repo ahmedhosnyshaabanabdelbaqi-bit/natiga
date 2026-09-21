@@ -4,6 +4,7 @@ import { DataTable, type Column } from '../components/DataTable';
 import { Badge, Button } from '../components/ui';
 import { money, qty } from '../lib/format';
 import { useAuth } from '../lib/auth';
+import { useI18n } from '../lib/i18n';
 
 interface ItemRow {
   id: number;
@@ -24,23 +25,24 @@ interface ItemRow {
 
 export default function Items() {
   const { can, user } = useAuth();
+  const { t } = useI18n();
   const list = useList<ItemRow>('/items');
   const [term, setTerm] = useState('');
 
   const columns: Column<ItemRow>[] = [
-    { key: 'code', header: 'الكود', sortable: true, width: '120px' },
-    { key: 'name_ar', header: 'اسم الصنف', sortable: true, render: (r) => <span className="bold">{r.name_ar}</span> },
-    { key: 'category', header: 'التصنيف', render: (r) => r.category?.name ?? '—', defaultHidden: true },
-    { key: 'brand', header: 'العلامة', render: (r) => r.brand?.name ?? '—', defaultHidden: true },
-    { key: 'base_uom', header: 'الوحدة', render: (r) => r.base_uom?.name_ar ?? '—' },
-    { key: 'on_hand', header: 'الرصيد الفعلي', numeric: true, render: (r) => <span className="num">{qty(r.on_hand)}</span> },
-    { key: 'reserved', header: 'المحجوز', numeric: true, render: (r) => <span className="num">{qty(r.reserved)}</span> },
+    { key: 'code', header: t('common.code'), sortable: true, width: '120px' },
+    { key: 'name_ar', header: t('common.item'), sortable: true, render: (r) => <span className="bold">{r.name_ar}</span> },
+    { key: 'category', header: t('items.category'), render: (r) => r.category?.name ?? '—', defaultHidden: true },
+    { key: 'brand', header: t('items.brand'), render: (r) => r.brand?.name ?? '—', defaultHidden: true },
+    { key: 'base_uom', header: t('common.unit'), render: (r) => r.base_uom?.name_ar ?? '—' },
+    { key: 'on_hand', header: t('items.onHand'), numeric: true, render: (r) => <span className="num">{qty(r.on_hand)}</span> },
+    { key: 'reserved', header: t('items.reserved'), numeric: true, render: (r) => <span className="num">{qty(r.reserved)}</span> },
     {
-      key: 'available', header: 'المتاح للبيع', numeric: true,
+      key: 'available', header: t('items.available'), numeric: true,
       render: (r) => <span className="num bold">{qty(r.available)}</span>,
     },
     {
-      key: 'reorder_point', header: 'حد الطلب', numeric: true, sortable: true,
+      key: 'reorder_point', header: t('items.reorderPoint'), numeric: true, sortable: true,
       render: (r) => (
         <span className={`num ${Number(r.available) < Number(r.reorder_point) ? 'neg bold' : ''}`}>
           {qty(r.reorder_point)}
@@ -49,17 +51,17 @@ export default function Items() {
     },
     ...(user?.can_see_cost
       ? [{
-          key: 'avg_cost', header: 'متوسط التكلفة', numeric: true,
+          key: 'avg_cost', header: t('items.avgCost'), numeric: true,
           render: (r: ItemRow) => <span className="num">{money(r.avg_cost)}</span>,
         } as Column<ItemRow>]
       : []),
     {
-      key: 'flags', header: 'خصائص',
+      key: 'flags', header: t('items.flags'),
       render: (r) => (
         <span className="row tight">
-          {r.track_batches && <Badge>دفعات</Badge>}
-          {r.track_expiry && <Badge tone="warn">صلاحية</Badge>}
-          {!r.is_active && <Badge tone="danger">غير نشط</Badge>}
+          {r.track_batches && <Badge>{t('items.batches')}</Badge>}
+          {r.track_expiry && <Badge tone="warn">{t('items.expiry')}</Badge>}
+          {!r.is_active && <Badge tone="danger">{t('customers.inactive')}</Badge>}
         </span>
       ),
       defaultHidden: true,
@@ -70,14 +72,12 @@ export default function Items() {
     <div>
       <div className="page-head">
         <div>
-          <h1>الأصناف</h1>
-          <div className="desc">
-            المتاح للبيع = الرصيد الصالح للبيع − المحجوز. الحجر والتالف وتحت الفحص لا تدخل ضمنه.
-          </div>
+          <h1>{t('items.title')}</h1>
+          <div className="desc">{t('items.desc')}</div>
         </div>
         <div className="actions">
-          <Button variant="primary" disabledReason={can('item.create') ? null : 'لا تملك صلاحية إضافة صنف.'}>
-            + صنف جديد
+          <Button variant="primary" disabledReason={can('item.create') ? null : t('items.noPermissionCreate')}>
+            {t('items.new')}
           </Button>
         </div>
       </div>
@@ -94,25 +94,25 @@ export default function Items() {
         onSort={(key, direction) => list.setSort({ key, direction })}
         sort={list.sort}
         rowKey={(r) => r.id}
-        emptyTitle="لا توجد أصناف"
-        emptyDescription="ابدأ بإضافة الأصناف أو استوردها من ملف Excel."
+        emptyTitle={t('items.empty')}
+        emptyDescription={t('items.emptyDesc')}
         toolbar={
           <div className="row">
             <input
-              placeholder="بحث بالاسم أو الكود…"
+              placeholder={t('items.searchPlaceholder')}
               value={term}
               onChange={(e) => setTerm(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && list.doSearch(term)}
               style={{ padding: '6px 10px', border: '1px solid var(--border-strong)', borderRadius: 8, width: 220 }}
             />
-            <Button size="sm" onClick={() => list.doSearch(term)}>بحث</Button>
+            <Button size="sm" onClick={() => list.doSearch(term)}>{t('common.search')}</Button>
             <label className="row tight small">
               <input
                 type="checkbox"
                 checked={Boolean(list.filters.below_reorder)}
                 onChange={(e) => list.setFilter('below_reorder', e.target.checked ? 1 : undefined)}
               />
-              النواقص فقط
+              {t('items.shortagesOnly')}
             </label>
           </div>
         }

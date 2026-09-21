@@ -1,4 +1,5 @@
 import axios, { AxiosError } from 'axios';
+import { t } from './i18n';
 
 export const API_BASE = import.meta.env.VITE_API_BASE ?? 'http://localhost:8000/api/v1';
 
@@ -43,7 +44,7 @@ export function toApiError(error: unknown): ApiError {
   if (!axiosError.response) {
     return {
       code: 'network.unreachable',
-      message: 'تعذّر الاتصال بالخادم. تحقق من الشبكة ثم أعد المحاولة.',
+      message: t('error.network'),
       status: 0,
     };
   }
@@ -52,7 +53,7 @@ export function toApiError(error: unknown): ApiError {
 
   return {
     code: data?.error_code ?? 'http.error',
-    message: data?.message ?? 'حدث خطأ غير متوقع.',
+    message: data?.message ?? t('error.unexpected'),
     status,
     context: data?.context,
     fieldErrors: data?.errors,

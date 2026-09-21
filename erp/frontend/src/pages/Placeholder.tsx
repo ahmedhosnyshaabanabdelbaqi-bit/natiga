@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Alert, EmptyState } from '../components/ui';
+import { useI18n } from '../lib/i18n';
 
 /**
  * شاشة لوظيفة مخطّطة لم تُنفَّذ بعد في هذه المرحلة.
@@ -12,19 +13,18 @@ export default function Placeholder({
   phase: string;
   available?: Array<{ label: string; path: string }>;
 }) {
+  const { t } = useI18n();
+
   return (
     <div>
       <div className="page-head"><h1>{title}</h1></div>
 
-      <Alert tone="info">
-        هذه الشاشة ضمن <strong>{phase}</strong> ولم تُنفَّذ في هذه المرحلة.
-        الوظيفة الخلفية والـ API قد تكون جاهزة — راجع ملف الحالة في <code>erp/docs/STATUS.md</code>.
-      </Alert>
+      <Alert tone="info">{t('placeholder.notice', { phase, file: 'erp/docs/STATUS.md' })}</Alert>
 
       <div className="card">
         <EmptyState
-          title="غير متاحة بعد"
-          description="لم نبنِ واجهة لهذه الوظيفة حتى الآن. الشاشات المتاحة حاليًا مذكورة أدناه."
+          title={t('placeholder.title')}
+          description={t('placeholder.desc')}
           action={
             available && available.length > 0 ? (
               <div className="row" style={{ justifyContent: 'center' }}>
@@ -33,7 +33,7 @@ export default function Placeholder({
                 ))}
               </div>
             ) : (
-              <Link to="/" className="btn btn-primary">العودة للوحة التحكم</Link>
+              <Link to="/" className="btn btn-primary">{t('placeholder.backHome')}</Link>
             )
           }
         />

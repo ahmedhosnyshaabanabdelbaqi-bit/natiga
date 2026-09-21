@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-route
 import { useAuth } from './lib/auth';
 import { Layout } from './components/Layout';
 import { LoadingState, EmptyState } from './components/ui';
+import { useI18n, applyDirection, useI18nStore } from './lib/i18n';
 
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
@@ -27,14 +28,15 @@ import {
 /** يمنع فتح شاشة لا يملك المستخدم صلاحيتها — والخادم يتحقق مجددًا على كل طلب. */
 function Guard({ permission, children }: { permission?: string; children: React.ReactNode }) {
   const { can } = useAuth();
+  const { t } = useI18n();
 
   if (permission && !can(permission)) {
     return (
       <div className="card">
         <EmptyState
           icon="⚠"
-          title="لا تملك صلاحية الوصول"
-          description={`هذه الشاشة تتطلب صلاحية «${permission}». راجع مدير النظام إن كنت تحتاجها.`}
+          title={t('common.forbidden')}
+          description={t('common.forbiddenDesc', { permission })}
         />
       </div>
     );
@@ -51,11 +53,12 @@ function ScrollReset() {
 
 function Shell() {
   const { user, loading, loadMe } = useAuth();
+  const { t } = useI18n();
 
   useEffect(() => { void loadMe(); }, [loadMe]);
 
   if (loading) {
-    return <div style={{ display: 'grid', placeItems: 'center', minHeight: '100vh' }}><LoadingState label="جارٍ التحقق من الجلسة…" /></div>;
+    return <div style={{ display: 'grid', placeItems: 'center', minHeight: '100vh' }}><LoadingState label={t('login.checkingSession')} /></div>;
   }
 
   if (!user) {
@@ -75,7 +78,12 @@ function Shell() {
         <Route path="/" element={<Dashboard />} />
 
         <Route path="/customers" element={<Guard permission="customer.view"><Customers /></Guard>} />
-        <Route path="/customers/new" element={<Guard permission="customer.create"><Placeholder title="عميل جديد" phase="المرحلة الأولى — بيانات أساسية" available={[{ label: 'قائمة العملاء', path: '/customers' }]} /></Guard>} />
+        <Route path="/customers/new" element={
+          <Guard permission="customer.create">
+            <Placeholder title={t('placeholder.newCustomer')} phase={t('placeholder.phase1')}
+              available={[{ label: t('placeholder.customerList'), path: '/customers' }]} />
+          </Guard>
+        } />
         <Route path="/customers/:id" element={<Guard permission="customer.view"><CustomerDetail /></Guard>} />
 
         <Route path="/items" element={<Guard permission="item.view"><Items /></Guard>} />
@@ -105,10 +113,13 @@ function Shell() {
 
         <Route path="/settings" element={<Guard permission="settings.view"><Settings /></Guard>} />
 
-        <Route path="/approvals" element={<Placeholder title="الموافقات" phase="المرحلة الخامسة" />} />
-        <Route path="/visits" element={<Placeholder title="الزيارات" phase="المرحلة الثالثة" />} />
+        <Route path="/approvals" element={<Placeholder title={t('placeholder.approvals')} phase={t('placeholder.phase5')} />} />
+        <Route path="/visits" element={<Placeholder title={t('placeholder.visits')} phase={t('placeholder.phase3')} />} />
         <Route path="/day-closures" element={<Navigate to="/day-closure" replace />} />
-        <Route path="/sales-orders" element={<Placeholder title="أوامر البيع" phase="المرحلة الثانية" available={[{ label: 'فواتير البيع', path: '/sales-invoices' }]} />} />
+        <Route path="/sales-orders" element={
+          <Placeholder title={t('placeholder.salesOrders')} phase={t('placeholder.phase2')}
+            available={[{ label: t('nav.invoices'), path: '/sales-invoices' }]} />
+        } />
         <Route path="/my/invoices" element={<Navigate to="/sales-invoices" replace />} />
         <Route path="/my/receipts" element={<Navigate to="/receipts" replace />} />
         <Route path="/my/customers" element={<Navigate to="/customers" replace />} />
@@ -118,7 +129,7 @@ function Shell() {
           path="*"
           element={
             <div className="card">
-              <EmptyState icon="?" title="الصفحة غير موجودة" description="الرابط الذي فتحته غير معرّف في النظام." />
+              <EmptyState icon="?" title={t('common.notFound')} description={t('common.notFoundDesc')} />
             </div>
           }
         />
@@ -128,6 +139,11 @@ function Shell() {
 }
 
 export default function App() {
+  // تطبيق اتجاه اللغة المحفوظة قبل أول رسم حتى لا تظهر الواجهة بالاتجاه الخطأ
+  useEffect(() => {
+    applyDirection(useI18nStore.getState().lang);
+  }, []);
+
   return (
     <BrowserRouter>
       <Shell />

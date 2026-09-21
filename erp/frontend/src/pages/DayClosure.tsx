@@ -3,6 +3,7 @@ import { api, toApiError, type ApiError } from '../lib/api';
 import { money, moneyPlain, today, statusOf } from '../lib/format';
 import { Alert, Badge, Button, ErrorState, LoadingState, Modal } from '../components/ui';
 import { useAuth } from '../lib/auth';
+import { useI18n, type MessageKey } from '../lib/i18n';
 
 interface Equation {
   formula: string;
@@ -19,30 +20,31 @@ interface ClosurePayload {
   sync: { complete: boolean; pending_ops: number };
 }
 
-const GOODS_ROWS: Array<[string, string, 1 | -1]> = [
-  ['opening', 'أول المدة', 1],
-  ['loaded', 'التحميل والتحويل الداخل', 1],
-  ['returns_in', 'مرتجعات العملاء المستلمة', 1],
-  ['sold', 'المبيعات المسلمة', -1],
-  ['bonus', 'البونص والهدايا', -1],
-  ['returned_to_warehouse', 'الرد للمخزن', -1],
-  ['transfer_out', 'التحويل الخارج', -1],
-  ['damaged', 'التالف المعتمد', -1],
+const GOODS_ROWS: Array<[string, MessageKey, 1 | -1]> = [
+  ['opening', 'closure.goods.opening', 1],
+  ['loaded', 'closure.goods.loaded', 1],
+  ['returns_in', 'closure.goods.returnsIn', 1],
+  ['sold', 'closure.goods.sold', -1],
+  ['bonus', 'closure.goods.bonus', -1],
+  ['returned_to_warehouse', 'closure.goods.returnedToWh', -1],
+  ['transfer_out', 'closure.goods.transferOut', -1],
+  ['damaged', 'closure.goods.damaged', -1],
 ];
 
-const CASH_ROWS: Array<[string, string, 1 | -1]> = [
-  ['opening', 'أول المدة', 1],
-  ['collected', 'المقبوضات النقدية', 1],
-  ['custody_received', 'العهد النقدية المستلمة', 1],
-  ['deposited', 'الإيداعات المعتمدة', -1],
-  ['expenses', 'المصروفات النقدية المعتمدة', -1],
-  ['refunds', 'المبالغ النقدية المردودة', -1],
+const CASH_ROWS: Array<[string, MessageKey, 1 | -1]> = [
+  ['opening', 'closure.cash.opening', 1],
+  ['collected', 'closure.cash.collected', 1],
+  ['custody_received', 'closure.cash.custodyReceived', 1],
+  ['deposited', 'closure.cash.deposited', -1],
+  ['expenses', 'closure.cash.expenses', -1],
+  ['refunds', 'closure.cash.refunds', -1],
 ];
 
 interface SalesmanOption { id: number; code: string; name: string }
 
 export default function DayClosure() {
   const { can, user } = useAuth();
+  const { t } = useI18n();
   const [date, setDate] = useState(today());
   const [salesmen, setSalesmen] = useState<SalesmanOption[]>([]);
   const [salesmanId, setSalesmanId] = useState<string>(() => (user?.salesman ? String(user.salesman.id) : ''));
@@ -128,7 +130,7 @@ export default function DayClosure() {
   };
 
   const salesmanPicker = salesmen.length > 0 && (
-    <select className="btn" value={salesmanId} onChange={(e) => setSalesmanId(e.target.value)} aria-label="المندوب">
+    <select className="btn" value={salesmanId} onChange={(e) => setSalesmanId(e.target.value)} aria-label={t('common.salesman')}>
       {salesmen.map((s) => <option key={s.id} value={s.id}>{s.code} — {s.name}</option>)}
     </select>
   );
@@ -138,19 +140,17 @@ export default function DayClosure() {
       <div>
         <div className="page-head">
           <div>
-            <h1>إقفال يوم المندوب</h1>
-            <div className="desc">اختر المندوب لعرض إقفال يومه.</div>
+            <h1>{t('closure.title')}</h1>
+            <div className="desc">{t('closure.selectSalesman')}</div>
           </div>
           <div className="actions">{salesmanPicker}</div>
         </div>
-        <Alert tone="info">
-          حسابك غير مرتبط بمندوب. اختر مندوبًا من القائمة لعرض معادلتي البضاعة والنقدية ليومه.
-        </Alert>
+        <Alert tone="info">{t('closure.noSalesmanAccount')}</Alert>
       </div>
     );
   }
 
-  if (loading) return <LoadingState label="جارٍ حساب الإقفال…" />;
+  if (loading) return <LoadingState label={t('closure.calculating')} />;
   if (error) return <ErrorState error={error} onRetry={() => void load()} />;
   if (!data) return null;
 
@@ -163,7 +163,7 @@ export default function DayClosure() {
     <div>
       <div className="page-head">
         <div>
-          <h1>إقفال يوم المندوب</h1>
+          <h1>{t('closure.title')}</h1>
           <div className="desc">
             <span className="num">{data.closure.closure_no}</span> · <Badge tone={status.tone}>{status.label}</Badge>
           </div>
@@ -171,25 +171,25 @@ export default function DayClosure() {
         <div className="actions">
           {salesmanPicker}
           <input type="date" className="btn" value={date} onChange={(e) => setDate(e.target.value)} />
-          <Button onClick={() => void load()}>إعادة الحساب</Button>
+          <Button onClick={() => void load()}>{t('closure.recalculate')}</Button>
           <Button
             variant="primary"
             disabledReason={
-              !can('day_closure.close') ? 'لا تملك صلاحية الإقفال.'
-                : isClosed ? 'اليوم مقفل بالفعل.'
+              !can('day_closure.close') ? t('closure.noPermissionClose')
+                : isClosed ? t('closure.alreadyClosed')
                   : null
             }
             onClick={() => setClosing(true)}
           >
-            إقفال اليوم
+            {t('closure.close')}
           </Button>
           {isClosed && (
             <Button
               variant="danger"
-              disabledReason={can('day_closure.reopen') ? null : 'إعادة الفتح تتطلب صلاحية مخصصة.'}
+              disabledReason={can('day_closure.reopen') ? null : t('closure.noPermissionReopen')}
               onClick={() => setReopening(true)}
             >
-              إعادة الفتح
+              {t('closure.reopen')}
             </Button>
           )}
         </div>
@@ -198,32 +198,27 @@ export default function DayClosure() {
       {actionError && <Alert tone="error">{actionError.message}</Alert>}
 
       {!data.sync.complete && (
-        <Alert tone="warn">
-          يوجد <span className="num bold">{data.sync.pending_ops}</span> عملية لم تكتمل مزامنتها.
-          الإقفال النهائي يحتاج اكتمال المزامنة أو استثناءً موثقًا من مسؤول مختص.
-        </Alert>
+        <Alert tone="warn">{t('closure.syncPending', { n: data.sync.pending_ops })}</Alert>
       )}
 
       {data.closure.sync_exception_granted && (
-        <Alert tone="warn">
-          أُقفل هذا اليوم باستثناء موثق من اكتمال المزامنة. السبب: {data.closure.sync_exception_reason}
-        </Alert>
+        <Alert tone="warn">{t('closure.syncException', { reason: data.closure.sync_exception_reason ?? '—' })}</Alert>
       )}
 
       <div className="grid cols-2">
         <EquationCard
-          title="معادلة البضاعة (بالقيمة)"
+          title={t('closure.goodsEquation')}
           formula={data.goods_equation.formula}
-          rows={GOODS_ROWS.map(([key, label, sign]) => ({ label, value: String(data.goods_equation[key] ?? '0'), sign }))}
+          rows={GOODS_ROWS.map(([key, labelKey, sign]) => ({ label: t(labelKey), value: String(data.goods_equation[key] ?? '0'), sign }))}
           expected={data.goods_equation.expected}
           actual={data.goods_equation.actual}
           variance={goodsVariance}
         />
 
         <EquationCard
-          title="معادلة النقدية"
+          title={t('closure.cashEquation')}
           formula={data.cash_equation.formula}
-          rows={CASH_ROWS.map(([key, label, sign]) => ({ label, value: String(data.cash_equation[key] ?? '0'), sign }))}
+          rows={CASH_ROWS.map(([key, labelKey, sign]) => ({ label: t(labelKey), value: String(data.cash_equation[key] ?? '0'), sign }))}
           expected={data.cash_equation.expected}
           actual={data.cash_equation.actual}
           variance={cashVariance}
@@ -231,8 +226,8 @@ export default function DayClosure() {
             <div className="tiny faint mt-3">
               {data.cash_equation.excluded.note}
               <div className="mt-2">
-                تحويلات بنكية: <span className="num">{moneyPlain(data.cash_equation.excluded.bank_transfers)}</span>
-                {' · '}شيكات: <span className="num">{moneyPlain(data.cash_equation.excluded.cheques)}</span>
+                {t('closure.bankTransfers')}: <span className="num">{moneyPlain(data.cash_equation.excluded.bank_transfers)}</span>
+                {' · '}{t('closure.cheques')}: <span className="num">{moneyPlain(data.cash_equation.excluded.cheques)}</span>
               </div>
             </div>
           }
@@ -241,41 +236,39 @@ export default function DayClosure() {
 
       {closing && (
         <Modal
-          title="إقفال اليوم"
+          title={t('closure.close')}
           onClose={() => setClosing(false)}
           footer={
             <>
-              <Button variant="primary" onClick={() => void submitClose()}>تأكيد الإقفال</Button>
-              <Button onClick={() => setClosing(false)}>تراجع</Button>
+              <Button variant="primary" onClick={() => void submitClose()}>{t('closure.confirmClose')}</Button>
+              <Button onClick={() => setClosing(false)}>{t('invoice.undo')}</Button>
             </>
           }
         >
-          <Alert tone="info">
-            أدخل الجرد الفعلي. أي فرق بين المتوقع والفعلي يُنشئ محضر عجز أو زيادة يحتاج اعتمادًا — ولا يُخصم تلقائيًا من راتب المندوب.
-          </Alert>
+          <Alert tone="info">{t('closure.modalWarning')}</Alert>
 
           <label className="field">
-            <span>النقدية الفعلية مع المندوب</span>
+            <span>{t('closure.actualCash')}</span>
             <input type="number" step="0.01" value={cashActual} onChange={(e) => setCashActual(e.target.value)} dir="ltr" />
-            <span className="help">المتوقع: {moneyPlain(data.cash_equation.expected)}</span>
+            <span className="help">{t('closure.expectedHint', { value: moneyPlain(data.cash_equation.expected) })}</span>
           </label>
 
           <label className="field">
-            <span>قيمة البضاعة الفعلية بالسيارة</span>
+            <span>{t('closure.actualGoods')}</span>
             <input type="number" step="0.01" value={goodsActual} onChange={(e) => setGoodsActual(e.target.value)} dir="ltr" />
-            <span className="help">المتوقع: {moneyPlain(data.goods_equation.expected)}</span>
+            <span className="help">{t('closure.expectedHint', { value: moneyPlain(data.goods_equation.expected) })}</span>
           </label>
 
           <label className="field">
-            <span>بيان الفرق (إن وجد)</span>
+            <span>{t('closure.varianceExplanation')}</span>
             <textarea rows={2} value={explanation} onChange={(e) => setExplanation(e.target.value)} />
           </label>
 
           {!data.sync.complete && (
             <label className="field">
-              <span>سبب استثناء المزامنة <span className="req">*</span></span>
+              <span>{t('closure.syncExceptionReason')} <span className="req">*</span></span>
               <textarea rows={2} value={syncReason} onChange={(e) => setSyncReason(e.target.value)} />
-              <span className="help">مطلوب لأن المزامنة لم تكتمل. يُسجَّل باسمك في سجل المراجعة.</span>
+              <span className="help">{t('closure.syncExceptionHint')}</span>
             </label>
           )}
         </Modal>
@@ -283,20 +276,20 @@ export default function DayClosure() {
 
       {reopening && (
         <Modal
-          title="إعادة فتح يوم مقفل"
+          title={t('closure.reopenTitle')}
           onClose={() => setReopening(false)}
           footer={
             <>
-              <Button variant="danger" disabledReason={reopenReason.trim().length < 5 ? 'اكتب سببًا واضحًا.' : null} onClick={() => void submitReopen()}>
-                تأكيد إعادة الفتح
+              <Button variant="danger" disabledReason={reopenReason.trim().length < 5 ? t('closure.reopenReasonRequired') : null} onClick={() => void submitReopen()}>
+                {t('closure.reopenConfirm')}
               </Button>
-              <Button onClick={() => setReopening(false)}>تراجع</Button>
+              <Button onClick={() => setReopening(false)}>{t('invoice.undo')}</Button>
             </>
           }
         >
-          <Alert tone="warn">إعادة الفتح تتطلب صلاحية وسببًا، وتُسجَّل في سجل المراجعة باسمك ووقتها.</Alert>
+          <Alert tone="warn">{t('closure.reopenWarning')}</Alert>
           <label className="field">
-            <span>السبب <span className="req">*</span></span>
+            <span>{t('common.reason')} <span className="req">*</span></span>
             <textarea rows={3} value={reopenReason} onChange={(e) => setReopenReason(e.target.value)} />
           </label>
         </Modal>
@@ -316,6 +309,7 @@ function EquationCard({
   variance: number;
   footer?: React.ReactNode;
 }) {
+  const { t } = useI18n();
   return (
     <div className="card">
       <div className="card-head"><h2>{title}</h2></div>
@@ -333,18 +327,22 @@ function EquationCard({
           </tbody>
           <tfoot>
             <tr>
-              <td>الرصيد المتوقع</td>
+              <td>{t('closure.expected')}</td>
               <td className="n num">{money(expected)}</td>
             </tr>
             <tr>
-              <td>الرصيد الفعلي</td>
+              <td>{t('closure.actual')}</td>
               <td className="n num">{money(actual)}</td>
             </tr>
             <tr>
-              <td>الفرق</td>
+              <td>{t('closure.variance')}</td>
               <td className={`n num ${variance === 0 ? 'pos' : 'neg'}`}>
                 {money(String(variance))}
-                {variance !== 0 && <div className="tiny">{variance < 0 ? 'عجز' : 'زيادة'} — يحتاج محضرًا واعتمادًا</div>}
+                {variance !== 0 && (
+                  <div className="tiny">
+                    {variance < 0 ? t('closure.shortage') : t('closure.excess')} — {t('closure.varianceNeedsReport')}
+                  </div>
+                )}
               </td>
             </tr>
           </tfoot>

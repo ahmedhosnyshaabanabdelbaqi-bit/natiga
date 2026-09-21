@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { api, toApiError, type ApiError } from '../lib/api';
 import { Alert, Badge, Button, ErrorState, LoadingState } from '../components/ui';
 import { dateTime, relativeTime, statusOf } from '../lib/format';
+import { useI18n } from '../lib/i18n';
 
 interface Status {
   device_uid: string;
@@ -28,6 +29,7 @@ interface Operation {
 }
 
 export default function SyncStatus() {
+  const { t } = useI18n();
   const [deviceUid, setDeviceUid] = useState(() => localStorage.getItem('erp.device_uid') ?? '');
   const [status, setStatus] = useState<Status | null>(null);
   const [operations, setOperations] = useState<Operation[]>([]);
@@ -64,20 +66,20 @@ export default function SyncStatus() {
     <div>
       <div className="page-head">
         <div>
-          <h1>حالة المزامنة</h1>
-          <div className="desc">العمليات المعلقة والمرفوضة والمتعارضة مع سبب الخطأ وإمكانية إعادة المحاولة.</div>
+          <h1>{t('sync.title')}</h1>
+          <div className="desc">{t('sync.desc')}</div>
         </div>
       </div>
 
       <div className="card mb-4">
         <div className="filters">
           <div className="field">
-            <label>معرّف الجهاز</label>
+            <label>{t('sync.deviceUid')}</label>
             <input value={deviceUid} onChange={(e) => setDeviceUid(e.target.value)} dir="ltr" placeholder="ANDROID-..." />
           </div>
           <div className="field">
             <label>&nbsp;</label>
-            <Button onClick={() => void load()} disabledReason={deviceUid.trim() ? null : 'أدخل معرّف الجهاز.'}>عرض الحالة</Button>
+            <Button onClick={() => void load()} disabledReason={deviceUid.trim() ? null : t('sync.enterDeviceUid')}>{t('sync.showStatus')}</Button>
           </div>
         </div>
       </div>
@@ -88,41 +90,36 @@ export default function SyncStatus() {
       {status && (
         <>
           {!status.is_active && (
-            <Alert tone="error">
-              هذا الجهاز موقوف. الإيقاف يسري عند اتصاله بالشبكة أو عند انتهاء تفويض العمل دون اتصال —
-              لا يوجد إلغاء فوري على جهاز منفصل عن الشبكة.
-            </Alert>
+            <Alert tone="error">{t('sync.deviceDisabled')}</Alert>
           )}
 
           {status.conflicts > 0 && (
-            <Alert tone="warn">
-              يوجد <span className="num bold">{status.conflicts}</span> عملية متعارضة تحتاج مراجعة بشرية.
-              العمليات الأصلية محفوظة ولم تُسقط.
-            </Alert>
+            <Alert tone="warn">{t('sync.conflictsWarning', { n: status.conflicts })}</Alert>
           )}
 
           <div className="grid cols-4 mb-4">
-            <Stat label="معلّقة" value={status.pending} tone={status.pending ? 'warn' : ''} />
-            <Stat label="مُطبَّقة" value={status.applied} tone="success" />
-            <Stat label="مرفوضة" value={status.rejected} tone={status.rejected ? 'danger' : ''} />
-            <Stat label="متعارضة" value={status.conflicts} tone={status.conflicts ? 'danger' : ''} />
+            <Stat label={t('sync.pending')} value={status.pending} tone={status.pending ? 'warn' : ''} />
+            <Stat label={t('sync.applied')} value={status.applied} tone="success" />
+            <Stat label={t('sync.rejected')} value={status.rejected} tone={status.rejected ? 'danger' : ''} />
+            <Stat label={t('sync.conflicts')} value={status.conflicts} tone={status.conflicts ? 'danger' : ''} />
           </div>
 
           <div className="card mb-4">
             <div className="card-body row" style={{ gap: 28 }}>
-              <div><div className="small muted">آخر مزامنة</div><div className="bold">{relativeTime(status.last_sync_at)}</div></div>
-              <div><div className="small muted">تفويض العمل دون اتصال حتى</div><div className="bold num">{dateTime(status.offline_authorized_until)}</div></div>
-              <div><div className="small muted">حالة الجهاز</div>
-                <div>{status.is_active ? <Badge tone="success">نشط</Badge> : <Badge tone="danger">موقوف</Badge>}</div></div>
+              <div><div className="small muted">{t('sync.lastSync')}</div><div className="bold">{relativeTime(status.last_sync_at)}</div></div>
+              <div><div className="small muted">{t('sync.authorizedUntil')}</div><div className="bold num">{dateTime(status.offline_authorized_until)}</div></div>
+              <div><div className="small muted">{t('sync.deviceStatus')}</div>
+                <div>{status.is_active ? <Badge tone="success">{t('sync.deviceActive')}</Badge> : <Badge tone="danger">{t('sync.deviceInactive')}</Badge>}</div></div>
             </div>
           </div>
 
           <div className="card">
-            <div className="card-head"><h2>سجل العمليات</h2></div>
+            <div className="card-head"><h2>{t('sync.log')}</h2></div>
             <div className="table-wrap">
               <table className="data">
                 <thead>
-                  <tr><th>النوع</th><th>المفتاح</th><th>الحالة</th><th>المستند المركزي</th><th>الخطأ</th><th>الاستلام</th></tr>
+                  <tr><th>{t('sync.opType')}</th><th>{t('sync.key')}</th><th>{t('common.status')}</th>
+                      <th>{t('sync.centralDoc')}</th><th>{t('sync.error')}</th><th>{t('sync.received')}</th></tr>
                 </thead>
                 <tbody>
                   {operations.map((op) => {
@@ -144,7 +141,7 @@ export default function SyncStatus() {
                 </tbody>
               </table>
             </div>
-            {operations.length === 0 && <div className="state"><div className="title">لا توجد عمليات مزامنة</div></div>}
+            {operations.length === 0 && <div className="state"><div className="title">{t('sync.empty')}</div></div>}
           </div>
         </>
       )}
