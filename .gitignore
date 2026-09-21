@@ -1,0 +1,34 @@
+# Laravel API
+erp/api/vendor/
+erp/api/node_modules/
+erp/api/public/build/
+erp/api/public/hot
+erp/api/public/storage
+erp/api/storage/*.key
+erp/api/storage/app/private/*
+erp/api/storage/app/public/*
+erp/api/storage/framework/cache/data/*
+erp/api/storage/framework/sessions/*
+erp/api/storage/framework/testing/*
+erp/api/storage/framework/views/*
+erp/api/storage/logs/*
+erp/api/.env
+erp/api/.env.backup
+erp/api/.phpunit.result.cache
+
+# React web
+erp/web/node_modules/
+erp/web/dist/
+erp/web/.env.local
+
+# Flutter mobile
+erp/mobile/build/
+erp/mobile/.dart_tool/
+erp/mobile/.flutter-plugins*
+erp/mobile/android/.gradle/
+erp/mobile/ios/Pods/
+
+# General
+.DS_Store
+*.log
+/tmp/
