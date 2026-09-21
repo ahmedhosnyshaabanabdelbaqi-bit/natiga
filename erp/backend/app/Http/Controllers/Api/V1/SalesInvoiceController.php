@@ -87,6 +87,9 @@ class SalesInvoiceController extends ApiController
             'post' => ['nullable', 'boolean'],
             'lines' => ['required', 'array', 'min:1'],
             'lines.*.item_id' => ['required', 'integer', 'exists:items,id'],
+            // ربط السطر بأصله: بدونه لا تتحدّث كميات الأمر ولا تُقرأ تكلفة إذن التسليم
+            'lines.*.sales_order_line_id' => ['nullable', 'integer', 'exists:sales_order_lines,id'],
+            'lines.*.delivery_note_line_id' => ['nullable', 'integer', 'exists:delivery_note_lines,id'],
             'lines.*.uom_id' => ['required', 'integer', 'exists:uoms,id'],
             'lines.*.qty_uom' => ['required', 'numeric', 'gt:0'],
             'lines.*.unit_price' => ['required_without:lines.*.is_free', 'numeric', 'min:0'],

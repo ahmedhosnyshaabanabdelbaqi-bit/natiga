@@ -31,6 +31,8 @@ class ChartOfAccountsSeeder extends Seeder
             ['1107', 'بضاعة بالطريق', 'asset', 'debit', true, '11', 'inventory'],
             ['1108', 'ضريبة القيمة المضافة — مدخلات', 'asset', 'debit', true, '11', 'tax'],
             ['1109', 'مدينون — موظفون', 'asset', 'debit', true, '11', 'none'],
+            // بضاعة خرجت بإذن تسليم ولم تُفوتر بعد: خرجت من المخزون ولم تصبح تكلفة مبيعات
+            ['1110', 'بضاعة مسلّمة غير مفوترة', 'asset', 'debit', true, '11', 'inventory'],
             ['12', 'الأصول الثابتة', 'asset', 'debit', false, '1', 'none'],
             ['1201', 'سيارات ومعدات', 'asset', 'debit', true, '12', 'none'],
 
@@ -100,6 +102,7 @@ class ChartOfAccountsSeeder extends Seeder
             'price_variance' => '5210',
             'accrued_expense' => '2105',
             'staff_receivable' => '1109',
+            'delivered_not_invoiced' => '1110',
         ];
     }
 

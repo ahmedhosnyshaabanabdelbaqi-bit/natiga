@@ -1990,6 +1990,7 @@
 | `posted_at` | timestamp without time zone | نعم | — |
 | `created_at` | timestamp without time zone | نعم | — |
 | `updated_at` | timestamp without time zone | نعم | — |
+| `journal_entry_id` | bigint | نعم | journal_entries |
 
 **قيود عدم التكرار:**
 - `delivery_notes_pkey` (id)

@@ -7,7 +7,9 @@ use App\Http\Controllers\Api\V1\FieldOpsController;
 use App\Http\Controllers\Api\V1\ItemController;
 use App\Http\Controllers\Api\V1\PurchasingController;
 use App\Http\Controllers\Api\V1\ReportController;
+use App\Http\Controllers\Api\V1\DeliveryNoteController;
 use App\Http\Controllers\Api\V1\SalesInvoiceController;
+use App\Http\Controllers\Api\V1\SalesOrderController;
 use App\Http\Controllers\Api\V1\StockController;
 use App\Http\Controllers\Api\V1\SyncController;
 use Illuminate\Support\Facades\Route;
@@ -88,6 +90,30 @@ Route::prefix('v1')->group(function () {
         Route::get('supplier-invoices', [PurchasingController::class, 'invoicesIndex'])->middleware('permission:supplier_invoice.view');
         Route::post('supplier-invoices', [PurchasingController::class, 'storeInvoice'])
             ->middleware('permission:supplier_invoice.create,supplier_invoice.post');
+
+        // --- أوامر البيع ---
+        Route::middleware('permission:sales_order.view')->group(function () {
+            Route::get('sales-orders', [SalesOrderController::class, 'index']);
+            Route::get('sales-orders/credit-check', [SalesOrderController::class, 'creditCheck']);
+            Route::get('sales-orders/{id}', [SalesOrderController::class, 'show']);
+        });
+        Route::post('sales-orders', [SalesOrderController::class, 'store'])->middleware('permission:sales_order.create');
+        Route::patch('sales-orders/{id}', [SalesOrderController::class, 'update'])->middleware('permission:sales_order.update');
+        Route::post('sales-orders/{id}/approve', [SalesOrderController::class, 'approve'])->middleware('permission:sales_order.approve');
+        Route::post('sales-orders/{id}/cancel', [SalesOrderController::class, 'cancel'])->middleware('permission:sales_order.cancel');
+        Route::post('sales-orders/{id}/close', [SalesOrderController::class, 'close'])->middleware('permission:sales_order.approve');
+
+        // --- أذون التسليم ---
+        Route::middleware('permission:delivery_note.view')->group(function () {
+            Route::get('delivery-notes', [DeliveryNoteController::class, 'index']);
+            Route::get('delivery-notes/{id}', [DeliveryNoteController::class, 'show']);
+        });
+        Route::post('delivery-notes', [DeliveryNoteController::class, 'store'])->middleware('permission:delivery_note.create');
+        Route::post('delivery-notes/{id}/dispatch', [DeliveryNoteController::class, 'dispatchNote'])->middleware('permission:delivery_note.post');
+        // التأكيد صلاحية تعديل لا ترحيل: السائق يؤكد التسليم ولا يُخرج بضاعة
+        Route::post('delivery-notes/{id}/confirm', [DeliveryNoteController::class, 'confirm'])->middleware('permission:delivery_note.update');
+        Route::post('delivery-notes/{id}/fail', [DeliveryNoteController::class, 'fail'])->middleware('permission:delivery_note.update');
+        Route::post('delivery-notes/{id}/cancel', [DeliveryNoteController::class, 'cancel'])->middleware('permission:delivery_note.cancel');
 
         // --- المبيعات ---
         Route::middleware('permission:sales_invoice.view')->group(function () {

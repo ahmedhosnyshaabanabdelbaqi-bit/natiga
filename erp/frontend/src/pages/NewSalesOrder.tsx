@@ -2,40 +2,38 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { api, toApiError, type ApiError } from '../lib/api';
 import { Alert, Button, Field, useDraft, useUnsavedGuard } from '../components/ui';
-import { money, moneyPlain, today } from '../lib/format';
+import { moneyPlain, today } from '../lib/format';
 import { useAuth } from '../lib/auth';
 import { useI18n } from '../lib/i18n';
 import { emptyLine, draftTotals, resolveItemForLine, useItemSearch } from '../lib/lineDraft';
 
-export default function NewInvoice() {
+export default function NewSalesOrder() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
-  const { user, can } = useAuth();
+  const { can } = useAuth();
   const { t } = useI18n();
 
-  const [draft, setDraft, clearDraft] = useDraft('new-invoice', {
+  const [draft, setDraft, clearDraft] = useDraft('new-sales-order', {
     customer_id: params.get('customer') ?? '',
     warehouse_id: '',
-    invoice_date: today(),
+    order_date: today(),
+    required_date: '',
+    customer_po_no: '',
     payment_type: 'credit' as 'credit' | 'cash',
+    is_backorder_allowed: true,
     notes: '',
     lines: [emptyLine()],
   });
 
   const [customers, setCustomers] = useState<Array<{ id: number; code: string; name: string }>>([]);
   const [warehouses, setWarehouses] = useState<Array<{ id: number; name: string; type: string }>>([]);
-  const { itemQuery, setItemQuery, itemResults, activeLine, setActiveLine, reset: resetItemSearch } = useItemSearch();
   const [credit, setCredit] = useState<Record<string, string> | null>(null);
   const [error, setError] = useState<ApiError | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [touched, setTouched] = useState(false);
-  // فاتورة صادرة عن إذن تسليم: الإذن هو مالك حركة المخزون، والفاتورة لا تخصمها ثانيةً
-  const [source, setSource] = useState<{
-    delivery_note_id: number;
-    delivery_no: string;
-    sales_order_id: number | null;
-    lineLinks: Record<string, { delivery_note_line_id: number; sales_order_line_id: number | null }>;
-  } | null>(null);
+  const [approveNow, setApproveNow] = useState(false);
+
+  const { itemQuery, setItemQuery, itemResults, activeLine, setActiveLine, reset: resetItemSearch } = useItemSearch();
 
   const dirty = draft.lines.some((l) => l.item_id !== '') || draft.customer_id !== '';
   useUnsavedGuard(dirty && !submitting);
@@ -45,84 +43,6 @@ export default function NewInvoice() {
       .then(({ data }) => setCustomers(data.data))
       .catch(() => undefined);
 
-    void api.get('/stock/balances', { params: { per_page: 1 } }).catch(() => undefined);
-
-    // المخازن المتاحة تُشتق من الأرصدة المسموح بها للمستخدم
-    void api.get('/stock/buckets').catch(() => undefined);
-
-    void api.get('/items', { params: { per_page: 1 } }).catch(() => undefined);
-  }, []);
-
-  // ملء الفاتورة من إذن تسليم مؤكَّد: الكميات هي المُسلَّمة فعلًا لا المحمَّلة
-  useEffect(() => {
-    const noteId = params.get('delivery_note_id');
-    if (!noteId) return;
-
-    let cancelled = false;
-
-    void (async () => {
-      try {
-        const { data } = await api.get(`/delivery-notes/${noteId}`);
-        const note = data.data;
-        if (cancelled) return;
-
-        const links: Record<string, { delivery_note_line_id: number; sales_order_line_id: number | null }> = {};
-        const lines = [];
-
-        for (const dl of note.lines ?? []) {
-          const deliveredBase = Number(dl.delivered_qty_base);
-          if (!(deliveredBase > 0)) continue;
-
-          const factor = Number(dl.uom_factor) || 1;
-          const resolved = await resolveItemForLine(dl.item_id, note.customer_id);
-          const line = {
-            ...emptyLine(),
-            item_id: dl.item_id,
-            item_label: `${dl.item?.code ?? ''} — ${dl.item?.name_ar ?? ''}`.trim(),
-            uom_options: resolved.uom_options,
-            uom_id: dl.uom_id,
-            unit_price: resolved.unit_price,
-            qty_uom: String(deliveredBase / factor),
-          };
-          links[line.key] = {
-            delivery_note_line_id: dl.id,
-            sales_order_line_id: dl.sales_order_line_id ?? null,
-          };
-          lines.push(line);
-        }
-
-        if (cancelled || lines.length === 0) return;
-
-        setSource({
-          delivery_note_id: note.id,
-          delivery_no: note.delivery_no,
-          sales_order_id: note.sales_order_id ?? null,
-          lineLinks: links,
-        });
-
-        setDraft((d) => ({
-          ...d,
-          customer_id: String(note.customer_id),
-          warehouse_id: String(note.warehouse_id),
-          lines,
-        }));
-      } catch (e) {
-        if (!cancelled) setError(toApiError(e));
-      }
-    })();
-
-    return () => { cancelled = true; };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params.get('delivery_note_id')]);
-
-  useEffect(() => {
-    // مخزن المندوب الافتراضي هو سيارته
-    if (!draft.warehouse_id && user?.salesman?.warehouse_id) {
-      setDraft((d) => ({ ...d, warehouse_id: String(user.salesman!.warehouse_id) }));
-    }
-  }, [user, draft.warehouse_id, setDraft]);
-
-  useEffect(() => {
     void api.get('/stock/balances', { params: { per_page: 200 } })
       .then(({ data }) => {
         const map = new Map<number, { id: number; name: string; type: string }>();
@@ -134,19 +54,15 @@ export default function NewInvoice() {
       .catch(() => undefined);
   }, []);
 
+  // التعرض الائتماني يُقرأ من الخادم — نفس الحساب الذي سيرفض أو يقبل عند الاعتماد
   useEffect(() => {
     if (!draft.customer_id) { setCredit(null); return; }
-    void api.get(`/customers/${draft.customer_id}`)
-      .then(({ data }) => setCredit(data.data.credit))
+    void api.get('/sales-orders/credit-check', { params: { customer_id: draft.customer_id } })
+      .then(({ data }) => setCredit(data.data))
       .catch(() => setCredit(null));
   }, [draft.customer_id]);
 
   const totals = useMemo(() => draftTotals(draft.lines), [draft.lines]);
-
-  const overLimit =
-    draft.payment_type === 'credit' &&
-    credit &&
-    Number(credit.total_exposure) + Number(totals.total) > Number(credit.credit_limit);
 
   const validLines = draft.lines.filter((l) => l.item_id !== '' && Number(l.qty_uom) > 0);
 
@@ -154,6 +70,11 @@ export default function NewInvoice() {
   if (!draft.customer_id) problems.push(t('newInvoice.selectCustomer'));
   if (!draft.warehouse_id) problems.push(t('newInvoice.selectWarehouse'));
   if (validLines.length === 0) problems.push(t('newInvoice.needLine'));
+
+  const overLimit =
+    draft.payment_type === 'credit' &&
+    credit &&
+    Number(credit.total_exposure) + Number(totals.total) > Number(credit.credit_limit);
 
   const selectItem = async (lineKey: string, item: Record<string, any>) => {
     const resolved = await resolveItemForLine(item.id, draft.customer_id);
@@ -178,15 +99,16 @@ export default function NewInvoice() {
     setError(null);
 
     try {
-      const { data } = await api.post('/sales-invoices', {
+      const { data } = await api.post('/sales-orders', {
         customer_id: Number(draft.customer_id),
         warehouse_id: Number(draft.warehouse_id),
-        invoice_date: draft.invoice_date,
+        order_date: draft.order_date,
+        required_date: draft.required_date || undefined,
+        customer_po_no: draft.customer_po_no || undefined,
         payment_type: draft.payment_type,
-        channel: user?.salesman ? 'van_sale' : 'counter',
+        is_backorder_allowed: draft.is_backorder_allowed,
         notes: draft.notes || undefined,
-        delivery_note_id: source?.delivery_note_id,
-        sales_order_id: source?.sales_order_id ?? undefined,
+        approve: approveNow || undefined,
         lines: validLines.map((l) => ({
           item_id: Number(l.item_id),
           uom_id: Number(l.uom_id),
@@ -194,12 +116,11 @@ export default function NewInvoice() {
           unit_price: l.is_free ? '0' : l.unit_price,
           discount_pct: l.discount_pct || '0',
           is_free: l.is_free,
-          ...(source?.lineLinks[l.key] ?? {}),
         })),
       });
 
       clearDraft();
-      navigate(`/sales-invoices/${data.data.id}`);
+      navigate(`/sales-orders/${data.data.id}`);
     } catch (e) {
       setError(toApiError(e));
     } finally {
@@ -207,28 +128,27 @@ export default function NewInvoice() {
     }
   };
 
+  const inputStyle = { width: '100%', padding: '5px 8px', border: '1px solid var(--border-strong)', borderRadius: 6 };
+
   return (
     <div>
       <div className="page-head">
         <div>
-          <h1>{t('newInvoice.title')}</h1>
-          <div className="desc">{t('newInvoice.desc')}</div>
+          <h1>{t('so.title')}</h1>
+          <div className="desc">{t('so.desc')}</div>
         </div>
         <div className="actions">
-          <Button onClick={() => { clearDraft(); setDraft({ customer_id: '', warehouse_id: '', invoice_date: today(), payment_type: 'credit', notes: '', lines: [emptyLine()] }); }}>
-            {t('newInvoice.clearDraft')}
-          </Button>
           <Button
             variant="primary"
             loading={submitting}
             disabledReason={
-              !can('sales_invoice.create') ? t('invoices.noPermissionCreate')
+              !can('sales_order.create') ? t('so.noPermissionCreate')
                 : problems.length > 0 && touched ? problems[0]
                   : null
             }
             onClick={() => void submit()}
           >
-            {t('newInvoice.savePost')}
+            {approveNow ? t('so.approve') : t('common.save')}
           </Button>
         </div>
       </div>
@@ -246,18 +166,10 @@ export default function NewInvoice() {
         </Alert>
       )}
 
-      {source && (
-        <Alert tone="info">
-          {t('newInvoice.fromDeliveryNote', { no: source.delivery_no })}
-        </Alert>
-      )}
-
       {touched && problems.length > 0 && (
         <Alert tone="warn">
           <div className="bold mb-2">{t('newInvoice.completeFields')}</div>
-          <ul style={{ paddingInlineStart: 18 }}>
-            {problems.map((p) => <li key={p}>{p}</li>)}
-          </ul>
+          <ul style={{ paddingInlineStart: 18 }}>{problems.map((p) => <li key={p}>{p}</li>)}</ul>
         </Alert>
       )}
 
@@ -271,7 +183,7 @@ export default function NewInvoice() {
       )}
 
       <div className="card mb-4">
-        <div className="card-head"><h2>{t('newInvoice.invoiceData')}</h2></div>
+        <div className="card-head"><h2>{t('invoice.data')}</h2></div>
         <div className="card-body">
           <div className="form-row">
             <Field label={t('common.customer')} required error={touched && !draft.customer_id ? t('common.required') : undefined}>
@@ -284,17 +196,19 @@ export default function NewInvoice() {
             <Field label={t('newInvoice.warehouseLabel')} required error={touched && !draft.warehouse_id ? t('common.required') : undefined}>
               <select value={draft.warehouse_id} onChange={(e) => setDraft((d) => ({ ...d, warehouse_id: e.target.value }))}>
                 <option value="">{t('newInvoice.choose')}</option>
-                {warehouses.map((w) => (
-                  <option key={w.id} value={w.id}>{w.name}{w.type === 'van' ? ` (${t('stock.van')})` : ''}</option>
-                ))}
+                {warehouses.map((w) => <option key={w.id} value={w.id}>{w.name}</option>)}
               </select>
             </Field>
 
-            <Field label={t('common.date')} required>
-              <input type="date" value={draft.invoice_date} onChange={(e) => setDraft((d) => ({ ...d, invoice_date: e.target.value }))} />
+            <Field label={t('so.orderDate')} required>
+              <input type="date" value={draft.order_date} onChange={(e) => setDraft((d) => ({ ...d, order_date: e.target.value }))} />
             </Field>
 
-            <Field label={t('invoice.paymentType')} required help={draft.payment_type === 'credit' ? t('newInvoice.creditHint') : t('newInvoice.cashHint')}>
+            <Field label={t('so.requiredDate')}>
+              <input type="date" value={draft.required_date} onChange={(e) => setDraft((d) => ({ ...d, required_date: e.target.value }))} />
+            </Field>
+
+            <Field label={t('invoice.paymentType')} required>
               <select value={draft.payment_type} onChange={(e) => setDraft((d) => ({ ...d, payment_type: e.target.value as 'credit' | 'cash' }))}>
                 <option value="credit">{t('invoices.credit')}</option>
                 <option value="cash">{t('invoices.cash')}</option>
@@ -302,13 +216,36 @@ export default function NewInvoice() {
             </Field>
           </div>
 
+          <div className="row mt-2" style={{ gap: 18, flexWrap: 'wrap' }}>
+            <label className="row tight small">
+              <input
+                type="checkbox"
+                checked={draft.is_backorder_allowed}
+                onChange={(e) => setDraft((d) => ({ ...d, is_backorder_allowed: e.target.checked }))}
+              />
+              {t('so.backorderAllowed')}
+            </label>
+
+            <label className="row tight small">
+              <input
+                type="checkbox"
+                checked={approveNow}
+                disabled={!can('sales_order.approve')}
+                onChange={(e) => setApproveNow(e.target.checked)}
+              />
+              {t('so.approve')} — <span className="muted">{t('so.approveHint')}</span>
+            </label>
+          </div>
+
           {credit && (
-            <div className="row small muted mt-2">
-              <span>{t('customers.creditLimit')}: <span className="num">{moneyPlain(credit.credit_limit)}</span></span>
+            <div className="row small muted mt-2" style={{ flexWrap: 'wrap' }}>
+              <span>{t('so.creditLimit')}: <span className="num">{moneyPlain(credit.credit_limit)}</span></span>
               <span>·</span>
-              <span>{t('newInvoice.currentExposure')}: <span className="num">{moneyPlain(credit.total_exposure)}</span></span>
+              <span>{t('so.creditExposure')}: <span className="num">{moneyPlain(credit.total_exposure)}</span></span>
               <span>·</span>
-              <span>{t('newInvoice.available')}: <span className="num bold">{moneyPlain(credit.available_credit)}</span></span>
+              <span>{t('so.uninvoicedOrders')}: <span className="num">{moneyPlain(credit.approved_uninvoiced_orders)}</span></span>
+              <span>·</span>
+              <span>{t('so.availableCredit')}: <span className="num bold">{moneyPlain(credit.available_credit)}</span></span>
             </div>
           )}
         </div>
@@ -318,7 +255,9 @@ export default function NewInvoice() {
         <div className="card-head">
           <h2>{t('invoice.lines')}</h2>
           <div className="spacer" />
-          <Button size="sm" onClick={() => setDraft((d) => ({ ...d, lines: [...d.lines, emptyLine()] }))}>{t('newInvoice.addLine')}</Button>
+          <Button size="sm" onClick={() => setDraft((d) => ({ ...d, lines: [...d.lines, emptyLine()] }))}>
+            {t('newInvoice.addLine')}
+          </Button>
         </div>
 
         <div className="table-wrap">
@@ -361,7 +300,7 @@ export default function NewInvoice() {
                             value={activeLine === line.key ? itemQuery : ''}
                             onFocus={() => setActiveLine(line.key)}
                             onChange={(e) => setItemQuery(e.target.value)}
-                            style={{ width: '100%', padding: '5px 8px', border: '1px solid var(--border-strong)', borderRadius: 6 }}
+                            style={inputStyle}
                           />
                           {activeLine === line.key && itemResults.length > 0 && (
                             <div className="search-results" style={{ insetInlineEnd: 'auto', insetInlineStart: 0, width: 300 }}>
@@ -382,10 +321,9 @@ export default function NewInvoice() {
                         value={line.uom_id}
                         disabled={line.uom_options.length === 0}
                         onChange={(e) => setDraft((d) => ({
-                          ...d,
-                          lines: d.lines.map((l) => (l.key === line.key ? { ...l, uom_id: Number(e.target.value) } : l)),
+                          ...d, lines: d.lines.map((l) => (l.key === line.key ? { ...l, uom_id: Number(e.target.value) } : l)),
                         }))}
-                        style={{ width: '100%', padding: '5px 8px', border: '1px solid var(--border-strong)', borderRadius: 6 }}
+                        style={inputStyle}
                       >
                         {line.uom_options.length === 0 && <option value="">—</option>}
                         {line.uom_options.map((u) => <option key={u.id} value={u.id}>{u.label} ×{u.factor}</option>)}
@@ -398,7 +336,7 @@ export default function NewInvoice() {
                         onChange={(e) => setDraft((d) => ({
                           ...d, lines: d.lines.map((l) => (l.key === line.key ? { ...l, qty_uom: e.target.value } : l)),
                         }))}
-                        style={{ width: '100%', padding: '5px 8px', border: '1px solid var(--border-strong)', borderRadius: 6, textAlign: 'end' }}
+                        style={{ ...inputStyle, textAlign: 'end' }}
                       />
                     </td>
 
@@ -408,7 +346,7 @@ export default function NewInvoice() {
                         onChange={(e) => setDraft((d) => ({
                           ...d, lines: d.lines.map((l) => (l.key === line.key ? { ...l, unit_price: e.target.value } : l)),
                         }))}
-                        style={{ width: '100%', padding: '5px 8px', border: '1px solid var(--border-strong)', borderRadius: 6, textAlign: 'end' }}
+                        style={{ ...inputStyle, textAlign: 'end' }}
                       />
                     </td>
 
@@ -418,14 +356,13 @@ export default function NewInvoice() {
                         onChange={(e) => setDraft((d) => ({
                           ...d, lines: d.lines.map((l) => (l.key === line.key ? { ...l, discount_pct: e.target.value } : l)),
                         }))}
-                        style={{ width: '100%', padding: '5px 8px', border: '1px solid var(--border-strong)', borderRadius: 6, textAlign: 'end' }}
+                        style={{ ...inputStyle, textAlign: 'end' }}
                       />
                     </td>
 
                     <td className="center">
                       <input
                         type="checkbox" checked={line.is_free}
-                        title={t('newInvoice.freeHint')}
                         onChange={(e) => setDraft((d) => ({
                           ...d, lines: d.lines.map((l) => (l.key === line.key ? { ...l, is_free: e.target.checked } : l)),
                         }))}
@@ -434,12 +371,12 @@ export default function NewInvoice() {
 
                     <td className="n num bold">{net.toFixed(2)}</td>
 
-                    <td>
+                    <td className="center">
                       <button
                         className="btn btn-sm btn-ghost"
                         disabled={draft.lines.length === 1}
                         onClick={() => setDraft((d) => ({ ...d, lines: d.lines.filter((l) => l.key !== line.key) }))}
-                      >✕</button>
+                      >×</button>
                     </td>
                   </tr>
                 );
@@ -447,16 +384,13 @@ export default function NewInvoice() {
             </tbody>
           </table>
         </div>
-      </div>
 
-      <div className="card">
         <div className="card-body">
-          <div className="row" style={{ justifyContent: 'flex-start', gap: 32 }}>
-            <div><div className="small muted">{t('newInvoice.beforeDiscount')}</div><div className="num bold">{money(totals.subtotal)}</div></div>
-            <div><div className="small muted">{t('common.discount')}</div><div className="num bold">{money(totals.discount)}</div></div>
-            <div><div className="small muted">{t('newInvoice.net')}</div><div className="num bold" style={{ fontSize: 20 }}>{money(totals.total)}</div></div>
+          <div className="row" style={{ justifyContent: 'flex-end', gap: 24 }}>
+            <span className="muted">{t('invoice.subtotal')}: <span className="num">{totals.subtotal}</span></span>
+            <span className="muted">{t('common.discount')}: <span className="num">{totals.discount}</span></span>
+            <span className="bold">{t('common.total')}: <span className="num" style={{ fontSize: 18 }}>{totals.total}</span></span>
           </div>
-          <div className="tiny faint mt-3">{t('newInvoice.estimateNote')}</div>
         </div>
       </div>
     </div>

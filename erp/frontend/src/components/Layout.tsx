@@ -26,6 +26,8 @@ const NAV: NavGroup[] = [
     titleKey: 'nav.group.sales',
     items: [
       { path: '/customers', labelKey: 'nav.customers', icon: '◉', permissions: ['customer.view'] },
+      { path: '/sales-orders', labelKey: 'nav.salesOrders', icon: '▢', permissions: ['sales_order.view'] },
+      { path: '/delivery-notes', labelKey: 'nav.deliveryNotes', icon: '▧', permissions: ['delivery_note.view'] },
       { path: '/sales-invoices', labelKey: 'nav.invoices', icon: '▤', permissions: ['sales_invoice.view'] },
       { path: '/sales-invoices/new', labelKey: 'nav.newInvoice', icon: '＋', permissions: ['sales_invoice.create'] },
       { path: '/receipts', labelKey: 'nav.receipts', icon: '⛁', permissions: ['customer_receipt.view'] },

@@ -29,7 +29,11 @@ class PostingMatrix
             'supplier_payment' => ['ap', 'cash', 'bank', 'cheque_payable'],
             'landed_cost' => ['inventory', 'cogs', 'ap', 'accrued_expense'],
             'sales_invoice' => ['ar', 'revenue', 'tax_output', 'delivery_income', 'cash'],
-            'sales_invoice_cogs' => ['cogs', 'inventory'],
+            'sales_invoice_cogs' => ['cogs', 'inventory', 'delivered_not_invoiced'],
+            // إذن التسليم ينقل البضاعة من المخزون إلى «مسلّمة غير مفوترة»،
+            // ثم تنقلها الفاتورة من هناك إلى تكلفة المبيعات. بلا هذه الخطوة
+            // إما تُخصم التكلفة مرتين أو تبقى البضاعة في المخزون بعد خروجها.
+            'delivery_note' => ['inventory', 'delivered_not_invoiced'],
             'sales_return' => ['sales_returns', 'ar', 'tax_output', 'cash'],
             'sales_return_cogs' => ['inventory', 'cogs'],
             'customer_receipt' => ['ar', 'custody_cash', 'cash', 'bank', 'cheque_receivable'],

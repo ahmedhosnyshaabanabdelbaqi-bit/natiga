@@ -70,6 +70,11 @@ class DeliveryNote extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
+    public function journalEntry(): BelongsTo
+    {
+        return $this->belongsTo(JournalEntry::class, 'journal_entry_id');
+    }
+
     public function lines(): HasMany
     {
         return $this->hasMany(DeliveryNoteLine::class, 'delivery_note_id');

@@ -29,7 +29,7 @@
 | طلب الشراء وعروض الموردين ومقارنتها | `purchase_requests`, `supplier_quotes`, `purchase_orders` | الخدمات والشاشات |
 | مدفوعات الموردين ومرتجع المشتريات | `supplier_payments`, `purchase_returns` + التخصيصات | خدمات الترحيل |
 | التكاليف الإضافية (نقل/تخليص) | `landed_costs`, `landed_cost_allocations` | خدمة التوزيع والترحيل (دالة `Dec::allocate` جاهزة ومُختبَرة) |
-| عرض السعر وأمر البيع وإذن التسليم | `quotations`, `sales_orders`, `delivery_notes` بكل الحقول | خدمات الترحيل والشاشات |
+| عرض السعر | `quotations` | الخدمة والشاشة |
 | الجرد الفعلي (أعمى/دوري) | `inventory_counts` + `movement_during_count` | خدمة التجميد والعد والاعتماد |
 | محضر تسليم العهدة | `custody_handovers` | الخدمة والشاشة |
 | المستهدفات | `targets` | محرك الاحتساب والشاشة |

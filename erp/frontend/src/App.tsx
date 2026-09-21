@@ -15,6 +15,11 @@ import Stock from './pages/Stock';
 import SalesInvoices from './pages/SalesInvoices';
 import InvoiceDetail from './pages/InvoiceDetail';
 import NewInvoice from './pages/NewInvoice';
+import SalesOrders from './pages/SalesOrders';
+import SalesOrderDetail from './pages/SalesOrderDetail';
+import NewSalesOrder from './pages/NewSalesOrder';
+import DeliveryNotes from './pages/DeliveryNotes';
+import DeliveryNoteDetail from './pages/DeliveryNoteDetail';
 import DayClosure from './pages/DayClosure';
 import Commissions from './pages/Commissions';
 import SyncStatus from './pages/SyncStatus';
@@ -95,6 +100,13 @@ function Shell() {
         <Route path="/items" element={<Guard permission="item.view"><Items /></Guard>} />
         <Route path="/stock" element={<Guard permission="stock.view"><Stock /></Guard>} />
         <Route path="/transfers" element={<Guard permission="stock.view"><Transfers /></Guard>} />
+
+        <Route path="/sales-orders" element={<Guard permission="sales_order.view"><SalesOrders /></Guard>} />
+        <Route path="/sales-orders/new" element={<Guard permission="sales_order.create"><NewSalesOrder /></Guard>} />
+        <Route path="/sales-orders/:id" element={<Guard permission="sales_order.view"><SalesOrderDetail /></Guard>} />
+
+        <Route path="/delivery-notes" element={<Guard permission="delivery_note.view"><DeliveryNotes /></Guard>} />
+        <Route path="/delivery-notes/:id" element={<Guard permission="delivery_note.view"><DeliveryNoteDetail /></Guard>} />
 
         <Route path="/sales-invoices" element={<Guard permission="sales_invoice.view"><SalesInvoices /></Guard>} />
         <Route path="/sales-invoices/new" element={<Guard permission="sales_invoice.create"><NewInvoice /></Guard>} />

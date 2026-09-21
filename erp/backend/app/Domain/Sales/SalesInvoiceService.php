@@ -40,6 +40,7 @@ class SalesInvoiceService
         private readonly CreditService $credit,
         private readonly ReservationService $reservations,
         private readonly DocumentNumberService $numbers,
+        private readonly SalesOrderService $orders,
         private readonly AuditLogger $audit,
     ) {}
 
@@ -290,9 +291,16 @@ class SalesInvoiceService
             userId: $userId,
         );
 
-        // 2) قيد تكلفة المبيعات (فقط إذا كانت الفاتورة هي مالكة حركة المخزون)
+        // 2) قيد تكلفة المبيعات.
+        //    الفاتورة المالكة للمخزون تُخرج التكلفة من حساب المخزون مباشرة.
+        //    الفاتورة المرتبطة بإذن تسليم تُخرجها من «بضاعة مسلّمة غير مفوترة»،
+        //    لأن إذن التسليم سبق أن أخرجها من المخزون. بلا هذا التمييز إما
+        //    يُخصم المخزون مرتين أو تبقى تكلفة البضاعة المسلَّمة بلا ترحيل أبدًا.
         $cogsEntry = null;
-        if ($invoice->is_stock_owner && ! Dec::isZero($totalCost)) {
+        if (! Dec::isZero($totalCost)) {
+            $creditRole = $invoice->is_stock_owner ? 'inventory' : 'delivered_not_invoiced';
+            $creditLabel = $invoice->is_stock_owner ? 'إخراج من المخزون' : 'تسوية بضاعة مسلّمة غير مفوترة';
+
             $cogsEntry = $this->ledger->post(
                 companyId: $companyId,
                 entryDate: $invoice->invoice_date->toDateString(),
@@ -308,9 +316,11 @@ class SalesInvoiceService
                         'description' => 'تكلفة البضاعة المباعة',
                     ],
                     [
-                        'account_id' => $this->matrix->accountId($companyId, 'sales_invoice_cogs', 'inventory'),
+                        'account_id' => $this->matrix->accountId($companyId, 'sales_invoice_cogs', $creditRole),
                         'credit' => (string) Dec::round($totalCost, Dec::SCALE_MONEY),
-                        'description' => 'إخراج من المخزون',
+                        'partner_type' => $invoice->is_stock_owner ? null : 'customer',
+                        'partner_id' => $invoice->is_stock_owner ? null : (int) $invoice->customer_id,
+                        'description' => $creditLabel,
                     ],
                 ],
                 branchId: $invoice->branch_id,
@@ -318,9 +328,28 @@ class SalesInvoiceService
             );
         }
 
-        // استهلاك الحجوزات المرتبطة بالطلب
-        if ($invoice->sales_order_id) {
-            $this->reservations->consume('sales_order', (int) $invoice->sales_order_id);
+        // وسم إذن التسليم بأنه فُوتر، حتى لا يُفوتر مرتين ولا يُلغى بعد الفوترة
+        if ($invoice->delivery_note_id) {
+            DB::table('delivery_notes')
+                ->where('id', $invoice->delivery_note_id)
+                ->update(['is_invoiced' => true, 'updated_at' => now()]);
+        }
+
+        // استهلاك الحجوزات بمقدار المفوتر فقط، سطرًا بسطر.
+        // استهلاك حجوزات الأمر كلها عند أول فاتورة جزئية كان يحرّر بضاعة
+        // ما زالت مطلوبة لباقي الأمر. وإذا كانت البضاعة خرجت بإذن تسليم
+        // فالحجز استُهلك وقت الإرسال ولا يُستهلك ثانيةً.
+        if ($invoice->sales_order_id && $invoice->is_stock_owner) {
+            foreach ($invoice->lines as $line) {
+                if ($line->sales_order_line_id) {
+                    $this->reservations->consume(
+                        'sales_order',
+                        (int) $invoice->sales_order_id,
+                        (int) $line->sales_order_line_id,
+                        $line->qty_base,
+                    );
+                }
+            }
         }
 
         $invoice->status = 'posted';
@@ -336,7 +365,7 @@ class SalesInvoiceService
             'last_sale_date' => $invoice->invoice_date->toDateString(),
         ]);
 
-        $this->refreshOrderStatuses($invoice);
+        $this->refreshOrderStatuses($invoice, $userId);
 
         $this->audit->log('post', 'sales_invoice', (int) $invoice->id, $invoice->invoice_no, null, [
             'total_amount' => $invoice->total_amount,
@@ -403,6 +432,13 @@ class SalesInvoiceService
                 $this->ledger->reverse($invoice->cogsJournalEntry, $today, "إلغاء تكلفة الفاتورة: {$reason}", $userId);
             }
 
+            // الإذن يعود غير مفوتر حتى يمكن إصدار فاتورة صحيحة بدل الملغاة
+            if ($invoice->delivery_note_id) {
+                DB::table('delivery_notes')
+                    ->where('id', $invoice->delivery_note_id)
+                    ->update(['is_invoiced' => false, 'updated_at' => now()]);
+            }
+
             $invoice->status = 'cancelled';
             $invoice->cancelled_by = $userId;
             $invoice->cancelled_at = now();
@@ -457,29 +493,14 @@ class SalesInvoiceService
         ];
     }
 
-    private function refreshOrderStatuses(SalesInvoice $invoice): void
+    /** حالتا التسليم والفوترة تُحسبان في مكان واحد — SalesOrderService. */
+    private function refreshOrderStatuses(SalesInvoice $invoice, ?int $userId = null): void
     {
         if (! $invoice->sales_order_id) {
             return;
         }
 
-        $lines = DB::table('sales_order_lines')->where('sales_order_id', $invoice->sales_order_id)->get();
-        $allInvoiced = true;
-        $anyInvoiced = false;
-
-        foreach ($lines as $line) {
-            if (Dec::gt($line->invoiced_qty_base, 0)) {
-                $anyInvoiced = true;
-            }
-            if (Dec::lt($line->invoiced_qty_base, $line->qty_base)) {
-                $allInvoiced = false;
-            }
-        }
-
-        DB::table('sales_orders')->where('id', $invoice->sales_order_id)->update([
-            'invoice_status' => $allInvoiced ? 'invoiced' : ($anyInvoiced ? 'partial' : 'pending'),
-            'updated_at' => now(),
-        ]);
+        $this->orders->refreshStatuses((int) $invoice->sales_order_id, $userId);
     }
 
     private function uomFactor(int $itemId, int $uomId): \Brick\Math\BigDecimal

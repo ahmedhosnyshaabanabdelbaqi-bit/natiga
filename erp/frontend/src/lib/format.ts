@@ -103,6 +103,10 @@ export function statusOf(key: string | null | undefined): { label: string; tone:
     conflict: 'danger', processing: 'warn', estimated: 'warn', earned: 'success',
     settled: 'info', available: 'success', inspection: 'warn', quarantine: 'warn',
     damaged: 'danger', in_transit: 'info',
+    // أمر البيع وإذن التسليم
+    pending: '', partial: 'warn', delivered: 'success', partially_delivered: 'warn',
+    out_for_delivery: 'info', failed: 'danger', rescheduled: 'warn',
+    invoiced: 'success', unpaid: 'warn',
   };
 
   if (!(key in tones)) return { label: key, tone: '' };
