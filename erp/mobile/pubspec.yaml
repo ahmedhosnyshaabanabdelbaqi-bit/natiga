@@ -1,0 +1,47 @@
+name: fayad_field
+description: تطبيق مندوب التوزيع — نظام محمد فياض
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.5.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # قاعدة بيانات محلية مشفرة
+  sqflite_sqlcipher: ^3.1.0
+  path: ^1.9.0
+  path_provider: ^2.1.4
+
+  # تخزين آمن لمفتاح التشفير والرمز
+  flutter_secure_storage: ^9.2.2
+
+  # الشبكة
+  dio: ^5.7.0
+  connectivity_plus: ^6.0.5
+
+  # الحالة
+  provider: ^6.1.2
+
+  # معرّفات فريدة للعمليات
+  uuid: ^4.5.1
+
+  # الموقع ومسح الباركود
+  geolocator: ^13.0.1
+  mobile_scanner: ^5.2.3
+
+  intl: ^0.19.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
