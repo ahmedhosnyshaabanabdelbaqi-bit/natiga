@@ -28,6 +28,11 @@ erp/mobile/.flutter-plugins*
 erp/mobile/android/.gradle/
 erp/mobile/ios/Pods/
 
+# Results site (pre-existing project) — generated at runtime, not source
+/node_modules/
+/package-lock.json
+/natiga.db
+
 # General
 .DS_Store
 *.log
