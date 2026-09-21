@@ -1,0 +1,16 @@
+node_modules/
+natiga.db
+erp/backend/vendor/
+erp/backend/node_modules/
+erp/backend/.env
+erp/backend/storage/*.key
+erp/backend/storage/logs/*.log
+erp/backend/storage/framework/cache/data/*
+erp/backend/storage/framework/sessions/*
+erp/backend/storage/framework/views/*
+erp/backend/public/storage
+erp/frontend/node_modules/
+erp/frontend/dist/
+erp/mobile/build/
+erp/mobile/.dart_tool/
+.DS_Store
