@@ -1,0 +1,42 @@
+name: eg_distribution_rep
+description: تطبيق مندوب المبيعات — عمل ميداني مع دعم العمل دون اتصال.
+publish_to: none
+version: 0.1.0+1
+
+environment:
+  sdk: ">=3.5.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # Local store. sqflite_sqlcipher encrypts the database at rest, because a
+  # rep's phone holds customer balances and prices.
+  sqflite_sqlcipher: ^3.1.0+1
+  path: ^1.9.0
+  path_provider: ^2.1.4
+
+  # Networking and secrets.
+  dio: ^5.7.0
+  flutter_secure_storage: ^9.2.2
+
+  # State.
+  provider: ^6.1.2
+
+  # Field hardware.
+  mobile_scanner: ^5.2.3
+  geolocator: ^13.0.1
+  connectivity_plus: ^6.0.5
+
+  uuid: ^4.5.1
+  intl: ^0.19.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
