@@ -2,24 +2,32 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Company;
+use App\Support\CompanyContext;
 use Illuminate\Database\Seeder;
 
+/**
+ * Baseline install: permissions, company, chart of accounts, roles and an owner.
+ *
+ * Demo trading data lives in DemoDataSeeder and is NOT run here, so a
+ * production install never gets fictional invoices in its ledger.
+ */
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $this->call([
+            PermissionSeeder::class,
+            CompanySeeder::class,
+        ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        CompanyContext::set(Company::query()->value('id'));
+
+        $this->call([
+            ChartOfAccountsSeeder::class,
+            RoleSeeder::class,
+            CatalogSeeder::class,
+            OwnerSeeder::class,
         ]);
     }
 }
