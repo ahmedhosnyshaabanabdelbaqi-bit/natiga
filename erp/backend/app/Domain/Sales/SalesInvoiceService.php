@@ -189,7 +189,7 @@ class SalesInvoiceService
 
         foreach ($invoice->lines as $line) {
             if ($invoice->is_stock_owner) {
-                $result = $this->stock->issue([
+                $result = $this->stock->issueAllocated([
                     'company_id' => $companyId,
                     'item_id' => (int) $line->item_id,
                     'warehouse_id' => (int) $invoice->warehouse_id,
@@ -217,6 +217,12 @@ class SalesInvoiceService
 
             $line->unit_cost = $result['unit_cost'];
             $line->total_cost = $result['total_cost'];
+
+            // حفظ الدفعة المصروفة عند تغطية السطر من دفعة واحدة، لربط المرتجع بها
+            if (empty($line->batch_id) && isset($result['allocation']) && count($result['allocation']) === 1) {
+                $line->batch_id = $result['allocation'][0]['batch_id'];
+            }
+
             $line->save();
 
             $totalCost = Dec::add($totalCost, $result['total_cost']);

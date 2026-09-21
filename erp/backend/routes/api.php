@@ -110,6 +110,9 @@ Route::prefix('v1')->group(function () {
         Route::post('expenses', [FieldOpsController::class, 'storeExpense'])->middleware('permission:expense.create');
         Route::post('expenses/{id}/approve', [FieldOpsController::class, 'approveExpense'])->middleware('permission:expense.approve');
 
+        // --- المناديب ---
+        Route::get('salesmen', [FieldOpsController::class, 'salesmen']);
+
         // --- إقفال اليوم والعمولات ---
         Route::get('day-closures', [FieldOpsController::class, 'dayClosure'])->middleware('permission:day_closure.view');
         Route::post('day-closures/{id}/close', [FieldOpsController::class, 'closeDay'])->middleware('permission:day_closure.close');

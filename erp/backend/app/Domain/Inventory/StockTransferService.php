@@ -94,7 +94,7 @@ class StockTransferService
         $transitWarehouseId = $this->transitWarehouseId((int) $transfer->company_id, $transfer->branch_id);
 
         foreach ($transfer->lines as $line) {
-            $this->stock->transfer(
+            $parts = $this->stock->transferAllocated(
                 [
                     'company_id' => (int) $transfer->company_id,
                     'item_id' => (int) $line->item_id,
@@ -115,6 +115,12 @@ class StockTransferService
                 toWarehouseId: $transitWarehouseId,
                 toBucket: StockLedger::BUCKET_IN_TRANSIT,
             );
+
+            // إذا غُطّي السطر من دفعة واحدة، تُثبت على السطر ليُستلم بها
+            if (empty($line->batch_id) && count($parts) === 1) {
+                $line->batch_id = $parts[0]['batch_id'];
+                $line->save();
+            }
         }
 
         $transfer->status = 'sent';
@@ -174,7 +180,7 @@ class StockTransferService
                 );
             }
 
-            $this->stock->transfer(
+            $this->stock->transferAllocated(
                 [
                     'company_id' => (int) $transfer->company_id,
                     'item_id' => (int) $line->item_id,

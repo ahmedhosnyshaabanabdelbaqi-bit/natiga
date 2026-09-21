@@ -205,12 +205,43 @@ class FieldOpsController extends ApiController
         return $this->ok($return->load('lines'));
     }
 
+    /** قائمة المناديب ضمن نطاق المستخدم — لاختيار المندوب في شاشات المشرف والحسابات. */
+    public function salesmen(Request $request): JsonResponse
+    {
+        $user = $request->user();
+
+        $query = \App\Models\Salesman::query()
+            ->where('company_id', $this->companyId($request))
+            ->where('is_active', true);
+
+        // المندوب يرى نفسه فقط
+        if (! $user->hasAnyPermission(['salesman.view', 'day_closure.approve', 'commission.configure'])) {
+            $own = $user->salesmanId();
+            $query->when($own !== null, fn ($q) => $q->where('id', $own), fn ($q) => $q->whereRaw('1 = 0'));
+        }
+
+        $branchScope = $user->scopeIds('branch');
+        if ($branchScope !== [] && ! $user->is_super_admin) {
+            $query->whereIn('branch_id', $branchScope);
+        }
+
+        return $this->ok(
+            $query->orderBy('name')->get(['id', 'code', 'name', 'primary_role', 'warehouse_id', 'supervisor_id'])
+        );
+    }
+
     public function dayClosure(Request $request): JsonResponse
     {
-        $salesmanId = (int) ($request->input('salesman_id') ?: $request->user()->salesmanId());
+        $salesmanId = (int) ($request->input('salesman_id') ?: $request->user()->salesmanId() ?: 0);
         $date = $request->input('date', now()->toDateString());
 
-        abort_if($salesmanId === 0, 422, 'حدد المندوب.');
+        // بدل رسالة خطأ غامضة: نوضح أن اختيار المندوب مطلوب ونعيد القائمة المتاحة
+        if ($salesmanId === 0) {
+            return response()->json([
+                'error_code' => 'closure.salesman_required',
+                'message' => 'اختر المندوب لعرض إقفال يومه. حسابك غير مرتبط بمندوب.',
+            ], 422);
+        }
 
         $closure = $this->closures->openOrGet($this->companyId($request), $salesmanId, $date);
         $closure = $this->closures->calculate($closure);

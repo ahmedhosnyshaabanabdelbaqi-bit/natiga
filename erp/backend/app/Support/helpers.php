@@ -9,3 +9,11 @@ if (! function_exists('bcCompatAdd')) {
         return Dec::money(Dec::add($balance, Dec::sub($debit, $credit)));
     }
 }
+
+if (! function_exists('bcCompatMul')) {
+    /** ضرب عشري دقيق للاستخدام في البذور والتقارير. */
+    function bcCompatMul(mixed $a, mixed $b): string
+    {
+        return Dec::money(Dec::mul($a, $b));
+    }
+}

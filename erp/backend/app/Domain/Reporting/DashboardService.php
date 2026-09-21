@@ -67,6 +67,8 @@ class DashboardService
             'key' => $key,
             'label' => $definition['label'] ?? $key,
             'value' => $value,
+            // نوع التنسيق حتى تعرض الواجهة العملة والنسبة والعدد بشكل صحيح
+            'format' => $definition['format'] ?? 'money',
             'formula' => $definition['formula'] ?? null,
             'note' => $definition['note'] ?? null,
             'drilldown' => $drilldown,

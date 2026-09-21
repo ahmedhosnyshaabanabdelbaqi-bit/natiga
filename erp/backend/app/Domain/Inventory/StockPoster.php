@@ -19,7 +19,94 @@ class StockPoster
     public function __construct(
         private readonly StockLedger $ledger,
         private readonly CostEngine $costs,
+        private readonly BatchAllocator $allocator,
     ) {}
+
+    /**
+     * إخراج مع توزيع تلقائي على الدفعات بالأقرب انتهاءً عند عدم تحديد دفعة.
+     * يُرجع التكلفة الإجمالية وقائمة الدفعات المستهلكة لحفظها في المستند.
+     *
+     * @return array{unit_cost:string, total_cost:string, allocation:array<int, array{batch_id:int|null, qty:string}>}
+     */
+    public function issueAllocated(array $data): array
+    {
+        // دفعة محددة صراحةً تُستخدم كما هي
+        if (! empty($data['batch_id'])) {
+            $result = $this->issue($data);
+
+            return $result + ['allocation' => [['batch_id' => (int) $data['batch_id'], 'qty' => (string) Dec::qty($data['qty_base'])]]];
+        }
+
+        $allocation = $this->allocator->allocate(
+            companyId: (int) $data['company_id'],
+            itemId: (int) $data['item_id'],
+            warehouseId: (int) $data['warehouse_id'],
+            qtyBase: $data['qty_base'],
+            bucket: $data['status_bucket'] ?? StockLedger::BUCKET_AVAILABLE,
+            enforceExpiry: $data['enforce_expiry'] ?? true,
+        );
+
+        $totalCost = Dec::of(0);
+        $unitCost = '0';
+
+        foreach ($allocation as $part) {
+            $result = $this->issue(array_merge($data, [
+                'batch_id' => $part['batch_id'],
+                'qty_base' => $part['qty'],
+                // الصلاحية فُحصت أثناء التوزيع
+                'enforce_expiry' => false,
+            ]));
+
+            $unitCost = $result['unit_cost'];
+            $totalCost = Dec::add($totalCost, $result['total_cost']);
+        }
+
+        return [
+            'unit_cost' => $unitCost,
+            'total_cost' => (string) Dec::round($totalCost, Dec::SCALE_MONEY),
+            'allocation' => $allocation,
+        ];
+    }
+
+    /**
+     * تحويل مع توزيع تلقائي على الدفعات بالأقرب انتهاءً.
+     *
+     * @return array<int, array{batch_id:int|null, qty:string, unit_cost:string}>
+     */
+    public function transferAllocated(array $data, int $fromWarehouseId, int $toWarehouseId, string $toBucket = StockLedger::BUCKET_AVAILABLE): array
+    {
+        if (! empty($data['batch_id'])) {
+            $result = $this->transfer($data, $fromWarehouseId, $toWarehouseId, null, $toBucket);
+
+            return [['batch_id' => (int) $data['batch_id'], 'qty' => (string) Dec::qty($data['qty_base']), 'unit_cost' => $result['unit_cost']]];
+        }
+
+        $allocation = $this->allocator->allocate(
+            companyId: (int) $data['company_id'],
+            itemId: (int) $data['item_id'],
+            warehouseId: $fromWarehouseId,
+            qtyBase: $data['qty_base'],
+            bucket: $data['status_bucket'] ?? StockLedger::BUCKET_AVAILABLE,
+            // التحويل الداخلي لا يمنع نقل الدفعات القريبة من الانتهاء
+            enforceExpiry: false,
+        );
+
+        $parts = [];
+
+        foreach ($allocation as $part) {
+            $result = $this->transfer(
+                array_merge($data, ['batch_id' => $part['batch_id'], 'qty_base' => $part['qty']]),
+                $fromWarehouseId,
+                $toWarehouseId,
+                null,
+                $toBucket,
+            );
+
+            $parts[] = ['batch_id' => $part['batch_id'], 'qty' => $part['qty'], 'unit_cost' => $result['unit_cost']];
+        }
+
+        return $parts;
+    }
 
     /** @return array{unit_cost:string, total_cost:string} */
     public function receive(array $data): array
