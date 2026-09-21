@@ -234,20 +234,37 @@ sudo -u www-data php artisan up
 
 ```
 mohamed-fayad-erp/
-  backend/          الخادم — Laravel + مكتباته مثبتة في vendor/
-  frontend/dist/    الواجهة مبنية وجاهزة للرفع
-  frontend/src/     مصدر الواجهة (لمن يريد التعديل وإعادة البناء)
-  mobile/           مصدر تطبيق المندوب — Flutter (غير مبني)
-  docs/             الوثائق الكاملة
+  backend/          الخادم — Laravel + مكتباته مثبتة في vendor/ (لا يحتاج إنترنت)
+    app/            منطق النطاق: المخزون، المحاسبة، المبيعات، الميدان، المزامنة
+    database/       الترحيلات والبذور (دليل الحسابات، الصلاحيات، الأدوار)
+    routes/api.php  80 مسار API بصلاحياتها
+    tests/          68 اختبارًا آليًا
+    vendor/         مكتبات PHP جاهزة — لا تحتاج Composer على الخادم
+  frontend/
+    dist/           الواجهة مبنية وجاهزة — لا تحتاج Node على الخادم
+    src/            مصدر الواجهة (لمن يريد التعديل وإعادة البناء)
+  mobile/           مصدر تطبيق المندوب — Flutter (غير مبني، لا توجد APK)
+  docs/             الوثائق الكاملة (المتطلبات، القاموس، الترحيل، الصلاحيات، API، الاختبارات)
   deploy/
     install.sh                        سكربت التثبيت المباشر
     nginx/mohamed-fayad-erp.conf      إعداد Nginx
     systemd/erp-worker.service        خدمة الطوابير
     systemd/erp-scheduler.service     خدمة المهام المجدولة
+  git/
+    erp-history.bundle    نسخة Git كاملة بكل التاريخ — للرفع على مستودعك
+    README.md             كيفية استنساخها ورفعها
   docker-compose.yml
   .env.example
   DEPLOY.md         هذا الملف
   README.md
 ```
+
+**ما ليس داخل الأرشيف عمدًا:**
+
+| | لماذا |
+|---|---|
+| `frontend/node_modules` | 151 ميجا تُولَّد بـ`npm install`، والواجهة **مبنية سلفًا** في `dist/` فلا حاجة إليها للتشغيل |
+| ملف `.env` | يُولَّد عند التثبيت بمفاتيح خاصة بخادمك — لا توجد أسرار داخل الأرشيف |
+| حزمة Android | تطبيق المندوب لم يُبنَ (لا Flutter SDK) — المصدر فقط |
 
 للتفاصيل التشغيلية اليومية (النسخ، الإقفال، المزامنة): `docs/06-OPERATIONS.md`.
