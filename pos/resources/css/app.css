@@ -1,84 +1,322 @@
 @import 'tailwindcss';
+@import './fonts.css';
+
+/*
+|--------------------------------------------------------------------------
+| نظام التصميم
+|--------------------------------------------------------------------------
+| توكنز واحدة تحكم كل الشاشات. الوضع الليلي يعيد تعريف نفس المتغيرات، فتنقلب
+| الواجهة كلها دون أي فئة إضافية في المكوّنات.
+|
+| الخط والأيقونات محليّان: شاشة الكاشير يجب أن تعمل دون إنترنت.
+*/
 
 @theme {
     --font-sans: 'Cairo', 'Tajawal', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
-    --color-ink-50: #f8fafc;
-    --color-ink-100: #f1f5f9;
-    --color-ink-200: #e2e8f0;
-    --color-ink-300: #cbd5e1;
-    --color-ink-400: #94a3b8;
-    --color-ink-500: #64748b;
-    --color-ink-600: #475569;
-    --color-ink-700: #334155;
-    --color-ink-800: #1e293b;
-    --color-ink-900: #0f172a;
+    /* ---- الأسطح والنصوص (الوضع النهاري) ---- */
+    --color-surface-0: #f4f6f9;   /* خلفية الصفحة */
+    --color-surface-1: #ffffff;   /* البطاقات */
+    --color-surface-2: #eef1f6;   /* مناطق غائرة / رؤوس الجداول */
+    --color-surface-3: #e3e8ef;   /* تمرير */
+    --color-line: #e2e7ee;        /* حدود خفيفة */
+    --color-line-strong: #cbd3de; /* حدود واضحة */
 
-    --color-brand-500: #0d9488;
-    --color-brand-600: #0f766e;
-    --color-brand-700: #115e59;
+    --color-ink: #0d1626;         /* نص أساسي */
+    --color-ink-muted: #56637a;   /* نص ثانوي */
+    --color-ink-subtle: #8792a6;  /* نص خافت */
+    --color-ink-invert: #f7f9fc;  /* نص فوق داكن */
 
-    --color-cash-500: #16a34a;
-    --color-cash-600: #15803d;
-    --color-warn-500: #f59e0b;
-    --color-danger-500: #dc2626;
-    --color-danger-600: #b91c1c;
+    /* ---- الهوية ---- */
+    --color-brand: #0d8f80;
+    --color-brand-strong: #0a7469;
+    --color-brand-deep: #075a52;
+    --color-brand-soft: #e2f4f1;
+    --color-brand-ring: #0d8f8033;
+
+    /* ---- الدلالات ---- */
+    --color-cash: #15883f;
+    --color-cash-strong: #10702f;
+    --color-cash-soft: #e0f5e6;
+
+    --color-warn: #c2760a;
+    --color-warn-strong: #a26107;
+    --color-warn-soft: #fdf1da;
+
+    --color-danger: #cf2c2c;
+    --color-danger-strong: #ab2020;
+    --color-danger-soft: #fdeaea;
+
+    --color-info: #2461cd;
+    --color-info-soft: #e5edfb;
+
+    /* ---- الشريط الداكن (ثابت في الوضعين) ---- */
+    --color-chrome: #0c1524;
+    --color-chrome-2: #16233a;
+    --color-chrome-3: #23344f;
+
+    /* ---- أنصاف الأقطار ---- */
+    --radius-xs: 0.375rem;
+    --radius-sm: 0.5rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1rem;
+    --radius-xl: 1.25rem;
+
+    /* ---- الظلال: خفيفة ومتدرجة، بلا ثقل بصري ---- */
+    --shadow-xs: 0 1px 2px rgb(13 22 38 / 0.05);
+    --shadow-sm: 0 1px 3px rgb(13 22 38 / 0.07), 0 1px 2px rgb(13 22 38 / 0.04);
+    --shadow-md: 0 4px 12px rgb(13 22 38 / 0.08), 0 1px 3px rgb(13 22 38 / 0.04);
+    --shadow-lg: 0 12px 32px rgb(13 22 38 / 0.12), 0 2px 8px rgb(13 22 38 / 0.06);
+    --shadow-panel: 0 24px 64px rgb(13 22 38 / 0.28);
 }
 
-@font-face {
-    font-family: 'Cairo';
-    font-style: normal;
-    font-weight: 400 900;
-    font-display: swap;
-    src: local('Cairo');
+/* ---- الوضع الليلي: نفس التوكنز بقيم أخرى ---- */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) {
+        --color-surface-0: #0a111e;
+        --color-surface-1: #111c2e;
+        --color-surface-2: #17243a;
+        --color-surface-3: #1f2f49;
+        --color-line: #22314a;
+        --color-line-strong: #2f4260;
+
+        --color-ink: #e9eff8;
+        --color-ink-muted: #9fadc2;
+        --color-ink-subtle: #76859c;
+
+        --color-brand: #17a596;
+        --color-brand-strong: #13b5a3;
+        --color-brand-deep: #0e8578;
+        --color-brand-soft: #0f2f2c;
+        --color-brand-ring: #17a59644;
+
+        --color-cash: #2aa257;
+        --color-cash-strong: #35b866;
+        --color-cash-soft: #102d1b;
+
+        --color-warn: #d88c1c;
+        --color-warn-strong: #eba234;
+        --color-warn-soft: #30230c;
+
+        --color-danger: #e04a4a;
+        --color-danger-strong: #ef6060;
+        --color-danger-soft: #331515;
+
+        --color-info: #4a83e0;
+        --color-info-soft: #14223d;
+
+        --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.4);
+        --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.45);
+        --shadow-md: 0 4px 12px rgb(0 0 0 / 0.5);
+        --shadow-lg: 0 12px 32px rgb(0 0 0 / 0.55);
+        --shadow-panel: 0 24px 64px rgb(0 0 0 / 0.7);
+    }
+}
+
+:root[data-theme='dark'] {
+    --color-surface-0: #0a111e;
+    --color-surface-1: #111c2e;
+    --color-surface-2: #17243a;
+    --color-surface-3: #1f2f49;
+    --color-line: #22314a;
+    --color-line-strong: #2f4260;
+
+    --color-ink: #e9eff8;
+    --color-ink-muted: #9fadc2;
+    --color-ink-subtle: #76859c;
+
+    --color-brand: #17a596;
+    --color-brand-strong: #13b5a3;
+    --color-brand-deep: #0e8578;
+    --color-brand-soft: #0f2f2c;
+    --color-brand-ring: #17a59644;
+
+    --color-cash: #2aa257;
+    --color-cash-strong: #35b866;
+    --color-cash-soft: #102d1b;
+
+    --color-warn: #d88c1c;
+    --color-warn-strong: #eba234;
+    --color-warn-soft: #30230c;
+
+    --color-danger: #e04a4a;
+    --color-danger-strong: #ef6060;
+    --color-danger-soft: #331515;
+
+    --color-info: #4a83e0;
+    --color-info-soft: #14223d;
+
+    --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.4);
+    --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.45);
+    --shadow-md: 0 4px 12px rgb(0 0 0 / 0.5);
+    --shadow-lg: 0 12px 32px rgb(0 0 0 / 0.55);
+    --shadow-panel: 0 24px 64px rgb(0 0 0 / 0.7);
 }
 
 html {
     font-family: var(--font-sans);
+    -webkit-text-size-adjust: 100%;
 }
 
-/* The till runs full screen for hours: no bounce, no accidental text selection
-   when tapping fast, and no iOS zoom on input focus. */
-html, body, #app {
+html,
+body,
+#app {
     height: 100%;
     overscroll-behavior: none;
 }
 
 body {
     margin: 0;
-    background: var(--color-ink-100);
-    color: var(--color-ink-900);
+    background: var(--color-surface-0);
+    color: var(--color-ink);
     -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
 }
 
+/*
+| شاشة البيع تعمل ساعات متصلة: لا تحديد نص عند النقر السريع، ولا تكبير تلقائي
+| عند التركيز على حقل في الأجهزة اللوحية.
+*/
 .pos-screen {
     user-select: none;
 }
 
 .pos-screen input,
-.pos-screen textarea {
+.pos-screen textarea,
+.pos-screen select {
     user-select: text;
-    font-size: 16px; /* prevents mobile zoom-on-focus */
+    font-size: 16px;
 }
 
-/* Numeric columns read correctly in an RTL page when kept LTR. */
+/*
+| الأرقام تبقى LTR داخل صفحة RTL، وبعرض ثابت حتى لا ترقص الأعمدة عند التغيّر.
+| المحاذاة متروكة عمدًا لأدوات التخطيط: فرضها هنا كان يتغلّب على `text-center`
+| في لوحة الأرقام وخانة الكمية.
+*/
 .num {
     direction: ltr;
     unicode-bidi: plaintext;
     font-variant-numeric: tabular-nums;
-    text-align: end;
+    font-feature-settings: 'tnum' 1;
 }
 
-/* Deliberately restrained motion: no animation is allowed to sit between the
-   cashier and the next scan. */
+/*
+| الحركة مقيدة عمدًا: لا شيء يقف بين الكاشير والمسحة التالية.
+| المدة القصوى 140ms وتُلغى تمامًا عند تفضيل تقليل الحركة.
+*/
 @media (prefers-reduced-motion: no-preference) {
-    .fade-fast {
-        transition: opacity 120ms ease-out, background-color 120ms ease-out;
+    .t-fast {
+        transition:
+            background-color 120ms ease-out,
+            border-color 120ms ease-out,
+            color 120ms ease-out,
+            box-shadow 120ms ease-out,
+            opacity 120ms ease-out;
+    }
+
+    .t-pop {
+        transition: transform 140ms cubic-bezier(0.2, 0.8, 0.3, 1);
+    }
+
+    .t-pop:active {
+        transform: scale(0.97);
     }
 }
 
-.scrollbar-slim::-webkit-scrollbar { width: 10px; height: 10px; }
-.scrollbar-slim::-webkit-scrollbar-thumb {
-    background: var(--color-ink-300);
+/* ---- شريط التمرير ---- */
+.scroll-slim {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line-strong) transparent;
+}
+
+.scroll-slim::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.scroll-slim::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.scroll-slim::-webkit-scrollbar-thumb {
+    background: var(--color-line-strong);
     border-radius: 9999px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+}
+
+/* ---- حلقة تركيز واحدة في كل النظام ---- */
+:where(button, a, input, select, textarea, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+    border-radius: var(--radius-xs);
+}
+
+/* ---- أنماط مشتركة ---- */
+@utility card {
+    background-color: var(--color-surface-1);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+@utility field {
+    width: 100%;
+    background-color: var(--color-surface-1);
+    color: var(--color-ink);
+    border: 1px solid var(--color-line-strong);
+    border-radius: var(--radius-md);
+    padding: 0.625rem 0.875rem;
+    outline: none;
+}
+
+@utility field-lg {
+    width: 100%;
+    background-color: var(--color-surface-1);
+    color: var(--color-ink);
+    border: 1px solid var(--color-line-strong);
+    border-radius: var(--radius-md);
+    padding: 0.875rem 1rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    outline: none;
+}
+
+.field:focus,
+.field-lg:focus {
+    border-color: var(--color-brand);
+    box-shadow: 0 0 0 3px var(--color-brand-ring);
+}
+
+.field::placeholder,
+.field-lg::placeholder {
+    color: var(--color-ink-subtle);
+    font-weight: 400;
+}
+
+/* حقول داخل الشريط الداكن */
+.on-chrome .field,
+.on-chrome .field-lg {
+    background-color: var(--color-chrome-2);
+    border-color: var(--color-chrome-3);
+    color: var(--color-ink-invert);
+}
+
+/* ---- تذييل آمن على الأجهزة ذات الحواف المنحنية ---- */
+.safe-b {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+/* ---- قص السطور ---- */
+.clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+@media print {
+    .no-print {
+        display: none !important;
+    }
 }

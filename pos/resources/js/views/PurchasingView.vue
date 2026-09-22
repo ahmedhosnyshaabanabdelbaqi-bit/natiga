@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import * as L from '@/lib/labels';
+import AppIcon from '@/components/AppIcon.vue';
 import { onMounted, ref } from 'vue';
 import { http, toApiError, uuid } from '@/lib/api';
 import * as M from '@/lib/money';
@@ -33,7 +35,7 @@ const orderColumns = [
     { key: 'number', label: 'رقم الأمر' },
     { key: 'supplier.name', label: 'المورد' },
     { key: 'ordered_on', label: 'التاريخ' },
-    { key: 'status', label: 'الحالة' },
+    { key: 'status', label: 'الحالة', format: (r: Record<string, unknown>) => L.docStatus(r.status) },
     { key: 'grand_total', label: 'الإجمالي', numeric: true, format: (r: Record<string, unknown>) => M.formatMoney(String(r.grand_total)) },
 ];
 
@@ -114,73 +116,78 @@ async function submitReceipt() {
 <template>
     <div>
         <div class="mb-3 flex flex-wrap items-center gap-2">
-            <h1 class="text-xl font-black">المشتريات</h1>
-            <button class="rounded-lg px-3 py-2 text-sm font-bold" :class="tab === 'orders' ? 'bg-brand-600 text-white' : 'bg-white ring-1 ring-ink-300'" @click="tab = 'orders'">أوامر الشراء</button>
-            <button class="rounded-lg px-3 py-2 text-sm font-bold" :class="tab === 'receipts' ? 'bg-brand-600 text-white' : 'bg-white ring-1 ring-ink-300'" @click="tab = 'receipts'">الاستلامات</button>
-            <button v-if="auth.can('purchasing.manage')" class="rounded-lg px-3 py-2 text-sm font-bold" :class="tab === 'receive' ? 'bg-brand-600 text-white' : 'bg-white ring-1 ring-ink-300'" @click="tab = 'receive'">استلام بضاعة</button>
+            <h1 class="flex items-center gap-2 text-xl font-black">
+                <span class="grid size-8 place-items-center rounded-md bg-brand-soft text-brand-deep">
+                    <AppIcon name="truck" :size="17" />
+                </span>
+                المشتريات
+            </h1>
+            <button class="t-pop rounded-md px-3.5 py-2 text-sm font-bold t-fast" :class="tab === 'orders' ? 'bg-brand text-white' : 'bg-surface-2 text-ink-muted hover:bg-surface-3'" @click="tab = 'orders'">أوامر الشراء</button>
+            <button class="t-pop rounded-md px-3.5 py-2 text-sm font-bold t-fast" :class="tab === 'receipts' ? 'bg-brand text-white' : 'bg-surface-2 text-ink-muted hover:bg-surface-3'" @click="tab = 'receipts'">الاستلامات</button>
+            <button v-if="auth.can('purchasing.manage')" class="t-pop rounded-md px-3.5 py-2 text-sm font-bold t-fast" :class="tab === 'receive' ? 'bg-brand text-white' : 'bg-surface-2 text-ink-muted hover:bg-surface-3'" @click="tab = 'receive'">استلام بضاعة</button>
         </div>
 
-        <p class="mb-3 rounded-lg bg-ink-50 px-3 py-2 text-xs text-ink-600">
+        <p class="mb-3 rounded-lg bg-surface-2 px-3 py-2 text-xs text-ink-muted">
             أمر الشراء لا يزيد المخزون. الكمية والتكلفة تتغيران عند تسجيل الاستلام فقط.
         </p>
 
         <DataTable v-if="tab === 'orders'" url="/purchase-orders" :columns="orderColumns" />
         <DataTable v-else-if="tab === 'receipts'" url="/goods-receipts" :columns="receiptColumns" />
 
-        <div v-else class="rounded-2xl bg-white p-4 ring-1 ring-ink-200">
+        <div v-else class="card p-4">
             <div class="grid gap-3 sm:grid-cols-3">
                 <label class="text-sm font-bold">المورد
-                    <select v-model="receipt.supplier_id" class="mt-1 w-full rounded-lg border border-ink-300 px-3 py-2">
+                    <select v-model="receipt.supplier_id" class="mt-1 w-full rounded-lg border border-line-strong px-3 py-2">
                         <option :value="null">اختر</option>
                         <option v-for="supplier in suppliers" :key="supplier.id" :value="supplier.id">{{ supplier.name }}</option>
                     </select>
                 </label>
                 <label class="text-sm font-bold">المخزن
-                    <select v-model="receipt.warehouse_id" class="mt-1 w-full rounded-lg border border-ink-300 px-3 py-2">
+                    <select v-model="receipt.warehouse_id" class="mt-1 w-full rounded-lg border border-line-strong px-3 py-2">
                         <option v-for="warehouse in warehouses" :key="warehouse.id" :value="warehouse.id">{{ warehouse.name }}</option>
                     </select>
                 </label>
                 <label class="text-sm font-bold">مرجع فاتورة المورد
-                    <input v-model="receipt.supplier_reference" class="mt-1 w-full rounded-lg border border-ink-300 px-3 py-2" />
+                    <input v-model="receipt.supplier_reference" class="mt-1 w-full rounded-lg border border-line-strong px-3 py-2" />
                 </label>
             </div>
 
             <div class="relative mt-3">
-                <input v-model="search" placeholder="ابحث عن صنف لإضافته" class="w-full rounded-lg border border-ink-300 px-3 py-2" @input="onSearch" />
-                <ul v-if="suggestions.length" class="absolute z-10 mt-1 w-full overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-ink-200">
-                    <li v-for="item in suggestions" :key="item.variant_id" class="cursor-pointer px-3 py-2 text-sm hover:bg-ink-50" @click="addLine(item)">
+                <input v-model="search" placeholder="ابحث عن صنف لإضافته" class="w-full rounded-lg border border-line-strong px-3 py-2" @input="onSearch" />
+                <ul v-if="suggestions.length" class="absolute z-10 mt-1 w-full overflow-hidden rounded-lg bg-surface-1 shadow-lg ring-1 ring-line">
+                    <li v-for="item in suggestions" :key="item.variant_id" class="cursor-pointer px-3 py-2 text-sm hover:bg-surface-2" @click="addLine(item)">
                         {{ item.name }} — {{ item.sku }}
                     </li>
                 </ul>
             </div>
 
             <table v-if="receipt.lines.length" class="mt-3 w-full text-sm">
-                <thead class="text-xs text-ink-500">
+                <thead class="text-xs text-ink-subtle">
                     <tr><th class="text-right">الصنف</th><th class="text-right">الكمية</th><th class="text-right">تكلفة الوحدة</th><th class="text-right">رقم الدفعة</th><th class="text-right">الصلاحية</th><th></th></tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(line, i) in receipt.lines" :key="i" class="border-t border-ink-100">
+                    <tr v-for="(line, i) in receipt.lines" :key="i" class="border-t border-line">
                         <td class="py-1">{{ line.label }}</td>
-                        <td class="py-1"><input v-model="line.qty" class="num w-20 rounded border border-ink-300 px-2 py-1" /></td>
-                        <td class="py-1"><input v-model="line.unit_cost" class="num w-24 rounded border border-ink-300 px-2 py-1" /></td>
-                        <td class="py-1"><input v-model="line.batch_code" class="w-24 rounded border border-ink-300 px-2 py-1" /></td>
-                        <td class="py-1"><input v-model="line.expiry_date" type="date" class="rounded border border-ink-300 px-2 py-1" /></td>
-                        <td class="py-1"><button class="text-danger-600" @click="receipt.lines.splice(i, 1)">✕</button></td>
+                        <td class="py-1"><input v-model="line.qty" class="num w-20 rounded border border-line-strong px-2 py-1" /></td>
+                        <td class="py-1"><input v-model="line.unit_cost" class="num w-24 rounded border border-line-strong px-2 py-1" /></td>
+                        <td class="py-1"><input v-model="line.batch_code" class="w-24 rounded border border-line-strong px-2 py-1" /></td>
+                        <td class="py-1"><input v-model="line.expiry_date" type="date" class="rounded border border-line-strong px-2 py-1" /></td>
+                        <td class="py-1"><button class="text-danger" @click="receipt.lines.splice(i, 1)">✕</button></td>
                     </tr>
                 </tbody>
             </table>
 
             <button
-                class="mt-3 rounded-lg bg-cash-600 px-6 py-2.5 font-bold text-white disabled:opacity-40"
+                class="t-pop mt-3 rounded-lg bg-cash px-6 py-2.5 font-bold text-white t-fast hover:bg-cash-strong disabled:opacity-40"
                 :disabled="!receipt.supplier_id || !receipt.lines.length"
                 @click="submitReceipt"
             >
                 تسجيل الاستلام
             </button>
 
-            <p v-if="done" class="mt-2 rounded-lg bg-cash-600/10 px-3 py-2 text-sm font-bold text-cash-600">{{ done }}</p>
+            <p v-if="done" class="mt-2 rounded-lg bg-cash/10 px-3 py-2 text-sm font-bold text-cash">{{ done }}</p>
         </div>
 
-        <p v-if="error" class="mt-3 rounded-lg bg-danger-500/10 px-3 py-2 text-sm font-bold text-danger-600">{{ error.message }}</p>
+        <p v-if="error" class="mt-3 rounded-lg bg-danger/10 px-3 py-2 text-sm font-bold text-danger">{{ error.message }}</p>
     </div>
 </template>

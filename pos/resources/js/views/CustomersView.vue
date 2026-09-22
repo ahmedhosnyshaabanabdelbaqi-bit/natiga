@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AppIcon from '@/components/AppIcon.vue';
 import { computed, ref } from 'vue';
 import { http, toApiError, uuid } from '@/lib/api';
 import * as M from '@/lib/money';
@@ -69,57 +70,62 @@ async function collect() {
 <template>
     <div>
         <div class="mb-3 flex flex-wrap items-center gap-2">
-            <h1 class="text-xl font-black">العملاء</h1>
-            <input v-model="search" placeholder="بحث بالاسم أو الهاتف" class="rounded-lg border border-ink-300 px-3 py-2 text-sm" />
+            <h1 class="flex items-center gap-2 text-xl font-black">
+                <span class="grid size-8 place-items-center rounded-md bg-brand-soft text-brand-deep">
+                    <AppIcon name="users" :size="17" />
+                </span>
+                العملاء
+            </h1>
+            <input v-model="search" placeholder="بحث بالاسم أو الهاتف" class="rounded-lg border border-line-strong px-3 py-2 text-sm" />
             <label class="flex items-center gap-1 text-sm"><input v-model="withDebt" type="checkbox" /> أصحاب مديونية فقط</label>
         </div>
 
         <DataTable url="/customers" :params="params" :columns="columns" @select="select" />
 
         <section v-if="selected" class="mt-4 grid gap-3 lg:grid-cols-2">
-            <div class="rounded-2xl bg-white p-4 ring-1 ring-ink-200">
+            <div class="card p-4">
                 <h2 class="mb-2 font-black">{{ selected.name }}</h2>
-                <p class="num text-lg font-black" :class="M.compare(String(selected.balance), '0') > 0 ? 'text-danger-600' : 'text-cash-600'">
+                <p class="num text-lg font-black" :class="M.compare(String(selected.balance), '0') > 0 ? 'text-danger' : 'text-cash'">
                     المديونية: {{ M.formatMoney(selected.balance) }}
                 </p>
 
                 <h3 class="mt-3 mb-1 text-sm font-black">الفواتير المفتوحة</h3>
                 <ul class="space-y-1 text-sm">
                     <li v-for="invoice in openInvoices" :key="invoice.id" class="flex justify-between">
-                        <span>{{ invoice.number }} <span class="text-xs text-ink-500">استحقاق {{ invoice.due_date ?? '—' }}</span></span>
+                        <span>{{ invoice.number }} <span class="text-xs text-ink-subtle">استحقاق {{ invoice.due_date ?? '—' }}</span></span>
                         <span class="num font-bold">
                             {{ M.formatMoney(M.subtract(M.subtract(String(invoice.due_total), String(invoice.allocated)), String(invoice.credited))) }}
                         </span>
                     </li>
-                    <li v-if="!openInvoices.length" class="text-ink-400">لا توجد فواتير مفتوحة</li>
+                    <li v-if="!openInvoices.length" class="text-ink-subtle">لا توجد فواتير مفتوحة</li>
                 </ul>
 
-                <div v-if="auth.can('customers.collect')" class="mt-4 rounded-xl bg-ink-50 p-3">
+                <div v-if="auth.can('customers.collect')" class="mt-4 rounded-xl bg-surface-2 p-3">
                     <h3 class="mb-2 text-sm font-black">تحصيل</h3>
                     <div class="flex flex-wrap gap-2">
-                        <select v-model="methodId" class="rounded-lg border border-ink-300 px-3 py-2 text-sm">
+                        <select v-model="methodId" class="rounded-lg border border-line-strong px-3 py-2 text-sm">
                             <option v-for="method in methods" :key="method.id" :value="method.id">{{ method.name }}</option>
                         </select>
-                        <input v-model="collectAmount" class="num w-32 rounded-lg border border-ink-300 px-3 py-2 text-sm" />
-                        <button class="rounded-lg bg-cash-600 px-4 py-2 text-sm font-bold text-white" @click="collect">تسجيل التحصيل</button>
+                        <input v-model="collectAmount" class="num w-32 rounded-lg border border-line-strong px-3 py-2 text-sm" />
+                        <button class="t-pop rounded-md bg-cash px-4 py-2 text-sm font-bold text-white t-fast hover:bg-cash-strong" @click="collect">تسجيل التحصيل</button>
                     </div>
-                    <p class="mt-2 text-xs text-ink-500">
+                    <p class="mt-2 text-xs text-ink-subtle">
                         يُسجَّل التحصيل كحركة خزنة مستقلة عن المبيعات، فلا يُحتسب المبلغ مرتين.
                     </p>
                 </div>
 
-                <p v-if="done" class="mt-2 rounded-lg bg-cash-600/10 px-3 py-2 text-sm font-bold text-cash-600">{{ done }}</p>
-                <p v-if="error" class="mt-2 rounded-lg bg-danger-500/10 px-3 py-2 text-sm font-bold text-danger-600">{{ error.message }}</p>
+                <p v-if="done" class="mt-2 rounded-lg bg-cash/10 px-3 py-2 text-sm font-bold text-cash">{{ done }}</p>
+                <p v-if="error" class="mt-2 rounded-lg bg-danger/10 px-3 py-2 text-sm font-bold text-danger">{{ error.message }}</p>
             </div>
 
-            <div class="rounded-2xl bg-white p-4 ring-1 ring-ink-200">
+            <div class="card p-4">
                 <h3 class="mb-2 font-black">كشف الحساب</h3>
                 <table class="w-full text-sm">
-                    <thead class="text-xs text-ink-500">
+                    <thead class="text-xs text-ink-subtle">
                         <tr><th class="text-right">التاريخ</th><th class="text-right">البيان</th><th class="text-right">مدين</th><th class="text-right">دائن</th><th class="text-right">الرصيد</th></tr>
                     </thead>
                     <tbody>
-                        <tr v-for="entry in statement" :key="entry.id" class="border-t border-ink-100">
+                        <tr v-for="entry in statement" :key="entry.id" class="border-t border-line">
                             <td class="py-1">{{ entry.entry_date }}</td>
                             <td class="py-1">{{ entry.description }}</td>
                             <td class="num py-1">{{ M.formatMoney(entry.debit) }}</td>

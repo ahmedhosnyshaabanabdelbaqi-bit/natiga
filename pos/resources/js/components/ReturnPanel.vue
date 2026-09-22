@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import AppIcon from '@/components/AppIcon.vue';
+import PanelShell from '@/components/PanelShell.vue';
 import { http, toApiError, uuid } from '@/lib/api';
 import * as M from '@/lib/money';
 import type { ApiError } from '@/types';
@@ -115,115 +117,156 @@ async function submit() {
 </script>
 
 <template>
-    <div class="fixed inset-0 z-50 flex items-center justify-center bg-ink-900/60 p-4">
-        <div class="flex max-h-full w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-white">
-            <header class="flex items-center justify-between border-b border-ink-200 px-4 py-3">
-                <h2 class="text-lg font-black">مرتجع مبيعات</h2>
-                <button class="rounded-lg bg-ink-100 px-3 py-1.5 text-sm font-bold" @click="emit('close')">إغلاق</button>
-            </header>
+    <PanelShell title="مرتجع مبيعات" icon="undo" width="lg" @close="emit('close')">
+        <!-- ─── تأكيد بعد التنفيذ ─── -->
+        <div v-if="done" class="flex flex-col items-center gap-3 p-10 text-center">
+            <span class="grid size-16 place-items-center rounded-full bg-cash-soft text-cash">
+                <AppIcon name="check" :size="30" />
+            </span>
+            <p class="text-lg font-black text-cash">تم تسجيل المرتجع {{ done.number }}</p>
 
-            <div v-if="done" class="p-6 text-center">
-                <p class="text-xl font-black text-cash-600">تم تسجيل المرتجع {{ done.number }}</p>
-                <p v-if="!M.isZero(done.credit_applied)" class="mt-2 text-sm">
-                    تم تخفيض مديونية العميل بمقدار <b class="num">{{ M.formatMoney(done.credit_applied) }}</b>
+            <div class="mt-1 w-full max-w-sm space-y-1.5">
+                <p
+                    v-if="!M.isZero(done.credit_applied)"
+                    class="flex items-center justify-between rounded-md bg-surface-2 px-3 py-2 text-sm"
+                >
+                    <span>تخفيض مديونية العميل</span>
+                    <b class="num">{{ M.formatMoney(done.credit_applied) }}</b>
                 </p>
-                <p v-if="!M.isZero(done.refund_cash)" class="mt-1 text-lg font-black">
-                    المبلغ المرتجع نقدًا: <span class="num">{{ M.formatMoney(done.refund_cash) }}</span>
+                <p
+                    v-if="!M.isZero(done.refund_cash)"
+                    class="flex items-center justify-between rounded-md bg-warn-soft px-3 py-2.5"
+                >
+                    <span class="font-bold text-warn-strong">المبلغ المرتجع نقدًا</span>
+                    <b class="num text-xl font-black text-warn-strong">{{ M.formatMoney(done.refund_cash) }}</b>
                 </p>
-                <button class="mt-4 rounded-xl bg-brand-600 px-6 py-2.5 font-bold text-white" @click="emit('close')">تم</button>
             </div>
 
-            <template v-else>
-                <div class="flex gap-2 border-b border-ink-200 p-4">
+            <button class="mt-3 rounded-lg bg-brand px-8 py-2.5 font-bold text-white" @click="emit('close')">تم</button>
+        </div>
+
+        <template v-else>
+            <div class="flex shrink-0 gap-2 border-b border-line p-4">
+                <div class="relative flex-1">
+                    <AppIcon
+                        name="receipt"
+                        :size="17"
+                        class="pointer-events-none absolute end-3 top-1/2 -translate-y-1/2 text-ink-subtle"
+                    />
                     <input
                         v-model="query"
                         data-keep-focus="true"
                         placeholder="رقم الفاتورة أو امسح الباركود الموجود عليها"
-                        class="flex-1 rounded-xl border border-ink-300 px-4 py-2.5 outline-none focus:border-brand-600"
+                        class="field pe-10"
                         @keydown.enter.prevent="findSale"
                     />
-                    <button class="rounded-xl bg-brand-600 px-5 py-2.5 font-bold text-white" @click="findSale">بحث</button>
                 </div>
+                <button
+                    class="t-pop flex items-center gap-1.5 rounded-md bg-brand px-5 py-2.5 font-bold text-white t-fast hover:bg-brand-strong"
+                    @click="findSale"
+                >
+                    <AppIcon name="search" :size="16" />
+                    بحث
+                </button>
+            </div>
 
-                <div class="scrollbar-slim min-h-0 flex-1 overflow-y-auto p-4">
-                    <p v-if="loading" class="text-center text-ink-400">جارٍ التحميل…</p>
+            <div class="scroll-slim min-h-0 flex-1 overflow-y-auto p-4">
+                <p v-if="loading" class="py-10 text-center text-sm text-ink-subtle">جارٍ التحميل…</p>
 
-                    <template v-else-if="sale">
-                        <p class="mb-3 text-sm">
-                            فاتورة <b>{{ sale.number }}</b>
-                            <span v-if="sale.is_credit" class="mr-2 rounded bg-warn-500/20 px-2 py-0.5 text-xs font-bold text-warn-500">
-                                آجلة — المتبقي على العميل {{ M.formatMoney(outstanding) }}
-                            </span>
-                        </p>
+                <template v-else-if="sale">
+                    <div class="mb-3 flex flex-wrap items-center gap-2 text-sm">
+                        <span class="font-bold">فاتورة</span>
+                        <span class="num rounded-md bg-surface-2 px-2 py-1 font-extrabold">{{ sale.number }}</span>
+                        <span
+                            v-if="sale.is_credit"
+                            class="num rounded-md bg-warn-soft px-2 py-1 text-xs font-bold text-warn-strong"
+                        >
+                            آجلة — المتبقي على العميل {{ M.formatMoney(outstanding) }}
+                        </span>
+                    </div>
 
-                        <ul class="divide-y divide-ink-100 rounded-xl ring-1 ring-ink-200">
-                            <li v-for="line in lines" :key="line.sale_line_id" class="p-3">
-                                <label class="flex items-start gap-3">
-                                    <input
-                                        type="checkbox"
-                                        class="mt-1 h-4 w-4"
-                                        :checked="!!selection[line.sale_line_id]"
-                                        :disabled="M.compare(line.qty_returnable_base, '0') <= 0"
-                                        @change="toggle(line)"
-                                    />
-                                    <span class="min-w-0 flex-1">
-                                        <span class="block font-bold">{{ line.product_name }}</span>
-                                        <span class="block text-xs text-ink-500">
-                                            بيعت {{ M.formatQty(line.qty_sold) }} {{ line.unit_name }} ·
-                                            سبق إرجاع {{ M.formatQty(line.qty_returned_base) }} ·
-                                            متاح للإرجاع <b>{{ M.formatQty(line.qty_returnable_base) }}</b>
-                                        </span>
-                                        <span class="num block text-xs text-ink-600">
-                                            القيمة الفعلية للوحدة بعد الخصم: {{ M.formatMoney(line.effective_unit_total) }}
-                                        </span>
+                    <ul class="divide-y divide-line overflow-hidden rounded-lg border border-line">
+                        <li v-for="line in lines" :key="line.sale_line_id" class="bg-surface-1 p-3">
+                            <label class="flex items-start gap-3">
+                                <input
+                                    type="checkbox"
+                                    class="mt-1 size-4 accent-[var(--color-brand)]"
+                                    :checked="!!selection[line.sale_line_id]"
+                                    :disabled="M.compare(line.qty_returnable_base, '0') <= 0"
+                                    @change="toggle(line)"
+                                />
+                                <span class="min-w-0 flex-1">
+                                    <span class="block text-sm font-bold">{{ line.product_name }}</span>
+                                    <span class="mt-0.5 block text-[11px] text-ink-subtle">
+                                        بيعت <b class="num">{{ M.formatQty(line.qty_sold) }}</b> {{ line.unit_name }} ·
+                                        سبق إرجاع <b class="num">{{ M.formatQty(line.qty_returned_base) }}</b> ·
+                                        متاح للإرجاع
+                                        <b class="num text-ink">{{ M.formatQty(line.qty_returnable_base) }}</b>
                                     </span>
-                                </label>
-
-                                <div v-if="selection[line.sale_line_id]" class="mr-7 mt-2 flex flex-wrap items-center gap-2">
-                                    <input
-                                        v-model="selection[line.sale_line_id].qty"
-                                        data-keep-focus="true"
-                                        class="num w-24 rounded-lg border border-ink-300 px-2 py-1.5 text-sm"
-                                    />
-                                    <select v-model="selection[line.sale_line_id].disposition" class="rounded-lg border border-ink-300 px-2 py-1.5 text-sm">
-                                        <option value="resalable">صالح للبيع</option>
-                                        <option value="damaged">تالف</option>
-                                        <option value="inspection">يحتاج فحص</option>
-                                        <option value="returns_warehouse">إلى مخزن المرتجعات</option>
-                                    </select>
-                                    <span class="num text-sm font-bold">
-                                        = {{ M.formatMoney(M.multiply(selection[line.sale_line_id].qty, line.effective_unit_total)) }}
+                                    <!-- القيمة الفعلية بعد الخصم، لا سعر اليوم -->
+                                    <span class="num mt-0.5 block text-[11px] text-ink-muted">
+                                        القيمة الفعلية للوحدة بعد الخصم:
+                                        {{ M.formatMoney(line.effective_unit_total) }}
                                     </span>
-                                </div>
-                            </li>
-                        </ul>
+                                </span>
+                            </label>
 
-                        <input
-                            v-model="reason"
-                            data-keep-focus="true"
-                            placeholder="سبب المرتجع"
-                            class="mt-3 w-full rounded-xl border border-ink-300 px-3 py-2 text-sm"
-                        />
-                    </template>
+                            <div v-if="selection[line.sale_line_id]" class="me-7 mt-2.5 flex flex-wrap items-center gap-2">
+                                <input
+                                    v-model="selection[line.sale_line_id].qty"
+                                    data-keep-focus="true"
+                                    aria-label="الكمية المرتجعة"
+                                    class="num w-24 rounded-md border border-line-strong bg-surface-1 px-2 py-1.5 text-sm"
+                                />
+                                <select
+                                    v-model="selection[line.sale_line_id].disposition"
+                                    aria-label="مصير الصنف"
+                                    class="rounded-md border border-line-strong bg-surface-1 px-2 py-1.5 text-sm"
+                                >
+                                    <option value="resalable">صالح للبيع</option>
+                                    <option value="damaged">تالف</option>
+                                    <option value="inspection">يحتاج فحص</option>
+                                    <option value="returns_warehouse">إلى مخزن المرتجعات</option>
+                                </select>
+                                <span class="num text-sm font-extrabold">
+                                    = {{ M.formatMoney(M.multiply(selection[line.sale_line_id].qty, line.effective_unit_total)) }}
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
 
-                    <p v-else class="text-center text-ink-400">ابحث عن الفاتورة الأصلية للبدء</p>
+                    <input v-model="reason" data-keep-focus="true" placeholder="سبب المرتجع" class="field mt-3 text-sm" />
+                </template>
+
+                <div v-else class="flex flex-col items-center gap-3 py-12 text-center">
+                    <span class="grid size-14 place-items-center rounded-full bg-surface-2 text-ink-subtle">
+                        <AppIcon name="receipt" :size="26" />
+                    </span>
+                    <p class="text-sm text-ink-subtle">ابحث عن الفاتورة الأصلية للبدء</p>
                 </div>
+            </div>
 
-                <p v-if="error" class="border-t border-danger-500/30 bg-danger-500/10 px-4 py-2 text-sm font-bold text-danger-600">
-                    {{ error.message }}
-                </p>
+            <p
+                v-if="error"
+                class="flex shrink-0 items-center gap-2 border-t border-danger/25 bg-danger-soft px-4 py-2.5 text-sm font-bold text-danger"
+                role="alert"
+            >
+                <AppIcon name="alert" :size="16" />
+                {{ error.message }}
+            </p>
 
-                <footer v-if="sale" class="flex items-center gap-3 border-t border-ink-200 p-3">
-                    <span class="num text-lg font-black">قيمة المرتجع: {{ M.formatMoney(refundEstimate()) }}</span>
-                    <button
-                        class="mr-auto rounded-xl bg-danger-600 px-6 py-3 font-black text-white disabled:opacity-40"
-                        :disabled="loading || Object.keys(selection).length === 0"
-                        @click="submit"
-                    >
-                        تنفيذ المرتجع
-                    </button>
-                </footer>
-            </template>
-        </div>
-    </div>
+            <footer v-if="sale" class="safe-b flex shrink-0 items-center gap-3 border-t border-line bg-surface-2 p-3">
+                <span class="text-sm font-bold text-ink-muted">قيمة المرتجع</span>
+                <span class="num text-xl font-black">{{ M.formatMoney(refundEstimate()) }}</span>
+                <button
+                    class="t-pop mr-auto flex items-center gap-2 rounded-lg bg-danger px-6 py-3 font-black text-white t-fast hover:bg-danger-strong disabled:opacity-40"
+                    :disabled="loading || Object.keys(selection).length === 0"
+                    @click="submit"
+                >
+                    <AppIcon name="undo" :size="18" />
+                    تنفيذ المرتجع
+                </button>
+            </footer>
+        </template>
+    </PanelShell>
 </template>

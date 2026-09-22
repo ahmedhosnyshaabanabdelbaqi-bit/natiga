@@ -6,7 +6,9 @@ import * as M from '@/lib/money';
 import { useAuthStore } from '@/stores/auth';
 import { useCartStore } from '@/stores/cart';
 import { useConnectionStore } from '@/stores/connection';
+import { useThemeStore } from '@/stores/theme';
 import { findCachedBarcode } from '@/lib/offlineDb';
+import AppIcon from '@/components/AppIcon.vue';
 import ConnectionBanner from '@/components/ConnectionBanner.vue';
 import PaymentPanel from '@/components/PaymentPanel.vue';
 import HeldCartsPanel from '@/components/HeldCartsPanel.vue';
@@ -29,6 +31,7 @@ const router = useRouter();
 const auth = useAuthStore();
 const cart = useCartStore();
 const connection = useConnectionStore();
+const theme = useThemeStore();
 
 const boot = ref<PosBootstrap | null>(null);
 const scanInput = ref<HTMLInputElement | null>(null);
@@ -67,7 +70,8 @@ async function load() {
         boot.value = data;
         cart.configure(data.currency.cash_step, data.currency.scale);
         connection.serverReachable = true;
-        if (data.layout === 'grid_first') void runSearch('');
+        // حتى في وضع الباركود: المساحة المقابلة تعرض الأصناف بدل أن تبقى فارغة.
+        void runSearch('');
     } catch (e) {
         if (isNetworkError(e)) connection.serverReachable = false;
         else error.value = toApiError(e);
@@ -318,115 +322,254 @@ const money = (v: string | null | undefined) => M.formatMoney(v, boot.value?.cur
 </script>
 
 <template>
-    <div dir="rtl" class="pos-screen flex h-screen flex-col bg-ink-100 text-ink-900">
-        <!-- ===================== top bar ===================== -->
-        <header class="flex shrink-0 items-center gap-3 bg-ink-900 px-3 py-2 text-white">
-            <div class="flex items-center gap-2 text-sm font-bold">
-                <span class="rounded-lg bg-brand-600 px-2 py-1">{{ boot?.terminal?.name ?? 'كاشير' }}</span>
-                <span class="text-ink-300">{{ auth.user?.name }}</span>
-                <span v-if="boot?.shift" class="text-ink-400">وردية {{ boot.shift.number }}</span>
-                <span v-else class="rounded bg-danger-600 px-2 py-0.5 text-xs">لا توجد وردية</span>
+    <div dir="rtl" class="pos-screen flex h-screen flex-col bg-surface-0 text-ink">
+        <!-- ════════ الشريط العلوي ════════ -->
+        <header class="on-chrome flex shrink-0 items-center gap-3 bg-chrome px-3 py-2 text-ink-invert">
+            <div class="flex items-center gap-2">
+                <span class="grid size-9 place-items-center rounded-md bg-brand text-white">
+                    <AppIcon name="cart" :size="19" />
+                </span>
+                <div class="leading-tight">
+                    <p class="text-[13px] font-extrabold">{{ boot?.terminal?.name ?? 'الكاشير' }}</p>
+                    <p class="text-[11px] text-white/55">{{ auth.user?.name }}</p>
+                </div>
             </div>
+
+            <span
+                v-if="boot?.shift"
+                class="hidden items-center gap-1.5 rounded-md bg-white/10 px-2.5 py-1.5 text-[11px] font-bold text-white/80 sm:flex"
+            >
+                <AppIcon name="clock" :size="13" />
+                {{ boot.shift.number }}
+            </span>
+            <button
+                v-else
+                class="flex items-center gap-1.5 rounded-md bg-danger px-2.5 py-1.5 text-[11px] font-bold text-white t-fast hover:bg-danger-strong"
+                @click="openPanel('shift')"
+            >
+                <AppIcon name="alert" :size="13" />
+                لا توجد وردية
+            </button>
 
             <ConnectionBanner class="mr-auto" />
 
-            <button class="rounded-lg bg-ink-700 px-3 py-1.5 text-xs font-bold" @click="openPanel('shift')">الوردية</button>
-            <button class="rounded-lg bg-ink-700 px-3 py-1.5 text-xs font-bold" @click="lockScreen">قفل الشاشة</button>
-            <RouterLink to="/app/dashboard" class="rounded-lg bg-ink-700 px-3 py-1.5 text-xs font-bold">الإدارة</RouterLink>
+            <div class="flex items-center gap-1">
+                <button
+                    class="grid size-9 place-items-center rounded-md bg-white/10 text-white/80 t-fast hover:bg-white/20"
+                    :title="theme.isDark ? 'الوضع النهاري' : 'الوضع الليلي'"
+                    :aria-label="theme.isDark ? 'الوضع النهاري' : 'الوضع الليلي'"
+                    @click="theme.toggle()"
+                >
+                    <AppIcon :name="theme.isDark ? 'sun' : 'moon'" :size="17" />
+                </button>
+                <button
+                    class="grid size-9 place-items-center rounded-md bg-white/10 text-white/80 t-fast hover:bg-white/20"
+                    title="الوردية والخزنة"
+                    aria-label="الوردية والخزنة"
+                    @click="openPanel('shift')"
+                >
+                    <AppIcon name="wallet" :size="17" />
+                </button>
+                <button
+                    class="grid size-9 place-items-center rounded-md bg-white/10 text-white/80 t-fast hover:bg-white/20"
+                    title="قفل الشاشة"
+                    aria-label="قفل الشاشة"
+                    @click="lockScreen"
+                >
+                    <AppIcon name="lock" :size="17" />
+                </button>
+                <RouterLink
+                    to="/app/dashboard"
+                    class="grid size-9 place-items-center rounded-md bg-white/10 text-white/80 t-fast hover:bg-white/20"
+                    title="لوحة الإدارة"
+                    aria-label="لوحة الإدارة"
+                >
+                    <AppIcon name="gauge" :size="17" />
+                </RouterLink>
+            </div>
         </header>
 
-        <!-- ===================== scan row ===================== -->
-        <div class="flex shrink-0 items-center gap-2 border-b border-ink-200 bg-white px-3 py-2">
-            <input
-                ref="scanInput"
-                v-model="scanValue"
-                type="text"
-                inputmode="none"
-                autocomplete="off"
-                placeholder="امسح الباركود (F3)"
-                class="w-80 rounded-xl border-2 border-brand-600 px-4 py-2.5 text-lg font-bold outline-none focus:ring-2 focus:ring-brand-500/30"
-                @keydown.enter.prevent="submitScan"
-            />
-            <input
-                id="pos-search"
-                v-model="searchValue"
-                type="search"
-                data-keep-focus="true"
-                placeholder="ابحث بالاسم أو الكود (F2)"
-                class="flex-1 rounded-xl border border-ink-300 px-4 py-2.5 outline-none focus:border-brand-500"
-            />
-            <span v-if="searching" class="text-xs text-ink-500">جارٍ البحث…</span>
+        <!-- ════════ شريط المسح والبحث ════════ -->
+        <div class="flex shrink-0 items-center gap-2 border-b border-line bg-surface-1 px-3 py-2.5">
+            <!-- خانة المسح: أبرز عنصر في الشاشة، دائمة التركيز -->
+            <div class="relative w-[22rem] shrink-0">
+                <AppIcon
+                    name="scan"
+                    :size="19"
+                    class="pointer-events-none absolute start-3 top-1/2 -translate-y-1/2 text-brand"
+                />
+                <input
+                    ref="scanInput"
+                    v-model="scanValue"
+                    type="text"
+                    inputmode="none"
+                    autocomplete="off"
+                    placeholder="امسح الباركود  ·  F3"
+                    class="field-lg !border-2 !border-brand ps-11 text-lg"
+                    @keydown.enter.prevent="submitScan"
+                />
+            </div>
 
-            <button class="rounded-xl bg-ink-800 px-3 py-2.5 text-sm font-bold text-white" @click="toggleFavorites">
-                {{ favoritesOnly ? '● المفضلة' : 'المفضلة' }}
+            <div class="relative min-w-0 flex-1">
+                <AppIcon
+                    name="search"
+                    :size="17"
+                    class="pointer-events-none absolute start-3 top-1/2 -translate-y-1/2 text-ink-subtle"
+                />
+                <input
+                    id="pos-search"
+                    v-model="searchValue"
+                    type="search"
+                    data-keep-focus="true"
+                    placeholder="ابحث بالاسم أو الكود  ·  F2"
+                    class="field ps-10"
+                />
+                <span
+                    v-if="searching"
+                    class="absolute end-3 top-1/2 -translate-y-1/2 text-[11px] font-bold text-ink-subtle"
+                >
+                    جارٍ البحث…
+                </span>
+            </div>
+
+            <button
+                class="flex shrink-0 items-center gap-1.5 rounded-md px-3 py-2.5 text-sm font-bold t-fast"
+                :class="favoritesOnly
+                    ? 'bg-warn text-white'
+                    : 'bg-surface-2 text-ink-muted hover:bg-surface-3'"
+                @click="toggleFavorites"
+            >
+                <AppIcon name="star" :size="16" />
+                <span class="hidden lg:inline">المفضلة</span>
             </button>
         </div>
 
-        <!-- flash -->
+        <!-- ════════ الإشعارات ════════ -->
+        <Transition name="none">
+            <div
+                v-if="flash"
+                class="flex shrink-0 items-center justify-center gap-2 px-3 py-2 text-sm font-bold text-white"
+                :class="flash.tone === 'ok' ? 'bg-cash' : flash.tone === 'warn' ? 'bg-warn' : 'bg-danger'"
+                role="status"
+            >
+                <AppIcon :name="flash.tone === 'ok' ? 'check' : 'alert'" :size="16" />
+                {{ flash.text }}
+            </div>
+        </Transition>
+
         <div
-            v-if="flash"
-            :class="[
-                'shrink-0 px-3 py-1.5 text-center text-sm font-bold text-white',
-                flash.tone === 'ok' ? 'bg-cash-600' : flash.tone === 'warn' ? 'bg-warn-500' : 'bg-danger-600',
-            ]"
+            v-if="restorePrompt"
+            class="flex shrink-0 flex-wrap items-center gap-3 border-b border-warn/30 bg-warn-soft px-3 py-2.5 text-sm"
         >
-            {{ flash.text }}
+            <AppIcon name="undo" :size="17" class="text-warn" />
+            <span class="font-bold text-ink">
+                تمت استعادة سلة غير مكتملة من الجلسة السابقة ({{ cart.itemCount }} بند).
+            </span>
+            <div class="mr-auto flex gap-2">
+                <button class="rounded-md bg-ink px-3 py-1.5 text-xs font-bold text-surface-1" @click="keepRestored">
+                    احتفظ بها
+                </button>
+                <button
+                    class="rounded-md bg-surface-1 px-3 py-1.5 text-xs font-bold text-ink ring-1 ring-line-strong"
+                    @click="discardRestored"
+                >
+                    ابدأ سلة جديدة
+                </button>
+            </div>
         </div>
 
-        <!-- restored basket -->
-        <div v-if="restorePrompt" class="flex shrink-0 items-center gap-3 bg-warn-500 px-3 py-2 text-sm font-bold text-ink-900">
-            <span>تمت استعادة سلة غير مكتملة من الجلسة السابقة ({{ cart.itemCount }} بند).</span>
-            <button class="rounded bg-ink-900 px-3 py-1 text-white" @click="keepRestored">احتفظ بها</button>
-            <button class="rounded bg-white px-3 py-1" @click="discardRestored">ابدأ سلة جديدة</button>
-        </div>
-
-        <!-- ===================== body ===================== -->
+        <!-- ════════ الجسم ════════ -->
         <div class="flex min-h-0 flex-1">
-            <!-- CART: right side in RTL, where the eye lands first -->
-            <section class="flex w-[38%] min-w-[380px] flex-col border-l border-ink-200 bg-white">
-                <div class="flex items-center justify-between border-b border-ink-200 px-3 py-2">
-                    <h2 class="text-sm font-black text-ink-700">سلة البيع ({{ cart.itemCount }})</h2>
+            <!-- ─── السلة: يمين الشاشة في العربية، حيث تقع العين أولًا ─── -->
+            <section class="flex w-[38%] min-w-[370px] max-w-[520px] flex-col border-s border-line bg-surface-1">
+                <div class="flex items-center justify-between border-b border-line px-3.5 py-2.5">
+                    <h2 class="flex items-center gap-2 text-sm font-extrabold">
+                        <AppIcon name="cart" :size="17" class="text-brand" />
+                        سلة البيع
+                        <span
+                            v-if="cart.itemCount"
+                            class="num rounded-full bg-brand-soft px-2 py-0.5 text-[11px] font-extrabold text-brand-deep"
+                        >
+                            {{ cart.itemCount }}
+                        </span>
+                    </h2>
                     <button
                         v-if="!cart.isEmpty"
-                        class="text-xs font-bold text-danger-600"
+                        class="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-bold text-danger t-fast hover:bg-danger-soft"
                         @click="cart.reset()"
                     >
-                        إفراغ السلة
+                        <AppIcon name="trash" :size="14" />
+                        إفراغ
                     </button>
                 </div>
 
-                <div class="scrollbar-slim min-h-0 flex-1 overflow-y-auto">
-                    <p v-if="cart.isEmpty" class="p-8 text-center text-sm text-ink-400">
-                        ابدأ بمسح باركود أو اختيار صنف
-                    </p>
+                <div class="scroll-slim min-h-0 flex-1 overflow-y-auto">
+                    <div v-if="cart.isEmpty" class="flex h-full flex-col items-center justify-center gap-3 p-8 text-center">
+                        <span class="grid size-14 place-items-center rounded-full bg-surface-2 text-ink-subtle">
+                            <AppIcon name="scan" :size="26" />
+                        </span>
+                        <p class="text-sm text-ink-subtle">ابدأ بمسح باركود أو اختيار صنف</p>
+                    </div>
 
-                    <ul v-else class="divide-y divide-ink-100">
-                        <li v-for="line in cart.lines" :key="line.key" class="px-3 py-2">
+                    <ul v-else class="divide-y divide-line">
+                        <li v-for="line in cart.lines" :key="line.key" class="px-3.5 py-3">
                             <div class="flex items-start gap-2">
                                 <div class="min-w-0 flex-1">
-                                    <p class="truncate text-sm font-bold">{{ line.name }}</p>
-                                    <p class="text-xs text-ink-500">
-                                        {{ line.sku }} · {{ line.unit_name }}
-                                        <span v-if="line.tracking === 'serial'" class="text-warn-500">· سيريال</span>
+                                    <p class="truncate text-[15px] font-bold leading-tight">{{ line.name }}</p>
+                                    <p class="mt-0.5 flex flex-wrap items-center gap-1.5 text-[11px] text-ink-subtle">
+                                        <span class="num">{{ line.sku }}</span>
+                                        <span class="text-line-strong">·</span>
+                                        <span>{{ line.unit_name }}</span>
+                                        <span
+                                            v-if="line.tracking === 'serial'"
+                                            class="rounded bg-warn-soft px-1.5 py-px font-bold text-warn"
+                                        >
+                                            سيريال
+                                        </span>
+                                        <span
+                                            v-if="line.price_overridden"
+                                            class="rounded bg-info-soft px-1.5 py-px font-bold text-info"
+                                        >
+                                            سعر معدّل
+                                        </span>
                                     </p>
                                 </div>
-                                <button class="px-1 text-danger-600" @click="cart.removeLine(line.key)">✕</button>
+                                <button
+                                    class="grid size-7 shrink-0 place-items-center rounded-md text-ink-subtle t-fast hover:bg-danger-soft hover:text-danger"
+                                    :aria-label="`حذف ${line.name}`"
+                                    @click="cart.removeLine(line.key)"
+                                >
+                                    <AppIcon name="close" :size="15" />
+                                </button>
                             </div>
 
-                            <div class="mt-1.5 flex items-center gap-2">
-                                <div class="flex items-center rounded-lg ring-1 ring-ink-200">
-                                    <button class="px-3 py-1 text-lg font-bold" @click="cart.increment(line.key, '-1')">−</button>
+                            <div class="mt-2 flex items-center gap-2">
+                                <div class="flex items-center overflow-hidden rounded-md border border-line-strong">
+                                    <button
+                                        class="grid size-8 place-items-center text-ink-muted t-fast hover:bg-surface-2"
+                                        aria-label="إنقاص"
+                                        @click="cart.increment(line.key, '-1')"
+                                    >
+                                        <AppIcon name="minus" :size="15" />
+                                    </button>
                                     <input
                                         :value="line.qty"
                                         data-keep-focus="true"
-                                        class="num w-16 border-x border-ink-200 py-1 text-center text-sm font-bold outline-none"
+                                        class="num w-16 border-x border-line-strong bg-transparent py-1.5 text-center text-sm font-extrabold text-ink outline-none"
+                                        :aria-label="`كمية ${line.name}`"
                                         @change="cart.setQty(line.key, ($event.target as HTMLInputElement).value)"
                                     />
-                                    <button class="px-3 py-1 text-lg font-bold" @click="cart.increment(line.key)">+</button>
+                                    <button
+                                        class="grid size-8 place-items-center text-ink-muted t-fast hover:bg-surface-2"
+                                        aria-label="زيادة"
+                                        @click="cart.increment(line.key)"
+                                    >
+                                        <AppIcon name="plus" :size="15" />
+                                    </button>
                                 </div>
 
-                                <span class="num text-sm text-ink-500">× {{ money(line.unit_price) }}</span>
-                                <span class="num mr-auto text-base font-black">
+                                <span class="num text-[13px] text-ink-subtle">× {{ money(line.unit_price) }}</span>
+                                <span class="num mr-auto text-base font-extrabold">
                                     {{ money(M.multiply(line.qty, line.unit_price)) }}
                                 </span>
                             </div>
@@ -434,60 +577,82 @@ const money = (v: string | null | undefined) => M.formatMoney(v, boot.value?.cur
                     </ul>
                 </div>
 
-                <!-- totals + pay: fixed, never moves -->
-                <div class="shrink-0 border-t-2 border-ink-200 bg-ink-50 p-3">
-                    <dl class="space-y-1 text-sm">
-                        <div class="flex justify-between text-ink-600">
+                <!-- ─── الإجماليات وزر الدفع: ثابتان، لا يتحركان أبدًا ─── -->
+                <div class="safe-b shrink-0 border-t border-line bg-surface-2 px-3.5 pb-3 pt-3">
+                    <dl class="space-y-1 text-[13px]">
+                        <div class="flex justify-between text-ink-muted">
                             <dt>الإجمالي قبل الخصم</dt>
                             <dd class="num">{{ money(cart.totals.subtotal) }}</dd>
                         </div>
-                        <div v-if="!M.isZero(cart.totals.discount_total)" class="flex justify-between text-danger-600">
+                        <div v-if="!M.isZero(cart.totals.discount_total)" class="flex justify-between text-danger">
                             <dt>الخصم</dt>
                             <dd class="num">− {{ money(cart.totals.discount_total) }}</dd>
                         </div>
-                        <div v-if="!M.isZero(cart.totals.tax_total)" class="flex justify-between text-ink-600">
+                        <div v-if="!M.isZero(cart.totals.tax_total)" class="flex justify-between text-ink-muted">
                             <dt>الضريبة</dt>
                             <dd class="num">{{ money(cart.totals.tax_total) }}</dd>
                         </div>
-                        <div v-if="!M.isZero(cart.totals.rounding_adjustment)" class="flex justify-between text-ink-500">
+                        <div v-if="!M.isZero(cart.totals.rounding_adjustment)" class="flex justify-between text-ink-subtle">
                             <dt>تقريب</dt>
                             <dd class="num">{{ money(cart.totals.rounding_adjustment) }}</dd>
                         </div>
                     </dl>
 
-                    <div class="mt-2 flex items-baseline justify-between border-t border-ink-200 pt-2">
-                        <span class="text-base font-black">الإجمالي</span>
-                        <span class="num text-3xl font-black text-brand-700">{{ money(cart.totals.grand_total) }}</span>
+                    <div class="mt-2.5 flex items-baseline justify-between border-t border-line-strong pt-2.5">
+                        <span class="text-[15px] font-extrabold">الإجمالي</span>
+                        <span class="num text-[2rem] font-black leading-none text-brand-deep">
+                            {{ money(cart.totals.grand_total) }}
+                        </span>
                     </div>
 
-                    <div class="mt-3 grid grid-cols-4 gap-2">
-                        <button
-                            class="col-span-2 rounded-xl bg-cash-600 py-4 text-lg font-black text-white shadow active:bg-cash-500 fade-fast disabled:opacity-40"
-                            :disabled="cart.isEmpty"
-                            @click="openPayment"
-                        >
-                            دفع (F9)
-                        </button>
-                        <button class="rounded-xl bg-ink-700 py-4 text-sm font-bold text-white" :disabled="cart.isEmpty" @click="holdCart">
-                            تعليق<br /><span class="text-xs opacity-70">F7</span>
-                        </button>
-                        <button class="rounded-xl bg-ink-700 py-4 text-sm font-bold text-white" @click="openPanel('held')">
-                            المعلقة<br /><span class="text-xs opacity-70">F4</span>
-                        </button>
-                    </div>
-
-                    <button class="mt-2 w-full rounded-xl bg-white py-2.5 text-sm font-bold text-ink-700 ring-1 ring-ink-300" @click="openPanel('return')">
-                        مرتجع / بحث عن فاتورة (F8)
+                    <button
+                        class="t-pop mt-3 flex w-full items-center justify-center gap-2 rounded-lg bg-cash py-4 text-lg font-black text-white shadow-md t-fast hover:bg-cash-strong disabled:cursor-not-allowed disabled:opacity-40"
+                        :disabled="cart.isEmpty"
+                        @click="openPayment"
+                    >
+                        <AppIcon name="wallet" :size="21" />
+                        دفع
+                        <kbd class="rounded bg-black/20 px-1.5 py-0.5 text-[11px] font-bold">F9</kbd>
                     </button>
+
+                    <div class="mt-2 grid grid-cols-3 gap-2">
+                        <button
+                            class="t-pop flex flex-col items-center gap-0.5 rounded-lg bg-surface-1 py-2.5 text-[11px] font-bold text-ink ring-1 ring-line-strong t-fast hover:bg-surface-3 disabled:opacity-40"
+                            :disabled="cart.isEmpty"
+                            @click="holdCart"
+                        >
+                            <AppIcon name="pause" :size="16" />
+                            تعليق<span class="text-ink-subtle">F7</span>
+                        </button>
+                        <button
+                            class="t-pop flex flex-col items-center gap-0.5 rounded-lg bg-surface-1 py-2.5 text-[11px] font-bold text-ink ring-1 ring-line-strong t-fast hover:bg-surface-3"
+                            @click="openPanel('held')"
+                        >
+                            <AppIcon name="layers" :size="16" />
+                            المعلقة<span class="text-ink-subtle">F4</span>
+                        </button>
+                        <button
+                            class="t-pop flex flex-col items-center gap-0.5 rounded-lg bg-surface-1 py-2.5 text-[11px] font-bold text-ink ring-1 ring-line-strong t-fast hover:bg-surface-3"
+                            @click="openPanel('return')"
+                        >
+                            <AppIcon name="undo" :size="16" />
+                            مرتجع<span class="text-ink-subtle">F8</span>
+                        </button>
+                    </div>
                 </div>
             </section>
 
-            <!-- PRODUCTS -->
+            <!-- ─── الأصناف ─── -->
             <section class="flex min-w-0 flex-1 flex-col">
-                <div v-if="boot?.categories?.length" class="scrollbar-slim flex shrink-0 gap-2 overflow-x-auto border-b border-ink-200 bg-white px-3 py-2">
+                <div
+                    v-if="boot?.categories?.length"
+                    class="scroll-slim flex shrink-0 gap-1.5 overflow-x-auto border-b border-line bg-surface-1 px-3 py-2"
+                >
                     <button
-                        class="shrink-0 rounded-lg px-3 py-1.5 text-sm font-bold"
-                        :class="activeCategory === null && !favoritesOnly ? 'bg-brand-600 text-white' : 'bg-ink-100 text-ink-700'"
+                        class="shrink-0 rounded-md px-3 py-1.5 text-[13px] font-bold t-fast"
+                        :class="activeCategory === null && !favoritesOnly
+                            ? 'bg-brand text-white'
+                            : 'bg-surface-2 text-ink-muted hover:bg-surface-3'"
                         @click="pickCategory(null)"
                     >
                         الكل
@@ -495,36 +660,53 @@ const money = (v: string | null | undefined) => M.formatMoney(v, boot.value?.cur
                     <button
                         v-for="category in boot.categories"
                         :key="category.id"
-                        class="shrink-0 rounded-lg px-3 py-1.5 text-sm font-bold"
-                        :class="activeCategory === category.id ? 'bg-brand-600 text-white' : 'bg-ink-100 text-ink-700'"
+                        class="shrink-0 rounded-md px-3 py-1.5 text-[13px] font-bold t-fast"
+                        :class="activeCategory === category.id
+                            ? 'bg-brand text-white'
+                            : 'bg-surface-2 text-ink-muted hover:bg-surface-3'"
                         @click="pickCategory(category.id)"
                     >
                         {{ category.name }}
                     </button>
                 </div>
 
-                <div class="scrollbar-slim min-h-0 flex-1 overflow-y-auto p-3">
-                    <p v-if="!results.length && !searching" class="mt-16 text-center text-sm text-ink-400">
-                        {{ gridMode ? 'لا توجد أصناف مطابقة' : 'ابحث أو امسح باركود لإضافة صنف' }}
-                    </p>
+                <div class="scroll-slim min-h-0 flex-1 overflow-y-auto p-3">
+                    <div
+                        v-if="!results.length && !searching"
+                        class="flex h-full flex-col items-center justify-center gap-3 text-center"
+                    >
+                        <span class="grid size-14 place-items-center rounded-full bg-surface-2 text-ink-subtle">
+                            <AppIcon name="grid" :size="26" />
+                        </span>
+                        <p class="text-sm text-ink-subtle">
+                            {{ gridMode ? 'لا توجد أصناف مطابقة' : 'ابحث أو امسح باركود لإضافة صنف' }}
+                        </p>
+                    </div>
 
-                    <div class="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                    <div class="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
                         <button
                             v-for="item in results"
                             :key="item.variant_id"
-                            class="flex flex-col rounded-xl bg-white p-2.5 text-right shadow-sm ring-1 ring-ink-200 active:bg-brand-600/10 fade-fast"
+                            class="t-pop group flex flex-col rounded-lg border border-line bg-surface-1 p-3 text-right shadow-xs t-fast hover:border-brand hover:shadow-md"
                             @click="addFromGrid(item)"
                         >
-                            <span class="line-clamp-2 min-h-[2.5rem] text-sm font-bold">{{ item.name }}</span>
-                            <span class="mt-1 text-xs text-ink-500">{{ item.sku }}</span>
-                            <span class="num mt-1 text-base font-black text-brand-700">
-                                {{ item.unit_price ? money(item.unit_price) : 'بدون سعر' }}
+                            <span class="clamp-2 min-h-[2.6rem] text-[13px] font-bold leading-snug">
+                                {{ item.name }}
                             </span>
-                            <span
-                                class="num mt-0.5 text-xs"
-                                :class="M.compare(item.available, '0') > 0 ? 'text-ink-500' : 'text-danger-600'"
-                            >
-                                متاح: {{ M.formatQty(item.available) }}
+                            <span class="num mt-1 text-[11px] text-ink-subtle">{{ item.sku }}</span>
+
+                            <span class="mt-2 flex items-end justify-between gap-1">
+                                <span class="num text-base font-black text-brand-deep">
+                                    {{ item.unit_price ? money(item.unit_price) : '—' }}
+                                </span>
+                                <span
+                                    class="num rounded px-1.5 py-0.5 text-[10px] font-bold"
+                                    :class="M.compare(item.available, '0') > 0
+                                        ? 'bg-surface-2 text-ink-muted'
+                                        : 'bg-danger-soft text-danger'"
+                                >
+                                    {{ M.formatQty(item.available) }}
+                                </span>
                             </span>
                         </button>
                     </div>
@@ -532,21 +714,30 @@ const money = (v: string | null | undefined) => M.formatMoney(v, boot.value?.cur
             </section>
         </div>
 
-        <!-- last sale confirmation, including change due -->
+        <!-- ════════ تأكيد آخر فاتورة ════════ -->
         <div
             v-if="lastSale"
-            class="shrink-0 bg-cash-600 px-4 py-2 text-center text-white"
+            class="safe-b flex shrink-0 flex-wrap items-center justify-center gap-x-6 gap-y-1 bg-cash px-4 py-2.5 text-white"
+            role="status"
         >
-            <span class="font-black">تم اعتماد الفاتورة {{ lastSale.number }}</span>
-            <span v-if="!M.isZero(lastSale.change)" class="num mr-4 text-xl font-black">
-                الباقي للعميل: {{ money(lastSale.change) }}
+            <span class="flex items-center gap-2 font-extrabold">
+                <AppIcon name="check" :size="18" />
+                تم اعتماد الفاتورة {{ lastSale.number }}
             </span>
-            <span v-if="lastSale.provisional" class="mr-4 rounded bg-warn-500 px-2 py-0.5 text-xs">
+            <span v-if="!M.isZero(lastSale.change)" class="flex items-baseline gap-2">
+                <span class="text-sm opacity-90">الباقي للعميل</span>
+                <span class="num text-2xl font-black">{{ money(lastSale.change) }}</span>
+            </span>
+            <span
+                v-if="lastSale.provisional"
+                class="flex items-center gap-1.5 rounded-md bg-warn px-2 py-1 text-[11px] font-bold"
+            >
+                <AppIcon name="alert" :size="13" />
                 مستند غير متزامن — سيُعتمد عند عودة الخادم
             </span>
         </div>
 
-        <!-- ===================== panels ===================== -->
+        <!-- ════════ النوافذ ════════ -->
         <PaymentPanel
             v-if="panel === 'payment'"
             :methods="boot?.payment_methods ?? []"

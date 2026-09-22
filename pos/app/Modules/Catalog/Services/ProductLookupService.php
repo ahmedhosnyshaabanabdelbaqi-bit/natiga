@@ -203,9 +203,11 @@ class ProductLookupService
                 'tracking' => $row->tracking,
                 'allow_fractional' => (bool) $row->allow_fractional_qty,
                 'category_id' => $row->category_id,
+                // Quantized to the currency scale so this field matches what
+                // /pos/scan returns; the two must not disagree on format.
                 // A missing price is shown as "no price set" rather than
                 // blocking the whole search.
-                'unit_price' => $priceRow ? (string) $priceRow->price : null,
+                'unit_price' => $priceRow ? Money::of((string) $priceRow->price)->toString() : null,
                 'available' => (string) ($balances[$row->variant_id] ?? '0'),
             ];
         }

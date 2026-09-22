@@ -156,6 +156,7 @@ Tests:  78 passed (304 assertions)   Duration: 42.8s
 | المستند | المحتوى |
 |---|---|
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | خريطة الوحدات وقواعد العمل الحرجة |
+| [`docs/DESIGN.md`](docs/DESIGN.md) | نظام التصميم: التوكنز، الوضع الليلي، تخطيط شاشة البيع |
 | [`docs/DATABASE.md`](docs/DATABASE.md) | ERD، القيود، الفهارس، فصل السجل عن الأرصدة |
 | [`docs/API.md`](docs/API.md) | 96 مسارًا مع أكواد الأخطاء وأمثلة |
 | [`docs/INSTALL.md`](docs/INSTALL.md) | النشر المحلي والسحابي، Nginx، المجدول، التقوية |

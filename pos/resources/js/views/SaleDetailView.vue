@@ -39,12 +39,12 @@ async function reprint() {
     <div v-if="sale">
         <div class="mb-3 flex items-center gap-3">
             <h1 class="text-xl font-black">فاتورة {{ sale.number }}</h1>
-            <span v-if="sale.provisional" class="rounded bg-warn-500 px-2 py-1 text-xs font-bold text-white">
+            <span v-if="sale.provisional" class="rounded bg-warn px-2 py-1 text-xs font-bold text-white">
                 مستند غير متزامن
             </span>
             <button
                 v-if="auth.can('pos.reprint')"
-                class="mr-auto rounded-lg bg-ink-800 px-4 py-2 text-sm font-bold text-white"
+                class="mr-auto rounded-lg bg-chrome-2 px-4 py-2 text-sm font-bold text-white"
                 :disabled="reprinting"
                 @click="reprint"
             >
@@ -52,11 +52,11 @@ async function reprint() {
             </button>
         </div>
 
-        <p v-if="reprintNote" class="mb-3 rounded-lg bg-cash-600/10 px-3 py-2 text-sm font-bold text-cash-600">{{ reprintNote }}</p>
+        <p v-if="reprintNote" class="mb-3 rounded-lg bg-cash/10 px-3 py-2 text-sm font-bold text-cash">{{ reprintNote }}</p>
 
-        <div class="overflow-hidden rounded-2xl bg-white ring-1 ring-ink-200">
+        <div class="card overflow-hidden">
             <table class="w-full text-sm">
-                <thead class="bg-ink-50 text-xs">
+                <thead class="bg-surface-2 text-xs">
                     <tr>
                         <th class="px-3 py-2 text-right">الصنف</th>
                         <th class="px-3 py-2 text-right">الوحدة</th>
@@ -67,7 +67,7 @@ async function reprint() {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="line in sale.lines" :key="line.id" class="border-t border-ink-100">
+                    <tr v-for="line in sale.lines" :key="line.id" class="border-t border-line">
                         <td class="px-3 py-2">{{ line.product_name }} {{ line.variant_name }}</td>
                         <td class="px-3 py-2">{{ line.unit_name }}</td>
                         <td class="num px-3 py-2">{{ M.formatQty(line.qty) }}</td>
@@ -82,27 +82,27 @@ async function reprint() {
         </div>
 
         <div class="mt-3 grid gap-3 sm:grid-cols-2">
-            <dl class="rounded-2xl bg-white p-4 text-sm ring-1 ring-ink-200">
+            <dl class="rounded-lg bg-surface-1 p-4 text-sm ring-1 ring-line">
                 <div class="flex justify-between py-1"><dt>الإجمالي قبل الخصم</dt><dd class="num">{{ M.formatMoney(sale.subtotal) }}</dd></div>
                 <div class="flex justify-between py-1"><dt>الخصم</dt><dd class="num">{{ M.formatMoney(sale.discount_total) }}</dd></div>
                 <div class="flex justify-between py-1"><dt>الضريبة</dt><dd class="num">{{ M.formatMoney(sale.tax_total) }}</dd></div>
-                <div class="flex justify-between border-t border-ink-200 py-1 font-black"><dt>الإجمالي</dt><dd class="num">{{ M.formatMoney(sale.grand_total) }}</dd></div>
+                <div class="flex justify-between border-t border-line py-1 font-black"><dt>الإجمالي</dt><dd class="num">{{ M.formatMoney(sale.grand_total) }}</dd></div>
                 <div class="flex justify-between py-1"><dt>المدفوع</dt><dd class="num">{{ M.formatMoney(sale.paid_total) }}</dd></div>
                 <div class="flex justify-between py-1"><dt>الباقي للعميل</dt><dd class="num">{{ M.formatMoney(sale.change_total) }}</dd></div>
-                <div v-if="sale.is_credit" class="flex justify-between py-1 text-warn-500"><dt>آجل</dt><dd class="num">{{ M.formatMoney(sale.due_total) }}</dd></div>
+                <div v-if="sale.is_credit" class="flex justify-between py-1 text-warn"><dt>آجل</dt><dd class="num">{{ M.formatMoney(sale.due_total) }}</dd></div>
                 <template v-if="sale.cost_total !== undefined">
-                    <div class="flex justify-between border-t border-ink-200 py-1"><dt>التكلفة</dt><dd class="num">{{ M.formatMoney(sale.cost_total) }}</dd></div>
-                    <div class="flex justify-between py-1 font-black text-brand-700"><dt>مجمل الربح</dt><dd class="num">{{ M.formatMoney(sale.profit_total) }}</dd></div>
+                    <div class="flex justify-between border-t border-line py-1"><dt>التكلفة</dt><dd class="num">{{ M.formatMoney(sale.cost_total) }}</dd></div>
+                    <div class="flex justify-between py-1 font-black text-brand-deep"><dt>مجمل الربح</dt><dd class="num">{{ M.formatMoney(sale.profit_total) }}</dd></div>
                 </template>
             </dl>
 
-            <div class="rounded-2xl bg-white p-4 text-sm ring-1 ring-ink-200">
+            <div class="rounded-lg bg-surface-1 p-4 text-sm ring-1 ring-line">
                 <h3 class="mb-2 font-black">المدفوعات</h3>
                 <ul class="space-y-1">
                     <li v-for="(payment, i) in sale.payments" :key="i" class="flex justify-between">
                         <span>
                             {{ payment.method_code }}
-                            <span v-if="payment.capture_mode === 'manual' && payment.method_type !== 'cash'" class="text-xs text-ink-500">
+                            <span v-if="payment.capture_mode === 'manual' && payment.method_type !== 'cash'" class="text-xs text-ink-subtle">
                                 (تسجيل يدوي)
                             </span>
                         </span>
@@ -113,5 +113,5 @@ async function reprint() {
         </div>
     </div>
 
-    <p v-else-if="error" class="rounded-lg bg-danger-500/10 px-3 py-2 text-sm font-bold text-danger-600">{{ error.message }}</p>
+    <p v-else-if="error" class="rounded-lg bg-danger/10 px-3 py-2 text-sm font-bold text-danger">{{ error.message }}</p>
 </template>

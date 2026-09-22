@@ -50,7 +50,7 @@ await page.waitForURL('**/pos', { timeout: 15000 });
 await page.waitForTimeout(2500);
 
 // ---- open a shift ----------------------------------------------------------
-await page.click('text=الوردية');
+await page.click('[aria-label="الوردية والخزنة"]');
 await page.waitForTimeout(1200);
 const floatInput = await page.$('input.num');
 if (floatInput) await floatInput.fill('500');
@@ -72,7 +72,9 @@ for (const code of ['6221031492016', '6221031492030', '6221031492030', '62210314
     await page.keyboard.press('Enter');
     await page.waitForTimeout(800);
 }
-check((await page.locator('text=سلة البيع (3)').count()) > 0, 'المسح المكرر لم يُدمج في سطر واحد');
+// أربع مسحات لثلاثة أصناف (واحد ممسوح مرتين) = ثلاثة سطور.
+const cartLines = await page.locator('section:has-text("سلة البيع") ul > li').count();
+check(cartLines === 3, `المسح المكرر لم يُدمج في سطر واحد (عدد السطور: ${cartLines})`);
 await page.screenshot({ path: `${out}/02-cart.png` });
 
 // ---- pay and complete ------------------------------------------------------

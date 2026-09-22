@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AppIcon from '@/components/AppIcon.vue';
 import { onMounted, ref } from 'vue';
 import { http, toApiError } from '@/lib/api';
 import * as M from '@/lib/money';
@@ -47,35 +48,40 @@ async function resolve(row: Record<string, any>, decision: 'accept' | 'reject') 
 
 <template>
     <div>
-        <h1 class="mb-3 text-xl font-black">المزامنة والتعارضات</h1>
+        <h1 class="flex items-center gap-2 text-xl font-black">
+                <span class="grid size-8 place-items-center rounded-md bg-brand-soft text-brand-deep">
+                    <AppIcon name="sync" :size="17" />
+                </span>
+                المزامنة والتعارضات
+            </h1>
 
-        <div class="mb-4 flex flex-wrap items-center gap-3 rounded-2xl bg-white p-4 ring-1 ring-ink-200">
+        <div class="mb-4 flex flex-wrap items-center gap-3 rounded-lg bg-surface-1 p-4 ring-1 ring-line">
             <span class="text-sm font-bold">{{ connection.statusLabel }}</span>
             <span class="text-sm">بانتظار الإرسال: <b class="num">{{ connection.pendingCount }}</b></span>
-            <span class="text-sm">تعارضات: <b class="num text-danger-600">{{ connection.conflictCount }}</b></span>
-            <span v-if="connection.catalogCachedAt" class="text-xs text-ink-500">
+            <span class="text-sm">تعارضات: <b class="num text-danger">{{ connection.conflictCount }}</b></span>
+            <span v-if="connection.catalogCachedAt" class="text-xs text-ink-subtle">
                 نسخة الأصناف المحلية: {{ new Date(connection.catalogCachedAt).toLocaleString('ar-EG') }}
             </span>
 
             <div class="mr-auto flex gap-2">
-                <button class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-bold text-white" @click="connection.flush()">إرسال المعلق الآن</button>
-                <button class="rounded-lg bg-ink-800 px-4 py-2 text-sm font-bold text-white" @click="connection.pullCatalog()">تحديث النسخة المحلية</button>
-                <button class="rounded-lg bg-white px-4 py-2 text-sm font-bold ring-1 ring-ink-300" @click="connection.exportQueue()">تصدير العمليات المعلقة</button>
+                <button class="t-pop rounded-md bg-brand px-4 py-2 text-sm font-bold text-white t-fast hover:bg-brand-strong" @click="connection.flush()">إرسال المعلق الآن</button>
+                <button class="rounded-lg bg-chrome-2 px-4 py-2 text-sm font-bold text-white" @click="connection.pullCatalog()">تحديث النسخة المحلية</button>
+                <button class="t-pop rounded-md bg-surface-1 px-4 py-2 text-sm font-bold text-ink ring-1 ring-line-strong t-fast hover:bg-surface-2" @click="connection.exportQueue()">تصدير العمليات المعلقة</button>
             </div>
         </div>
 
-        <p v-if="connection.storageError" class="mb-3 rounded-lg bg-danger-500/10 px-3 py-2 text-sm font-bold text-danger-600">
+        <p v-if="connection.storageError" class="mb-3 rounded-lg bg-danger/10 px-3 py-2 text-sm font-bold text-danger">
             {{ connection.storageError }}
         </p>
 
-        <p class="mb-3 rounded-lg bg-warn-500/10 px-3 py-2 text-xs text-warn-500">
+        <p class="mb-3 rounded-lg bg-warn/10 px-3 py-2 text-xs text-warn">
             تخزين المتصفح ليس نسخة احتياطية: قد يُمسح بتنظيف بيانات الموقع أو في وضع التصفح الخاص.
             صدّر العمليات المعلقة قبل إعادة ضبط الجهاز.
         </p>
 
-        <div class="overflow-hidden rounded-2xl bg-white ring-1 ring-ink-200">
+        <div class="card overflow-hidden">
             <table class="w-full text-sm">
-                <thead class="bg-ink-50 text-xs">
+                <thead class="bg-surface-2 text-xs">
                     <tr>
                         <th class="px-3 py-2 text-right">الجهاز</th>
                         <th class="px-3 py-2 text-right">النوع</th>
@@ -86,8 +92,8 @@ async function resolve(row: Record<string, any>, decision: 'accept' | 'reject') 
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-if="!rows.length"><td colspan="6" class="py-8 text-center text-ink-400">لا توجد عمليات معلقة للمراجعة</td></tr>
-                    <tr v-for="row in rows" :key="row.id" class="border-t border-ink-100 align-top">
+                    <tr v-if="!rows.length"><td colspan="6" class="py-8 text-center text-ink-subtle">لا توجد عمليات معلقة للمراجعة</td></tr>
+                    <tr v-for="row in rows" :key="row.id" class="border-t border-line align-top">
                         <td class="px-3 py-2">{{ row.terminal?.name }}</td>
                         <td class="px-3 py-2">{{ row.type }}</td>
                         <td class="px-3 py-2">{{ row.client_created_at ? new Date(row.client_created_at).toLocaleString('ar-EG') : '—' }}</td>
@@ -96,15 +102,15 @@ async function resolve(row: Record<string, any>, decision: 'accept' | 'reject') 
                         </td>
                         <td class="px-3 py-2">
                             <ul class="space-y-0.5 text-xs">
-                                <li v-for="(conflict, i) in (row.conflicts ?? [])" :key="i" class="text-danger-600">
+                                <li v-for="(conflict, i) in (row.conflicts ?? [])" :key="i" class="text-danger">
                                     {{ conflict.message }}
                                 </li>
                             </ul>
                         </td>
                         <td class="px-3 py-2">
                             <div class="flex gap-1">
-                                <button class="rounded bg-cash-600 px-2 py-1 text-xs font-bold text-white" :disabled="busy" @click="resolve(row, 'accept')">اعتماد</button>
-                                <button class="rounded bg-danger-600 px-2 py-1 text-xs font-bold text-white" :disabled="busy" @click="resolve(row, 'reject')">رفض</button>
+                                <button class="rounded bg-cash px-2 py-1 text-xs font-bold text-white" :disabled="busy" @click="resolve(row, 'accept')">اعتماد</button>
+                                <button class="rounded bg-danger px-2 py-1 text-xs font-bold text-white" :disabled="busy" @click="resolve(row, 'reject')">رفض</button>
                             </div>
                         </td>
                     </tr>
@@ -112,8 +118,8 @@ async function resolve(row: Record<string, any>, decision: 'accept' | 'reject') 
             </table>
         </div>
 
-        <input v-model="note" placeholder="ملاحظة التسوية (تُسجَّل في سجل التدقيق)" class="mt-3 w-full rounded-lg border border-ink-300 px-3 py-2 text-sm" />
+        <input v-model="note" placeholder="ملاحظة التسوية (تُسجَّل في سجل التدقيق)" class="mt-3 w-full rounded-lg border border-line-strong px-3 py-2 text-sm" />
 
-        <p v-if="error" class="mt-3 rounded-lg bg-danger-500/10 px-3 py-2 text-sm font-bold text-danger-600">{{ error.message }}</p>
+        <p v-if="error" class="mt-3 rounded-lg bg-danger/10 px-3 py-2 text-sm font-bold text-danger">{{ error.message }}</p>
     </div>
 </template>

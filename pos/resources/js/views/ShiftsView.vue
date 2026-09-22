@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import * as L from '@/lib/labels';
+import AppIcon from '@/components/AppIcon.vue';
 import { ref } from 'vue';
 import { http, toApiError } from '@/lib/api';
 import * as M from '@/lib/money';
@@ -14,7 +16,7 @@ const columns = [
     { key: 'terminal.name', label: 'الكاشير' },
     { key: 'user.name', label: 'المستخدم' },
     { key: 'opened_at', label: 'البداية', format: (r: Record<string, unknown>) => new Date(String(r.opened_at)).toLocaleString('ar-EG') },
-    { key: 'status', label: 'الحالة' },
+    { key: 'status', label: 'الحالة', format: (r: Record<string, unknown>) => L.docStatus(r.status) },
     { key: 'expected_cash', label: 'المتوقع', numeric: true, format: (r: Record<string, unknown>) => M.formatMoney(String(r.expected_cash ?? '0')) },
     { key: 'counted_cash', label: 'الفعلي', numeric: true, format: (r: Record<string, unknown>) => M.formatMoney(String(r.counted_cash ?? '0')) },
     { key: 'variance', label: 'الفرق', numeric: true, format: (r: Record<string, unknown>) => M.formatMoney(String(r.variance ?? '0')) },
@@ -49,11 +51,16 @@ const labels: Record<string, string> = {
 
 <template>
     <div>
-        <h1 class="mb-3 text-xl font-black">الورديات</h1>
+        <h1 class="flex items-center gap-2 text-xl font-black">
+                <span class="grid size-8 place-items-center rounded-md bg-brand-soft text-brand-deep">
+                    <AppIcon name="clock" :size="17" />
+                </span>
+                الورديات
+            </h1>
         <DataTable url="/shifts" :columns="columns" @select="select" />
 
         <section v-if="report" class="mt-4 grid gap-3 lg:grid-cols-2">
-            <div class="rounded-2xl bg-white p-4 ring-1 ring-ink-200">
+            <div class="card p-4">
                 <h3 class="mb-2 font-black">تقرير الإغلاق — {{ selected?.number }}</h3>
                 <dl class="space-y-1 text-sm">
                     <div v-for="(value, key) in report" :key="key" v-show="typeof value !== 'object'" class="flex justify-between">
@@ -63,7 +70,7 @@ const labels: Record<string, string> = {
                 </dl>
             </div>
 
-            <div class="rounded-2xl bg-white p-4 ring-1 ring-ink-200">
+            <div class="card p-4">
                 <h3 class="mb-2 font-black">حركات الخزنة</h3>
                 <dl class="space-y-1 text-sm">
                     <div v-for="(value, key) in (report.cash_breakdown ?? {})" :key="key" class="flex justify-between">
@@ -82,6 +89,6 @@ const labels: Record<string, string> = {
             </div>
         </section>
 
-        <p v-if="error" class="mt-3 rounded-lg bg-danger-500/10 px-3 py-2 text-sm font-bold text-danger-600">{{ error.message }}</p>
+        <p v-if="error" class="mt-3 rounded-lg bg-danger/10 px-3 py-2 text-sm font-bold text-danger">{{ error.message }}</p>
     </div>
 </template>

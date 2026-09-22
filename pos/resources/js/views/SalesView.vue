@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AppIcon from '@/components/AppIcon.vue';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import DataTable from '@/components/DataTable.vue';
@@ -30,12 +31,17 @@ const columns = [
 
 <template>
     <div>
-        <h1 class="mb-3 text-xl font-black">سجل الفواتير</h1>
+        <h1 class="flex items-center gap-2 text-xl font-black">
+                <span class="grid size-8 place-items-center rounded-md bg-brand-soft text-brand-deep">
+                    <AppIcon name="receipt" :size="17" />
+                </span>
+                سجل الفواتير
+            </h1>
         <div class="mb-3 flex flex-wrap gap-2">
-            <input v-model="number" placeholder="رقم الفاتورة" class="rounded-lg border border-ink-300 px-3 py-2 text-sm" />
-            <input v-model="from" type="date" class="rounded-lg border border-ink-300 px-3 py-2 text-sm" />
-            <input v-model="to" type="date" class="rounded-lg border border-ink-300 px-3 py-2 text-sm" />
-            <select v-model="paymentMethod" class="rounded-lg border border-ink-300 px-3 py-2 text-sm">
+            <input v-model="number" placeholder="رقم الفاتورة" class="rounded-lg border border-line-strong px-3 py-2 text-sm" />
+            <input v-model="from" type="date" class="rounded-lg border border-line-strong px-3 py-2 text-sm" />
+            <input v-model="to" type="date" class="rounded-lg border border-line-strong px-3 py-2 text-sm" />
+            <select v-model="paymentMethod" class="rounded-lg border border-line-strong px-3 py-2 text-sm">
                 <option value="">كل طرق الدفع</option>
                 <option value="cash">نقدي</option>
                 <option value="card">بطاقة</option>

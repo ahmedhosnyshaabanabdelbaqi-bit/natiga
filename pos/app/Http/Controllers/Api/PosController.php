@@ -72,8 +72,8 @@ class PosController extends Controller
 
         $result = $this->lookup->scan(
             $data['code'],
-            $this->resolveWarehouseId($data['warehouse_id'] ?? null),
-            $data['price_list_id'] ?? null,
+            $this->resolveWarehouseId($this->asId($data, 'warehouse_id')),
+            $this->asId($data, 'price_list_id'),
         );
 
         if (! $result) {
@@ -103,13 +103,27 @@ class PosController extends Controller
 
         return response()->json($this->lookup->search(
             term: $data['q'] ?? '',
-            warehouseId: $this->resolveWarehouseId($data['warehouse_id'] ?? null),
-            priceListId: $data['price_list_id'] ?? null,
-            categoryId: $data['category_id'] ?? null,
+            warehouseId: $this->resolveWarehouseId($this->asId($data, 'warehouse_id')),
+            priceListId: $this->asId($data, 'price_list_id'),
+            categoryId: $this->asId($data, 'category_id'),
             favoritesOnly: (bool) ($data['favorites'] ?? false),
             page: (int) ($data['page'] ?? 1),
             perPage: (int) ($data['per_page'] ?? 50),
         ));
+    }
+
+    /**
+     * Identifiers arrive as STRINGS from a query string and as numbers from a
+     * JSON body. With `strict_types` the typed signatures below reject the
+     * former, so every id is normalised here at the edge.
+     *
+     * @param  array<string,mixed>  $data
+     */
+    private function asId(array $data, string $key): ?int
+    {
+        $value = $data[$key] ?? null;
+
+        return $value === null || $value === '' ? null : (int) $value;
     }
 
     private function resolveWarehouseId(?int $requested): int
