@@ -106,6 +106,13 @@ return [
         'search' => ['driver' => env('SEARCH_DRIVER', 'database')],
     ],
 
+    'security' => [
+        // Strict CSP is on in production; locally the Vite dev server needs a relaxed policy.
+        'csp_enabled' => (bool) env('EV_CSP_ENABLED', env('APP_ENV') === 'production'),
+        // Extra hosts allowed for XHR/fetch (comma separated), e.g. a map/geocoding API.
+        'csp_connect_hosts' => env('EV_CSP_CONNECT_HOSTS', ''),
+    ],
+
     'demo' => [
         'allow_in_production' => (bool) env('EV_ALLOW_DEMO_DATA_IN_PRODUCTION', false),
     ],
