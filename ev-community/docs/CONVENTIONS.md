@@ -163,3 +163,19 @@ Use `Tests\TestCase` helpers: `$this->actingAsMember()`, `$this->actingAsStaff([
 - Strict types in TS; no `any` (use `unknown` + narrowing). PHP: typed properties, return types, readonly where sensible, enums for statuses.
 - No dead code, no console.log, no placeholder buttons: every button either works or is not rendered (or rendered disabled with a tooltip explaining why, e.g. integration not configured).
 - Commit messages: `<module>: <what>` in English.
+
+## 13. Cross-module integration rules (parallel development)
+
+- Never edit files you do not own: `app/Models/User.php`, `bootstrap/app.php`, `config/ev.php`, `database/seeders/DatabaseSeeder.php`, `tests/TestCase.php`, `resources/js/app.tsx`, `resources/js/types/global.d.ts`, `resources/css/app.css`, `lang/*/core.php`, `docs/CONVENTIONS.md`. If you need something there, add it in your module instead:
+  - Relations on User: `User::resolveRelationUsing('vehicles', fn (User $u) => $u->hasMany(MemberVehicle::class, 'user_id'))` in your module ServiceProvider `boot()`.
+  - Policies: `Gate::policy(Model::class, Policy::class)` in your module ServiceProvider.
+  - Scheduled tasks: in your module ServiceProvider `boot()`: `$this->callAfterResolving(\Illuminate\Console\Scheduling\Schedule::class, fn (Schedule $s) => $s->command('warranty:send-reminders')->dailyAt('08:00'));`
+  - Event listeners: `Event::listen(...)` in your module ServiceProvider.
+  - Dashboard KPIs: `DashboardKpis::register(...)` in your module ServiceProvider (see `App\Modules\System\Services\DashboardKpis`).
+  - Navigation entries already exist in `resources/js/navigation/{admin,member,partner}.ts` for every module; only edit those files to add child entries of your own module.
+  - Translations: only your own `lang/{ar,en}/<module>.php` files. Use `core.*` keys for generic labels/actions/states.
+- Shared UI components live in `resources/js/components/shared` and `resources/js/components/ui`; only the UI-kit owner edits them. If a component you need is missing, build it inside `resources/js/features/<module>/`.
+- After adding routes run `php artisan wayfinder:generate --with-form` so `npm run types:check` sees them. Typecheck errors in files you don't own are not yours to fix.
+- Tests: run only your own suites with your own database: `DB_DATABASE=ev_test_<n> php artisan test tests/Feature/<Module> tests/Unit/<Module>`. If `migrate` fails inside a migration file you do not own, wait a minute and retry (another agent may be mid-write); never edit that file.
+- Migration files must be written atomically (one Write call, syntactically valid) so parallel test runs never see a half-written file.
+- When your module needs another module's model that does not exist yet, code against the contract in `docs/DOMAIN_CONTRACTS.md` (table + column names + model class names) and keep the coupling behind an interface or a service method so it can be finished in the integration pass.
