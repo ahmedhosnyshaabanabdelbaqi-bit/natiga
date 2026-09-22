@@ -17,6 +17,8 @@ abstract class TestCase extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        // Feature tests assert server responses; they must not depend on a built Vite manifest.
+        $this->withoutVite();
         app(PermissionRegistrar::class)->forgetCachedPermissions();
     }
 

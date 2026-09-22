@@ -96,13 +96,19 @@ return [
     ],
 
     'integrations' => [
+        // Map provider: 'osm' = OpenStreetMap tiles + Nominatim geocoding (no key); 'none' disables maps.
+        'map' => [
+            'driver' => env('MAP_PROVIDER', 'osm'),
+            'nominatim_url' => env('MAP_NOMINATIM_URL', 'https://nominatim.openstreetmap.org'),
+            'nominatim_rate_per_second' => (int) env('MAP_NOMINATIM_RATE_PER_SECOND', 1),
+        ],
         'payment' => ['driver' => env('PAYMENT_PROVIDER', 'none')],
         'sms' => ['driver' => env('SMS_PROVIDER', 'none')],
         'whatsapp' => ['driver' => env('WHATSAPP_PROVIDER', 'none')],
         'shipping' => ['driver' => env('SHIPPING_PROVIDER', 'manual')],
         'charging' => ['driver' => env('CHARGING_PROVIDER', 'none')],
-        'exchange_rate' => ['driver' => env('EXCHANGE_RATE_PROVIDER', 'manual')],
-        'email' => ['driver' => env('MAIL_MAILER', 'log')],
+        'exchange_rate' => ['driver' => env('EXCHANGE_RATE_PROVIDER', 'manual'), 'stale_days' => (int) env('EXCHANGE_RATE_STALE_DAYS', 7)],
+        'email' => ['driver' => env('MAIL_MAILER', 'log'), 'force_configured' => false],
         'search' => ['driver' => env('SEARCH_DRIVER', 'database')],
     ],
 

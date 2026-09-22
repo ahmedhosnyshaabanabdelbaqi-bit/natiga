@@ -3,25 +3,26 @@
 namespace App\Support\Money;
 
 use Brick\Math\BigDecimal;
+use Brick\Math\BigNumber;
 use Brick\Math\RoundingMode;
-use Brick\Money\Context\CustomContext;
+use Brick\Money\AllocationMode;
+use Brick\Money\Context\DefaultContext;
 use Brick\Money\Money as BrickMoney;
+use Brick\Money\SplitMode;
 use InvalidArgumentException;
 
 /**
- * Exact decimal money helpers. All amounts are strings/decimals, never floats.
- * DB columns: decimal(14,2) + currency char(3). Rounding: HALF_UP to the currency's minor units.
+ * Exact decimal money helpers (brick/money 0.15 + brick/math 0.19). All amounts are decimal
+ * strings, never floats. DB columns: decimal(14,2) + currency char(3).
+ * Rounding: half-up to the currency's minor units.
  */
 final class Money
 {
-    public static function of(string|int|float|BigDecimal $amount, string $currency = 'EGP'): BrickMoney
-    {
-        if (is_float($amount)) {
-            // Floats are rejected on purpose for stored values; accept them only for constants (e.g. 0.3) via strings.
-            $amount = number_format($amount, 8, '.', '');
-        }
+    public const ROUNDING = RoundingMode::HalfUp;
 
-        return BrickMoney::of($amount, strtoupper($currency), roundingMode: RoundingMode::HALF_UP);
+    public static function of(string|int|float|BigNumber $amount, string $currency = 'EGP'): BrickMoney
+    {
+        return BrickMoney::of(self::number($amount), strtoupper($currency), new DefaultContext, self::ROUNDING);
     }
 
     public static function zero(string $currency = 'EGP'): BrickMoney
@@ -29,6 +30,9 @@ final class Money
         return BrickMoney::zero(strtoupper($currency));
     }
 
+    /**
+     * @param  iterable<BrickMoney|string|int|float>  $amounts
+     */
     public static function sum(iterable $amounts, string $currency = 'EGP'): BrickMoney
     {
         $total = self::zero($currency);
@@ -39,7 +43,7 @@ final class Money
         return $total;
     }
 
-    /** @return string decimal string with the currency's scale, e.g. "12000.00" */
+    /** Decimal string with the currency's scale, e.g. "12000.00". */
     public static function toDecimal(BrickMoney|string|int|float $amount, string $currency = 'EGP'): string
     {
         $money = $amount instanceof BrickMoney ? $amount : self::of($amount, $currency);
@@ -59,17 +63,15 @@ final class Money
 
     public static function mul(string|int $amount, string|int|float $factor, string $currency = 'EGP'): string
     {
-        $factor = is_float($factor) ? number_format($factor, 8, '.', '') : (string) $factor;
-
-        return self::toDecimal(self::of($amount, $currency)->multipliedBy($factor, RoundingMode::HALF_UP));
+        return self::toDecimal(self::of($amount, $currency)->multipliedBy(self::number($factor), self::ROUNDING));
     }
 
-    /** Percentage of an amount (e.g. deposit 30%). */
+    /** Percentage of an amount (e.g. a 30 % deposit). */
     public static function percent(string|int $amount, string|int|float $percent, string $currency = 'EGP'): string
     {
-        $percent = is_float($percent) ? number_format($percent, 8, '.', '') : (string) $percent;
+        $factor = BigDecimal::of(self::number($percent))->dividedBy(100, 12, self::ROUNDING);
 
-        return self::toDecimal(self::of($amount, $currency)->multipliedBy(BigDecimal::of($percent)->dividedBy(100, 12, RoundingMode::HALF_UP), RoundingMode::HALF_UP));
+        return self::toDecimal(self::of($amount, $currency)->multipliedBy($factor, self::ROUNDING));
     }
 
     public static function compare(string|int $a, string|int $b, string $currency = 'EGP'): int
@@ -98,8 +100,8 @@ final class Money
     }
 
     /**
-     * Allocate an amount proportionally to weights so that the parts sum exactly to the total
-     * (remainders distributed to the largest fractional parts). Returns decimal strings.
+     * Allocate an amount proportionally to weights so that the parts sum exactly to the total.
+     * Remainder minor units go to the parts with the largest fractional remainder.
      *
      * @param  array<int|string, string|int|float>  $weights
      * @return array<int|string, string>
@@ -109,12 +111,26 @@ final class Money
         if ($weights === []) {
             throw new InvalidArgumentException('Cannot allocate to zero targets');
         }
-        $money = self::of($amount, $currency);
-        $ratios = array_map(fn ($w) => (int) round(((float) $w) * 1_000_000), $weights);
-        if (array_sum($ratios) === 0) {
-            $ratios = array_fill_keys(array_keys($weights), 1);
+        $ratios = [];
+        foreach ($weights as $weight) {
+            $decimal = BigDecimal::of(self::number($weight));
+            if ($decimal->isNegative()) {
+                throw new InvalidArgumentException('Allocation weights must not be negative');
+            }
+            $ratios[] = $decimal;
         }
-        $parts = $money->allocate(...array_values($ratios));
+        $allZero = true;
+        foreach ($ratios as $ratio) {
+            if (! $ratio->isZero()) {
+                $allZero = false;
+                break;
+            }
+        }
+        if ($allZero) {
+            $ratios = array_fill(0, count($ratios), BigDecimal::one());
+        }
+
+        $parts = self::of($amount, $currency)->allocate($ratios, AllocationMode::FloorToLargestRemainder);
         $result = [];
         foreach (array_keys($weights) as $i => $key) {
             $result[$key] = (string) $parts[$i]->getAmount();
@@ -123,21 +139,21 @@ final class Money
         return $result;
     }
 
-    /** Split an amount into N equal parts, remainder cents going to the first parts. */
+    /** Split into N equal parts; remainder minor units go to the first parts. */
     public static function split(string|int $amount, int $parts, string $currency = 'EGP'): array
     {
-        return array_map(fn ($m) => (string) $m->getAmount(), self::of($amount, $currency)->split($parts));
+        return array_map(fn (BrickMoney $m) => (string) $m->getAmount(), self::of($amount, $currency)->split($parts, SplitMode::ToFirst));
     }
 
     /**
-     * Convert with an explicit FX rate snapshot (1 from = rate to). Never fetches a live rate.
+     * Convert with an explicit FX rate snapshot (1 unit of $from = $rate units of $to).
+     * Never fetches a live rate. Result is rounded half-up to the target currency's minor units.
      */
     public static function convert(string|int $amount, string $from, string $to, string $rate): string
     {
-        $source = self::of($amount, $from);
-        $converted = $source->convertedTo(strtoupper($to), $rate, new CustomContext(8), RoundingMode::HALF_UP);
+        $converted = self::of($amount, $from)->convertedTo(strtoupper($to), BigDecimal::of($rate), new DefaultContext, self::ROUNDING);
 
-        return (string) $converted->to(BrickMoney::of(0, strtoupper($to))->getContext(), RoundingMode::HALF_UP)->getAmount();
+        return (string) $converted->getAmount();
     }
 
     public static function format(string|int|float|null $amount, string $currency = 'EGP', ?string $locale = null): string
@@ -146,12 +162,25 @@ final class Money
             return '—';
         }
         $locale ??= app()->getLocale();
-        $money = self::of((string) $amount, $currency);
-        $intl = config('ev.locales.'.$locale.'.intl', 'en-EG').'-u-nu-latn';
-        $formatted = number_format((float) (string) $money->getAmount(), $money->getCurrency()->getDefaultFractionDigits(), '.', ',');
-        $name = $locale === 'ar' ? self::arabicCurrencyName($money->getCurrency()->getCurrencyCode()) : $money->getCurrency()->getCurrencyCode();
+        $money = self::of($amount, $currency);
+        $digits = $money->getCurrency()->getDefaultFractionDigits();
+        $decimal = $money->getAmount()->toScale($digits, self::ROUNDING);
+        [$int, $frac] = array_pad(explode('.', (string) $decimal->abs()), 2, '');
+        $grouped = strrev(implode(',', str_split(strrev($int), 3)));
+        $formatted = ($decimal->isNegative() ? '-' : '').$grouped.($digits > 0 ? '.'.$frac : '');
+        $code = $money->getCurrency()->getCurrencyCode();
 
-        return $locale === 'ar' ? $formatted.' '.$name : $name.' '.$formatted;
+        return $locale === 'ar' ? $formatted.' '.self::arabicCurrencyName($code) : $code.' '.$formatted;
+    }
+
+    private static function number(string|int|float|BigNumber $value): string|int|BigNumber
+    {
+        if (is_float($value)) {
+            // Floats are accepted only for literal constants; converted through a fixed-precision string.
+            return rtrim(rtrim(number_format($value, 8, '.', ''), '0'), '.') ?: '0';
+        }
+
+        return $value;
     }
 
     private static function arabicCurrencyName(string $code): string

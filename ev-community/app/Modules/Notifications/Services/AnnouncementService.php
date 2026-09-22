@@ -180,7 +180,7 @@ final class AnnouncementService
         }
         if ($type === AnnouncementAudiences::SPECIFIC_MEMBERS) {
             $raw = $params['member_numbers'] ?? '';
-            $numbers = is_array($raw) ? $raw : preg_split('/[\s,;]+/u', (string) $raw) ?: [];
+            $numbers = is_array($raw) ? $raw : (preg_split('/[\s,;]+/u', (string) $raw) ?: []);
             $numbers = array_values(array_unique(array_filter(array_map(fn ($n) => strtoupper(trim((string) $n)), $numbers))));
             if ($numbers === []) {
                 throw DomainException::because('validation.required', ['attribute' => __('notifications.admin.fields.member_numbers')], 'audience_params.member_numbers');

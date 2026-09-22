@@ -13,7 +13,7 @@ class IntegrationTestMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public function __construct(public readonly string $requestedBy, public readonly string $mailer)
+    public function __construct(public readonly string $requestedBy, public readonly string $transportName)
     {
         //
     }
@@ -25,7 +25,7 @@ class IntegrationTestMail extends Mailable
 
     public function content(): Content
     {
-        $body = e(__('integrations.email.test_body', ['app' => config('app.name'), 'mailer' => $this->mailer, 'user' => $this->requestedBy, 'time' => now()->timezone(config('ev.timezone', 'Africa/Cairo'))->format('Y-m-d H:i')]));
+        $body = e(__('integrations.email.test_body', ['app' => config('app.name'), 'mailer' => $this->transportName, 'user' => $this->requestedBy, 'time' => now()->timezone(config('ev.timezone', 'Africa/Cairo'))->format('Y-m-d H:i')]));
 
         return new Content(htmlString: '<p dir="auto">'.$body.'</p>');
     }

@@ -75,7 +75,7 @@ final class LaravelMailEmailProvider implements EmailProvider
         $mailer = $this->driver();
         try {
             IntegrationCall::run('email', 'send_test', function () use ($toEmail, $mailer) {
-                Mail::to($toEmail)->send(new IntegrationTestMail(requestedBy: $toEmail, mailer: $mailer));
+                Mail::to($toEmail)->send(new IntegrationTestMail(requestedBy: $toEmail, transportName: $mailer));
 
                 return true;
             }, reference: 'test:'.hash('sha256', strtolower($toEmail)), meta: ['mailer' => $mailer]);

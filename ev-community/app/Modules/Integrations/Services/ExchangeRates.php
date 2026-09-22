@@ -54,7 +54,7 @@ final class ExchangeRates
         }
         $inverse = ExchangeRate::query()->pair($quote, $base)->onOrBefore($date)->latestFirst()->first();
         if ($inverse) {
-            $rate = BigDecimal::one()->dividedBy(BigDecimal::of((string) $inverse->rate), 8, RoundingMode::HALF_UP);
+            $rate = BigDecimal::one()->dividedBy(BigDecimal::of((string) $inverse->rate), 8, RoundingMode::HalfUp);
 
             return ['rate' => (string) $rate, 'source' => $inverse->source.':inverse', 'rate_date' => $inverse->rate_date->toDateString()];
         }
@@ -135,7 +135,7 @@ final class ExchangeRates
             $row = ExchangeRate::query()->create([
                 'base_currency' => $base,
                 'quote_currency' => $quote,
-                'rate' => (string) $decimal->toScale(8, RoundingMode::HALF_UP),
+                'rate' => (string) $decimal->toScale(8, RoundingMode::HalfUp),
                 'source' => $source,
                 'source_reference' => null,
                 'rate_date' => $rateDate->toDateString(),
@@ -184,7 +184,7 @@ final class ExchangeRates
                     ExchangeRate::query()->create([
                         'base_currency' => strtoupper($result->base),
                         'quote_currency' => strtoupper($result->quote),
-                        'rate' => (string) BigDecimal::of($result->rate)->toScale(8, RoundingMode::HALF_UP),
+                        'rate' => (string) BigDecimal::of($result->rate)->toScale(8, RoundingMode::HalfUp),
                         'source' => $source,
                         'source_reference' => $result->reference !== null ? mb_substr($result->reference, 0, 255) : null,
                         'rate_date' => $result->rateDate->toDateString(),
@@ -254,7 +254,7 @@ final class ExchangeRates
     /** Trim trailing zeros for display while keeping at least 2 decimals ("48.50000000" → "48.50"). */
     public static function normalizeRate(string $rate): string
     {
-        $decimal = BigDecimal::of($rate)->stripTrailingZeros();
+        $decimal = BigDecimal::of($rate)->strippedOfTrailingZeros();
         if ($decimal->getScale() < 2) {
             $decimal = $decimal->toScale(2);
         }
