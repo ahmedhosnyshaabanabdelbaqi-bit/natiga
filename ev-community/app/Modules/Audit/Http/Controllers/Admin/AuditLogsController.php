@@ -25,7 +25,7 @@ class AuditLogsController extends Controller
         $filters = $request->only(AuditQuery::ALLOWED_FILTERS);
 
         return Inertia::render('admin/audit-logs/index', [
-            'logs' => $this->query->build($filters)->paginate(25)->withQueryString()->through(fn (AuditLog $log) => $this->query->summary($log)),
+            'logs' => $this->query->build($filters)->paginate($this->perPage($request))->withQueryString()->through(fn (AuditLog $log) => $this->query->summary($log)),
             'filters' => $filters,
             'actions' => $this->query->distinctActions(),
             'entityTypes' => $this->query->distinctEntityTypes(),
@@ -62,14 +62,15 @@ class AuditLogsController extends Controller
         return response()->streamDownload(function () use ($query) {
             $out = fopen('php://output', 'w');
             fwrite($out, "\xEF\xBB\xBF"); // UTF-8 BOM so Excel renders Arabic correctly
-            fputcsv($out, ['id', 'created_at', 'action', 'actor_id', 'actor_name', 'actor_email', 'actor_type', 'entity_type', 'entity_id', 'entity_label', 'old_values', 'new_values', 'reason', 'request_id', 'ip_address', 'user_agent']);
+            fputcsv($out, ['id', 'created_at', 'action', 'actor_id', 'actor_name', 'actor_email', 'actor_type', 'entity_type', 'entity_id', 'entity_label', 'old_values', 'new_values', 'reason', 'request_id', 'ip_address', 'user_agent'], ',', '"', '');
             $written = 0;
-            $query->chunkById(500, function ($chunk) use ($out, &$written) {
+            // Newest first, like the screen; stop at the export cap.
+            $query->chunkByIdDesc(500, function ($chunk) use ($out, &$written) {
                 foreach ($chunk as $log) {
                     if ($written >= AuditQuery::EXPORT_MAX_ROWS) {
                         return false;
                     }
-                    fputcsv($out, [
+                    fputcsv($out, array_map([$this, 'csvCell'], [
                         $log->id,
                         $log->created_at?->toIso8601String(),
                         $log->action,
@@ -86,13 +87,34 @@ class AuditLogsController extends Controller
                         $log->request_id,
                         $log->ip_address,
                         $log->user_agent,
-                    ]);
+                    ]), ',', '"', '');
                     $written++;
                 }
 
-                return null;
+                return $written < AuditQuery::EXPORT_MAX_ROWS;
             }, 'id');
             fclose($out);
         }, $filename, ['Content-Type' => 'text/csv; charset=UTF-8', 'X-Content-Type-Options' => 'nosniff']);
+    }
+
+    private function perPage(Request $request): int
+    {
+        $perPage = (int) $request->query('per_page', 25);
+
+        return in_array($perPage, [15, 25, 50, 100], true) ? $perPage : 25;
+    }
+
+    /**
+     * Neutralise spreadsheet formula injection: user-controlled text (reasons, labels, names) starting with
+     * = + - @ or a control character is prefixed with an apostrophe so Excel/Sheets treat it as text.
+     */
+    public function csvCell(mixed $value): string
+    {
+        $string = $value === null ? '' : (string) $value;
+        if ($string !== '' && in_array($string[0], ['=', '+', '-', '@', "\t", "\r"], true) && ! is_numeric($string)) {
+            return "'".$string;
+        }
+
+        return $string;
     }
 }

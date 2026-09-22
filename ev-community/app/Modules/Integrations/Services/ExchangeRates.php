@@ -15,6 +15,7 @@ use Brick\Math\BigDecimal;
 use Brick\Math\RoundingMode;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
@@ -29,6 +30,13 @@ use Throwable;
 final class ExchangeRates
 {
     public const AUDIT_ADDED = 'exchange_rates.added';
+
+    public const AUDIT_CORRECTED = 'exchange_rates.corrected';
+
+    public const SOURCE_MANUAL = 'manual';
+
+    /** Corrections of a manual rate are appended as manual:correction:1, :2, ... (the latest row of a date wins). */
+    public const SOURCE_CORRECTION_PREFIX = 'manual:correction:';
 
     public const AUDIT_SYNCED = 'exchange_rates.synced';
 
@@ -93,8 +101,14 @@ final class ExchangeRates
 
     /**
      * Append a manually entered rate (never edits). Requires exchange_rates.manage and a reason.
+     *
+     * A second plain entry for the same pair, date and source is refused (double submit / accidental
+     * duplicate). To fix a wrong rate, pass `$correction = true`: a new row with source
+     * `manual:correction:<n>` is appended for that date; because lookups take the latest row of a
+     * date, it supersedes the earlier value for future conversions (records that already
+     * snapshotted the old rate are never revalued).
      */
-    public function addManualRate(string $base, string $quote, string $rate, CarbonInterface|string $date, User $actor, string $reason, string $source = 'manual'): ExchangeRate
+    public function addManualRate(string $base, string $quote, string $rate, CarbonInterface|string $date, User $actor, string $reason, string $source = self::SOURCE_MANUAL, bool $correction = false): ExchangeRate
     {
         if (! $actor->can('exchange_rates.manage')) {
             throw DomainException::forbidden();
@@ -127,25 +141,46 @@ final class ExchangeRates
             throw DomainException::because('integrations.errors.future_date', [], 'rate_date');
         }
 
-        return DB::transaction(function () use ($base, $quote, $decimal, $rateDate, $actor, $reason, $source) {
-            $exists = ExchangeRate::query()->pair($base, $quote)->whereDate('rate_date', $rateDate)->where('source', $source)->lockForUpdate()->exists();
-            if ($exists) {
-                throw DomainException::conflict('integrations.errors.rate_exists', ['base' => $base, 'quote' => $quote, 'date' => $rateDate->toDateString()]);
-            }
-            $row = ExchangeRate::query()->create([
-                'base_currency' => $base,
-                'quote_currency' => $quote,
-                'rate' => (string) $decimal->toScale(8, RoundingMode::HalfUp),
-                'source' => $source,
-                'source_reference' => null,
-                'rate_date' => $rateDate->toDateString(),
-                'reason' => trim($reason),
-                'entered_by' => $actor->id,
-            ]);
-            $this->audit->log(self::AUDIT_ADDED, $row, new: ['base_currency' => $base, 'quote_currency' => $quote, 'rate' => $row->rate, 'rate_date' => $rateDate->toDateString(), 'source' => $source], reason: trim($reason), actor: $actor, entityLabel: "{$base}/{$quote} {$rateDate->toDateString()}");
+        $params = ['base' => $base, 'quote' => $quote, 'date' => $rateDate->toDateString()];
+        $scaled = $decimal->toScale(8, RoundingMode::HalfUp);
 
-            return $row;
-        });
+        try {
+            return DB::transaction(function () use ($base, $quote, $scaled, $rateDate, $actor, $reason, $source, $correction, $params) {
+                $sameDay = ExchangeRate::query()->pair($base, $quote)->whereDate('rate_date', $rateDate)->latestFirst()->lockForUpdate()->get(['id', 'rate', 'source']);
+                $corrected = null;
+                if ($correction) {
+                    $corrected = $sameDay->first();
+                    if (! $corrected) {
+                        throw DomainException::because('integrations.errors.nothing_to_correct', $params, 'correction');
+                    }
+                    if (BigDecimal::of((string) $corrected->rate)->isEqualTo($scaled)) {
+                        throw DomainException::because('integrations.errors.correction_same_value', $params + ['rate' => self::normalizeRate((string) $corrected->rate)], 'rate');
+                    }
+                    $source = self::SOURCE_CORRECTION_PREFIX.($sameDay->filter(fn (ExchangeRate $r) => str_starts_with($r->source, self::SOURCE_CORRECTION_PREFIX))->count() + 1);
+                } elseif ($sameDay->contains(fn (ExchangeRate $r) => $r->source === $source)) {
+                    throw DomainException::conflict('integrations.errors.rate_exists', $params);
+                }
+
+                $row = ExchangeRate::query()->create([
+                    'base_currency' => $base,
+                    'quote_currency' => $quote,
+                    'rate' => (string) $scaled,
+                    'source' => $source,
+                    'source_reference' => $corrected ? 'corrects:'.$corrected->id : null,
+                    'rate_date' => $rateDate->toDateString(),
+                    'reason' => trim($reason),
+                    'entered_by' => $actor->id,
+                ]);
+                $new = ['base_currency' => $base, 'quote_currency' => $quote, 'rate' => $row->rate, 'rate_date' => $rateDate->toDateString(), 'source' => $source];
+                $old = $corrected ? ['exchange_rate_id' => $corrected->id, 'rate' => (string) $corrected->rate, 'source' => $corrected->source] : [];
+                $this->audit->log($corrected ? self::AUDIT_CORRECTED : self::AUDIT_ADDED, $row, old: $old, new: $new, reason: trim($reason), actor: $actor, entityLabel: "{$base}/{$quote} {$rateDate->toDateString()}");
+
+                return $row;
+            });
+        } catch (UniqueConstraintViolationException) {
+            // A concurrent request inserted the same (pair, date, source) first.
+            throw DomainException::conflict('integrations.errors.rate_exists', $params);
+        }
     }
 
     /**

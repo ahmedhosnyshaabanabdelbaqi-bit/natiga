@@ -2,70 +2,36 @@
 
 namespace App\Modules\Notifications\Jobs;
 
-use App\Modules\Notifications\Models\Enums\DeliveryStatus;
+use App\Models\User;
+use App\Modules\Integrations\Contracts\Data\WhatsAppTemplateMessage;
+use App\Modules\Integrations\Services\Integrations;
+use App\Modules\Notifications\Models\Notification;
 use App\Modules\Notifications\Models\NotificationDelivery;
-use App\Modules\Notifications\Services\Channels\ProviderStatus;
 use App\Modules\Notifications\Services\Channels\WhatsAppChannel;
 use App\Modules\Notifications\Services\NotificationService;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Queue\Queueable;
-use Throwable;
+use App\Modules\Notifications\Support\NotificationUrl;
 
 /**
- * Sends one WhatsApp delivery through the configured provider using the pre-approved notification template
- * (`ev.integrations.whatsapp.notification_template`, parameters: title, body, url). Never fakes a delivery.
+ * Sends one WhatsApp delivery through `Integrations::whatsapp()` using the pre-approved notification template
+ * (`ev.integrations.whatsapp.notification_template`, parameters: title, body, link). Never fakes a delivery.
  */
-class SendWhatsAppNotification implements ShouldQueue
+class SendWhatsAppNotification extends DeliveryJob
 {
-    use Queueable;
-
-    public int $tries = 3;
-
-    public function __construct(public readonly int $deliveryId) {}
-
-    /** @return int[] */
-    public function backoff(): array
+    protected function deliver(NotificationDelivery $delivery, Notification $notification, User $user, NotificationService $service): void
     {
-        return [30, 120, 600];
+        $provider = Integrations::whatsapp();
+        $result = $provider->sendTemplate(new WhatsAppTemplateMessage(
+            (string) $user->mobile,
+            WhatsAppChannel::templateName(),
+            [mb_substr($notification->title, 0, 200), mb_substr($notification->body, 0, 900), NotificationUrl::absolute($notification->url)],
+            $user->preferredLocale(),
+            'notification:'.$notification->public_id,
+        ));
+        $this->record($delivery, $result, $provider->driver());
     }
 
-    public function handle(): void
+    protected function missingAddressReason(): string
     {
-        $delivery = NotificationDelivery::query()->with('notification.user')->find($this->deliveryId);
-        if ($delivery === null || $delivery->status !== DeliveryStatus::Queued) {
-            return;
-        }
-        $notification = $delivery->notification;
-        $user = $notification?->user;
-        if ($notification === null || $user === null || ! $user->mobile) {
-            $delivery->markSkipped(NotificationDelivery::SKIP_NO_MOBILE);
-
-            return;
-        }
-        $provider = WhatsAppChannel::isConfigured() ? ProviderStatus::provider('whatsapp') : null;
-        if ($provider === null || ! method_exists($provider, 'sendTemplate') || ! class_exists('App\\Modules\\Integrations\\Contracts\\Data\\WhatsAppTemplateMessage')) {
-            $delivery->markSkipped(NotificationDelivery::SKIP_NOT_CONFIGURED);
-
-            return;
-        }
-
-        $delivery->increment('attempts');
-        try {
-            $messageClass = 'App\\Modules\\Integrations\\Contracts\\Data\\WhatsAppTemplateMessage';
-            $parameters = [$notification->title, $notification->body, app(NotificationService::class)->absoluteUrl($notification->url)];
-            $result = $provider->sendTemplate(new $messageClass($user->mobile, WhatsAppChannel::templateName(), $parameters, $user->preferredLocale(), 'notification:'.$notification->public_id));
-            SendSmsNotification::record($delivery, $result, WhatsAppChannel::driver());
-        } catch (Throwable $e) {
-            $delivery->forceFill(['error' => mb_substr($e->getMessage(), 0, 2000)])->save();
-            throw $e;
-        }
-    }
-
-    public function failed(?Throwable $exception): void
-    {
-        $delivery = NotificationDelivery::query()->find($this->deliveryId);
-        if ($delivery !== null && $delivery->status === DeliveryStatus::Queued) {
-            $delivery->markFailed($exception?->getMessage() ?? 'failed');
-        }
+        return NotificationDelivery::SKIP_NO_MOBILE;
     }
 }

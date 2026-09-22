@@ -121,21 +121,34 @@ final class TemplateRegistry
         $keys = [];
         foreach (ev_locales() as $locale) {
             $templates = trans()->get('notifications.templates', [], $locale, false);
-            if (! is_array($templates)) {
-                continue;
-            }
-            foreach ($templates as $category => $items) {
-                if (! is_array($items)) {
-                    continue;
-                }
-                foreach ($items as $name => $definition) {
-                    if (is_array($definition)) {
-                        $keys[] = $category.'.'.$name;
-                    }
-                }
+            if (is_array($templates)) {
+                self::collect($templates, '', $keys);
             }
         }
 
         return array_values(array_unique($keys));
+    }
+
+    /**
+     * A node is a template when it holds a `title` or `body` string; keys can be nested at any depth
+     * (`orders.confirmed`, `members.status.active`).
+     *
+     * @param  array<string, mixed>  $node
+     * @param  string[]  $keys
+     */
+    private static function collect(array $node, string $prefix, array &$keys): void
+    {
+        foreach ($node as $name => $child) {
+            if (! is_array($child)) {
+                continue;
+            }
+            $key = $prefix === '' ? (string) $name : $prefix.'.'.$name;
+            if (is_string($child['title'] ?? null) || is_string($child['body'] ?? null)) {
+                $keys[] = $key;
+
+                continue;
+            }
+            self::collect($child, $key, $keys);
+        }
     }
 }

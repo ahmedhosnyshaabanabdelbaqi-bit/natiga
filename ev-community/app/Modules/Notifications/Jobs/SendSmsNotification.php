@@ -2,82 +2,45 @@
 
 namespace App\Modules\Notifications\Jobs;
 
-use App\Modules\Notifications\Models\Enums\DeliveryStatus;
+use App\Models\User;
+use App\Modules\Integrations\Contracts\Data\SmsMessage;
+use App\Modules\Integrations\Services\Integrations;
+use App\Modules\Notifications\Models\Notification;
 use App\Modules\Notifications\Models\NotificationDelivery;
-use App\Modules\Notifications\Services\Channels\ProviderStatus;
-use App\Modules\Notifications\Services\Channels\SmsChannel;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Queue\Queueable;
-use RuntimeException;
-use Throwable;
+use App\Modules\Notifications\Services\NotificationService;
+use App\Modules\Notifications\Support\NotificationUrl;
 
 /**
- * Sends one SMS delivery through the configured provider (Integrations module). Never fakes a delivery:
- * without a configured provider the delivery is `skipped:not_configured`.
+ * Sends one SMS delivery through `Integrations::sms()`. Never fakes a delivery: a `logged` result (development
+ * driver) is recorded as `skipped:logged_only`, a provider failure is retried then marked `failed`.
  */
-class SendSmsNotification implements ShouldQueue
+class SendSmsNotification extends DeliveryJob
 {
-    use Queueable;
+    public const MAX_LENGTH = 480;
 
-    public int $tries = 3;
-
-    public function __construct(public readonly int $deliveryId) {}
-
-    /** @return int[] */
-    public function backoff(): array
+    protected function deliver(NotificationDelivery $delivery, Notification $notification, User $user, NotificationService $service): void
     {
-        return [30, 120, 600];
+        $provider = Integrations::sms();
+        $result = $provider->send(new SmsMessage(
+            (string) $user->mobile,
+            self::body($notification),
+            'notification:'.$notification->public_id,
+            $user->preferredLocale(),
+        ));
+        $this->record($delivery, $result, $provider->driver());
     }
 
-    public function handle(): void
+    protected function missingAddressReason(): string
     {
-        $delivery = NotificationDelivery::query()->with('notification.user')->find($this->deliveryId);
-        if ($delivery === null || $delivery->status !== DeliveryStatus::Queued) {
-            return;
-        }
-        $notification = $delivery->notification;
-        $user = $notification?->user;
-        if ($notification === null || $user === null || ! $user->mobile) {
-            $delivery->markSkipped(NotificationDelivery::SKIP_NO_MOBILE);
-
-            return;
-        }
-        $provider = SmsChannel::isConfigured() ? ProviderStatus::provider('sms') : null;
-        if ($provider === null || ! method_exists($provider, 'send') || ! class_exists('App\\Modules\\Integrations\\Contracts\\Data\\SmsMessage')) {
-            $delivery->markSkipped(NotificationDelivery::SKIP_NOT_CONFIGURED);
-
-            return;
-        }
-
-        $delivery->increment('attempts');
-        try {
-            $messageClass = 'App\\Modules\\Integrations\\Contracts\\Data\\SmsMessage';
-            $body = mb_substr(trim($notification->title."\n".$notification->body.($notification->url ? "\n".app(\App\Modules\Notifications\Services\NotificationService::class)->absoluteUrl($notification->url) : '')), 0, 480);
-            $result = $provider->send(new $messageClass($user->mobile, $body, 'notification:'.$notification->public_id, $user->preferredLocale()));
-            $this->record($delivery, $result, SmsChannel::driver());
-        } catch (Throwable $e) {
-            $delivery->forceFill(['error' => mb_substr($e->getMessage(), 0, 2000)])->save();
-            throw $e;
-        }
+        return NotificationDelivery::SKIP_NO_MOBILE;
     }
 
-    public function failed(?Throwable $exception): void
+    public static function body(Notification $notification): string
     {
-        $delivery = NotificationDelivery::query()->find($this->deliveryId);
-        if ($delivery !== null && $delivery->status === DeliveryStatus::Queued) {
-            $delivery->markFailed($exception?->getMessage() ?? 'failed');
-        }
-    }
+        $link = $notification->url ? "\n".NotificationUrl::absolute($notification->url) : '';
+        $text = trim($notification->title."\n".$notification->body);
+        $room = self::MAX_LENGTH - mb_strlen($link);
 
-    /** Maps the provider SendResult (sent|queued|logged|failed) onto the delivery. */
-    public static function record(NotificationDelivery $delivery, object $result, string $provider): void
-    {
-        $status = is_object($result->status ?? null) && property_exists($result->status, 'value') ? (string) $result->status->value : (string) ($result->status ?? 'failed');
-        $messageId = isset($result->providerMessageId) && is_string($result->providerMessageId) ? $result->providerMessageId : null;
-        match ($status) {
-            'sent', 'queued' => $delivery->markSent($provider, $messageId),
-            'logged' => $delivery->markSkipped(NotificationDelivery::SKIP_NOT_CONFIGURED),
-            default => throw new RuntimeException((string) ($result->error ?? 'Provider rejected the message')),
-        };
+        return (mb_strlen($text) > $room ? rtrim(mb_substr($text, 0, max(0, $room - 1))).'…' : $text).$link;
     }
 }

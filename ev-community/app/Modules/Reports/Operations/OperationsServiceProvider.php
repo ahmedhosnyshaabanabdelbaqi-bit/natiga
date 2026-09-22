@@ -45,6 +45,11 @@ class OperationsServiceProvider extends ServiceProvider
         DashboardKpis::register('active_incidents', 'incidents.view', fn () => Incident::query()->whereIn('status', ['open', 'investigating', 'mitigated'])->count(), 'operations.kpis.active_incidents', '/admin/incidents', 'incidents.status in (open, investigating, mitigated)', tone: 'danger', order: 91);
 
         $this->registerHealthChecks();
+
+        $registry = 'App\\Modules\\Notifications\\Services\\TemplateRegistry';
+        if (class_exists($registry)) {
+            $registry::register(OperationsExceptions::P0_NOTIFICATION, ['title', 'category', 'exception_id', 'source'], 'operations', 'operations.notifications.p0.title', 'operations.notifications.p0.body');
+        }
     }
 
     private function registerHealthChecks(): void

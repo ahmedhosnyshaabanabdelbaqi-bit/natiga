@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Modules\Notifications\Models\Notification;
 use App\Modules\Notifications\Services\EmailTemplateRenderer;
 use App\Modules\Notifications\Services\NotificationService;
+use App\Modules\Notifications\Support\NotificationUrl;
 use App\Modules\System\Services\Settings;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Address;
@@ -13,47 +14,53 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 
 /**
- * Bilingual, branded email for one notification. Subject/body come from EmailTemplateRenderer
- * (admin overrides → lang defaults → stored notification text); variables are always escaped.
+ * Bilingual, branded email for one notification (RTL layout for Arabic, plain-text alternative).
+ * Subject/body come from EmailTemplateRenderer (admin overrides → lang defaults → stored notification text);
+ * variables are always escaped.
+ *
+ * Note: `Mailable` already declares `$locale`, so the recipient locale is kept in `$mailLocale` and applied
+ * through `$this->locale()`.
  */
 class NotificationMail extends Mailable
 {
     /** @var array{subject: string, html: string, text: string, customized: bool}|null */
     private ?array $rendered = null;
 
-    public function __construct(public readonly Notification $notification, public readonly User $user, public readonly string $locale) {}
+    public function __construct(public readonly Notification $notification, public readonly User $recipient, public readonly string $mailLocale)
+    {
+        $this->locale($mailLocale);
+    }
 
     public function envelope(): Envelope
     {
-        $fromName = Settings::localized('notifications.email_from_name', $this->locale) ?: Settings::localized('branding.site_name', $this->locale, config('app.name'));
+        $fromName = Settings::localized('notifications.email_from_name', $this->mailLocale) ?: Settings::localized('branding.site_name', $this->mailLocale, config('app.name'));
 
         return new Envelope(
             from: new Address((string) config('mail.from.address'), (string) $fromName),
-            subject: $this->rendered()['subject'] !== '' ? $this->rendered()['subject'] : $this->notification->title,
+            subject: $this->subjectLine(),
         );
     }
 
     public function content(): Content
     {
         $rendered = $this->rendered();
-        $service = app(NotificationService::class);
 
         return new Content(
             view: 'mail.notification',
             text: 'mail.notification-text',
             with: [
-                'locale' => $this->locale,
-                'dir' => ev_dir($this->locale),
-                'siteName' => Settings::localized('branding.site_name', $this->locale, config('app.name')),
-                'primaryColor' => (string) Settings::get('branding.primary_color', '#0B1220'),
-                'accentColor' => (string) Settings::get('branding.accent_color', '#0F766E'),
-                'backgroundColor' => (string) Settings::get('branding.background_color', '#F8FAFC'),
+                'locale' => $this->mailLocale,
+                'dir' => ev_dir($this->mailLocale),
+                'siteName' => (string) Settings::localized('branding.site_name', $this->mailLocale, config('app.name')),
+                'primaryColor' => $this->color('branding.primary_color', '#0B1220'),
+                'accentColor' => $this->color('branding.accent_color', '#0F766E'),
+                'backgroundColor' => $this->color('branding.background_color', '#F8FAFC'),
                 'logoUrl' => $this->logoUrl(),
-                'subject' => $rendered['subject'] !== '' ? $rendered['subject'] : $this->notification->title,
+                'subject' => $this->subjectLine(),
                 'bodyHtml' => $rendered['html'],
                 'bodyText' => $rendered['text'],
-                'greeting' => __('notifications.mail.greeting', ['name' => $this->user->name], $this->locale),
-                'actionUrl' => $this->notification->url ? $service->absoluteUrl($this->notification->url) : null,
+                'greeting' => __('notifications.mail.greeting', ['name' => $this->recipient->name], $this->mailLocale),
+                'actionUrl' => $this->notification->url ? NotificationUrl::absolute($this->notification->url) : null,
                 'preferencesUrl' => rtrim((string) config('app.url'), '/').'/account/notification-preferences',
                 'isMarketing' => ! $this->notification->is_transactional,
                 'year' => now()->year,
@@ -65,15 +72,29 @@ class NotificationMail extends Mailable
     public function rendered(): array
     {
         if ($this->rendered === null) {
-            $service = app(NotificationService::class);
             $this->rendered = app(EmailTemplateRenderer::class)->render(
                 $this->notification->key,
-                $this->locale,
-                $service->variablesFor($this->notification, $this->user, $this->locale),
+                $this->mailLocale,
+                app(NotificationService::class)->variablesFor($this->notification, $this->recipient, $this->mailLocale),
             );
         }
 
         return $this->rendered;
+    }
+
+    private function subjectLine(): string
+    {
+        $subject = $this->rendered()['subject'];
+
+        return $subject !== '' ? $subject : $this->notification->title;
+    }
+
+    /** Only plain hex colors reach the inline CSS (settings are admin-editable). */
+    private function color(string $key, string $default): string
+    {
+        $value = Settings::get($key, $default);
+
+        return is_string($value) && preg_match('/^#[0-9A-Fa-f]{3,8}$/', $value) ? $value : $default;
     }
 
     private function logoUrl(): ?string
@@ -82,7 +103,10 @@ class NotificationMail extends Mailable
         if (! is_string($path) || $path === '') {
             return null;
         }
+        if (preg_match('#^https://#i', $path)) {
+            return $path;
+        }
 
-        return str_starts_with($path, 'http') ? $path : rtrim((string) config('app.url'), '/').'/'.ltrim($path, '/');
+        return rtrim((string) config('app.url'), '/').'/'.ltrim($path, '/');
     }
 }

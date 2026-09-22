@@ -35,7 +35,9 @@ final class SettingsForm
                     'key' => $key,
                     'label' => $definition['label'] ?? ['ar' => $key, 'en' => $key],
                     'type' => in_array($definition['type'], self::TYPES, true) ? $definition['type'] : 'string',
-                    'options' => $definition['options'] ?? null,
+                    'input' => $this->inputFor($definition),
+                    'options' => isset($definition['options']) ? array_values(array_map('strval', (array) $definition['options'])) : null,
+                    'option_labels' => $definition['option_labels'] ?? null,
                     'help' => $definition['help'] ?? null,
                     'rules' => (string) ($definition['rules'] ?? ''),
                     'sensitive' => (bool) $definition['sensitive'],
@@ -66,7 +68,9 @@ final class SettingsForm
         $attributes = [];
         $safeToKey = [];
         foreach ($definitions as $key => $definition) {
-            if (! array_key_exists($key, $values)) {
+            // Image settings only change through the MIME-sniffed upload endpoint (or reset): a free-text path
+            // could otherwise point the logo at an arbitrary URL.
+            if (! array_key_exists($key, $values) || $definition['type'] === 'image') {
                 continue;
             }
             $raw = $values[$key];
@@ -118,7 +122,28 @@ final class SettingsForm
         $row->delete();
         Settings::flush();
         $sensitive = (bool) $definition['sensitive'];
-        $this->audit->log('settings.reset', $row, old: [$key => $sensitive ? '***' : $old], new: [$key => $sensitive ? '***' : ($definition['default'] ?? null)], reason: $reason, actor: $actor);
+        $this->audit->log('settings.reset', $row, old: [$key => $sensitive ? Settings::REDACTED : $old], new: [$key => $sensitive ? Settings::REDACTED : ($definition['default'] ?? null)], reason: $reason, actor: $actor);
+    }
+
+    /**
+     * UI control for a definition: an explicit `input`, a colour picker for hex-colour rules, otherwise the type.
+     *
+     * @param  array<string, mixed>  $definition
+     */
+    private function inputFor(array $definition): string
+    {
+        if (isset($definition['input']) && is_string($definition['input'])) {
+            return $definition['input'];
+        }
+        $rules = is_array($definition['rules'] ?? null) ? implode('|', array_filter($definition['rules'], 'is_string')) : (string) ($definition['rules'] ?? '');
+        if ($definition['type'] === 'string' && str_contains($rules, '#[0-9A-Fa-f]{6}')) {
+            return 'color';
+        }
+        if ($definition['sensitive'] ?? false) {
+            return 'secret';
+        }
+
+        return in_array($definition['type'], self::TYPES, true) ? $definition['type'] : 'string';
     }
 
     private function normalize(string $type, mixed $raw, string $key): mixed

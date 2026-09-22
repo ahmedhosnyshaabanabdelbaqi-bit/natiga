@@ -9,9 +9,11 @@ use App\Modules\Auth\Services\SessionManager;
 use App\Modules\System\Services\UserAccessRules;
 use App\Support\Exceptions\DomainException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 /**
- * Disables an account: status=disabled, all sessions invalidated, audit + critical security event.
+ * Disables an account: status=disabled, all sessions and API tokens invalidated, remember-me token rotated,
+ * audit + critical security event.
  * The last active owner can never be disabled.
  */
 final class DisableUser
@@ -31,10 +33,12 @@ final class DisableUser
                 throw DomainException::forbidden('users.errors.last_owner');
             }
 
-            $target->forceFill(['status' => User::STATUS_DISABLED, 'disabled_at' => now(), 'disabled_by' => $actor->id])->save();
+            // Kill every way back in: status, "remember me" cookies (token rotation), web sessions and API tokens.
+            $target->forceFill(['status' => User::STATUS_DISABLED, 'disabled_at' => now(), 'disabled_by' => $actor->id, 'remember_token' => Str::random(60)])->save();
             $revoked = $this->sessions->logoutAll($target);
+            $tokens = $target->tokens()->delete();
 
-            $this->audit->log('users.disabled', $target, old: ['status' => User::STATUS_ACTIVE], new: ['status' => User::STATUS_DISABLED, 'sessions_revoked' => $revoked], reason: $reason, actor: $actor);
+            $this->audit->log('users.disabled', $target, old: ['status' => User::STATUS_ACTIVE], new: ['status' => User::STATUS_DISABLED, 'sessions_revoked' => $revoked, 'api_tokens_revoked' => $tokens], reason: $reason, actor: $actor);
             SecurityEvents::record($target, 'account_disabled', ['by' => $actor->id, 'reason' => $reason, 'sessions_revoked' => $revoked]);
 
             return $target;

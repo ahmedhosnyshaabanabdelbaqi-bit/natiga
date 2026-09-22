@@ -9,6 +9,7 @@ use App\Modules\Members\Http\Requests\Admin\ProcessDeletionRequestRequest;
 use App\Modules\Members\Models\AccountDeletionRequest;
 use App\Modules\Members\Models\Enums\DeletionRequestStatus;
 use App\Modules\Members\Services\MemberDetails;
+use App\Modules\Members\Services\MemberNotifier;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -74,9 +75,10 @@ class DeletionRequestController extends Controller
         return back()->with('success', __('privacy.deletion.completed'));
     }
 
-    public function reject(ProcessDeletionRequestRequest $request, AccountDeletionRequest $deletionRequest, ProcessDeletionRequest $action): RedirectResponse
+    public function reject(ProcessDeletionRequestRequest $request, AccountDeletionRequest $deletionRequest, ProcessDeletionRequest $action, MemberNotifier $notifier): RedirectResponse
     {
-        $action->reject($deletionRequest, $request->user(), $request->validated('reason'), $request->validated('notes'));
+        $rejected = $action->reject($deletionRequest, $request->user(), $request->validated('reason'), $request->validated('notes'));
+        $notifier->deletionRejected($rejected);
 
         return back()->with('success', __('privacy.deletion.rejected'));
     }

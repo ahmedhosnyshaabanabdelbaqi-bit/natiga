@@ -18,6 +18,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -55,7 +56,7 @@ class IncidentsController extends Controller
         }
 
         return Inertia::render('admin/incidents/index', [
-            'incidents' => $query->orderByDesc('started_at')->orderByDesc('id')->paginate(25)->withQueryString()->through(fn (Incident $i) => $this->summary($i)),
+            'incidents' => $query->orderByDesc('started_at')->orderByDesc('id')->paginate(in_array((int) $request->query('per_page', 25), [15, 25, 50, 100], true) ? (int) $request->query('per_page') : 25)->withQueryString()->through(fn (Incident $i) => $this->summary($i)),
             'filters' => $filters + ['status' => $status],
             'owners' => $this->owners(),
             'severities' => ExceptionSeverity::values(),
@@ -75,7 +76,7 @@ class IncidentsController extends Controller
     {
         $this->authorize('create', Incident::class);
         $data = $request->validated();
-        $data['owner_id'] = $this->ownerId($data['owner'] ?? null);
+        $data['owner_id'] = $this->ownerId($data['owner'] ?? null) ?? $request->user()->id;
         $incident = $this->incidents->create($data, $request->user());
 
         return redirect()->route('admin.incidents.show', $incident)->with('success', __('operations.incidents.messages.created', ['number' => $incident->number]));
@@ -135,9 +136,25 @@ class IncidentsController extends Controller
         return back()->with('success', __('operations.incidents.messages.review_saved'));
     }
 
+    /** Resolve an owner public id; only people who can work incidents may own one. */
     private function ownerId(?string $publicId): ?int
     {
-        return $publicId ? User::query()->where('public_id', $publicId)->value('id') : null;
+        if (! $publicId) {
+            return null;
+        }
+        $id = $this->eligibleOwners()->where('public_id', $publicId)->value('id');
+        if ($id === null) {
+            throw ValidationException::withMessages(['owner' => __('operations.incidents.errors.invalid_owner')]);
+        }
+
+        return (int) $id;
+    }
+
+    /** @return Builder<User> */
+    private function eligibleOwners(): Builder
+    {
+        return User::query()->where('status', User::STATUS_ACTIVE)
+            ->where(fn (Builder $q) => $q->permission(['incidents.manage', 'operations.manage'])->orWhereHas('roles', fn (Builder $r) => $r->whereIn('name', PermissionRegistry::SUPER_ROLES)));
     }
 
     /** @return array<string, mixed> */
@@ -153,9 +170,7 @@ class IncidentsController extends Controller
     /** @return array<int, array{id: string, name: string}> */
     private function owners(): array
     {
-        return User::query()->where('status', User::STATUS_ACTIVE)
-            ->where(fn (Builder $q) => $q->permission(['incidents.manage', 'operations.manage'])->orWhereHas('roles', fn (Builder $r) => $r->whereIn('name', PermissionRegistry::SUPER_ROLES)))
-            ->orderBy('name')->limit(100)->get(['id', 'name', 'public_id'])
+        return $this->eligibleOwners()->orderBy('name')->limit(100)->get(['id', 'name', 'public_id'])
             ->map(fn (User $u) => ['id' => $u->public_id, 'name' => $u->name])->values()->all();
     }
 

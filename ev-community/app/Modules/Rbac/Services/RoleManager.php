@@ -81,7 +81,7 @@ final class RoleManager
             throw DomainException::because('roles.errors.unknown_permission', ['permission' => implode(', ', $unknown)], 'permissions');
         }
 
-        $old = $role->permissions->pluck('name')->sort()->values()->all();
+        $old = $role->load('permissions')->permissions->pluck('name')->sort()->values()->all();
         $new = array_values(array_unique($permissions));
         sort($new);
         $added = array_values(array_diff($new, $old));

@@ -2,24 +2,21 @@
 
 namespace App\Modules\Notifications\Services\Channels;
 
+use App\Modules\Integrations\Contracts\Integration;
+use App\Modules\Integrations\Services\Integrations;
 use Throwable;
 
 /**
- * Thin bridge to `App\Modules\Integrations\Services\Integrations::<category>()` (written by another module).
- * Returns null when the Integrations service is not available yet so callers can apply their own fallback.
+ * Thin bridge to the Integrations module (`Integrations::email()/sms()/whatsapp()`).
+ * A provider that throws while being resolved is reported and treated as not configured: the notification
+ * pipeline never fails because an integration is misconfigured, it records `skipped:not_configured` instead.
  */
 final class ProviderStatus
 {
-    public const INTEGRATIONS = 'App\\Modules\\Integrations\\Services\\Integrations';
-
-    public static function isConfigured(string $category): ?bool
+    public static function isConfigured(string $category): bool
     {
-        $provider = self::provider($category);
-        if ($provider === null) {
-            return null;
-        }
         try {
-            return method_exists($provider, 'isConfigured') ? (bool) $provider->isConfigured() : null;
+            return Integrations::isConfigured($category);
         } catch (Throwable $e) {
             report($e);
 
@@ -27,20 +24,20 @@ final class ProviderStatus
         }
     }
 
-    /** The provider object for a category (email|sms|whatsapp) or null when unavailable. */
-    public static function provider(string $category): ?object
+    /** The provider for a category (email|sms|whatsapp) or null when it cannot be resolved. */
+    public static function provider(string $category): ?Integration
     {
-        if (! class_exists(self::INTEGRATIONS) || ! method_exists(self::INTEGRATIONS, $category)) {
-            return null;
-        }
         try {
-            $provider = self::INTEGRATIONS::$category();
+            return Integrations::resolve($category);
         } catch (Throwable $e) {
             report($e);
 
             return null;
         }
+    }
 
-        return is_object($provider) ? $provider : null;
+    public static function driver(string $category): string
+    {
+        return self::provider($category)?->driver() ?? 'none';
     }
 }

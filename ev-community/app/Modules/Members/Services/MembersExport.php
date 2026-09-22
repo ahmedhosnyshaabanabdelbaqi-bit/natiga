@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 /**
  * Streams the filtered member list as UTF-8 CSV (BOM for Excel) with locale-aware headers.
  * Every export is audited (members.exported) with the filters used and the row count.
+ * Rows are streamed in id chunks, so memory stays flat for the whole membership base.
  */
 final class MembersExport
 {
@@ -28,11 +29,11 @@ final class MembersExport
         return response()->streamDownload(function () use ($query) {
             $out = fopen('php://output', 'w');
             fwrite($out, "\xEF\xBB\xBF");
-            fputcsv($out, array_map(fn (string $c) => __('members.export.columns.'.$c), self::COLUMNS));
+            fputcsv($out, array_map(fn (string $c) => __('members.export.columns.'.$c), self::COLUMNS), escape: '');
             $query->reorder('memberships.id')->chunkById(500, function ($rows) use ($out) {
                 /** @var Membership $membership */
                 foreach ($rows as $membership) {
-                    fputcsv($out, [
+                    fputcsv($out, array_map(self::cell(...), [
                         $membership->member_number,
                         $membership->user->name,
                         $membership->user->email,
@@ -46,10 +47,25 @@ final class MembersExport
                         $membership->referrer?->member_number,
                         $membership->referral_source,
                         $membership->user->preferred_locale,
-                    ]);
+                    ]), escape: '');
                 }
             }, 'memberships.id', 'id');
             fclose($out);
-        }, $filename, ['Content-Type' => 'text/csv; charset=UTF-8', 'X-Content-Type-Options' => 'nosniff']);
+        }, $filename, ['Content-Type' => 'text/csv; charset=UTF-8', 'X-Content-Type-Options' => 'nosniff', 'Cache-Control' => 'no-store, private']);
+    }
+
+    /**
+     * Neutralises spreadsheet formula injection: member-controlled text (names, referral sources)
+     * starting with = + - @ or a control character is prefixed with an apostrophe so Excel/Sheets
+     * treat it as text. Phone numbers (leading 0) and dates are unaffected.
+     */
+    public static function cell(mixed $value): string
+    {
+        $value = $value === null ? '' : (string) $value;
+        if ($value !== '' && in_array($value[0], ['=', '+', '-', '@', "\t", "\r"], true)) {
+            return "'".$value;
+        }
+
+        return $value;
     }
 }

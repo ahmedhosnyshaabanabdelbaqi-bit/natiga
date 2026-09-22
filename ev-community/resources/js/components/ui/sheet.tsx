@@ -2,6 +2,7 @@ import * as SheetPrimitive from "@radix-ui/react-dialog"
 import { XIcon } from "lucide-react"
 import * as React from "react"
 
+import { isRtl, t } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 
 function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {
@@ -42,14 +43,28 @@ function SheetOverlay({
   )
 }
 
+/** `start`/`end` follow the document direction (end = left in Arabic, right in English). */
+type SheetSide = "top" | "right" | "bottom" | "left" | "start" | "end"
+
+function physicalSide(side: SheetSide): "top" | "right" | "bottom" | "left" {
+  if (side === "start") {
+    return isRtl() ? "right" : "left"
+  }
+  if (side === "end") {
+    return isRtl() ? "left" : "right"
+  }
+  return side
+}
+
 function SheetContent({
   className,
   children,
-  side = "right",
+  side: requestedSide = "end",
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Content> & {
-  side?: "top" | "right" | "bottom" | "left"
+  side?: SheetSide
 }) {
+  const side = physicalSide(requestedSide)
   return (
     <SheetPortal>
       <SheetOverlay />
@@ -72,7 +87,7 @@ function SheetContent({
         {children}
         <SheetPrimitive.Close className="ring-offset-background focus:ring-ring data-[state=open]:bg-secondary absolute top-4 end-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none">
           <XIcon className="size-4" />
-          <span className="sr-only">Close</span>
+          <span className="sr-only">{t("core.actions.close")}</span>
         </SheetPrimitive.Close>
       </SheetPrimitive.Content>
     </SheetPortal>

@@ -9,6 +9,7 @@ use App\Modules\Members\Models\MemberNote;
 use App\Modules\Members\Models\Membership;
 use App\Modules\Members\Models\MembershipStatusHistory;
 use App\Modules\Members\Models\MembershipVerification;
+use App\Modules\Referrals\Models\MemberReferral;
 use App\Modules\Referrals\Services\ReferralService;
 
 /** Shapes the admin member detail page. Security events are included only when the viewer may see them. */
@@ -61,7 +62,17 @@ final class MemberDetails
                 : null,
             'deletion_requests' => $membership->deletionRequests->map(fn (AccountDeletionRequest $r) => $this->deletionRequest($r))->values()->all(),
             'referrals' => $this->referrals->enabled()
-                ? ['stats' => $this->referrals->statsFor($membership), 'list' => $this->referrals->referredList($membership, 20)]
+                ? [
+                    'stats' => $this->referrals->statsFor($membership),
+                    'list' => $membership->referrals()->with('referred.user')->limit(20)->get()->map(fn (MemberReferral $r) => [
+                        'id' => $r->referred->public_id,
+                        'member_number' => $r->referred->member_number,
+                        'name' => $r->referred->user?->name,
+                        'status' => $r->status->value,
+                        'membership_status' => $r->referred->status->value,
+                        'created_at' => $r->created_at?->toIso8601String(),
+                    ])->all(),
+                ]
                 : null,
         ];
     }

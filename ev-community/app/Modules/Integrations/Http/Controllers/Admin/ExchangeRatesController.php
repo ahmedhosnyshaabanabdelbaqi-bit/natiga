@@ -27,7 +27,7 @@ class ExchangeRatesController extends Controller
         $rates = ExchangeRate::query()
             ->with('enteredBy:id,name')
             ->when($filters['base'], fn ($q, $b) => $q->where('base_currency', $b))
-            ->when($filters['source'] === 'manual', fn ($q) => $q->where('source', 'manual'))
+            ->when($filters['source'] === 'manual', fn ($q) => $q->where(fn ($w) => $w->where('source', ExchangeRates::SOURCE_MANUAL)->orWhere('source', 'like', ExchangeRates::SOURCE_CORRECTION_PREFIX.'%')))
             ->when($filters['source'] === 'provider', fn ($q) => $q->where('source', 'like', 'provider:%'))
             ->latestFirst()
             ->paginate(25)
@@ -67,9 +67,11 @@ class ExchangeRatesController extends Controller
     {
         Gate::authorize('exchange_rates.manage');
         $data = $request->validated();
-        $row = $service->addManualRate($data['base_currency'], $data['quote_currency'], $data['rate'], $data['rate_date'], $request->user(), $data['reason']);
+        $correction = (bool) ($data['correction'] ?? false);
+        $row = $service->addManualRate($data['base_currency'], $data['quote_currency'], $data['rate'], $data['rate_date'], $request->user(), $data['reason'], correction: $correction);
+        $params = ['base' => $row->base_currency, 'quote' => $row->quote_currency, 'rate' => ExchangeRates::normalizeRate((string) $row->rate), 'date' => $row->rate_date->toDateString()];
 
-        return back()->with('success', __('integrations.messages.rate_added', ['base' => $row->base_currency, 'quote' => $row->quote_currency, 'rate' => ExchangeRates::normalizeRate((string) $row->rate), 'date' => $row->rate_date->toDateString()]));
+        return back()->with('success', __($correction ? 'integrations.messages.rate_corrected' : 'integrations.messages.rate_added', $params));
     }
 
     public function sync(Request $request, ExchangeRates $service): RedirectResponse

@@ -3,16 +3,17 @@ import { useRef } from 'react';
 import SecurityController from '@/actions/App/Http/Controllers/Settings/SecurityController';
 import Heading from '@/components/heading';
 import InputError from '@/components/input-error';
-import PasswordInput from '@/components/password-input';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { edit } from '@/routes/security';
 import type { Props as ManagePasskeysProps } from '@/components/manage-passkeys';
 import ManagePasskeys from '@/components/manage-passkeys';
 import type { Props as ManageTwoFactorProps } from '@/components/manage-two-factor';
 import ManageTwoFactor from '@/components/manage-two-factor';
+import PasswordInput from '@/components/password-input';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Spinner } from '@/components/ui/spinner';
+import { t } from '@/lib/i18n';
+import { edit } from '@/routes/security';
 
-// oxfmt-ignore
 type Props = {
     passwordRules: string;
 } & ManagePasskeysProps &
@@ -24,27 +25,17 @@ export default function Security(props: Props) {
 
     return (
         <>
-            <Head title="Security settings" />
+            <Head title={t('settings.security.title')} />
 
-            <h1 className="sr-only">Security settings</h1>
+            <h1 className="sr-only">{t('settings.security.title')}</h1>
 
             <div className="space-y-6">
-                <Heading
-                    variant="small"
-                    title="Update password"
-                    description="Ensure your account is using a long, random password to stay secure"
-                />
+                <Heading variant="small" title={t('settings.security.password_heading')} description={t('settings.security.password_description')} />
 
                 <Form
                     {...SecurityController.update.form()}
-                    options={{
-                        preserveScroll: true,
-                    }}
-                    resetOnError={[
-                        'password',
-                        'password_confirmation',
-                        'current_password',
-                    ]}
+                    options={{ preserveScroll: true }}
+                    resetOnError={['password', 'password_confirmation', 'current_password']}
                     resetOnSuccess
                     onError={(errors) => {
                         if (errors.password) {
@@ -60,9 +51,7 @@ export default function Security(props: Props) {
                     {({ errors, processing }) => (
                         <>
                             <div className="grid gap-2">
-                                <Label htmlFor="current_password">
-                                    Current password
-                                </Label>
+                                <Label htmlFor="current_password">{t('settings.security.current_password')}</Label>
 
                                 <PasswordInput
                                     id="current_password"
@@ -70,14 +59,15 @@ export default function Security(props: Props) {
                                     name="current_password"
                                     className="mt-1 block w-full"
                                     autoComplete="current-password"
-                                    placeholder="Current password"
+                                    placeholder={t('settings.security.current_password')}
+                                    aria-invalid={errors.current_password ? true : undefined}
                                 />
 
                                 <InputError message={errors.current_password} />
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="password">New password</Label>
+                                <Label htmlFor="password">{t('settings.security.new_password')}</Label>
 
                                 <PasswordInput
                                     id="password"
@@ -85,38 +75,34 @@ export default function Security(props: Props) {
                                     name="password"
                                     className="mt-1 block w-full"
                                     autoComplete="new-password"
-                                    placeholder="New password"
+                                    placeholder={t('settings.security.new_password')}
                                     passwordrules={props.passwordRules}
+                                    aria-invalid={errors.password ? true : undefined}
                                 />
 
                                 <InputError message={errors.password} />
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="password_confirmation">
-                                    Confirm password
-                                </Label>
+                                <Label htmlFor="password_confirmation">{t('settings.security.confirm_password')}</Label>
 
                                 <PasswordInput
                                     id="password_confirmation"
                                     name="password_confirmation"
                                     className="mt-1 block w-full"
                                     autoComplete="new-password"
-                                    placeholder="Confirm password"
+                                    placeholder={t('settings.security.confirm_password')}
                                     passwordrules={props.passwordRules}
+                                    aria-invalid={errors.password_confirmation ? true : undefined}
                                 />
 
-                                <InputError
-                                    message={errors.password_confirmation}
-                                />
+                                <InputError message={errors.password_confirmation} />
                             </div>
 
                             <div className="flex items-center gap-4">
-                                <Button
-                                    disabled={processing}
-                                    data-test="update-password-button"
-                                >
-                                    Save
+                                <Button disabled={processing} data-test="update-password-button">
+                                    {processing ? <Spinner /> : null}
+                                    {t('settings.security.save')}
                                 </Button>
                             </div>
                         </>
@@ -124,25 +110,13 @@ export default function Security(props: Props) {
                 </Form>
             </div>
 
-            <ManageTwoFactor
-                canManageTwoFactor={props.canManageTwoFactor}
-                requiresConfirmation={props.requiresConfirmation}
-                twoFactorEnabled={props.twoFactorEnabled}
-            />
+            <ManageTwoFactor canManageTwoFactor={props.canManageTwoFactor} requiresConfirmation={props.requiresConfirmation} twoFactorEnabled={props.twoFactorEnabled} />
 
-            <ManagePasskeys
-                canManagePasskeys={props.canManagePasskeys}
-                passkeys={props.passkeys}
-            />
+            <ManagePasskeys canManagePasskeys={props.canManagePasskeys} passkeys={props.passkeys} />
         </>
     );
 }
 
-Security.layout = {
-    breadcrumbs: [
-        {
-            title: 'Security settings',
-            href: edit(),
-        },
-    ],
-};
+Security.layout = () => ({
+    breadcrumbs: [{ title: t('settings.security.title'), href: edit() }],
+});

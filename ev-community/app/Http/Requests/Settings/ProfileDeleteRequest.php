@@ -21,4 +21,12 @@ class ProfileDeleteRequest extends FormRequest
             'password' => $this->currentPasswordRules(),
         ];
     }
+
+    /**
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        return ['password' => __('auth.fields.password')];
+    }
 }

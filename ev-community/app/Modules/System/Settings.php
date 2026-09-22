@@ -20,7 +20,7 @@ return [
     'general.address_ar' => ['group' => 'general', 'type' => 'text', 'default' => null, 'public' => true, 'label' => ['ar' => 'العنوان (عربي)', 'en' => 'Address (Arabic)'], 'rules' => 'nullable|string|max:300'],
     'general.address_en' => ['group' => 'general', 'type' => 'text', 'default' => null, 'public' => true, 'label' => ['ar' => 'العنوان (إنجليزي)', 'en' => 'Address (English)'], 'rules' => 'nullable|string|max:300'],
     'general.social_links' => ['group' => 'general', 'type' => 'json', 'default' => [], 'public' => true, 'label' => ['ar' => 'روابط التواصل الاجتماعي', 'en' => 'Social links'], 'rules' => 'nullable|array'],
-    'general.default_locale' => ['group' => 'general', 'type' => 'select', 'default' => 'ar', 'public' => true, 'label' => ['ar' => 'اللغة الافتراضية', 'en' => 'Default language'], 'rules' => 'required|in:ar,en', 'options' => ['ar', 'en']],
+    'general.default_locale' => ['group' => 'general', 'type' => 'select', 'default' => 'ar', 'public' => true, 'label' => ['ar' => 'اللغة الافتراضية', 'en' => 'Default language'], 'rules' => 'required|in:ar,en', 'options' => ['ar', 'en'], 'option_labels' => ['ar' => ['ar' => 'العربية', 'en' => 'Arabic'], 'en' => ['ar' => 'الإنجليزية', 'en' => 'English']]],
     'general.homepage_sections' => ['group' => 'general', 'type' => 'json', 'default' => ['hero', 'vehicle_selector', 'search_parts', 'featured_products', 'group_buys', 'maintenance_offers', 'charging_stations', 'partner_offers', 'events', 'knowledge', 'community_cta'], 'public' => true, 'label' => ['ar' => 'ترتيب أقسام الصفحة الرئيسية', 'en' => 'Homepage sections order'], 'rules' => 'nullable|array'],
 
     // ---- Security ----

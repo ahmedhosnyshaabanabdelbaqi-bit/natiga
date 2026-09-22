@@ -16,6 +16,12 @@ use Illuminate\Support\Str;
 /**
  * Completes a deletion request by anonymising the user's personal data. Memberships, orders,
  * payments, ledgers and audit rows are never deleted: financial and legal history is retained.
+ *
+ * What changes: name → 'Deleted Member', email → deleted-{id}@anonymized.local, mobile → null,
+ * password/MFA/passkeys/API tokens/remember token/password-reset tokens cleared, account disabled,
+ * every session ended, membership QR secret rotated (all issued cards stop verifying) and the free-text
+ * referral source / legacy notes cleared. Other modules purge their own PII copies on MemberAnonymized.
+ * Idempotent: completing an already completed request returns it unchanged.
  */
 final class AnonymizeMember
 {
@@ -42,7 +48,10 @@ final class AnonymizeMember
             /** @var User $user */
             $user = User::query()->whereKey($locked->user_id)->lockForUpdate()->firstOrFail();
             $membership = $user->membership;
-            $before = ['name' => $user->name, 'email' => $user->email, 'mobile' => $user->mobile, 'status' => $user->status];
+            $originalEmail = $user->email;
+            // The audit trail is immutable, so it must not keep the very data being erased:
+            // only non-identifying facts about what was removed are recorded.
+            $before = ['status' => $user->status, 'had_mobile' => $user->mobile !== null, 'had_mfa' => $user->two_factor_secret !== null];
 
             $user->forceFill([
                 'name' => self::ANONYMIZED_NAME,
@@ -61,6 +70,8 @@ final class AnonymizeMember
                 'disabled_by' => $actor->id,
             ])->save();
             $user->tokens()->delete();
+            $user->passkeys()->delete();
+            DB::table('password_reset_tokens')->where('email', $originalEmail)->delete();
 
             if ($membership) {
                 // Invalidate every QR token ever issued for this card; keep the membership row.
@@ -75,7 +86,7 @@ final class AnonymizeMember
                 'notes' => $notes,
             ])->save();
 
-            $this->audit->log('members.anonymized', $membership ?? $user, old: ['name' => $before['name'], 'email' => $before['email'], 'mobile' => $before['mobile'] ? '***' : null, 'status' => $before['status']], new: ['name' => self::ANONYMIZED_NAME, 'email' => $user->email, 'mobile' => null, 'status' => User::STATUS_DISABLED, 'deletion_request_id' => $locked->id], reason: $reason, actor: $actor, entityLabel: $membership?->member_number ?? "user:{$user->id}");
+            $this->audit->log('members.anonymized', $membership ?? $user, old: $before, new: ['name' => self::ANONYMIZED_NAME, 'email' => $user->email, 'mobile' => null, 'status' => User::STATUS_DISABLED, 'deletion_request_id' => $locked->public_id], reason: $reason, actor: $actor, entityLabel: $membership?->member_number ?? "user:{$user->id}");
             SecurityEvents::record($user, 'account_disabled', ['anonymized' => true, 'by' => $actor->id]);
             $this->sessions->logoutAll($user);
 

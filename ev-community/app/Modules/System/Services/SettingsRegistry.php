@@ -16,6 +16,21 @@ final class SettingsRegistry
     /** @var array<string, array<string, mixed>>|null */
     private static ?array $definitions = null;
 
+    /** @var array<string, array<string, mixed>> definitions registered at runtime (e.g. by a ServiceProvider) */
+    private static array $registered = [];
+
+    /**
+     * Register a definition from code (same shape as a Settings.php entry). Used for settings whose
+     * definition is computed at boot time, e.g. integration credentials (`'sensitive' => true`).
+     *
+     * @param  array<string, mixed>  $definition
+     */
+    public static function register(string $key, array $definition, string $module = 'System'): void
+    {
+        self::$registered[$key] = $definition + ['module' => $module];
+        self::$definitions = null;
+    }
+
     /** @return array<string, array<string, mixed>> */
     public static function all(): array
     {
@@ -28,12 +43,11 @@ final class SettingsRegistry
             $items = require $file;
             foreach ($items as $key => $definition) {
                 $definition['module'] = $module;
-                $definition['group'] ??= explode('.', $key)[0];
-                $definition['type'] ??= 'string';
-                $definition['public'] ??= false;
-                $definition['sensitive'] ??= false;
-                $definitions[$key] = $definition;
+                $definitions[$key] = self::normalize($key, $definition);
             }
+        }
+        foreach (self::$registered as $key => $definition) {
+            $definitions[$key] = self::normalize($key, $definition);
         }
         ksort($definitions);
 
@@ -59,5 +73,23 @@ final class SettingsRegistry
     public static function reset(): void
     {
         self::$definitions = null;
+        self::$registered = [];
+    }
+
+    /**
+     * @param  array<string, mixed>  $definition
+     * @return array<string, mixed>
+     */
+    private static function normalize(string $key, array $definition): array
+    {
+        $definition['group'] ??= explode('.', $key)[0];
+        $definition['type'] ??= 'string';
+        $definition['public'] ??= false;
+        $definition['sensitive'] ??= false;
+        if ($definition['sensitive']) {
+            $definition['public'] = false; // a secret is never sent to the browser
+        }
+
+        return $definition;
     }
 }

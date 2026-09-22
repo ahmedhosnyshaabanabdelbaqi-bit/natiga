@@ -7,6 +7,7 @@ use App\Modules\Files\Models\Attachment;
 use App\Modules\Files\Services\AttachmentService;
 use App\Modules\Vehicles\Models\MemberVehicle;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Stores/removes the vehicle photo through the Files module (private disk, authorized download,
@@ -27,13 +28,21 @@ final class VehicleImageStore
         return $attachment;
     }
 
+    /**
+     * Unlinks the current photo (caller saves). The attachment row and its files are removed only
+     * after the surrounding transaction commits, so a rollback never leaves a vehicle pointing at a
+     * deleted file.
+     */
     public function detach(MemberVehicle $vehicle): void
     {
         if ($vehicle->image_attachment_id) {
-            $attachment = Attachment::query()->find($vehicle->image_attachment_id);
-            if ($attachment) {
-                $this->attachments->delete($attachment);
-            }
+            $attachmentId = $vehicle->image_attachment_id;
+            DB::afterCommit(function () use ($attachmentId) {
+                $attachment = Attachment::query()->find($attachmentId);
+                if ($attachment) {
+                    $this->attachments->delete($attachment);
+                }
+            });
             $vehicle->image_attachment_id = null;
         }
         $vehicle->image_path = null;

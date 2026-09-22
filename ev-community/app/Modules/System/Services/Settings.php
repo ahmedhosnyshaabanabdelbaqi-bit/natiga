@@ -16,6 +16,9 @@ final class Settings
 {
     private const CACHE_KEY = 'ev.settings.v1';
 
+    /** Placeholder written to the audit trail instead of a sensitive value. */
+    public const REDACTED = '[redacted]';
+
     /** @var array<string, mixed>|null */
     private static ?array $loaded = null;
 
@@ -73,7 +76,7 @@ final class Settings
 
         if ($old !== $value) {
             $sensitive = (bool) ($definition['sensitive'] ?? false);
-            app(AuditService::class)->log('settings.updated', $row, old: [$key => $sensitive ? '***' : $old], new: [$key => $sensitive ? '***' : $value], reason: $reason, actor: $actor);
+            app(AuditService::class)->log('settings.updated', $row, old: [$key => $sensitive ? self::REDACTED : $old], new: [$key => $sensitive ? self::REDACTED : $value], reason: $reason, actor: $actor);
         }
     }
 
@@ -105,7 +108,7 @@ final class Settings
         foreach (SettingsRegistry::all() as $key => $definition) {
             $value = self::get($key);
             $out[$key] = [
-                'value' => $definition['sensitive'] && $value ? '••••••••' : $value,
+                'value' => $definition['sensitive'] && $value ? SettingsForm::MASK : $value,
                 'definition' => $definition,
             ];
         }

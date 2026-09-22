@@ -47,7 +47,8 @@ Route::middleware('module:vehicles')->prefix('vehicles')->name('vehicles.')->gro
     // ---- Member vehicles (read-only, never lists VINs)
     Route::middleware('permission:vehicles.view')->group(function () {
         Route::get('members', [MemberVehicleController::class, 'index'])->name('members.index');
-        Route::post('members/vin-lookup', [MemberVehicleController::class, 'vinLookup'])->name('members.vin_lookup');
+        Route::post('members/vin-lookup', [MemberVehicleController::class, 'vinLookup'])->middleware('throttle:vin-lookup')->name('members.vin_lookup');
         Route::get('members/{vehicle}', [MemberVehicleController::class, 'show'])->name('members.show');
+        Route::put('members/{vehicle}', [MemberVehicleController::class, 'update'])->middleware('permission:vehicles.edit_member_vehicle')->name('members.update');
     });
 });

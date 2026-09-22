@@ -3,6 +3,7 @@
 namespace App\Modules\Notifications\Services;
 
 use App\Modules\Notifications\Models\EmailTemplate;
+use App\Modules\Notifications\Support\NotificationUrl;
 use App\Modules\System\Services\Settings;
 
 /**
@@ -56,12 +57,13 @@ final class EmailTemplateRenderer
         $html = e($tokenised);
         $html = preg_replace('/\*\*(.+?)\*\*/su', '<strong>$1</strong>', $html) ?? $html;
         $html = preg_replace_callback('/\[([^\]\n]+)\]\(([^)\s]+)\)/u', function (array $m) use ($values): string {
-            $href = trim($this->detokenise($m[2], $values));
-            if (! preg_match('#^(https?://|/)#i', $href) || preg_match('/[\s"\'<>]/', $href)) {
+            // $m[2] is already HTML-escaped: decode it, substitute raw values, then validate the real URL.
+            $href = NotificationUrl::sanitize(html_entity_decode($this->detokenise($m[2], $values), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+            if ($href === null) {
                 return $m[1].' ('.$m[2].')';
             }
 
-            return '<a href="'.e($href).'">'.$m[1].'</a>';
+            return '<a href="'.e(NotificationUrl::absolute($href)).'">'.$m[1].'</a>';
         }, $html) ?? $html;
 
         $paragraphs = preg_split('/\n{2,}/u', str_replace("\r\n", "\n", $html)) ?: [];
@@ -83,7 +85,9 @@ final class EmailTemplateRenderer
     /** True when the text contains anything that looks like an HTML tag or entity-based markup. */
     public static function containsHtml(string $text): bool
     {
-        return (bool) preg_match('/<\s*\/?\s*[a-zA-Z!\/?]/u', $text) || stripos($text, 'javascript:') !== false;
+        return (bool) preg_match('/<\s*\/?\s*[a-zA-Z!\/?]/u', $text)
+            || (bool) preg_match('/&(#\d+|#x[0-9a-f]+|[a-z]+);/iu', $text)
+            || (bool) preg_match('/(javascript|vbscript)\s*:/iu', $text);
     }
 
     /**

@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -58,7 +59,7 @@ class ExceptionsController extends Controller
         $query->orderByRaw("case severity when 'p0' then 0 when 'p1' then 1 when 'p2' then 2 else 3 end")->orderByDesc('detected_at');
 
         return Inertia::render('admin/operations/index', [
-            'exceptions' => $query->paginate(25)->withQueryString()->through(fn (OperationsException $e) => $this->serialize($e)),
+            'exceptions' => $query->paginate(in_array((int) $request->query('per_page', 25), [15, 25, 50, 100], true) ? (int) $request->query('per_page') : 25)->withQueryString()->through(fn (OperationsException $e) => $this->serialize($e)),
             'filters' => $filters + ['status' => $status],
             'counts' => $this->exceptions->countsBySeverity(),
             'assignees' => $this->assignees(),
@@ -73,7 +74,14 @@ class ExceptionsController extends Controller
     {
         $this->authorize('assign', $exception);
         $data = $request->validate(['assignee' => ['nullable', 'string', 'exists:users,public_id'], 'note' => ['nullable', 'string', 'max:500']]);
-        $assignee = ! empty($data['assignee']) ? User::query()->where('public_id', $data['assignee'])->firstOrFail() : null;
+        $assignee = null;
+        if (! empty($data['assignee'])) {
+            // Only people who can act on the Exception Center may own an exception.
+            $assignee = $this->eligibleAssignees()->where('public_id', $data['assignee'])->first();
+            if (! $assignee) {
+                throw ValidationException::withMessages(['assignee' => __('operations.exceptions.errors.invalid_assignee')]);
+            }
+        }
         $this->exceptions->assign($exception, $assignee, $request->user(), $data['note'] ?? null);
 
         return back()->with('success', __($assignee ? 'operations.exceptions.messages.assigned' : 'operations.exceptions.messages.unassigned', ['name' => $assignee?->name]));
@@ -97,12 +105,17 @@ class ExceptionsController extends Controller
         return back()->with('success', __('operations.exceptions.messages.ignored'));
     }
 
+    /** @return Builder<User> */
+    private function eligibleAssignees(): Builder
+    {
+        return User::query()->where('status', User::STATUS_ACTIVE)
+            ->where(fn (Builder $q) => $q->permission('operations.manage')->orWhereHas('roles', fn (Builder $r) => $r->whereIn('name', PermissionRegistry::SUPER_ROLES)));
+    }
+
     /** @return array<int, array{id: string, name: string}> */
     private function assignees(): array
     {
-        return User::query()->where('status', User::STATUS_ACTIVE)
-            ->where(fn (Builder $q) => $q->permission('operations.manage')->orWhereHas('roles', fn (Builder $r) => $r->whereIn('name', PermissionRegistry::SUPER_ROLES)))
-            ->orderBy('name')->limit(100)->get(['id', 'name', 'public_id'])
+        return $this->eligibleAssignees()->orderBy('name')->limit(100)->get(['id', 'name', 'public_id'])
             ->map(fn (User $u) => ['id' => $u->public_id, 'name' => $u->name])->values()->all();
     }
 

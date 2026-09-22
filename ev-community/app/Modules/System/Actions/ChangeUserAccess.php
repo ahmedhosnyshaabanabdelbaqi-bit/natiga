@@ -7,6 +7,7 @@ use App\Modules\Audit\Services\AuditService;
 use App\Modules\Audit\Services\SecurityEvents;
 use App\Modules\Rbac\Services\PermissionRegistry;
 use App\Modules\System\Services\UserAccessRules;
+use App\Support\Exceptions\DomainException;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\PermissionRegistrar;
 
@@ -38,6 +39,10 @@ final class ChangeUserAccess
 
             if ($newRoles === $oldRoles && $newPermissions === $oldPermissions) {
                 return $target;
+            }
+            if (in_array('owner', $oldRoles, true) && ! in_array('owner', $newRoles, true)
+                && User::query()->role('owner')->where('status', User::STATUS_ACTIVE)->whereKeyNot($target->id)->doesntExist()) {
+                throw DomainException::forbidden('users.errors.last_owner');
             }
 
             $target->syncRoles($newRoles);

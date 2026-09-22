@@ -59,6 +59,6 @@ class VehicleMake extends Model
 
     public function logoUrl(): ?string
     {
-        return $this->logo_path ? Storage::disk('public')->url($this->logo_path) : null;
+        return $this->logo_path ? Storage::disk((string) config('filesystems.public_disk', 'public'))->url($this->logo_path) : null;
     }
 }

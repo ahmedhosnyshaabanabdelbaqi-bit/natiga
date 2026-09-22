@@ -24,6 +24,7 @@ final class OsmMapProvider implements MapProvider
 {
     use ComputesGeometry;
 
+    /** Default public endpoint; override with MAP_NOMINATIM_URL (config ev.integrations.map.nominatim_url) for a self-hosted instance. */
     public const NOMINATIM_URL = 'https://nominatim.openstreetmap.org';
 
     private const RATE_KEY = 'integrations:map:osm:nominatim';
@@ -58,9 +59,9 @@ final class OsmMapProvider implements MapProvider
             if (! $this->acquireSlot()) {
                 return HealthResult::degraded(__('integrations.map.rate_limited'));
             }
-            $response = IntegrationCall::run('map', 'health_check', fn () => $this->http(timeout: 5)->get(self::NOMINATIM_URL.'/status', ['format' => 'json']));
+            $response = IntegrationCall::run('map', 'health_check', fn () => $this->http(timeout: 5)->get($this->baseUrl().'/status', ['format' => 'json']));
             if ($response->successful() && (int) ($response->json('status') ?? -1) === 0) {
-                return HealthResult::operational(__('integrations.map.nominatim_ok'), ['tile_url' => $this->tileUrl()]);
+                return HealthResult::operational(__('integrations.map.nominatim_ok'), ['tile_url' => $this->tileUrl(), 'nominatim_host' => parse_url($this->baseUrl(), PHP_URL_HOST)]);
             }
 
             return HealthResult::degraded(__('integrations.map.nominatim_error', ['status' => $response->status()]), ['http_status' => $response->status()]);
@@ -76,7 +77,8 @@ final class OsmMapProvider implements MapProvider
             return null;
         }
         $country = $countryCode ? strtolower(trim($countryCode)) : null;
-        $cacheKey = self::CACHE_PREFIX.'geocode:'.($country ?? '*').':'.hash('sha256', $normalized);
+        // The display name depends on accept-language, so the locale is part of the cache key.
+        $cacheKey = self::CACHE_PREFIX.'geocode:'.app()->getLocale().':'.($country ?? '*').':'.hash('sha256', $normalized);
 
         return $this->cached($cacheKey, function () use ($normalized, $country): ?GeoResult {
             $query = ['q' => $normalized, 'format' => 'jsonv2', 'limit' => 1, 'addressdetails' => 1, 'accept-language' => app()->getLocale()];
@@ -97,7 +99,7 @@ final class OsmMapProvider implements MapProvider
     {
         $lat = round($lat, 6);
         $lng = round($lng, 6);
-        $cacheKey = self::CACHE_PREFIX.'reverse:'.number_format($lat, 5, '.', '').','.number_format($lng, 5, '.', '');
+        $cacheKey = self::CACHE_PREFIX.'reverse:'.app()->getLocale().':'.number_format($lat, 5, '.', '').','.number_format($lng, 5, '.', '');
 
         return $this->cached($cacheKey, function () use ($lat, $lng): ?GeoResult {
             $response = $this->request('reverse_geocode', '/reverse', ['lat' => $lat, 'lon' => $lng, 'format' => 'jsonv2', 'addressdetails' => 1, 'accept-language' => app()->getLocale()], ['lat' => $lat, 'lng' => $lng]);
@@ -141,7 +143,7 @@ final class OsmMapProvider implements MapProvider
             return null;
         }
         try {
-            $response = IntegrationCall::run('map', $operation, fn () => $this->http()->get(self::NOMINATIM_URL.$path, $query), meta: $meta + ['driver' => 'osm']);
+            $response = IntegrationCall::run('map', $operation, fn () => $this->http()->get($this->baseUrl().$path, $query), meta: $meta + ['driver' => 'osm']);
             if ($response->successful()) {
                 return $response;
             }
@@ -167,6 +169,14 @@ final class OsmMapProvider implements MapProvider
         $contact = Settings::get('general.contact_email') ?: config('mail.from.address');
 
         return sprintf('EVCommunityEgypt/1.0 (+%s; %s)', config('app.url'), $contact ?: 'contact-not-set');
+    }
+
+    /** Nominatim base URL from config (no trailing slash); falls back to the public instance. */
+    private function baseUrl(): string
+    {
+        $url = rtrim(trim((string) config('ev.integrations.map.nominatim_url', self::NOMINATIM_URL)), '/');
+
+        return $url !== '' ? $url : self::NOMINATIM_URL;
     }
 
     private function tileUrl(): string

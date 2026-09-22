@@ -13,7 +13,7 @@ export function StatCard({ label, value, hint, icon: Icon, href, tone = 'default
                 <p className="mt-1 text-2xl font-semibold tabular">{value}</p>
                 {hint ? <p className="mt-1 text-xs text-muted-foreground">{hint}</p> : null}
             </div>
-            {Icon ? <Icon className={cn('size-5 shrink-0', toneClass)} /> : null}
+            {Icon ? <Icon className={cn('size-5 shrink-0', toneClass)} aria-hidden="true" /> : null}
         </CardContent>
     );
     return (

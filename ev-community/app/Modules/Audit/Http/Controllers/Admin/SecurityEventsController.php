@@ -46,7 +46,7 @@ class SecurityEventsController extends Controller
         }
 
         return Inertia::render('admin/security-events/index', [
-            'events' => $query->paginate(25)->withQueryString()->through(fn (SecurityEvent $event) => [
+            'events' => $query->paginate(in_array((int) $request->query('per_page', 25), [15, 25, 50, 100], true) ? (int) $request->query('per_page') : 25)->withQueryString()->through(fn (SecurityEvent $event) => [
                 'id' => $event->id,
                 'type' => $event->event_type,
                 'severity' => $event->severity,

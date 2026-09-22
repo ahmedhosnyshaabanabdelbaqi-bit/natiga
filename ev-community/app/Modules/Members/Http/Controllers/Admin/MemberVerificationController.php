@@ -19,14 +19,14 @@ class MemberVerificationController extends Controller
         Gate::authorize('verify', Membership::class);
 
         return Inertia::render('admin/members/scan', [
-            'purposes' => array_map(fn (VerificationPurpose $p) => ['value' => $p->value, 'label' => $p->label()], VerificationPurpose::selectable()),
+            'purposes' => array_map(fn (VerificationPurpose $p) => ['value' => $p->value, 'label' => $p->label()], VerifyTokenRequest::ADMIN_PURPOSES),
         ]);
     }
 
     public function verify(VerifyTokenRequest $request, MembershipVerifier $verifier): JsonResponse
     {
         $outcome = $verifier->verify($request->validated('token'), $request->purpose(), $request->user());
-        $payload = $verifier->adminPayload($outcome);
+        $payload = $verifier->adminPayload($outcome, $request->user());
 
         return response()->json([
             'data' => $payload,

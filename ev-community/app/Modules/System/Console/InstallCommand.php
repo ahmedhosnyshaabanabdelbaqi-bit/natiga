@@ -37,9 +37,9 @@ class InstallCommand extends Command
             return self::FAILURE;
         }
 
-        $name = $this->option('name') ?: env('EV_OWNER_NAME');
-        $email = $this->option('email') ?: env('EV_OWNER_EMAIL');
-        $password = $this->option('password') ?: env('EV_OWNER_PASSWORD');
+        $name = $this->option('name') ?: $this->fromEnvironment('EV_OWNER_NAME');
+        $email = $this->option('email') ?: $this->fromEnvironment('EV_OWNER_EMAIL');
+        $password = $this->option('password') ?: $this->fromEnvironment('EV_OWNER_PASSWORD');
 
         if ($this->input->isInteractive()) {
             $name = $name ?: $this->ask('Owner name');
@@ -90,5 +90,16 @@ class InstallCommand extends Command
         ]);
 
         return self::SUCCESS;
+    }
+
+    /**
+     * Read a process environment variable directly: `env()` returns null once the configuration is cached
+     * (`php artisan config:cache`), which is the normal state on a production server.
+     */
+    private function fromEnvironment(string $key): ?string
+    {
+        $value = $_SERVER[$key] ?? $_ENV[$key] ?? getenv($key);
+
+        return is_string($value) && $value !== '' ? $value : null;
     }
 }

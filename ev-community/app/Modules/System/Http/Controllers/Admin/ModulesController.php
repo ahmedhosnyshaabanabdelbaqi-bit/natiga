@@ -7,10 +7,15 @@ use App\Modules\System\Http\Requests\ToggleModuleRequest;
 use App\Modules\System\Services\Modules;
 use App\Support\Exceptions\DomainException;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+ * Module switches. Disabling hides the module's UI and blocks its routes (`module:` middleware) but never
+ * deletes data. Core modules are locked on. Every change requires a reason and is audited.
+ */
 class ModulesController extends Controller
 {
     public function index(): Response
@@ -19,6 +24,7 @@ class ModulesController extends Controller
 
         return Inertia::render('admin/modules/index', [
             'modules' => array_values(Modules::all()),
+            'reviewed' => Modules::reviewed(),
         ]);
     }
 
@@ -31,10 +37,20 @@ class ModulesController extends Controller
         }
         $enabled = $request->boolean('enabled');
         if (($definition['core'] ?? false) && ! $enabled) {
-            throw DomainException::because('system.modules.errors.core_locked', ['module' => $module], 'enabled');
+            throw DomainException::because('system.modules.errors.core_locked', ['module' => $definition['name'][app()->getLocale()] ?? $module], 'enabled');
         }
         Modules::setEnabled($module, $enabled, $request->user(), $request->validated('reason'));
 
         return back()->with('success', __($enabled ? 'system.modules.messages.enabled' : 'system.modules.messages.disabled', ['module' => $definition['name'][app()->getLocale()] ?? $module]));
+    }
+
+    /** Freeze the current state of every module (defaults included) and mark the configuration as reviewed. */
+    public function review(Request $request): RedirectResponse
+    {
+        Gate::authorize('modules.manage');
+        $data = $request->validate(['reason' => ['nullable', 'string', 'max:500']]);
+        $persisted = Modules::persistDefaults($request->user(), $data['reason'] ?? null);
+
+        return back()->with('success', __('system.modules.messages.reviewed', ['count' => count($persisted)]));
     }
 }

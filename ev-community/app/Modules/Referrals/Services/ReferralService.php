@@ -7,6 +7,7 @@ use App\Modules\Referrals\Models\Enums\ReferralStatus;
 use App\Modules\Referrals\Models\MemberReferral;
 use App\Modules\System\Services\Modules;
 use App\Modules\System\Services\Settings;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 
@@ -21,7 +22,11 @@ final class ReferralService
         return Modules::enabled('referrals') && Settings::bool('referrals.enabled', true);
     }
 
-    /** Creates the tracking row for a membership registered with a referral code (idempotent). */
+    /**
+     * Creates the tracking row for a membership registered with a referral code. Idempotent and safe
+     * under concurrency: the unique index on referred_membership_id decides, a losing insert returns
+     * the winner's row (createOrFirst).
+     */
     public function recordRegistration(Membership $referred): ?MemberReferral
     {
         if (! $referred->referred_by || $referred->referred_by === $referred->id) {
@@ -37,9 +42,8 @@ final class ReferralService
         }
         $approved = $referred->isActive();
 
-        return MemberReferral::create([
+        return MemberReferral::query()->createOrFirst(['referred_membership_id' => $referred->id], [
             'referrer_membership_id' => $referrer->id,
-            'referred_membership_id' => $referred->id,
             'referral_code_used' => $referrer->referral_code,
             'status' => $approved ? ReferralStatus::Approved : ReferralStatus::Registered,
             'created_at' => now(),
@@ -47,15 +51,25 @@ final class ReferralService
         ]);
     }
 
-    /** Flips the referral to approved once the referred membership is activated (lazy backfill included). */
+    /**
+     * Flips the referral to approved once the referred membership is activated (lazy backfill
+     * included). Runs under a row lock so concurrent approvals write approved_at once.
+     */
     public function markApproved(Membership $referred): ?MemberReferral
     {
-        $referral = $this->recordRegistration($referred);
-        if ($referral && $referral->status !== ReferralStatus::Approved) {
-            $referral->forceFill(['status' => ReferralStatus::Approved, 'approved_at' => now()])->save();
+        if (! $this->recordRegistration($referred)) {
+            return null;
         }
 
-        return $referral;
+        return DB::transaction(function () use ($referred) {
+            /** @var MemberReferral $referral */
+            $referral = MemberReferral::query()->where('referred_membership_id', $referred->id)->lockForUpdate()->firstOrFail();
+            if ($referral->status !== ReferralStatus::Approved) {
+                $referral->forceFill(['status' => ReferralStatus::Approved, 'approved_at' => now()])->save();
+            }
+
+            return $referral;
+        });
     }
 
     /** Ensures every membership referred by `$referrer` has a tracking row (covers rows created before the module existed). */

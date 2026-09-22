@@ -62,7 +62,7 @@ class PrivacyController extends Controller
     public function requestDeletion(DeletionRequestRequest $request, RequestAccountDeletion $action, MemberNotifier $notifier): RedirectResponse
     {
         $deletionRequest = $action->execute($request->user(), $request->validated('reason'));
-        $notifier->deletionRequested($request->user(), $deletionRequest->id);
+        $notifier->deletionRequested($request->user(), $deletionRequest);
 
         return back()->with('success', __('privacy.deletion.submitted'));
     }

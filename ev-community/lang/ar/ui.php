@@ -23,6 +23,7 @@ return [
         'drop' => 'اسحب الملفات وأفلتها هنا، أو', 'browse' => 'تصفّح', 'single_drop' => 'اسحب الملف وأفلته هنا، أو', 'max_size' => 'الحد الأقصى :size ميجابايت لكل ملف',
         'accepted' => 'الأنواع المقبولة: :types', 'too_large' => '":name" يتجاوز :size ميجابايت', 'too_many' => 'يمكنك رفع :count ملفات كحد أقصى', 'not_accepted' => '":name" ليس من الأنواع المقبولة',
         'remove' => 'إزالة :name', 'preview' => 'معاينة :name', 'files_count' => ':count ملف|:count ملفات', 'dropzone' => 'منطقة رفع الملفات',
+        'max_files' => 'حتى :count ملفات', 'size_kb' => ':size ك.ب', 'size_mb' => ':size م.ب', 'release' => 'أفلت لإضافة الملفات', 'selected' => 'الملفات المختارة',
     ],
     'qr' => [
         'loading' => 'جارٍ تحميل الماسح…', 'starting' => 'جارٍ تشغيل الكاميرا…', 'permission_denied' => 'تم رفض الوصول إلى الكاميرا. اسمح بالوصول من إعدادات المتصفح أو أدخل الكود يدويًا.',
@@ -30,7 +31,7 @@ return [
         'insecure' => 'تتطلب الكاميرا اتصالًا آمنًا (HTTPS). أدخل الكود يدويًا.',
         'camera' => 'الكاميرا', 'torch_on' => 'تشغيل الفلاش', 'torch_off' => 'إيقاف الفلاش', 'manual_label' => 'أو أدخل الكود يدويًا', 'manual_placeholder' => 'الكود',
         'manual_submit' => 'إرسال الكود', 'paused' => 'الماسح متوقف مؤقتًا', 'retry' => 'إعادة المحاولة', 'viewfinder' => 'وجّه الكاميرا نحو رمز QR', 'scanned' => 'تم مسح الكود',
-        'stop' => 'إيقاف الكاميرا', 'start' => 'تشغيل الكاميرا',
+        'stop' => 'إيقاف الكاميرا', 'start' => 'تشغيل الكاميرا', 'camera_n' => 'الكاميرا :number', 'region' => 'ماسح رمز QR',
     ],
     'map' => [
         'attribution' => '© مساهمو OpenStreetMap', 'locate' => 'استخدام موقعي', 'locating' => 'جارٍ تحديد الموقع…', 'location_denied' => 'تم رفض الوصول إلى الموقع.',
@@ -38,8 +39,10 @@ return [
         'cluster' => ':count موقع، قرّب الخريطة للتفاصيل', 'search_placeholder' => 'ابحث عن عنوان…', 'search' => 'بحث', 'no_results' => 'لم يتم العثور على عناوين',
         'latitude' => 'خط العرض', 'longitude' => 'خط الطول', 'drag_hint' => 'اسحب العلامة أو اضغط على الخريطة لتحديد الموقع.', 'marker' => 'علامة الموقع',
         'selected_location' => 'الموقع المحدد', 'you_are_here' => 'أنت هنا', 'loading' => 'جارٍ تحميل الخريطة…', 'results' => 'نتائج البحث',
+        'region' => 'الخريطة', 'zoom_in' => 'تكبير', 'zoom_out' => 'تصغير', 'searching' => 'جارٍ البحث…', 'geocode_failed' => 'تعذّر البحث عن العنوان. حاول مرة أخرى أو حدّد الموقع على الخريطة.',
+        'invalid_coordinates' => 'أدخل خط عرض صحيحًا (من -90 إلى 90) وخط طول صحيحًا (من -180 إلى 180).', 'close_popup' => 'إغلاق',
     ],
-    'command' => ['placeholder' => 'اكتب أمرًا أو ابحث…', 'no_results' => 'لا توجد نتائج.', 'results' => 'النتائج', 'searching' => 'جارٍ البحث…', 'open' => 'بحث', 'title' => 'لوحة الأوامر', 'description' => 'ابحث في الصفحات والسجلات والإجراءات'],
+    'command' => ['placeholder' => 'اكتب أمرًا أو ابحث…', 'no_results' => 'لا توجد نتائج.', 'results' => 'النتائج', 'searching' => 'جارٍ البحث…', 'open' => 'بحث', 'title' => 'لوحة الأوامر', 'description' => 'ابحث في الصفحات والسجلات والإجراءات', 'error' => 'تعذّر البحث. حاول مرة أخرى.', 'shortcut' => 'اختصار لوحة المفاتيح'],
     'rating' => ['label' => 'التقييم', 'star' => ':count من :max نجوم', 'value' => ':value من :max', 'clear' => 'مسح التقييم'],
     'progress' => ['of' => ':value من :max', 'percent' => ':percent%'],
     'steps' => ['label' => 'مراحل التقدم', 'step' => 'الخطوة :number', 'done' => 'مكتملة', 'current' => 'الخطوة الحالية', 'pending' => 'قادمة'],
@@ -47,4 +50,6 @@ return [
     'phone' => ['call' => 'اتصال بـ :number', 'whatsapp' => 'واتساب :number'],
     'timeline' => ['by' => 'بواسطة :actor', 'label' => 'السجل'],
     'copy' => ['aria' => 'نسخ :label'],
+    'breadcrumb' => ['label' => 'مسار التنقل', 'more' => 'المزيد'],
+    'sidebar' => ['title' => 'قائمة التنقل', 'description' => 'التنقل الرئيسي في هذه البوابة', 'toggle' => 'إظهار/إخفاء القائمة الجانبية'],
 ];

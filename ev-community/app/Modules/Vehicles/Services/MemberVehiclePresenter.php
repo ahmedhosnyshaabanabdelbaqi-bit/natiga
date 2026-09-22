@@ -98,27 +98,38 @@ final class MemberVehiclePresenter
         ];
     }
 
-    /** "Odometer" garage section. */
+    /** "Odometer" garage section (member view: no staff names). */
     public function odometer(MemberVehicle $v): array
     {
         return [
             'current_km' => $v->odometer_km,
             'updated_at' => $v->odometer_updated_at?->toIso8601String(),
-            'history' => $this->odometerHistory($v->odometerHistory()->with('creator')->limit(200)->get()),
+            'history' => $this->odometerHistory($v->odometerHistory()->limit(200)->get()),
         ];
     }
 
-    /** @param  Collection<int, VehicleOdometerEntry>  $entries */
+    /**
+     * Newest first. `is_decrease` flags a reading lower than the previous (older) one — those always carry a reason.
+     *
+     * @param  Collection<int, VehicleOdometerEntry>  $entries
+     */
     public function odometerHistory(Collection $entries): array
     {
-        return $entries->map(fn (VehicleOdometerEntry $e) => [
-            'id' => $e->id,
-            'odometer_km' => $e->odometer_km,
-            'source' => ['value' => $e->source->value, 'label' => $e->source->label()],
-            'recorded_at' => $e->recorded_at->toIso8601String(),
-            'note' => $e->note,
-            'created_by' => $e->relationLoaded('creator') ? $e->creator?->name : null,
-        ])->values()->all();
+        $list = $entries->values();
+
+        return $list->map(function (VehicleOdometerEntry $e, int $i) use ($list) {
+            $older = $list->get($i + 1);
+
+            return [
+                'id' => $e->id,
+                'odometer_km' => $e->odometer_km,
+                'source' => ['value' => $e->source->value, 'label' => $e->source->label()],
+                'recorded_at' => $e->recorded_at->toIso8601String(),
+                'note' => $e->note,
+                'created_by' => $e->relationLoaded('creator') ? $e->creator?->name : null,
+                'is_decrease' => $older !== null && $e->odometer_km < $older->odometer_km,
+            ];
+        })->all();
     }
 
     /** "Charging compatibility" garage section. */

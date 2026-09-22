@@ -11,13 +11,18 @@ class UpdateUserAccessRequest extends FormRequest
         return $this->user()?->can('roles.manage') ?? false;
     }
 
+    protected function prepareForValidation(): void
+    {
+        $this->merge(['roles' => $this->input('roles', []), 'permissions' => $this->input('permissions', [])]);
+    }
+
     public function rules(): array
     {
         return [
             'roles' => ['present', 'array', 'max:10'],
-            'roles.*' => ['string', 'max:40'],
+            'roles.*' => ['string', 'distinct', 'max:40'],
             'permissions' => ['present', 'array', 'max:200'],
-            'permissions.*' => ['string', 'max:100'],
+            'permissions.*' => ['string', 'distinct', 'max:100'],
             'reason' => ['nullable', 'string', 'max:500'],
         ];
     }

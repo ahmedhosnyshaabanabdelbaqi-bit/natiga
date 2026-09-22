@@ -54,33 +54,39 @@ final class MembershipQr
     }
 
     /**
-     * @return array{valid: bool, reason?: string, membership?: Membership}
+     * Order of checks: structure → signature (constant time) → expiry → membership/account state.
+     * `membership` is returned for every outcome whose token resolved to a membership (so the attempt
+     * can be logged against it), but callers must only disclose member data when `authentic` is true.
+     *
+     * @return array{valid: bool, authentic: bool, reason?: string, membership?: Membership}
      */
     public function verify(string $token): array
     {
         $parts = $this->parts($token);
         if ($parts === null) {
-            return ['valid' => false, 'reason' => self::REASON_INVALID];
+            return ['valid' => false, 'authentic' => false, 'reason' => self::REASON_INVALID];
         }
         [$publicId, $expires, $signature] = $parts;
 
         $membership = Membership::query()->with('user')->where('public_id', $publicId)->first();
         if (! $membership) {
-            return ['valid' => false, 'reason' => self::REASON_INVALID];
+            return ['valid' => false, 'authentic' => false, 'reason' => self::REASON_INVALID];
         }
 
         $expected = $this->signature($membership->verification_token, (int) $expires);
         if (! hash_equals($expected, $signature)) {
-            return ['valid' => false, 'reason' => self::REASON_INVALID, 'membership' => $membership];
+            return ['valid' => false, 'authentic' => false, 'reason' => self::REASON_INVALID, 'membership' => $membership];
         }
         if ((int) $expires < now()->getTimestamp()) {
-            return ['valid' => false, 'reason' => self::REASON_EXPIRED, 'membership' => $membership];
+            return ['valid' => false, 'authentic' => true, 'reason' => self::REASON_EXPIRED, 'membership' => $membership];
         }
-        if (! $membership->isActive()) {
-            return ['valid' => false, 'reason' => self::REASON_NOT_ACTIVE, 'membership' => $membership];
+        // A disabled account (self-deactivated, anonymised or blocked by staff) never verifies,
+        // even when the membership row itself is still active.
+        if (! $membership->isActive() || ! $membership->user?->isActive()) {
+            return ['valid' => false, 'authentic' => true, 'reason' => self::REASON_NOT_ACTIVE, 'membership' => $membership];
         }
 
-        return ['valid' => true, 'membership' => $membership];
+        return ['valid' => true, 'authentic' => true, 'membership' => $membership];
     }
 
     /** Absolute public verification URL embedded in the QR image. */

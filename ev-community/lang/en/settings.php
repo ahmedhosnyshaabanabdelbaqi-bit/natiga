@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * Personal settings pages (settings/profile, settings/security, settings/appearance),
+ * the settings layout and the starter components they use. Keys must stay identical
+ * to lang/ar/settings.php.
+ */
 return [
     'title' => 'Settings',
     'description' => 'Manage your profile and account settings',
@@ -10,16 +15,18 @@ return [
         'unverified' => 'Your email address is unverified.', 'resend_verification' => 'Click here to re-send the verification email.',
         'verification_sent' => 'A new verification link has been sent to your email address.',
         'save' => 'Save', 'updated' => 'Profile updated.',
+        'updated_verify_email' => 'Profile updated. We sent a verification link to your new email address.',
     ],
     'security' => [
         'title' => 'Security settings', 'password_heading' => 'Update password',
         'password_description' => 'Ensure your account is using a long, random password to stay secure',
         'current_password' => 'Current password', 'new_password' => 'New password', 'confirm_password' => 'Confirm password',
         'save' => 'Save', 'password_updated' => 'Password updated.',
+        'password_updated_sessions' => 'Password updated. You were signed out on :count other device.|Password updated. You were signed out on :count other devices.',
     ],
     'appearance' => [
         'title' => 'Appearance settings', 'description' => 'Update the appearance settings for your account',
-        'light' => 'Light', 'dark' => 'Dark', 'system' => 'System',
+        'light' => 'Light', 'dark' => 'Dark', 'system' => 'System', 'label' => 'Theme',
     ],
     'two_factor' => [
         'heading' => 'Two-factor authentication', 'description' => 'Manage your two-factor authentication settings',
@@ -34,6 +41,7 @@ return [
             'setup_description' => 'To finish enabling two-factor authentication, scan the QR code or enter the setup key in your authenticator app',
             'close' => 'Close', 'continue' => 'Continue', 'back' => 'Back', 'confirm' => 'Confirm',
             'or_manual' => 'or, enter the code manually', 'copy_key' => 'Copy setup key', 'qr_alt' => 'QR code for your authenticator app',
+            'setup_key' => 'Setup key', 'code' => 'Authentication code',
         ],
         'recovery' => [
             'title' => '2FA recovery codes',
@@ -52,13 +60,14 @@ return [
         'removing' => 'Removing…', 'cancel' => 'Cancel', 'unsupported' => 'Passkeys are not supported in this browser.',
         'add' => 'Add passkey', 'name' => 'Passkey name', 'name_placeholder' => 'e.g., MacBook Pro, iPhone',
         'name_hint' => 'A name helps you identify this passkey later.', 'registering' => 'Registering…', 'register' => 'Register passkey',
-        'default_name' => ':browser on :os',
+        'default_name' => ':browser on :os', 'remove_named' => 'Remove passkey ":name"', 'exists' => 'This device is already registered as a passkey.',
     ],
     'delete_account' => [
-        'heading' => 'Delete account', 'description' => 'Delete your account and all of its resources',
-        'warning_title' => 'Warning', 'warning_text' => 'Please proceed with caution, this cannot be undone.',
-        'button' => 'Delete account', 'confirm_title' => 'Are you sure you want to delete your account?',
-        'confirm_description' => 'Once your account is deleted, all of its resources and data will also be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.',
-        'password' => 'Password', 'cancel' => 'Cancel',
+        'heading' => 'Close your account', 'description' => 'Deactivate your account or request deletion of your personal data',
+        'member_text' => 'Deactivation and personal-data deletion requests are handled on the Privacy & data page. Records the law requires us to keep (orders, payments, receipts and the audit trail) are retained; your personal details are anonymised after the request is reviewed.',
+        'privacy_link' => 'Open Privacy & data',
+        'managed_text' => 'Your account is managed by the platform administrators. Contact an administrator if it needs to be deactivated.',
+        'not_allowed' => 'Accounts cannot be deleted from the settings page. Use Privacy & data to deactivate your account or request deletion of your personal data.',
+        'not_allowed_staff' => 'Staff and partner accounts are deactivated by the platform administrators.',
     ],
 ];

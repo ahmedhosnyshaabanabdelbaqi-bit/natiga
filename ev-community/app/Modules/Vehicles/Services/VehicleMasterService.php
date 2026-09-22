@@ -4,6 +4,8 @@ namespace App\Modules\Vehicles\Services;
 
 use App\Models\User;
 use App\Modules\Audit\Services\AuditService;
+use App\Modules\Files\Models\Attachment;
+use App\Modules\Files\Services\AttachmentService;
 use App\Modules\Vehicles\Models\BatteryVariant;
 use App\Modules\Vehicles\Models\ConnectorCompatibilityRule;
 use App\Modules\Vehicles\Models\ConnectorType;
@@ -12,6 +14,7 @@ use App\Modules\Vehicles\Models\VehicleMake;
 use App\Modules\Vehicles\Models\VehicleModel;
 use App\Modules\Vehicles\Models\VehicleVariant;
 use App\Support\Exceptions\DomainException;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
@@ -24,36 +27,37 @@ use Illuminate\Support\Str;
  */
 final class VehicleMasterService
 {
-    public function __construct(private AuditService $audit, private VehicleDataService $data) {}
+    public const LOGO_COLLECTION = 'vehicle_make_logo';
+
+    public function __construct(private AuditService $audit, private VehicleDataService $data, private AttachmentService $attachments) {}
 
     // ---- Makes -----------------------------------------------------------------------------
 
     public function saveMake(array $data, ?VehicleMake $make, ?UploadedFile $logo, User $actor, bool $removeLogo = false): VehicleMake
     {
-        return DB::transaction(function () use ($data, $make, $logo, $actor, $removeLogo) {
+        $fields = ['slug', 'name_ar', 'name_en', 'country_code', 'is_active', 'sort_order', 'logo_path'];
+
+        return DB::transaction(function () use ($data, $make, $logo, $actor, $removeLogo, $fields) {
             $make ??= new VehicleMake;
-            $before = $make->exists ? $make->only(['slug', 'name_ar', 'name_en', 'country_code', 'is_active', 'sort_order', 'logo_path']) : [];
+            $before = $make->exists ? $make->only($fields) : [];
             $make->fill([
                 'name_ar' => trim($data['name_ar']),
                 'name_en' => trim($data['name_en']),
-                'slug' => $this->uniqueSlug(VehicleMake::query(), $data['slug'] ?? $data['name_en'], $make->exists ? $make->id : null),
+                'slug' => $this->uniqueSlug(VehicleMake::query(), $this->clean($data['slug'] ?? null) ?? $data['name_en'], $make->exists ? $make->id : null),
                 'country_code' => isset($data['country_code']) && $data['country_code'] !== '' ? strtoupper($data['country_code']) : null,
                 'is_active' => (bool) ($data['is_active'] ?? true),
                 'sort_order' => (int) ($data['sort_order'] ?? 0),
             ]);
-            if ($removeLogo && $make->logo_path) {
-                Storage::disk('public')->delete($make->logo_path);
-                $make->logo_path = null;
-            }
-            if ($logo) {
-                if ($make->logo_path) {
-                    Storage::disk('public')->delete($make->logo_path);
-                }
-                $extension = strtolower($logo->extension() ?: 'png');
-                $make->logo_path = $logo->storeAs('vehicle-makes', $make->slug.'-'.Str::lower(Str::random(8)).'.'.$extension, ['disk' => 'public']) ?: null;
+            if (($removeLogo || $logo) && $make->logo_path) {
+                $this->discardLogo($make);
             }
             $make->save();
-            $this->logChange($make, $before, $make->only(['slug', 'name_ar', 'name_en', 'country_code', 'is_active', 'sort_order', 'logo_path']), $actor);
+            if ($logo) {
+                // Public master-data image: stored through the Files module (MIME sniffing, random name, variants).
+                $attachment = $this->attachments->store($logo, $make, self::LOGO_COLLECTION, Attachment::VISIBILITY_PUBLIC, 'image', $actor);
+                $make->forceFill(['logo_path' => $attachment->storage_path])->save();
+            }
+            $this->logChange($make, $before, $make->only($fields), $actor);
 
             return $make;
         });
@@ -72,7 +76,7 @@ final class VehicleMasterService
         DB::transaction(function () use ($make, $actor) {
             $this->audit->log('vehicles.master_changed', $make, old: $make->only(['slug', 'name_en']), new: ['deleted' => true], actor: $actor);
             if ($make->logo_path) {
-                Storage::disk('public')->delete($make->logo_path);
+                $this->discardLogo($make);
             }
             $make->delete();
             $this->data->flush();
@@ -88,11 +92,15 @@ final class VehicleMasterService
             $fields = ['vehicle_make_id', 'slug', 'name_ar', 'name_en', 'model_code', 'body_type', 'is_active', 'sort_order'];
             $before = $model->exists ? $model->only($fields) : [];
             $makeId = (int) $data['vehicle_make_id'];
+            // Member vehicles store make + model: moving a model that is in use would make them inconsistent.
+            if ($model->exists && (int) $model->vehicle_make_id !== $makeId && $model->memberVehicles()->exists()) {
+                throw DomainException::because('vehicles.errors.hierarchy_in_use', field: 'vehicle_make_id');
+            }
             $model->fill([
                 'vehicle_make_id' => $makeId,
                 'name_ar' => trim($data['name_ar']),
                 'name_en' => trim($data['name_en']),
-                'slug' => $this->uniqueSlug(VehicleModel::query()->where('vehicle_make_id', $makeId), $data['slug'] ?? $data['name_en'], $model->exists ? $model->id : null),
+                'slug' => $this->uniqueSlug(VehicleModel::query()->where('vehicle_make_id', $makeId), $this->clean($data['slug'] ?? null) ?? $data['name_en'], $model->exists ? $model->id : null),
                 'model_code' => $this->clean($data['model_code'] ?? null),
                 'body_type' => $this->clean($data['body_type'] ?? null),
                 'is_active' => (bool) ($data['is_active'] ?? true),
@@ -130,6 +138,9 @@ final class VehicleMasterService
             $variant ??= new VehicleVariant;
             $fields = ['vehicle_model_id', 'name_ar', 'name_en', 'trim', 'market_version', 'year_from', 'year_to', 'battery_variant_id', 'ac_connector_type_id', 'dc_connector_type_id', 'battery_capacity_kwh', 'motor_kw', 'range_km_wltp', 'notes', 'is_active', 'sort_order'];
             $before = $variant->exists ? $variant->only($fields) : [];
+            if ($variant->exists && (int) $variant->vehicle_model_id !== (int) $data['vehicle_model_id'] && $variant->memberVehicles()->exists()) {
+                throw DomainException::because('vehicles.errors.hierarchy_in_use', field: 'vehicle_model_id');
+            }
             $variant->fill([
                 'vehicle_model_id' => (int) $data['vehicle_model_id'],
                 'name_ar' => trim($data['name_ar']),
@@ -260,7 +271,9 @@ final class VehicleMasterService
                     $rule->verified_by = $actor->id;
                     $rule->verified_at = now();
                     $rule->save();
-                    $this->audit->log('vehicles.master_changed', $rule, old: $before, new: $after, actor: $actor, entityLabel: $rule->vehicle_connector_type_id.'→'.$rule->station_connector_type_id);
+                    $codes = ConnectorType::query()->whereIn('id', [$rule->vehicle_connector_type_id, $rule->station_connector_type_id])->pluck('code', 'id');
+                    $label = ($codes[$rule->vehicle_connector_type_id] ?? $rule->vehicle_connector_type_id).' → '.($codes[$rule->station_connector_type_id] ?? $rule->station_connector_type_id);
+                    $this->audit->log('vehicles.master_changed', $rule, old: $before, new: $after + ['verified_at' => $rule->verified_at?->toIso8601String()], actor: $actor, entityLabel: $label);
                     $changed++;
                 }
             }
@@ -290,7 +303,28 @@ final class VehicleMasterService
         $this->data->flush();
     }
 
-    private function uniqueSlug($query, string $source, ?int $exceptId): string
+    /** Removes the current logo after commit (attachment row + files, or a legacy public-disk path). */
+    private function discardLogo(VehicleMake $make): void
+    {
+        $path = $make->logo_path;
+        $make->logo_path = null;
+        if ($path === null) {
+            return;
+        }
+        $attachment = $make->exists
+            ? Attachment::query()->where('owner_type', $make->getMorphClass())->where('owner_id', $make->id)->where('storage_path', $path)->first()
+            : null;
+        DB::afterCommit(function () use ($attachment, $path) {
+            if ($attachment) {
+                $this->attachments->delete($attachment);
+
+                return;
+            }
+            Storage::disk((string) config('filesystems.public_disk', 'public'))->delete($path);
+        });
+    }
+
+    private function uniqueSlug(Builder $query, string $source, ?int $exceptId): string
     {
         $base = Str::slug($source) ?: Str::lower(Str::random(6));
         $slug = $base;

@@ -3,6 +3,7 @@
 namespace App\Modules\Rbac\Services;
 
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 /**
  * Aggregates app/Modules/<Module>/Permissions.php files into one registry.
@@ -85,6 +86,23 @@ final class PermissionRegistry
         }
 
         return $grouped;
+    }
+
+    /**
+     * Bilingual label of a permission group (module directory name, e.g. `ServiceCenters`) taken from the
+     * module registry in config/ev.php; falls back to the directory name.
+     *
+     * @return array{ar: string, en: string}
+     */
+    public static function moduleLabel(string $module): array
+    {
+        $name = config('ev.modules.'.Str::snake($module).'.name');
+        if (is_array($name) && isset($name['ar'], $name['en'])) {
+            return ['ar' => (string) $name['ar'], 'en' => (string) $name['en']];
+        }
+        $fallback = Str::headline($module);
+
+        return ['ar' => $fallback, 'en' => $fallback];
     }
 
     public static function reset(): void

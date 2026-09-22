@@ -7,9 +7,18 @@ use App\Modules\Members\Models\Membership;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-/** Used by the admin scanner (members.verify) and the partner scanner (partner.access). */
+/**
+ * Used by the admin scanner (members.verify) and the partner scanner (partner.access).
+ * The purpose is whitelisted per audience; `public` is reserved for the anonymous page.
+ */
 class VerifyTokenRequest extends FormRequest
 {
+    /** @var VerificationPurpose[] */
+    public const ADMIN_PURPOSES = [VerificationPurpose::Membership, VerificationPurpose::Event, VerificationPurpose::Pickup, VerificationPurpose::Offer, VerificationPurpose::Booking];
+
+    /** @var VerificationPurpose[] */
+    public const PARTNER_PURPOSES = [VerificationPurpose::Offer, VerificationPurpose::Booking, VerificationPurpose::Membership];
+
     public function authorize(): bool
     {
         $user = $this->user();
@@ -17,19 +26,35 @@ class VerifyTokenRequest extends FormRequest
             return false;
         }
 
-        return $this->routeIs('partner.*') ? $user->can('partner.access') : $user->can('verify', Membership::class);
+        return $this->isPartner() ? $user->can('partner.access') : $user->can('verify', Membership::class);
     }
 
     public function rules(): array
     {
         return [
             'token' => ['required', 'string', 'min:20', 'max:600'],
-            'purpose' => ['nullable', Rule::in(array_map(fn (VerificationPurpose $p) => $p->value, VerificationPurpose::selectable()))],
+            'purpose' => ['nullable', 'string', Rule::in(array_map(fn (VerificationPurpose $p) => $p->value, $this->allowedPurposes()))],
         ];
+    }
+
+    public function attributes(): array
+    {
+        return ['token' => __('members.admin.scan.token'), 'purpose' => __('members.admin.scan.purpose')];
     }
 
     public function purpose(): VerificationPurpose
     {
-        return VerificationPurpose::tryFrom((string) $this->input('purpose')) ?? VerificationPurpose::Membership;
+        return VerificationPurpose::tryFrom((string) $this->validated('purpose')) ?? VerificationPurpose::Membership;
+    }
+
+    /** @return VerificationPurpose[] */
+    public function allowedPurposes(): array
+    {
+        return $this->isPartner() ? self::PARTNER_PURPOSES : self::ADMIN_PURPOSES;
+    }
+
+    private function isPartner(): bool
+    {
+        return $this->routeIs('partner.*');
     }
 }

@@ -9,7 +9,7 @@ export function ErrorState({ kind = 'error', title, description, onRetry, action
     return (
         <div role="alert" className="flex flex-col items-center justify-center rounded-xl border border-danger/30 bg-danger-soft/40 px-6 py-10 text-center">
             <div className="mb-3 flex size-12 items-center justify-center rounded-full bg-danger-soft text-danger">
-                <Icon className="size-6" />
+                <Icon className="size-6" aria-hidden="true" />
             </div>
             <h3 className="text-base font-medium">{title ?? defaultTitle}</h3>
             {description ? <p className="mt-1 max-w-sm text-sm text-muted-foreground">{description}</p> : null}

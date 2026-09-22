@@ -9,6 +9,7 @@ use App\Modules\Integrations\Models\Enums\IntegrationEventStatus;
 use App\Modules\Integrations\Models\Enums\WebhookEventStatus;
 use App\Modules\Integrations\Models\WebhookEvent;
 use App\Modules\Integrations\Support\Sanitizer;
+use Closure;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -61,9 +62,7 @@ final class WebhookIngest
             }
         }
 
-        $fingerprint = $identity->externalEventId !== null && $identity->externalEventId !== ''
-            ? hash('sha256', $category.'|'.$identity->externalEventId)
-            : hash('sha256', $category.'|'.$raw);
+        $fingerprint = self::fingerprint($category, $valid, $identity->externalEventId, $raw);
 
         $attributes = [
             'provider' => $category,
@@ -109,11 +108,50 @@ final class WebhookIngest
         return ['outcome' => self::ACCEPTED, 'event' => $event];
     }
 
-    /** Re-queue a failed event (admin retry). */
-    public function retry(WebhookEvent $event): void
+    /**
+     * Idempotency key of a callback. Verified events use the provider's event id (falling back to the
+     * raw body); unverified ones live in their own namespace so a forged request can never occupy the
+     * fingerprint of a legitimate event that arrives later with the same id or body.
+     */
+    public static function fingerprint(string $category, bool $signatureValid, ?string $externalEventId, string $raw): string
     {
-        $event->forceFill(['status' => WebhookEventStatus::Received, 'error' => null])->save();
-        ProcessWebhookEventJob::dispatch($event->id);
+        if (! $signatureValid) {
+            return hash('sha256', 'unverified|'.$category.'|'.$raw);
+        }
+
+        return $externalEventId !== null && $externalEventId !== ''
+            ? hash('sha256', $category.'|'.$externalEventId)
+            : hash('sha256', $category.'|'.$raw);
+    }
+
+    /**
+     * Re-queue a failed, signature-verified event (admin retry). Row-locked so two concurrent retries
+     * (double click, two admins) queue the event once; returns false when it is no longer retryable.
+     *
+     * @param  (Closure(WebhookEvent, array{status: string, retry_count: int, error: ?string}): void)|null  $onRequeued
+     *                                                                                                             runs inside the transaction with the state before the retry (audit trail)
+     */
+    public function retry(WebhookEvent $event, ?Closure $onRequeued = null): bool
+    {
+        $requeued = DB::transaction(function () use ($event, $onRequeued): bool {
+            $locked = WebhookEvent::query()->whereKey($event->id)->lockForUpdate()->first();
+            if (! $locked || ! $locked->status->canRetry() || $locked->signature_valid !== true) {
+                return false;
+            }
+            $previous = ['status' => $locked->status->value, 'retry_count' => $locked->retry_count, 'error' => $locked->error];
+            $locked->forceFill(['status' => WebhookEventStatus::Received, 'error' => null])->save();
+            if ($onRequeued) {
+                $onRequeued($locked, $previous);
+            }
+
+            return true;
+        });
+        if ($requeued) {
+            ProcessWebhookEventJob::dispatch($event->id);
+            $event->refresh();
+        }
+
+        return $requeued;
     }
 
     /** @return array<string, mixed> */

@@ -30,4 +30,25 @@ enum NotificationChannel: string implements HasLabel
     {
         return $this !== self::InApp;
     }
+
+    /** SMS / WhatsApp: paid, intrusive messaging channels that always require the member's recorded consent. */
+    public function isMessaging(): bool
+    {
+        return $this === self::Sms || $this === self::WhatsApp;
+    }
+
+    /**
+     * Whether a delivery on this channel needs a `consent_logs` consent (marketing_<channel>):
+     * SMS/WhatsApp always; email only for non-transactional (marketing) notifications; in-app never.
+     */
+    public function requiresConsent(bool $transactional): bool
+    {
+        return $this->isMessaging() || ($this === self::Email && ! $transactional);
+    }
+
+    /** @return self[] */
+    public static function messaging(): array
+    {
+        return [self::Sms, self::WhatsApp];
+    }
 }

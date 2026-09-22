@@ -37,7 +37,7 @@ final class AnnouncementAudiences
 
     /**
      * @param  Closure(array<string, mixed>): (Builder<User>|iterable<int, User>)  $resolver
-     * @param  array<int, array{name: string, type: string, label: string, rules?: string|array<int, mixed>, options?: Closure, hint?: string}>  $fields
+     * @param  array<int, array{name: string, type: string, label: string, rules?: string|array<int, mixed>, options?: Closure, hint?: string}>  $fields  type: select|number|text|textarea
      */
     public static function register(string $key, string $labelKey, Closure $resolver, ?string $module = null, array $fields = []): void
     {
@@ -95,6 +95,32 @@ final class AnnouncementAudiences
         return self::$audiences[$key]['fields'] ?? [];
     }
 
+    /**
+     * Validation rules for `audience_params.*` of an audience (from the declared fields).
+     *
+     * @return array<string, mixed>
+     */
+    public static function rulesFor(string $key): array
+    {
+        $rules = [];
+        foreach (self::fieldsFor($key) as $field) {
+            $rules['audience_params.'.$field['name']] = $field['rules'] ?? 'nullable';
+        }
+
+        return $rules;
+    }
+
+    /** @return array<string, string> attribute names for validation messages */
+    public static function attributesFor(string $key): array
+    {
+        $attributes = [];
+        foreach (self::fieldsFor($key) as $field) {
+            $attributes['audience_params.'.$field['name']] = __($field['label']);
+        }
+
+        return $attributes;
+    }
+
     public static function label(string $key): string
     {
         return isset(self::$audiences[$key]) ? __(self::$audiences[$key]['label']) : $key;
@@ -148,7 +174,7 @@ final class AnnouncementAudiences
                 ->where('member_vehicles.vehicle_make_id', $makeId)
                 ->where('member_vehicles.status', 'active'));
         }, 'notifications', [[
-            'name' => 'make_id', 'type' => 'select', 'label' => 'notifications.admin.fields.vehicle_make', 'rules' => 'required|integer|min:1',
+            'name' => 'make_id', 'type' => 'select', 'label' => 'notifications.admin.fields.vehicle_make', 'rules' => ['required', 'integer', 'min:1', 'exists:vehicle_makes,id'],
             'options' => fn () => self::tableExists('vehicle_makes')
                 ? DB::table('vehicle_makes')->where('is_active', true)->orderBy('sort_order')->orderBy('name_en')->get(['id', 'name_ar', 'name_en'])
                     ->map(fn ($m) => ['value' => (int) $m->id, 'label' => app()->getLocale() === 'ar' ? $m->name_ar : $m->name_en])->all()
@@ -166,7 +192,7 @@ final class AnnouncementAudiences
                 ->where('member_vehicles.vehicle_model_id', $modelId)
                 ->where('member_vehicles.status', 'active'));
         }, 'notifications', [[
-            'name' => 'model_id', 'type' => 'select', 'label' => 'notifications.admin.fields.vehicle_model', 'rules' => 'required|integer|min:1',
+            'name' => 'model_id', 'type' => 'select', 'label' => 'notifications.admin.fields.vehicle_model', 'rules' => ['required', 'integer', 'min:1', 'exists:vehicle_models,id'],
             'options' => fn () => self::tableExists('vehicle_models')
                 ? DB::table('vehicle_models')->join('vehicle_makes', 'vehicle_makes.id', '=', 'vehicle_models.vehicle_make_id')
                     ->where('vehicle_models.is_active', true)->orderBy('vehicle_makes.name_en')->orderBy('vehicle_models.name_en')
@@ -181,10 +207,10 @@ final class AnnouncementAudiences
                 return User::query()->whereRaw('1 = 0');
             }
 
-            return User::query()->where('users.status', User::STATUS_ACTIVE)
+            return self::activeMembersQuery()
                 ->whereHas('membership', fn (Builder $q) => $q->whereIn('member_number', $numbers));
         }, 'notifications', [[
-            'name' => 'member_numbers', 'type' => 'textarea', 'label' => 'notifications.admin.fields.member_numbers', 'hint' => 'notifications.admin.fields.member_numbers_hint', 'rules' => 'required',
+            'name' => 'member_numbers', 'type' => 'textarea', 'label' => 'notifications.admin.fields.member_numbers', 'hint' => 'notifications.admin.fields.member_numbers_hint', 'rules' => ['required', 'string', 'max:20000'],
         ]]);
     }
 

@@ -46,7 +46,7 @@ export function Timeline({ items, dense = false, absolute = false, className }: 
                                 Icon ? cn('size-6 -start-[calc(0.75rem+1px)]', toneSoft[tone]) : toneSolid[tone],
                             )}
                         >
-                            {Icon ? <Icon className="size-3.5" /> : null}
+                            {Icon ? <Icon className="size-3.5" aria-hidden="true" /> : null}
                         </span>
                         <div className={cn('flex flex-col gap-0.5', Icon && 'pt-0.5')}>
                             <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">

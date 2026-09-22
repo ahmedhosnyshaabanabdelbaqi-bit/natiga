@@ -18,12 +18,13 @@ class BannersController extends Controller
 
     public function __construct(private readonly AuditService $audit) {}
 
-    public function index(): Response
+    public function index(Request $request): Response
     {
         $this->authorize('viewAny', StatusBanner::class);
+        $perPage = in_array((int) $request->query('per_page', 25), [15, 25, 50, 100], true) ? (int) $request->query('per_page') : 25;
 
         return Inertia::render('admin/banners/index', [
-            'banners' => StatusBanner::query()->orderByDesc('id')->paginate(20)->through(fn (StatusBanner $b) => $this->serialize($b)),
+            'banners' => StatusBanner::query()->orderByDesc('id')->paginate($perPage)->withQueryString()->through(fn (StatusBanner $b) => $this->serialize($b)),
             'levels' => BannerRequest::LEVELS,
             'targets' => BannerRequest::TARGETS,
         ]);

@@ -33,35 +33,35 @@ function CommandDialog({
   children,
   className,
   showCloseButton = true,
+  commandProps,
   ...props
 }: React.ComponentProps<typeof Dialog> & {
   title: string
   description?: string
   className?: string
   showCloseButton?: boolean
+  /** Forwarded to the cmdk root (e.g. `shouldFilter={false}` for server-side search). */
+  commandProps?: Omit<React.ComponentProps<typeof CommandPrimitive>, "children">
 }) {
   return (
     <Dialog {...props}>
-      <DialogHeader className="sr-only">
-        <DialogTitle>{title}</DialogTitle>
-        {description ? (
-          <DialogDescription>{description}</DialogDescription>
-        ) : null}
-      </DialogHeader>
       <DialogContent
-        className={cn(
-          "overflow-hidden p-0 [&_[data-slot=dialog-close]]:hidden",
-          showCloseButton && "[&_[data-slot=dialog-close]]:flex",
-          className
-        )}
+        className={cn("overflow-hidden p-0", className)}
+        showCloseButton={showCloseButton}
       >
-        <DialogTitle className="sr-only">{title}</DialogTitle>
-        {description ? (
-          <DialogDescription className="sr-only">
-            {description}
-          </DialogDescription>
-        ) : null}
-        <Command className="[&_[cmdk-group-heading]]:text-muted-foreground **:data-[slot=command-input-wrapper]:h-12 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group]]:px-2 [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
+        <DialogHeader className="sr-only">
+          <DialogTitle>{title}</DialogTitle>
+          {description ? (
+            <DialogDescription>{description}</DialogDescription>
+          ) : null}
+        </DialogHeader>
+        <Command
+          {...commandProps}
+          className={cn(
+            "[&_[cmdk-group-heading]]:text-muted-foreground **:data-[slot=command-input-wrapper]:h-12 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group]]:px-2 [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5",
+            commandProps?.className
+          )}
+        >
           {children}
         </Command>
       </DialogContent>
@@ -78,7 +78,7 @@ function CommandInput({
       data-slot="command-input-wrapper"
       className="flex h-9 items-center gap-2 border-b px-3"
     >
-      <SearchIcon className="size-4 shrink-0 opacity-50" />
+      <SearchIcon className="size-4 shrink-0 opacity-50" aria-hidden="true" />
       <CommandPrimitive.Input
         data-slot="command-input"
         className={cn(

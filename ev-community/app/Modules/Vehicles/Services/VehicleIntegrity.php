@@ -6,10 +6,16 @@ use App\Modules\Vehicles\Models\MemberVehicle;
 use App\Modules\Vehicles\Models\VehicleModel;
 use App\Modules\Vehicles\Models\VehicleVariant;
 use App\Support\Exceptions\DomainException;
+use Closure;
+use Illuminate\Database\UniqueConstraintViolationException;
+use Illuminate\Support\Facades\DB;
 
-/** Cross-field business rules shared by create/update. */
+/** Cross-field business rules and concurrency helpers shared by the garage actions. */
 final class VehicleIntegrity
 {
+    /** Namespace of the per-member advisory lock (pg_advisory_xact_lock(int, int)). */
+    private const GARAGE_LOCK_CLASS = 530_003;
+
     public function assertHierarchy(int $makeId, int $modelId, int|string|null $variantId): void
     {
         $model = VehicleModel::query()->find($modelId);
@@ -36,6 +42,41 @@ final class VehicleIntegrity
         }
         if ($query->exists()) {
             throw DomainException::because('vehicles.errors.vin_duplicate', field: 'vin');
+        }
+    }
+
+    /**
+     * Serialize garage mutations of one member (primary flag, VIN registration) for the rest of the
+     * current transaction. Must be called inside DB::transaction().
+     */
+    public function lockGarage(int $userId): void
+    {
+        if (DB::getDriverName() === 'pgsql') {
+            DB::select('SELECT pg_advisory_xact_lock(?, ?)', [self::GARAGE_LOCK_CLASS, $userId]);
+
+            return;
+        }
+        DB::table('users')->where('id', $userId)->lockForUpdate()->first();
+    }
+
+    /**
+     * Run a write and translate the database-level "one active vehicle per VIN" violation
+     * (member_vehicles_active_vin_unique) into the friendly duplicate-VIN error.
+     *
+     * @template T
+     *
+     * @param  Closure(): T  $write
+     * @return T
+     */
+    public function guardVinUniqueness(Closure $write): mixed
+    {
+        try {
+            return $write();
+        } catch (UniqueConstraintViolationException $e) {
+            if (str_contains($e->getMessage(), 'member_vehicles_active_vin_unique')) {
+                throw DomainException::because('vehicles.errors.vin_duplicate', field: 'vin');
+            }
+            throw $e;
         }
     }
 }

@@ -31,6 +31,8 @@ final class OperationsExceptions
 {
     public const NOTIFY_CLASS = 'App\\Modules\\Notifications\\Services\\Notify';
 
+    public const P0_NOTIFICATION = 'operations.p0_exception';
+
     public function __construct(private readonly AuditService $audit) {}
 
     /** @param  array<string, mixed>  $details */
@@ -184,18 +186,29 @@ final class OperationsExceptions
         if (! class_exists(self::NOTIFY_CLASS)) {
             return;
         }
+        $notify = self::NOTIFY_CLASS;
         try {
-            $notify = app(self::NOTIFY_CLASS);
             $recipients = User::query()->where('status', User::STATUS_ACTIVE)
                 ->where(fn ($q) => $q->permission('operations.manage')->orWhereHas('roles', fn ($r) => $r->whereIn('name', PermissionRegistry::SUPER_ROLES)))
                 ->get();
-            foreach ($recipients as $user) {
-                $notify->send($user, 'operations.p0_exception', [
-                    'title' => $exception->title, 'category' => $exception->category->value, 'exception_id' => $exception->public_id, 'url' => '/admin/operations?severity=p0',
-                ], 'system', true, 'ops-p0:'.$exception->public_id.':'.$user->id);
-            }
         } catch (\Throwable $e) {
-            report($e);
+            report($e); // e.g. permissions not synced yet
+
+            return;
+        }
+        foreach ($recipients as $user) {
+            try {
+                $notify::send($user, self::P0_NOTIFICATION, [
+                    '_title_key' => 'operations.notifications.p0.title',
+                    '_body_key' => 'operations.notifications.p0.body',
+                    'title' => $exception->title,
+                    'category' => $exception->category->label(),
+                    'exception_id' => $exception->public_id,
+                    'source' => (string) $exception->source,
+                ], 'system', true, 'ops-p0:'.$exception->public_id.':'.$user->id, '/admin/operations?severity=p0');
+            } catch (\Throwable $e) {
+                report($e); // an alert delivery failure must never break the caller that raised the exception
+            }
         }
     }
 }

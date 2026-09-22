@@ -13,6 +13,14 @@ class UpdateUserRequest extends FormRequest
         return $this->user()?->can('users.manage') ?? false;
     }
 
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'email' => is_string($this->input('email')) ? strtolower(trim($this->input('email'))) : $this->input('email'),
+            'mobile' => is_string($this->input('mobile')) && trim($this->input('mobile')) !== '' ? trim($this->input('mobile')) : null,
+        ]);
+    }
+
     public function rules(): array
     {
         /** @var User $target */

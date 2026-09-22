@@ -22,7 +22,7 @@ export function StatusBanners() {
                             banner.level === 'information' && 'bg-info-soft text-info',
                         )}
                     >
-                        <Icon className="size-4 shrink-0" />
+                        <Icon className="size-4 shrink-0" aria-hidden="true" />
                         <span>{banner.message}</span>
                     </div>
                 );

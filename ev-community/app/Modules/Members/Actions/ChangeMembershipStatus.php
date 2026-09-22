@@ -16,7 +16,11 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * The only way a membership changes status. Validates the state machine, stores history and audit,
- * invalidates sessions on suspension and dispatches the matching event after commit.
+ * invalidates sessions on suspension and dispatches the matching event after commit
+ * (MembershipApproved / Rejected / Suspended / Reactivated / Expired / Reopened).
+ *
+ * Idempotent: asking for the current status is a no-op (no history, audit or event). Concurrent
+ * requests are serialised by the row lock, so a double click approves exactly once.
  */
 final class ChangeMembershipStatus
 {
@@ -57,8 +61,12 @@ final class ChangeMembershipStatus
             $this->audit->log('members.status_changed', $locked, old: ['status' => $from->value], new: ['status' => $to->value], reason: $reason, actor: $actor, actorType: $actor ? 'user' : 'system');
 
             if ($to === MembershipStatus::Suspended) {
-                SecurityEvents::record($locked->user, 'membership_suspended', ['membership_id' => $locked->id, 'by' => $actor?->id], 'warning');
-                $this->sessions->logoutAll($locked->user);
+                // End every way back in: web sessions, remember-me cookies and API tokens.
+                $user = $locked->user;
+                $user->forceFill(['remember_token' => null])->save();
+                $user->tokens()->delete();
+                $ended = $this->sessions->logoutAll($user);
+                SecurityEvents::record($user, 'membership_suspended', ['membership_id' => $locked->id, 'by' => $actor?->id, 'sessions_ended' => $ended], 'warning');
             }
 
             $event = MembershipStatusChanged::classFor($from, $to);

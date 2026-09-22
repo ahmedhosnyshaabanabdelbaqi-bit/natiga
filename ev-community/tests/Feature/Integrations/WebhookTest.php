@@ -7,7 +7,9 @@ use App\Modules\Integrations\Models\Enums\WebhookEventStatus;
 use App\Modules\Integrations\Models\WebhookEvent;
 use App\Modules\Integrations\Services\Integrations;
 use App\Modules\Integrations\Services\WebhookHandlers;
+use App\Modules\Integrations\Services\WebhookIngest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Testing\TestResponse;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -191,7 +193,122 @@ class WebhookTest extends TestCase
 
     public function test_staff_without_permission_cannot_see_webhook_events(): void
     {
+        $event = WebhookEvent::factory()->failed()->create();
+
         $this->actingAsStaff([]);
         $this->get(route('admin.integrations.webhook-events.index'))->assertForbidden();
+        $this->get(route('admin.integrations.webhook-events.show', $event))->assertForbidden();
+        $this->post(route('admin.integrations.webhook-events.retry', $event))->assertForbidden();
+        $this->assertSame(WebhookEventStatus::Failed, $event->refresh()->status);
+    }
+
+    public function test_unknown_event_ids_answer_404(): void
+    {
+        $this->actingAsStaff(['integrations.view', 'integrations.manage']);
+
+        $this->get('/admin/integrations/webhook-events/999999')->assertNotFound();
+        $this->post('/admin/integrations/webhook-events/999999/retry')->assertNotFound();
+        $this->get('/admin/integrations/webhook-events/not-a-number')->assertNotFound();
+    }
+
+    public function test_forged_request_cannot_preempt_a_legitimate_event_with_the_same_body(): void
+    {
+        Queue::fake();
+        // A provider that sends no event id: the fingerprint falls back to the raw body.
+        $payload = ['type' => 'transaction.processed', 'transaction' => 'trx_77', 'status' => 'paid'];
+
+        $this->postWebhook($payload, validSignature: false)->assertStatus(401);
+        $this->postWebhook($payload)->assertOk()->assertJson(['received' => true, 'duplicate' => false]);
+        $this->postWebhook($payload)->assertOk()->assertJson(['duplicate' => true]);
+
+        $this->assertSame(2, WebhookEvent::query()->count());
+        $this->assertSame(1, WebhookEvent::query()->where('signature_valid', true)->count());
+        Queue::assertPushed(ProcessWebhookEventJob::class, 1);
+    }
+
+    public function test_concurrent_retries_requeue_a_failed_event_only_once(): void
+    {
+        Queue::fake();
+        $event = WebhookEvent::factory()->failed()->create();
+        // Two admins loaded the page while the event was failed (stale in-memory models).
+        $first = WebhookEvent::query()->findOrFail($event->id);
+        $second = WebhookEvent::query()->findOrFail($event->id);
+        $ingest = app(WebhookIngest::class);
+
+        $this->assertTrue($ingest->retry($first));
+        $this->assertFalse($ingest->retry($second), 'the row lock re-reads the status: already re-queued');
+        Queue::assertPushed(ProcessWebhookEventJob::class, 1);
+
+        // Same through HTTP: the second click is refused and not audited twice.
+        $failed = WebhookEvent::factory()->failed()->create(['fingerprint' => str_repeat('c', 64)]);
+        $this->actingAsStaff(['integrations.view', 'integrations.manage']);
+        $this->from('/admin/integrations/webhook-events')->post(route('admin.integrations.webhook-events.retry', $failed))->assertSessionHas('success');
+        $this->from('/admin/integrations/webhook-events')->post(route('admin.integrations.webhook-events.retry', $failed))->assertSessionHasErrors('domain');
+        $this->assertSame(1, DB::table('audit_logs')->where('action', 'integrations.webhook_retried')->where('entity_id', $failed->id)->count());
+        Queue::assertPushed(ProcessWebhookEventJob::class, 2);
+    }
+
+    public function test_events_with_an_invalid_signature_can_never_be_retried(): void
+    {
+        Queue::fake();
+        $forged = WebhookEvent::factory()->failed()->create(['signature_valid' => false]);
+
+        $this->assertFalse(app(WebhookIngest::class)->retry($forged));
+        Queue::assertNothingPushed();
+    }
+
+    public function test_index_loads_the_selected_event_for_the_detail_drawer(): void
+    {
+        $event = WebhookEvent::factory()->failed()->create(['payload' => ['id' => 'evt_d', 'amount' => '10.00']]);
+        $this->actingAsStaff(['integrations.view']);
+
+        $this->get(route('admin.integrations.webhook-events.index', ['event' => $event->id]))
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page->component('admin/integrations/webhook-events/index')
+                ->where('selected.id', $event->id)
+                ->where('selected.payload.amount', '10.00')
+                ->where('selected.has_handler', false)
+                ->has('selected.fingerprint')
+                ->where('selected.can_retry', true));
+
+        $this->get(route('admin.integrations.webhook-events.index', ['event' => 999999]))
+            ->assertInertia(fn (Assert $page) => $page->where('selected', null));
+        $this->get(route('admin.integrations.webhook-events.index', ['event' => 'x;drop']))
+            ->assertInertia(fn (Assert $page) => $page->where('selected', null));
+    }
+
+    public function test_payload_and_headers_are_redacted_again_when_displayed(): void
+    {
+        // A row stored before a Sanitizer rule existed (raw secret in the payload).
+        $event = WebhookEvent::factory()->create([
+            'payload' => ['id' => 'evt_old', 'nested' => ['access_token' => 'tok_live_123'], 'amount' => '5.00'],
+            'headers' => ['authorization' => 'Bearer abc', 'content-type' => 'application/json', '_driver' => 'fake'],
+        ]);
+        $this->actingAsStaff(['integrations.view']);
+
+        $this->get(route('admin.integrations.webhook-events.show', $event))
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page->component('admin/integrations/webhook-events/show')
+                ->where('event.payload.nested.access_token', '[redacted]')
+                ->where('event.payload.amount', '5.00')
+                ->where('event.headers.authorization', '[redacted]')
+                ->where('event.headers.content-type', 'application/json')
+                ->missing('event.headers._driver')
+                ->where('event.driver', 'fake')
+                ->where('canManage', false));
+    }
+
+    public function test_search_treats_like_wildcards_literally(): void
+    {
+        WebhookEvent::factory()->create(['external_event_id' => 'evt_alpha', 'fingerprint' => str_repeat('d', 64)]);
+        WebhookEvent::factory()->create(['external_event_id' => 'evt_50%_off', 'fingerprint' => str_repeat('e', 64)]);
+        $this->actingAsStaff(['integrations.view']);
+
+        $this->get(route('admin.integrations.webhook-events.index', ['q' => '%']))
+            ->assertInertia(fn (Assert $page) => $page->has('events.data', 1)->where('events.data.0.external_event_id', 'evt_50%_off'));
+        $this->get(route('admin.integrations.webhook-events.index', ['q' => 'ALPHA']))
+            ->assertInertia(fn (Assert $page) => $page->has('events.data', 1));
+        $this->get(route('admin.integrations.webhook-events.index', ['provider' => 'nope', 'status' => 'bogus']))
+            ->assertInertia(fn (Assert $page) => $page->where('filters.provider', null)->where('filters.status', null)->has('events.data', 2));
     }
 }

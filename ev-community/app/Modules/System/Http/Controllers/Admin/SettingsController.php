@@ -17,7 +17,7 @@ class SettingsController extends Controller
 
     public function index(Request $request): Response
     {
-        Gate::authorize('settings.view');
+        abort_unless(Gate::any(['settings.view', 'settings.manage']), 403);
         $groups = $this->form->groups();
         $keys = array_column($groups, 'key');
         $active = $request->query('group');

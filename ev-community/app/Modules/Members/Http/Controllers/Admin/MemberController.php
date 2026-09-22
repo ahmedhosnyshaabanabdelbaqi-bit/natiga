@@ -36,7 +36,7 @@ class MemberController extends Controller
     {
         Gate::authorize('viewAny', Membership::class);
         $filters = $directory->filters($request, ['status' => MembershipStatus::Pending->value]);
-        $filters += ['sort' => 'joined_at', 'dir' => 'asc'];
+        $filters += ['sort' => 'joined_at', 'direction' => 'asc'];
 
         return Inertia::render('admin/members/pending', $this->listing($directory, $filters));
     }

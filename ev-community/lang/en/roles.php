@@ -1,0 +1,73 @@
+<?php
+
+return [
+    'title' => 'Roles & permissions',
+    'description' => 'What each role may do. Super roles (owner, super admin) hold every permission and are read-only.',
+    'fields' => [
+        'slug' => 'Key',
+        'name_ar' => 'Name (Arabic)',
+        'name_en' => 'Name (English)',
+        'description' => 'Description',
+        'reason' => 'Reason for the change',
+    ],
+    'labels' => [
+        'super' => 'Super role',
+        'system' => 'Built-in',
+        'custom' => 'Custom',
+        'users_count' => ':count user(s)',
+        'portal' => 'Portal',
+        'read_only' => 'Read-only',
+        'default_grant' => 'Granted by default',
+        'not_grantable' => 'You cannot grant a permission you do not hold.',
+        'unsaved' => 'Unsaved changes',
+        'search' => 'Search permissions',
+        'module' => 'Module',
+        'permission' => 'Permission',
+        'role' => 'Role',
+        'granted' => ':granted of :total granted',
+        'changes' => ':added added, :removed removed',
+        'slug_hint' => 'Lowercase letters, numbers and dashes. It cannot be changed later.',
+        'reason_hint' => 'Optional, stored in the audit log.',
+        'no_permissions' => 'No permission matches your search.',
+        'select_role_hint' => 'Choose a role to review or edit its permissions.',
+        'all_in_module' => 'All permissions in :module',
+        'key' => 'Key',
+    ],
+    'portals' => [
+        'admin' => 'Admin panel',
+        'partner' => 'Partner portal',
+        'member' => 'Member portal',
+    ],
+    'actions' => [
+        'create' => 'New role',
+        'save' => 'Save permissions',
+        'discard' => 'Discard changes',
+        'delete' => 'Delete role',
+    ],
+    'create' => [
+        'title' => 'New custom role',
+        'description' => 'A custom role starts without permissions; grant them in the matrix afterwards.',
+        'submit' => 'Create role',
+    ],
+    'save_confirm' => [
+        'title' => 'Save permissions of “:role”?',
+        'description' => 'Every user holding this role gets the new permissions immediately. The change is audited.',
+    ],
+    'delete_confirm' => [
+        'title' => 'Delete the role “:role”?',
+        'description' => 'Only custom roles without users can be deleted.',
+    ],
+    'messages' => [
+        'created' => 'Role created.',
+        'permissions_saved' => 'Permissions saved.',
+        'deleted' => 'Role deleted.',
+    ],
+    'errors' => [
+        'slug_taken' => 'The key “:slug” is already used.',
+        'super_role_readonly' => 'Super roles are read-only.',
+        'unknown_permission' => 'Unknown permission: :permission',
+        'cannot_grant_unheld' => 'You cannot grant permissions you do not hold: :permission',
+        'system_role_undeletable' => 'Built-in roles cannot be deleted.',
+        'role_in_use' => 'This role is assigned to :count user(s); remove it from them first.',
+    ],
+];

@@ -7,6 +7,7 @@ use App\Modules\System\Http\Controllers\Admin\ModulesController;
 use App\Modules\System\Http\Controllers\Admin\SettingsController;
 use App\Modules\System\Http\Controllers\Admin\SetupController;
 use App\Modules\System\Http\Controllers\Admin\UsersController;
+use App\Modules\System\Http\Middleware\RecordPrivilegeEscalationAttempt;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/admin/dashboard');
@@ -25,17 +26,23 @@ Route::prefix('settings')->name('settings.')->group(function () {
 // ---- Modules ----
 Route::middleware('permission:modules.manage')->prefix('modules')->name('modules.')->group(function () {
     Route::get('/', [ModulesController::class, 'index'])->name('index');            // admin.modules.index
+    Route::post('review', [ModulesController::class, 'review'])->name('review');     // admin.modules.review
     Route::put('{module}', [ModulesController::class, 'update'])->name('update');    // admin.modules.update
 });
 
 // ---- Users ----
+// RecordPrivilegeEscalationAttempt runs before the permission middleware so that a blocked attempt to change
+// roles/permissions is recorded as a critical security event even when the actor lacks the permission entirely.
 Route::prefix('users')->name('users.')->group(function () {
     Route::middleware('permission:users.view|users.manage')->group(function () {
         Route::get('/', [UsersController::class, 'index'])->name('index');           // admin.users.index
     });
-    Route::middleware('permission:users.manage')->group(function () {
+    Route::middleware([RecordPrivilegeEscalationAttempt::class.':users.manage,roles.manage', 'permission:users.manage'])->group(function () {
         Route::get('create', [UsersController::class, 'create'])->name('create');    // admin.users.create
         Route::post('/', [UsersController::class, 'store'])->name('store');          // admin.users.store
+    });
+    Route::middleware('permission:roles.manage')->group(function () {
+        Route::post('lookup', [UsersController::class, 'lookup'])->middleware('throttle:30,1')->name('lookup'); // admin.users.lookup
     });
     Route::middleware('permission:users.view|users.manage')->group(function () {
         Route::get('{user}', [UsersController::class, 'show'])->name('show');        // admin.users.show
@@ -47,9 +54,9 @@ Route::prefix('users')->name('users.')->group(function () {
         Route::post('{user}/reactivate', [UsersController::class, 'reactivate'])->name('reactivate');       // admin.users.reactivate
         Route::post('{user}/reset-access', [UsersController::class, 'resetAccess'])->name('reset-access');  // admin.users.reset-access
         Route::delete('{user}/sessions', [UsersController::class, 'logoutAll'])->name('sessions.destroy-all');          // admin.users.sessions.destroy-all
-        Route::delete('{user}/sessions/{session}', [UsersController::class, 'destroySession'])->name('sessions.destroy'); // admin.users.sessions.destroy
+        Route::delete('{user}/sessions/{session}', [UsersController::class, 'destroySession'])->where('session', '[a-f0-9]{40}')->name('sessions.destroy'); // admin.users.sessions.destroy
     });
-    Route::middleware('permission:roles.manage')->group(function () {
+    Route::middleware([RecordPrivilegeEscalationAttempt::class.':roles.manage', 'permission:roles.manage'])->group(function () {
         Route::put('{user}/access', [UsersController::class, 'updateAccess'])->name('access');              // admin.users.access
     });
 });

@@ -4,6 +4,7 @@ import { destroy } from '@/actions/Laravel/Passkeys/Http/Controllers/PasskeyRegi
 import Heading from '@/components/heading';
 import PasskeyItem from '@/components/passkey-item';
 import PasskeyRegistration from '@/components/passkey-register';
+import { t } from '@/lib/i18n';
 import type { Passkey } from '@/types/auth';
 
 export type Props = {
@@ -11,19 +12,17 @@ export type Props = {
     passkeys?: Passkey[];
 };
 
-const EmptyState = () => {
+function EmptyState() {
     return (
         <div className="p-8 text-center">
             <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-muted">
-                <KeyRound className="h-7 w-7 text-muted-foreground" />
+                <KeyRound className="h-7 w-7 text-muted-foreground" aria-hidden="true" />
             </div>
-            <p className="font-medium">No passkeys yet</p>
-            <p className="mt-1 text-sm text-muted-foreground">
-                Add a passkey to sign in without a password
-            </p>
+            <p className="font-medium">{t('settings.passkeys.empty_title')}</p>
+            <p className="mt-1 text-sm text-muted-foreground">{t('settings.passkeys.empty_description')}</p>
         </div>
     );
-};
+}
 
 export default function ManagePasskeys(props: Props) {
     const passkeys = props.passkeys ?? [];
@@ -45,21 +44,15 @@ export default function ManagePasskeys(props: Props) {
 
     return (
         <div className="space-y-6">
-            <Heading
-                variant="small"
-                title="Passkeys"
-                description="Manage your passkeys for passwordless sign-in"
-            />
+            <Heading variant="small" title={t('settings.passkeys.heading')} description={t('settings.passkeys.description')} />
 
             <div className="overflow-hidden rounded-lg border border-border">
                 {passkeys.length > 0 ? (
-                    passkeys.map((passkey) => (
-                        <PasskeyItem
-                            key={passkey.id}
-                            passkey={passkey}
-                            onDelete={handleDelete}
-                        />
-                    ))
+                    <ul aria-label={t('settings.passkeys.heading')}>
+                        {passkeys.map((passkey) => (
+                            <PasskeyItem key={passkey.id} passkey={passkey} onDelete={handleDelete} />
+                        ))}
+                    </ul>
                 ) : (
                     <EmptyState />
                 )}

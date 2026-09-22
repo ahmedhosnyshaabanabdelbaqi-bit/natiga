@@ -21,7 +21,7 @@ export function LanguageSwitcher({ variant = 'ghost', className }: { variant?: '
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button variant={variant} size="sm" className={className} aria-label={t('core.labels.language')}>
-                    <Languages className="size-4" />
+                    <Languages className="size-4" aria-hidden="true" />
                     <span className="hidden sm:inline">{locales.find((l) => l.code === locale)?.name}</span>
                 </Button>
             </DropdownMenuTrigger>

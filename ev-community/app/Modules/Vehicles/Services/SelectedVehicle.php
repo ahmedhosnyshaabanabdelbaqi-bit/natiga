@@ -70,10 +70,13 @@ final class SelectedVehicle
             }
             $make = VehicleMake::query()->find($selection['make_id']);
             $model = VehicleModel::query()->find($selection['model_id']);
-            if (! $make || ! $model || (int) $model->vehicle_make_id !== (int) $make->id) {
+            if (! $make || ! $model || ! $make->is_active || ! $model->is_active || (int) $model->vehicle_make_id !== (int) $make->id) {
                 return null;
             }
             $variant = ! empty($selection['variant_id']) ? VehicleVariant::query()->find($selection['variant_id']) : null;
+            if ($variant && ((int) $variant->vehicle_model_id !== (int) $model->id || ! $variant->is_active)) {
+                $variant = null;
+            }
             $year = $selection['year'] ?? null;
 
             return [

@@ -20,14 +20,16 @@ class RolesController extends Controller
 
     public function __construct(private readonly RoleManager $roles) {}
 
-    public function index(): Response
+    public function index(Request $request): Response
     {
         $this->authorize('viewAny', Role::class);
+        $actor = $request->user();
 
         $grouped = [];
         foreach (PermissionRegistry::grouped() as $module => $permissions) {
             $grouped[] = [
                 'module' => $module,
+                'label' => PermissionRegistry::moduleLabel($module),
                 'permissions' => collect($permissions)->map(fn ($definition, $key) => [
                     'key' => $key,
                     'label' => $definition['label'],
@@ -39,6 +41,9 @@ class RolesController extends Controller
         return Inertia::render('admin/roles/index', [
             'roles' => $this->roles->matrix(),
             'groups' => $grouped,
+            'actorIsSuper' => $actor->isSuperAdmin(),
+            // UI hint only: a non-super actor may only grant permissions they hold (RoleManager enforces it).
+            'actorPermissions' => $actor->permissionNames(),
         ]);
     }
 

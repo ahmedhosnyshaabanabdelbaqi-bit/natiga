@@ -11,8 +11,9 @@ use Illuminate\Foundation\Queue\Queueable;
 use Throwable;
 
 /**
- * Runs a campaign: chunks the audience (500), creates recipients idempotently and sends through Notify with the
- * campaign dedup key. Safe to re-run: nothing is duplicated. Failures mark the campaign `failed`; admins retry it.
+ * Runs a campaign: chunks the audience (500), creates `announcement_recipients` idempotently and sends through the
+ * notification pipeline with the campaign dedup key. Safe to re-run: nothing is duplicated. Errors mark the campaign
+ * `failed` (AnnouncementService::run); admins retry it, which only processes recipients not yet sent.
  */
 class SendAnnouncementJob implements ShouldBeUnique, ShouldQueue
 {
@@ -36,6 +37,7 @@ class SendAnnouncementJob implements ShouldBeUnique, ShouldQueue
         $service->run($this->campaignId);
     }
 
+    /** Timeouts / worker crashes: the campaign must not stay `sending` forever. */
     public function failed(?Throwable $exception): void
     {
         AnnouncementCampaign::query()->whereKey($this->campaignId)->where('status', CampaignStatus::Sending->value)->update([

@@ -46,7 +46,9 @@ class ExchangeRate extends Model
 
     protected static function booted(): void
     {
+        // Append-only: FX snapshots on converted records reference these rows by value and date.
         static::updating(fn () => throw new \LogicException('Exchange rates are append-only; add a new dated entry instead.'));
+        static::deleting(fn () => throw new \LogicException('Exchange rates are append-only and cannot be deleted.'));
     }
 
     public function enteredBy(): BelongsTo

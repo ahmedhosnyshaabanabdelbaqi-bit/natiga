@@ -36,6 +36,25 @@ class NotificationDelivery extends Model
 
     public const SKIP_NO_MOBILE = 'no_mobile';
 
+    /** The provider is a development `log` driver: the message was written to the log, never delivered. */
+    public const SKIP_LOGGED_ONLY = 'logged_only';
+
+    /** @return string[] */
+    public static function skipReasons(): array
+    {
+        return [self::SKIP_NOT_CONFIGURED, self::SKIP_PREFERENCE_DISABLED, self::SKIP_NO_CONSENT, self::SKIP_NO_EMAIL, self::SKIP_NO_MOBILE, self::SKIP_LOGGED_ONLY];
+    }
+
+    /** Translated explanation of `error` for skipped deliveries (raw provider error for failed ones). */
+    public function reasonLabel(): ?string
+    {
+        if ($this->error === null || $this->error === '') {
+            return null;
+        }
+
+        return in_array($this->error, self::skipReasons(), true) ? __('notifications.skip_reasons.'.$this->error) : $this->error;
+    }
+
     protected $guarded = [];
 
     protected function casts(): array

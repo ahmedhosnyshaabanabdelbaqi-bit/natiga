@@ -20,6 +20,8 @@ class AddManualRateRequest extends FormRequest
             'rate' => ['required', 'numeric', 'gt:0', 'regex:/^\d{1,10}(\.\d{1,8})?$/'],
             'rate_date' => ['required', 'date_format:Y-m-d', 'before_or_equal:today'],
             'reason' => ['required', 'string', 'min:5', 'max:500'],
+            // true = this entry corrects the rate already recorded for that pair and date.
+            'correction' => ['sometimes', 'boolean'],
         ];
     }
 
@@ -40,6 +42,7 @@ class AddManualRateRequest extends FormRequest
             'rate' => __('integrations.exchange_rates.form.rate'),
             'rate_date' => __('integrations.exchange_rates.form.rate_date'),
             'reason' => __('core.labels.reason'),
+            'correction' => __('integrations.exchange_rates.form.correction'),
         ];
     }
 }

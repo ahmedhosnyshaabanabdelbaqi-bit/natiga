@@ -19,7 +19,7 @@ class MemberVerificationController extends Controller
         Gate::authorize('partner.access');
 
         return Inertia::render('partner/members/scan', [
-            'purposes' => array_map(fn (VerificationPurpose $p) => ['value' => $p->value, 'label' => $p->label()], [VerificationPurpose::Offer, VerificationPurpose::Booking, VerificationPurpose::Membership]),
+            'purposes' => array_map(fn (VerificationPurpose $p) => ['value' => $p->value, 'label' => $p->label()], VerifyTokenRequest::PARTNER_PURPOSES),
         ]);
     }
 

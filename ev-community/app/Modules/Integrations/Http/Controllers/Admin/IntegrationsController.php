@@ -62,7 +62,7 @@ class IntegrationsController extends Controller
 
             return back()->with($problems === [] ? 'success' : 'warning', $problems === []
                 ? __('integrations.messages.all_checks_completed', ['count' => count($results)])
-                : __('integrations.messages.all_checks_with_problems', ['count' => count($results), 'problems' => implode('، ', $problems)]));
+                : __('integrations.messages.all_checks_with_problems', ['count' => count($results), 'problems' => implode(app()->getLocale() === 'ar' ? '، ' : ', ', $problems)]));
         }
         abort_unless(in_array($key, IntegrationManager::CATEGORIES, true), 404);
         $result = $manager->check($key);

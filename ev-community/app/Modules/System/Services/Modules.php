@@ -75,6 +75,38 @@ final class Modules
         }
     }
 
+    /**
+     * Persist the current (possibly default) state of every module that has no stored row yet, so later changes to
+     * `default_enabled` in config never flip a live module silently. Audited as `modules.reviewed`.
+     *
+     * @return string[] keys that were persisted
+     */
+    public static function persistDefaults(?User $actor = null, ?string $reason = null): array
+    {
+        $stored = ModuleSetting::query()->pluck('key')->all();
+        $persisted = [];
+        foreach (array_keys(config('ev.modules', [])) as $key) {
+            if (in_array($key, $stored, true)) {
+                continue;
+            }
+            ModuleSetting::query()->create(['key' => $key, 'enabled' => self::enabled($key), 'updated_by' => $actor?->id]);
+            $persisted[] = $key;
+        }
+        self::flush();
+        app(AuditService::class)->log('modules.reviewed', null, new: ['persisted' => $persisted, 'enabled' => self::enabledMap()], reason: $reason, actor: $actor, entityLabel: 'modules');
+
+        return $persisted;
+    }
+
+    public static function reviewed(): bool
+    {
+        try {
+            return ModuleSetting::query()->whereIn('key', array_keys(config('ev.modules', [])))->count() >= count(config('ev.modules', []));
+        } catch (\Throwable) {
+            return false;
+        }
+    }
+
     public static function flush(): void
     {
         self::$states = null;

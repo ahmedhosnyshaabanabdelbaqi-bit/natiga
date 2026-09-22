@@ -7,6 +7,7 @@ use App\Modules\Members\Models\Membership;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
 
 /**
@@ -16,7 +17,8 @@ final class MemberDirectory
 {
     public const SORTS = Membership::SORTS;
 
-    public const FILTER_KEYS = ['search', 'status', 'governorate_id', 'joined_from', 'joined_to', 'referral_source', 'sort', 'dir', 'per_page'];
+    /** Query keys understood by the listing (`sort`/`direction`/`per_page`/`page` match the shared DataTable). */
+    public const FILTER_KEYS = ['search', 'status', 'governorate_id', 'joined_from', 'joined_to', 'referral_source', 'sort', 'direction', 'per_page'];
 
     /** @return array<string, mixed> validated filters (unknown keys dropped, invalid values rejected) */
     public function filters(Request $request, array $overrides = []): array
@@ -29,7 +31,7 @@ final class MemberDirectory
             'joined_to' => ['nullable', 'date', 'after_or_equal:joined_from'],
             'referral_source' => ['nullable', 'string', 'max:100'],
             'sort' => ['nullable', Rule::in(self::SORTS)],
-            'dir' => ['nullable', Rule::in(['asc', 'desc'])],
+            'direction' => ['nullable', Rule::in(['asc', 'desc'])],
             'per_page' => ['nullable', 'integer', 'min:10', 'max:100'],
         ]);
 
@@ -44,18 +46,19 @@ final class MemberDirectory
         if (! empty($filters['governorate_id'])) {
             $query->where('memberships.governorate_id', (int) $filters['governorate_id']);
         }
+        // Date bounds are calendar days in the platform timezone (Africa/Cairo), compared in UTC.
         if (! empty($filters['joined_from'])) {
-            $query->where('memberships.joined_at', '>=', \Illuminate\Support\Carbon::parse($filters['joined_from'])->startOfDay());
+            $query->where('memberships.joined_at', '>=', Carbon::parse($filters['joined_from'], config('ev.timezone'))->startOfDay()->utc());
         }
         if (! empty($filters['joined_to'])) {
-            $query->where('memberships.joined_at', '<=', \Illuminate\Support\Carbon::parse($filters['joined_to'])->endOfDay());
+            $query->where('memberships.joined_at', '<=', Carbon::parse($filters['joined_to'], config('ev.timezone'))->endOfDay()->utc());
         }
         if (! empty($filters['referral_source'])) {
             $query->where('memberships.referral_source', $filters['referral_source']);
         }
 
         $sort = in_array($filters['sort'] ?? null, self::SORTS, true) ? $filters['sort'] : 'joined_at';
-        $dir = ($filters['dir'] ?? 'desc') === 'asc' ? 'asc' : 'desc';
+        $dir = ($filters['direction'] ?? 'desc') === 'asc' ? 'asc' : 'desc';
         match ($sort) {
             'name' => $query->leftJoin('users', 'users.id', '=', 'memberships.user_id')->orderBy('users.name', $dir),
             'member_number' => $query->orderBy('memberships.member_number', $dir),

@@ -9,6 +9,7 @@ use App\Support\Exceptions\DomainException;
 use Carbon\CarbonImmutable;
 use Database\Seeders\System\CurrencySeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Inertia\Testing\AssertableInertia as Assert;
 use LogicException;
 use Tests\TestCase;
@@ -158,6 +159,102 @@ class ExchangeRatesTest extends TestCase
         $this->actingAsRole('accountant');
         $this->from(route('admin.integrations.exchange-rates.index'))->post(route('admin.integrations.exchange-rates.sync'))->assertSessionHasErrors('domain');
         $this->assertDatabaseCount('integration_sync_logs', 0);
+    }
+
+    public function test_a_wrong_rate_is_fixed_by_an_audited_correction_that_wins_future_lookups(): void
+    {
+        $accountant = $this->actingAsRole('accountant');
+        $url = route('admin.integrations.exchange-rates.store');
+        $original = ['base_currency' => 'USD', 'quote_currency' => 'EGP', 'rate' => '4.85', 'rate_date' => '2026-01-10', 'reason' => 'CBE published rate'];
+
+        $this->post($url, $original)->assertSessionHas('success');
+        $first = ExchangeRate::query()->sole();
+
+        // A plain second entry is still refused (double submit protection)...
+        $this->post($url, ['rate' => '48.50', 'reason' => 'typo fixed'] + $original)->assertSessionHasErrors('domain');
+        // ...an explicit correction is appended.
+        $this->post($url, ['rate' => '48.50', 'reason' => 'Typo: missing digit', 'correction' => '1'] + $original)
+            ->assertSessionHasNoErrors()->assertSessionHas('success');
+
+        $correction = ExchangeRate::query()->where('source', 'manual:correction:1')->sole();
+        $this->assertSame('48.50000000', $correction->rate);
+        $this->assertSame('corrects:'.$first->id, $correction->source_reference);
+        $this->assertSame('4.85000000', $first->refresh()->rate, 'the original row is never edited');
+        $this->assertSame(['rate' => '48.50', 'source' => 'manual:correction:1', 'rate_date' => '2026-01-10'], $this->rates->rate('USD', 'EGP', CarbonImmutable::parse('2026-01-12')));
+        $this->assertSame('12125.00', $this->rates->convertToBase('250', 'USD', CarbonImmutable::parse('2026-01-12'))['amount']);
+
+        $audit = DB::table('audit_logs')->where('action', 'exchange_rates.corrected')->sole();
+        $this->assertSame($accountant->id, $audit->actor_id);
+        $this->assertSame('Typo: missing digit', $audit->reason);
+        $this->assertStringContainsString('4.85', (string) $audit->old_values);
+
+        // A second correction gets the next sequence number and becomes the effective rate.
+        $this->post($url, ['rate' => '48.55', 'reason' => 'Second correction', 'correction' => true] + $original)->assertSessionHasNoErrors();
+        $this->assertSame('manual:correction:2', $this->rates->rate('USD', 'EGP', CarbonImmutable::parse('2026-01-10'))['source']);
+        $this->assertSame(3, ExchangeRate::query()->count());
+    }
+
+    public function test_a_correction_needs_an_existing_rate_and_a_different_value(): void
+    {
+        $this->actingAsRole('accountant');
+        $url = route('admin.integrations.exchange-rates.store');
+        $data = ['base_currency' => 'USD', 'quote_currency' => 'EGP', 'rate' => '48.5', 'rate_date' => '2026-01-10', 'reason' => 'Correction attempt', 'correction' => '1'];
+
+        $this->post($url, $data)->assertSessionHasErrors('correction');
+        $this->assertSame(0, ExchangeRate::query()->count());
+
+        ExchangeRate::factory()->on('2026-01-10')->rate('48.50000000')->create();
+        $this->post($url, $data)->assertSessionHasErrors('rate');
+        $this->post($url, ['correction' => 'maybe'] + $data)->assertSessionHasErrors('correction');
+        $this->assertSame(1, ExchangeRate::query()->count());
+    }
+
+    public function test_viewers_cannot_submit_corrections(): void
+    {
+        ExchangeRate::factory()->on('2026-01-10')->rate('48.50000000')->create();
+        $this->actingAsStaff(['exchange_rates.view']);
+
+        $this->post(route('admin.integrations.exchange-rates.store'), ['base_currency' => 'USD', 'quote_currency' => 'EGP', 'rate' => '1', 'rate_date' => '2026-01-10', 'reason' => 'sabotage attempt', 'correction' => '1'])->assertForbidden();
+        $this->assertSame(1, ExchangeRate::query()->count());
+    }
+
+    public function test_manual_filter_includes_corrections_and_provider_filter_excludes_them(): void
+    {
+        ExchangeRate::factory()->on('2026-01-10')->rate('48.00000000')->create();
+        ExchangeRate::factory()->on('2026-01-10')->rate('48.10000000')->create(['source' => 'manual:correction:1']);
+        ExchangeRate::factory()->pair('CNY', 'EGP')->on('2026-01-11')->rate('6.70000000')->fromProvider('acme')->create();
+        $this->actingAsStaff(['exchange_rates.view']);
+
+        $this->get(route('admin.integrations.exchange-rates.index', ['source' => 'manual']))
+            ->assertInertia(fn (Assert $page) => $page->has('rates.data', 2)->where('filters.source', 'manual'));
+        $this->get(route('admin.integrations.exchange-rates.index', ['source' => 'provider']))
+            ->assertInertia(fn (Assert $page) => $page->has('rates.data', 1)->where('rates.data.0.source', 'provider:acme'));
+        $this->get(route('admin.integrations.exchange-rates.index', ['base' => 'cny']))
+            ->assertInertia(fn (Assert $page) => $page->has('rates.data', 1)->where('filters.base', 'CNY'));
+        $this->get(route('admin.integrations.exchange-rates.index', ['base' => 'EGP; drop', 'source' => 'x']))
+            ->assertInertia(fn (Assert $page) => $page->has('rates.data', 3)->where('filters.base', null)->where('filters.source', null));
+    }
+
+    public function test_rates_can_never_be_deleted(): void
+    {
+        $row = ExchangeRate::factory()->on('2026-01-10')->create();
+
+        $this->expectException(LogicException::class);
+        $row->delete();
+    }
+
+    public function test_latest_card_is_flagged_stale_after_the_configured_number_of_days(): void
+    {
+        config(['ev.integrations.exchange_rate.stale_days' => 7]);
+        ExchangeRate::factory()->on(now()->subDays(10)->toDateString())->rate('48.00000000')->create();
+        ExchangeRate::factory()->pair('CNY', 'EGP')->on(now()->subDays(2)->toDateString())->rate('6.70000000')->create();
+
+        $latest = collect($this->rates->latestPerCurrency())->keyBy('currency');
+
+        $this->assertTrue($latest['USD']['stale']);
+        $this->assertFalse($latest['CNY']['stale']);
+        $this->assertNull($latest['EUR']['rate']);
+        $this->assertTrue($latest['EUR']['stale'], 'no rate at all counts as stale');
     }
 
     public function test_service_rejects_unknown_currency_even_with_permission(): void

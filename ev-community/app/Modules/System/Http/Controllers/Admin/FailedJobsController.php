@@ -5,6 +5,7 @@ namespace App\Modules\System\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Modules\Audit\Services\AuditService;
 use App\Modules\System\Services\QueueHealth;
+use Carbon\CarbonImmutable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -25,7 +26,8 @@ class FailedJobsController extends Controller
     public function index(Request $request): Response
     {
         Gate::authorize('jobs.manage');
-        $rows = DB::table('failed_jobs')->orderByDesc('failed_at')->orderByDesc('id')->paginate(25)->withQueryString()
+        $perPage = in_array((int) $request->query('per_page', 25), [15, 25, 50, 100], true) ? (int) $request->query('per_page') : 25;
+        $rows = DB::table('failed_jobs')->orderByDesc('failed_at')->orderByDesc('id')->paginate($perPage)->withQueryString()
             ->through(fn ($row) => $this->serialize($row));
 
         return Inertia::render('admin/jobs/failed', [
@@ -67,7 +69,7 @@ class FailedJobsController extends Controller
             'job' => $this->jobName($row),
             'attempts' => isset($payload['attempts']) ? (int) $payload['attempts'] : null,
             'max_tries' => isset($payload['maxTries']) ? (int) $payload['maxTries'] : null,
-            'failed_at' => $row->failed_at ? \Carbon\CarbonImmutable::parse($row->failed_at)->toIso8601String() : null,
+            'failed_at' => $row->failed_at ? CarbonImmutable::parse($row->failed_at)->toIso8601String() : null,
             'exception' => Str::limit((string) $firstLine, 300),
         ];
     }

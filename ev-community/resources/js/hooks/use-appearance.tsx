@@ -29,12 +29,33 @@ const setCookie = (name: string, value: string, days = 365): void => {
     document.cookie = `${name}=${value};path=/;max-age=${maxAge};SameSite=Lax`;
 };
 
+const isAppearance = (value: unknown): value is Appearance => value === 'light' || value === 'dark' || value === 'system';
+
+/** localStorage can throw (private mode, blocked storage); the theme is only a convenience. */
+const readStorage = (): string | null => {
+    try {
+        return window.localStorage.getItem('appearance');
+    } catch {
+        return null;
+    }
+};
+
+const writeStorage = (value: Appearance): void => {
+    try {
+        window.localStorage.setItem('appearance', value);
+    } catch {
+        // Ignore: the cookie still carries the preference.
+    }
+};
+
 const getStoredAppearance = (): Appearance => {
     if (typeof window === 'undefined') {
         return 'system';
     }
 
-    return (localStorage.getItem('appearance') as Appearance) || 'system';
+    const stored = readStorage();
+
+    return isAppearance(stored) ? stored : 'system';
 };
 
 const isDarkMode = (appearance: Appearance): boolean => {
@@ -75,8 +96,8 @@ export function initializeTheme(): void {
         return;
     }
 
-    if (!localStorage.getItem('appearance')) {
-        localStorage.setItem('appearance', 'system');
+    if (!isAppearance(readStorage())) {
+        writeStorage('system');
         setCookie('appearance', 'system');
     }
 
@@ -102,7 +123,7 @@ export function useAppearance(): UseAppearanceReturn {
         currentAppearance = mode;
 
         // Store in localStorage for client-side persistence...
-        localStorage.setItem('appearance', mode);
+        writeStorage(mode);
 
         // Store in cookie for SSR...
         setCookie('appearance', mode);

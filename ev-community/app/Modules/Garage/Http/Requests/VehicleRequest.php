@@ -6,10 +6,16 @@ use App\Modules\Files\Rules\SafeUpload;
 use App\Modules\Vehicles\Models\Enums\MarketVersion;
 use App\Modules\Vehicles\Models\MemberVehicle;
 use App\Modules\Vehicles\Services\VehicleDataService;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-/** Shared rules for adding / editing a garage vehicle. */
+/**
+ * Shared rules for adding / editing a garage vehicle.
+ *
+ * New selections must be ACTIVE master data. When editing, the vehicle's current make/model/variant
+ * stay valid even if an admin has deactivated them since (the member can still rename the car).
+ */
 abstract class VehicleRequest extends FormRequest
 {
     protected function prepareForValidation(): void
@@ -18,10 +24,11 @@ abstract class VehicleRequest extends FormRequest
         if ($this->has('vin')) {
             $merge['vin'] = MemberVehicle::normalizeVin(is_string($this->input('vin')) ? $this->input('vin') : null);
         }
-        if ($this->has('plate_hint') && is_string($this->input('plate_hint'))) {
-            $merge['plate_hint'] = mb_strtoupper(trim($this->input('plate_hint'))) ?: null;
+        if ($this->has('plate_hint')) {
+            $plate = is_string($this->input('plate_hint')) ? mb_strtoupper(trim($this->input('plate_hint'))) : '';
+            $merge['plate_hint'] = $plate === '' ? null : $plate;
         }
-        foreach (['vehicle_variant_id', 'battery_variant_id'] as $key) {
+        foreach (['vehicle_variant_id', 'battery_variant_id', 'odometer_km'] as $key) {
             if ($this->input($key) === '' || $this->input($key) === 'none') {
                 $merge[$key] = null;
             }
@@ -29,13 +36,29 @@ abstract class VehicleRequest extends FormRequest
         $this->merge($merge);
     }
 
+    /** The vehicle being edited (null when adding). */
+    protected function currentVehicle(): ?MemberVehicle
+    {
+        $vehicle = $this->route('vehicle');
+
+        return $vehicle instanceof MemberVehicle ? $vehicle : null;
+    }
+
     protected function vehicleRules(): array
     {
+        $current = $this->currentVehicle();
+        $activeOr = fn (?int $currentId) => fn (Builder $q) => $q->where(fn (Builder $w) => $w->where('is_active', true)
+            ->when($currentId !== null, fn (Builder $c) => $c->orWhere('id', $currentId)));
+
         return [
-            'vehicle_make_id' => ['required', 'integer', Rule::exists('vehicle_makes', 'id')->where('is_active', true)],
-            'vehicle_model_id' => ['required', 'integer', Rule::exists('vehicle_models', 'id')->where('vehicle_make_id', (int) $this->input('vehicle_make_id'))],
-            'vehicle_variant_id' => ['nullable', 'integer', Rule::exists('vehicle_variants', 'id')->where('vehicle_model_id', (int) $this->input('vehicle_model_id'))],
-            'year' => ['required', 'integer', 'min:'.VehicleDataService::YEAR_MIN, 'max:'.VehicleDataService::YEAR_MAX],
+            'vehicle_make_id' => ['required', 'integer', Rule::exists('vehicle_makes', 'id')->where($activeOr($current?->vehicle_make_id))],
+            'vehicle_model_id' => ['required', 'integer', Rule::exists('vehicle_models', 'id')
+                ->where('vehicle_make_id', (int) $this->input('vehicle_make_id'))
+                ->where($activeOr($current?->vehicle_model_id))],
+            'vehicle_variant_id' => ['nullable', 'integer', Rule::exists('vehicle_variants', 'id')
+                ->where('vehicle_model_id', (int) $this->input('vehicle_model_id'))
+                ->where($activeOr($current?->vehicle_variant_id))],
+            'year' => ['required', 'integer', 'min:'.VehicleDataService::YEAR_MIN, 'max:'.VehicleDataService::maxYear()],
             'market_version' => ['required', Rule::enum(MarketVersion::class)],
             'battery_variant_id' => ['nullable', 'integer', Rule::exists('battery_variants', 'id')],
             'vin' => ['nullable', 'string', 'regex:'.MemberVehicle::VIN_PATTERN],
