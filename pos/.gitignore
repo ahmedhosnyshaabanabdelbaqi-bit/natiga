@@ -28,3 +28,6 @@ Thumbs.db
 
 # لقطات فحص المتصفح
 /storage/app/smoke
+
+# حزم النشر المولّدة
+/dist

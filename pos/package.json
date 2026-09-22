@@ -8,7 +8,8 @@
         "build:fast": "vite build",
         "typecheck": "vue-tsc --noEmit",
         "smoke": "node tests/Browser/smoke.mjs",
-        "sweep": "node tests/Browser/sweep.mjs"
+        "sweep": "node tests/Browser/sweep.mjs",
+        "package": "./scripts/package.sh"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",
