@@ -16,7 +16,10 @@ final class RequestAccountDeletion
     public function execute(User $user, ?string $reason = null): AccountDeletionRequest
     {
         return DB::transaction(function () use ($user, $reason) {
-            if (AccountDeletionRequest::query()->where('user_id', $user->id)->open()->lockForUpdate()->exists()) {
+            // Serialise per user on the users row: locking the (possibly empty) set of open requests locks
+            // nothing, so two concurrent submissions could otherwise both pass the check below.
+            User::query()->whereKey($user->id)->lockForUpdate()->firstOrFail();
+            if (AccountDeletionRequest::query()->where('user_id', $user->id)->open()->exists()) {
                 throw DomainException::because('privacy.deletion.errors.already_open');
             }
             $request = AccountDeletionRequest::create([

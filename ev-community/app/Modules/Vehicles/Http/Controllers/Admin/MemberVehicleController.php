@@ -14,6 +14,7 @@ use App\Modules\Vehicles\Models\VehicleMake;
 use App\Modules\Vehicles\Models\VehicleModel;
 use App\Modules\Vehicles\Services\MemberVehiclePresenter;
 use App\Modules\Vehicles\Services\VehicleDataService;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,8 @@ use Inertia\Response;
  */
 class MemberVehicleController extends Controller
 {
+    use AuthorizesRequests;
+
     public const VIN_LOOKUP_SESSION_KEY = 'vehicles.admin.vin_lookup';
 
     public function __construct(private readonly MemberVehiclePresenter $presenter, private readonly AuditService $audit) {}

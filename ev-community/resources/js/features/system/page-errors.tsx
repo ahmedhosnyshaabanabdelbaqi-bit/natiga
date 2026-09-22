@@ -10,7 +10,12 @@ export function PageErrors({ ignore = [] }: { ignore?: string[] }) {
     const messages = Object.entries(errors ?? {})
         .filter(([key]) => !ignore.includes(key))
         .map(([, message]) => message)
-        .filter((message, index, all) => typeof message === 'string' && message !== '' && all.indexOf(message) === index);
+        .filter(
+            (message, index, all) =>
+                typeof message === 'string' &&
+                message !== '' &&
+                all.indexOf(message) === index,
+        );
     if (messages.length === 0) {
         return null;
     }

@@ -34,9 +34,20 @@ export type NotificationCenterEndpoints = {
 
 export type ChannelValue = 'in_app' | 'email' | 'sms' | 'whatsapp';
 
-export type ChannelOption = { value: ChannelValue; label: string; configured: boolean; always: boolean };
+export type ChannelOption = {
+    value: ChannelValue;
+    label: string;
+    configured: boolean;
+    always: boolean;
+};
 
-export type PreferenceChannel = { value: ChannelValue; label: string; configured: boolean; messaging: boolean; consent: boolean };
+export type PreferenceChannel = {
+    value: ChannelValue;
+    label: string;
+    configured: boolean;
+    messaging: boolean;
+    consent: boolean;
+};
 
 export type PreferenceCell = { enabled: boolean; locked: boolean };
 
@@ -47,19 +58,34 @@ export type PreferenceCategory = {
     channels: Record<ChannelValue, PreferenceCell>;
 };
 
-export type PreferencesMatrix = { channels: PreferenceChannel[]; categories: PreferenceCategory[] };
+export type PreferencesMatrix = {
+    channels: PreferenceChannel[];
+    categories: PreferenceCategory[];
+};
 
 export type AudienceField = {
     name: string;
-    type: 'select' | 'number' | 'text' | 'textarea' | string;
+    /** select | number | text | textarea (modules may register other plain-text types). */
+    type: string;
     label: string;
     hint: string | null;
     options: { value: number | string; label: string }[] | null;
 };
 
-export type AudienceOption = { key: string; label: string; module: string | null; fields: AudienceField[] };
+export type AudienceOption = {
+    key: string;
+    label: string;
+    module: string | null;
+    fields: AudienceField[];
+};
 
-export type CampaignStatus = 'draft' | 'scheduled' | 'sending' | 'sent' | 'cancelled' | 'failed';
+export type CampaignStatus =
+    | 'draft'
+    | 'scheduled'
+    | 'sending'
+    | 'sent'
+    | 'cancelled'
+    | 'failed';
 
 export type Campaign = {
     id: string;
@@ -92,10 +118,22 @@ export type Campaign = {
     created_by: string | null;
     created_at: string | null;
     updated_at: string | null;
-    can: { edit: boolean; send: boolean; retry: boolean; schedule: boolean; cancel: boolean; delete: boolean };
+    can: {
+        edit: boolean;
+        send: boolean;
+        retry: boolean;
+        schedule: boolean;
+        cancel: boolean;
+        delete: boolean;
+    };
 };
 
-export type LocalePreview = { title: string; body: string; email_subject: string; email_html: string };
+export type LocalePreview = {
+    title: string;
+    body: string;
+    email_subject: string;
+    email_html: string;
+};
 
 export type TemplateRow = {
     key: string;
@@ -107,21 +145,32 @@ export type TemplateRow = {
     updated_by: string | null;
 };
 
-export type TemplateFields = { subject_ar: string | null; subject_en: string | null; body_ar: string | null; body_en: string | null };
+export type TemplateFields = {
+    subject_ar: string | null;
+    subject_en: string | null;
+    body_ar: string | null;
+    body_en: string | null;
+};
 
 export type TemplateDetail = {
     key: string;
     module: string;
     module_label: string;
     variables: string[];
-    defaults: Record<'ar' | 'en', { subject: string | null; body: string | null }>;
+    defaults: Record<
+        'ar' | 'en',
+        { subject: string | null; body: string | null }
+    >;
     values: TemplateFields;
     customized: boolean;
     updated_at: string | null;
     updated_by: string | null;
 };
 
-export type TemplatePreview = Record<'ar' | 'en', { subject: string; html: string; text: string }>;
+export type TemplatePreview = Record<
+    'ar' | 'en',
+    { subject: string; html: string; text: string }
+>;
 
 export type DeliveryRow = {
     id: string;

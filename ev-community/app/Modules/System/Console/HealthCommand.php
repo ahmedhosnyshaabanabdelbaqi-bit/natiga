@@ -24,6 +24,7 @@ class HealthCommand extends Command
 
     public function handle(): int
     {
+        $this->results = []; // the command instance is reused when called more than once in one process
         $this->check('app', fn () => 'env='.app()->environment().' debug='.(config('app.debug') ? 'on' : 'off').' version='.app()->version());
         $this->check('database', function () {
             DB::select('select 1');

@@ -111,4 +111,21 @@ final class ImportContext
     {
         $this->seen = [];
     }
+
+    /**
+     * Snapshot of the in-file duplicate tracker, so a validation split over several queue jobs keeps
+     * detecting duplicates across its slices (see ImportService::runValidation()).
+     *
+     * @return array<string, array<string, int>>
+     */
+    public function seenState(): array
+    {
+        return $this->seen;
+    }
+
+    /** @param array<string, array<string, int>> $state */
+    public function restoreSeen(array $state): void
+    {
+        $this->seen = $state;
+    }
 }

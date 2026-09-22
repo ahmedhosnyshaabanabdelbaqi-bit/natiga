@@ -167,6 +167,14 @@ class NotificationCenterTest extends TestCase
         $this->postJson('/partner/notifications/read-all')->assertOk();
     }
 
+    public function test_user_relation_for_in_app_notifications(): void
+    {
+        $member = $this->makeMember();
+        Notification::factory()->count(2)->create(['user_id' => $member->id]);
+
+        $this->assertSame(2, $member->inAppNotifications()->count());
+    }
+
     public function test_members_cannot_open_other_portals_notification_centers(): void
     {
         $this->actingAsMember();

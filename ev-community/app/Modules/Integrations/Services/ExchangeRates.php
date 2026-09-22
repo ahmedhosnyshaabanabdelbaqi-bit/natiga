@@ -52,7 +52,7 @@ final class ExchangeRates
     {
         $base = strtoupper($base);
         $quote = strtoupper($quote);
-        $date = CarbonImmutable::instance($date ?? now())->startOfDay();
+        $date = self::platformDay($date);
         if ($base === $quote) {
             return ['rate' => '1', 'source' => 'identity', 'rate_date' => $date->toDateString()];
         }
@@ -80,7 +80,7 @@ final class ExchangeRates
     {
         $base = $this->baseCurrency();
         $currency = strtoupper($currency);
-        $date = CarbonImmutable::instance($date ?? now())->startOfDay();
+        $date = self::platformDay($date);
         $original = Money::toDecimal($amount, $currency);
         if ($currency === $base) {
             return ['amount' => $original, 'currency' => $base, 'rate' => '1', 'source' => 'identity', 'rate_date' => $date->toDateString(), 'original_amount' => $original, 'original_currency' => $currency];
@@ -100,7 +100,8 @@ final class ExchangeRates
     }
 
     /**
-     * Append a manually entered rate (never edits). Requires exchange_rates.manage and a reason.
+     * Append a manually entered rate (never edits). Requires exchange_rates.manage and a reason; the base
+     * (foreign) currency can never be the platform currency.
      *
      * A second plain entry for the same pair, date and source is refused (double submit / accidental
      * duplicate). To fix a wrong rate, pass `$correction = true`: a new row with source
@@ -116,12 +117,17 @@ final class ExchangeRates
         $base = strtoupper(trim($base));
         $quote = strtoupper(trim($quote));
         $source = trim($source) === '' ? 'manual' : mb_substr(trim($source), 0, 60);
-        $rateDate = CarbonImmutable::parse($date instanceof CarbonInterface ? $date->toDateString() : $date)->startOfDay();
+        $rateDate = $date instanceof CarbonInterface ? self::platformDay($date) : CarbonImmutable::parse($date)->startOfDay();
         if (mb_strlen(trim($reason)) < 5) {
             throw DomainException::because('core.errors.reason_required', [], 'reason');
         }
         if ($base === $quote) {
             throw DomainException::because('integrations.errors.same_currency', [], 'quote_currency');
+        }
+        if ($base === $this->baseCurrency()) {
+            // Convention: base = the foreign currency. An EGP/USD row would be an accidental swap
+            // (1 EGP = 48.5 USD) that the inverse lookup would silently turn into a wrong USD/EGP rate.
+            throw DomainException::because('integrations.errors.base_must_be_foreign', ['currency' => $base], 'base_currency');
         }
         $known = Currency::query()->active()->whereIn('code', [$base, $quote])->pluck('code')->all();
         foreach ([$base => 'base_currency', $quote => 'quote_currency'] as $code => $field) {
@@ -199,7 +205,7 @@ final class ExchangeRates
         }
         $base = $this->baseCurrency();
         $source = 'provider:'.$provider->driver();
-        $date = CarbonImmutable::instance($date ?? now())->startOfDay();
+        $date = self::platformDay($date);
         $log = IntegrationSyncLog::query()->create(['provider' => 'exchange_rate', 'job' => 'exchange_rates.sync', 'started_at' => now(), 'status' => 'running']);
         $summary = ['provider' => $provider->driver(), 'inserted' => 0, 'skipped' => 0, 'failed' => 0, 'errors' => []];
 
@@ -284,6 +290,15 @@ final class ExchangeRates
         }
 
         return $out;
+    }
+
+    /**
+     * The calendar day of a moment in the platform timezone (Africa/Cairo): rates are dated in local days,
+     * so a UTC timestamp such as 2026-01-10 23:30Z (= 01:30 on the 11th in Cairo) uses the rate of the 11th.
+     */
+    public static function platformDay(?CarbonInterface $moment = null): CarbonImmutable
+    {
+        return CarbonImmutable::instance($moment ?? now())->setTimezone((string) config('app.timezone', 'Africa/Cairo'))->startOfDay();
     }
 
     /** Trim trailing zeros for display while keeping at least 2 decimals ("48.50000000" → "48.50"). */

@@ -4,7 +4,6 @@ namespace Tests\Feature\Notifications;
 
 use App\Modules\Notifications\Jobs\SendEmailNotification;
 use App\Modules\Notifications\Jobs\SendSmsNotification;
-use App\Modules\Notifications\Jobs\SendWhatsAppNotification;
 use App\Modules\Notifications\Mail\NotificationMail;
 use App\Modules\Notifications\Models\Enums\DeliveryStatus;
 use App\Modules\Notifications\Models\Enums\NotificationChannel;
@@ -233,7 +232,7 @@ class NotifyPipelineTest extends TestCase
         $this->emailConfigured();
         $member = $this->makeMember(['preferred_locale' => 'ar']);
 
-        $notification = Notify::send($member, 'orders.confirmed', ['order_number' => 'ORD-2026-000123', 'amount' => '99.00'], 'orders', url: '/account/orders/abc');
+        $notification = Notify::send($member, 'orders.confirmed', ['order_number' => 'ORD-2026-000123', 'amount' => '99.00 & fees'], 'orders', url: '/account/orders/abc');
 
         $email = $this->delivery($notification, NotificationChannel::Email);
         $this->assertSame(DeliveryStatus::Sent, $email->status);
@@ -243,6 +242,9 @@ class NotifyPipelineTest extends TestCase
             $this->assertStringContainsString('dir="rtl"', $html);
             $this->assertStringContainsString('ORD-2026-000123', $html);
             $this->assertStringContainsString('/account/orders/abc', $html);
+            $mail->assertSeeInText('ORD-2026-000123', false);
+            $mail->assertSeeInText('/account/notification-preferences', false);
+            $mail->assertDontSeeInText('&amp;', false);
 
             return $mail->mailLocale === 'ar';
         });

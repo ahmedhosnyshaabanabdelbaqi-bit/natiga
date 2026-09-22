@@ -1,6 +1,12 @@
 import { useMemo } from 'react';
 
-type Props = { html: string; dir: 'rtl' | 'ltr'; lang: string; title: string; className?: string };
+type Props = {
+    html: string;
+    dir: 'rtl' | 'ltr';
+    lang: string;
+    title: string;
+    className?: string;
+};
 
 /**
  * Shows server-rendered (already escaped) email HTML inside a fully sandboxed iframe: no scripts, no same-origin
@@ -16,5 +22,12 @@ export function EmailFrame({ html, dir, lang, title, className }: Props) {
             '</body></html>',
         [html, dir, lang],
     );
-    return <iframe title={title} sandbox="" srcDoc={srcDoc} className={className ?? 'h-56 w-full rounded-md border bg-white'} />;
+    return (
+        <iframe
+            title={title}
+            sandbox=""
+            srcDoc={srcDoc}
+            className={className ?? 'h-56 w-full rounded-md border bg-white'}
+        />
+    );
 }

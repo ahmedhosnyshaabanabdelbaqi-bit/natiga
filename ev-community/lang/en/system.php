@@ -241,6 +241,9 @@ return [
             'title' => 'No failed jobs',
             'description' => 'Every background job completed successfully.',
         ],
+        'errors' => [
+            'retry_failed' => 'The job could not be pushed back onto its queue (its payload cannot be restored). Investigate it before deleting it.',
+        ],
         'messages' => [
             'retried' => 'The job was pushed back onto its queue.',
             'deleted' => 'Failed job deleted.',

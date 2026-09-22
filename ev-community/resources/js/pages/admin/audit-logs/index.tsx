@@ -6,7 +6,11 @@ import type { DataTableColumn } from '@/components/shared/data-table';
 import { DataTable } from '@/components/shared/data-table';
 import { DateTime } from '@/components/shared/date-time';
 import type { FilterDefinition } from '@/components/shared/filters-bar';
-import { FiltersBar, isFilterActive, useQueryState } from '@/components/shared/filters-bar';
+import {
+    FiltersBar,
+    isFilterActive,
+    useQueryState,
+} from '@/components/shared/filters-bar';
 import { InlineAlert } from '@/components/shared/inline-alert';
 import { PageHeader } from '@/components/shared/page-header';
 import { Button } from '@/components/ui/button';
@@ -29,28 +33,100 @@ type Props = {
     exportMax: number;
 };
 
-const FILTER_KEYS = ['actor', 'action', 'entity_type', 'entity_id', 'request_id', 'from', 'to'];
+const FILTER_KEYS = [
+    'actor',
+    'action',
+    'entity_type',
+    'entity_id',
+    'request_id',
+    'from',
+    'to',
+];
 
-export default function AuditLogsIndex({ logs, actions, entityTypes, exportMax }: Props) {
+export default function AuditLogsIndex({
+    logs,
+    actions,
+    entityTypes,
+    exportMax,
+}: Props) {
     const query = useQueryState();
     const [selected, setSelected] = useState<AuditSummary | null>(null);
     const [confirmExport, setConfirmExport] = useState(false);
 
     const filters: FilterDefinition[] = [
-        { key: 'actor', type: 'search', label: t('audit.logs.filters.actor'), className: 'md:w-60' },
-        { key: 'action', type: 'select', label: t('audit.logs.filters.action'), options: actions.map((action) => ({ value: action, label: action })) },
-        { key: 'entity_type', type: 'select', label: t('audit.logs.filters.entity_type'), options: entityTypes.map((type) => ({ value: type, label: type.split('\\').pop() ?? type })) },
-        { key: 'entity_id', type: 'search', label: t('audit.logs.filters.entity_id'), placeholder: t('audit.logs.filters.entity_id'), className: 'md:w-36' },
-        { key: 'request_id', type: 'search', label: t('audit.logs.filters.request_id'), placeholder: t('audit.logs.filters.request_id'), className: 'md:w-52' },
-        { key: 'date', type: 'daterange', label: t('audit.logs.filters.date'), fromKey: 'from', toKey: 'to' },
+        {
+            key: 'actor',
+            type: 'search',
+            label: t('audit.logs.filters.actor'),
+            className: 'md:w-60',
+        },
+        {
+            key: 'action',
+            type: 'select',
+            label: t('audit.logs.filters.action'),
+            options: actions.map((action) => ({
+                value: action,
+                label: action,
+            })),
+        },
+        {
+            key: 'entity_type',
+            type: 'select',
+            label: t('audit.logs.filters.entity_type'),
+            options: entityTypes.map((type) => ({
+                value: type,
+                label: type.split('\\').pop() ?? type,
+            })),
+        },
+        {
+            key: 'entity_id',
+            type: 'search',
+            label: t('audit.logs.filters.entity_id'),
+            placeholder: t('audit.logs.filters.entity_id'),
+            className: 'md:w-36',
+        },
+        {
+            key: 'request_id',
+            type: 'search',
+            label: t('audit.logs.filters.request_id'),
+            placeholder: t('audit.logs.filters.request_id'),
+            className: 'md:w-52',
+        },
+        {
+            key: 'date',
+            type: 'daterange',
+            label: t('audit.logs.filters.date'),
+            fromKey: 'from',
+            toKey: 'to',
+        },
     ];
-    const filtered = filters.some((filter) => isFilterActive(filter, query.query));
-    const exportQuery = Object.fromEntries(FILTER_KEYS.map((key) => [key, query.get(key)]).filter(([, value]) => value !== undefined && value !== ''));
+    const filtered = filters.some((filter) =>
+        isFilterActive(filter, query.query),
+    );
+    const exportQuery = Object.fromEntries(
+        FILTER_KEYS.map((key) => [key, query.get(key)]).filter(
+            ([, value]) => value !== undefined && value !== '',
+        ),
+    );
     const exportUrl = exportMethod({ query: exportQuery }).url;
 
     const columns: DataTableColumn<AuditSummary>[] = [
-        { key: 'created_at', header: t('audit.logs.columns.created_at'), required: true, cell: (log) => <DateTime value={log.created_at} className="whitespace-nowrap" /> },
-        { key: 'action', header: t('audit.logs.columns.action'), cell: (log) => <Code className="text-[0.75rem]">{log.action}</Code> },
+        {
+            key: 'created_at',
+            header: t('audit.logs.columns.created_at'),
+            required: true,
+            cell: (log) => (
+                <DateTime
+                    value={log.created_at}
+                    className="whitespace-nowrap"
+                />
+            ),
+        },
+        {
+            key: 'action',
+            header: t('audit.logs.columns.action'),
+            cell: (log) => <Code className="text-[0.75rem]">{log.action}</Code>,
+        },
         {
             key: 'actor',
             header: t('audit.logs.columns.actor'),
@@ -58,12 +134,20 @@ export default function AuditLogsIndex({ logs, actions, entityTypes, exportMax }
                 log.actor ? (
                     <span className="grid">
                         <span className="font-medium">{log.actor.name}</span>
-                        <span className="text-xs text-muted-foreground" dir="ltr">
+                        <span
+                            className="text-xs text-muted-foreground"
+                            dir="ltr"
+                        >
                             {log.actor.email}
                         </span>
                     </span>
                 ) : (
-                    <span className="text-muted-foreground">{tOr(`audit.logs.actor_types.${log.actor_type}`, humanize(log.actor_type))}</span>
+                    <span className="text-muted-foreground">
+                        {tOr(
+                            `audit.logs.actor_types.${log.actor_type}`,
+                            humanize(log.actor_type),
+                        )}
+                    </span>
                 ),
         },
         {
@@ -72,20 +156,51 @@ export default function AuditLogsIndex({ logs, actions, entityTypes, exportMax }
             cell: (log) =>
                 log.entity_type || log.entity_label ? (
                     <span className="flex flex-wrap items-center gap-1">
-                        {log.entity_type ? <Code className="text-[0.7rem]">{log.entity_type}</Code> : null}
-                        {log.entity_id !== null ? <span className="text-xs text-muted-foreground tabular">#{log.entity_id}</span> : null}
-                        {log.entity_label ? <span className="max-w-48 truncate text-sm">{log.entity_label}</span> : null}
+                        {log.entity_type ? (
+                            <Code className="text-[0.7rem]">
+                                {log.entity_type}
+                            </Code>
+                        ) : null}
+                        {log.entity_id !== null ? (
+                            <span className="tabular text-xs text-muted-foreground">
+                                #{log.entity_id}
+                            </span>
+                        ) : null}
+                        {log.entity_label ? (
+                            <span className="max-w-48 truncate text-sm">
+                                {log.entity_label}
+                            </span>
+                        ) : null}
                     </span>
                 ) : (
                     <span className="text-muted-foreground">—</span>
                 ),
         },
-        { key: 'reason', header: t('audit.logs.columns.reason'), hideOnMobile: true, cell: (log) => (log.reason ? <span className="line-clamp-2 max-w-64 text-sm">{log.reason}</span> : <span className="text-muted-foreground">—</span>) },
+        {
+            key: 'reason',
+            header: t('audit.logs.columns.reason'),
+            hideOnMobile: true,
+            cell: (log) =>
+                log.reason ? (
+                    <span className="line-clamp-2 max-w-64 text-sm">
+                        {log.reason}
+                    </span>
+                ) : (
+                    <span className="text-muted-foreground">—</span>
+                ),
+        },
         {
             key: 'request_id',
             header: t('audit.logs.columns.request_id'),
             defaultHidden: true,
-            cell: (log) => (log.request_id ? <Code className="text-[0.7rem]">{log.request_id.slice(0, 10)}…</Code> : <span className="text-muted-foreground">—</span>),
+            cell: (log) =>
+                log.request_id ? (
+                    <Code className="text-[0.7rem]">
+                        {log.request_id.slice(0, 10)}…
+                    </Code>
+                ) : (
+                    <span className="text-muted-foreground">—</span>
+                ),
         },
     ];
 
@@ -101,13 +216,23 @@ export default function AuditLogsIndex({ logs, actions, entityTypes, exportMax }
                             {can('security_events.view') ? (
                                 <Button variant="outline" asChild>
                                     <Link href={securityIndex().url}>
-                                        <ShieldAlert className="size-4" aria-hidden="true" />
+                                        <ShieldAlert
+                                            className="size-4"
+                                            aria-hidden="true"
+                                        />
                                         {t('audit.logs.security_link')}
                                     </Link>
                                 </Button>
                             ) : null}
-                            <Button variant="outline" onClick={() => setConfirmExport(true)} disabled={logs.total === 0}>
-                                <Download className="size-4" aria-hidden="true" />
+                            <Button
+                                variant="outline"
+                                onClick={() => setConfirmExport(true)}
+                                disabled={logs.total === 0}
+                            >
+                                <Download
+                                    className="size-4"
+                                    aria-hidden="true"
+                                />
                                 {t('audit.logs.export.action')}
                             </Button>
                         </>
@@ -129,19 +254,27 @@ export default function AuditLogsIndex({ logs, actions, entityTypes, exportMax }
                     caption={t('audit.logs.title')}
                     mobileTitle={(log) => (
                         <span className="flex items-center gap-2">
-                            <FileSearch className="size-4 text-muted-foreground" aria-hidden="true" />
+                            <FileSearch
+                                className="size-4 text-muted-foreground"
+                                aria-hidden="true"
+                            />
                             <Code className="text-[0.75rem]">{log.action}</Code>
                         </span>
                     )}
                     dense
                 />
             </div>
-            <AuditDetailSheet entry={selected} onClose={() => setSelected(null)} />
+            <AuditDetailSheet
+                entry={selected}
+                onClose={() => setSelected(null)}
+            />
             <ConfirmDialog
                 open={confirmExport}
                 onOpenChange={setConfirmExport}
                 title={t('audit.logs.export.title')}
-                description={t('audit.logs.export.description', { max: formatNumber(exportMax, 0) })}
+                description={t('audit.logs.export.description', {
+                    max: formatNumber(exportMax, 0),
+                })}
                 confirmLabel={t('audit.logs.export.action')}
                 onConfirm={() => {
                     setConfirmExport(false);

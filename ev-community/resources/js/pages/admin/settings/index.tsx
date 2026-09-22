@@ -49,15 +49,29 @@ function initialValues(group: SettingGroup): Record<string, SettingFormValue> {
     return values;
 }
 
-function GroupEditor({ group, canManage, maxImageMb }: { group: SettingGroup; canManage: boolean; maxImageMb: number }) {
-    const { errors: pageErrors } = usePage().props as { errors?: Record<string, string> };
-    const form = useForm<GroupForm>({ values: initialValues(group), reason: '' });
+function GroupEditor({
+    group,
+    canManage,
+    maxImageMb,
+}: {
+    group: SettingGroup;
+    canManage: boolean;
+    maxImageMb: number;
+}) {
+    const { errors: pageErrors } = usePage().props as {
+        errors?: Record<string, string>;
+    };
+    const form = useForm<GroupForm>({
+        values: initialValues(group),
+        reason: '',
+    });
     const [resetting, setResetting] = useState<SettingItem | null>(null);
     const errors = form.errors as Record<string, string | undefined>;
     const fields = group.items.filter((item) => item.type !== 'image');
     const images = group.items.filter((item) => item.type === 'image');
 
-    const setValue = (key: string, value: SettingFormValue) => form.setData('values', { ...form.data.values, [key]: value });
+    const setValue = (key: string, value: SettingFormValue) =>
+        form.setData('values', { ...form.data.values, [key]: value });
     const text = (key: string) => {
         const value = form.data.values[key];
         return typeof value === 'string' ? value : '';
@@ -70,7 +84,9 @@ function GroupEditor({ group, canManage, maxImageMb }: { group: SettingGroup; ca
     const locale = currentLocale();
     const imageValue = (key: string) => {
         const item = group.items.find((candidate) => candidate.key === key);
-        return item && typeof item.value === 'string' && item.value !== '' ? item.value : null;
+        return item && typeof item.value === 'string' && item.value !== ''
+            ? item.value
+            : null;
     };
 
     return (
@@ -85,7 +101,13 @@ function GroupEditor({ group, canManage, maxImageMb }: { group: SettingGroup; ca
                     noValidate
                 >
                     {images.map((item) => (
-                        <BrandingImageField key={item.key} item={item} maxMb={maxImageMb} disabled={!canManage} error={pageErrors?.file} />
+                        <BrandingImageField
+                            key={item.key}
+                            item={item}
+                            maxMb={maxImageMb}
+                            disabled={!canManage}
+                            error={pageErrors?.file}
+                        />
                     ))}
                     {fields.map((item) => (
                         <SettingField
@@ -95,23 +117,68 @@ function GroupEditor({ group, canManage, maxImageMb }: { group: SettingGroup; ca
                             onChange={(value) => setValue(item.key, value)}
                             error={errors[item.key]}
                             disabled={!canManage}
-                            onReset={canManage ? () => setResetting(item) : undefined}
+                            onReset={
+                                canManage ? () => setResetting(item) : undefined
+                            }
                         />
                     ))}
                     {canManage && fields.length > 0 ? (
                         <>
-                            <FormField label={t('system.settings.labels.change_note')} optional hint={t('system.settings.labels.change_note_hint')} error={errors.reason}>
-                                <Textarea value={form.data.reason} onChange={(event) => form.setData('reason', event.target.value)} rows={2} maxLength={500} />
+                            <FormField
+                                label={t('system.settings.labels.change_note')}
+                                optional
+                                hint={t(
+                                    'system.settings.labels.change_note_hint',
+                                )}
+                                error={errors.reason}
+                            >
+                                <Textarea
+                                    value={form.data.reason}
+                                    onChange={(event) =>
+                                        form.setData(
+                                            'reason',
+                                            event.target.value,
+                                        )
+                                    }
+                                    rows={2}
+                                    maxLength={500}
+                                />
                             </FormField>
-                            {form.isDirty ? <InlineAlert tone="warning">{t('system.settings.labels.unsaved')}</InlineAlert> : null}
-                            {errors.domain ? <InlineAlert tone="danger">{errors.domain}</InlineAlert> : null}
+                            {form.isDirty ? (
+                                <InlineAlert tone="warning">
+                                    {t('system.settings.labels.unsaved')}
+                                </InlineAlert>
+                            ) : null}
+                            {errors.domain ? (
+                                <InlineAlert tone="danger">
+                                    {errors.domain}
+                                </InlineAlert>
+                            ) : null}
                             <FormActions>
-                                <Button type="button" variant="ghost" onClick={() => form.reset()} disabled={!form.isDirty || form.processing}>
-                                    <Undo2 className="size-4" aria-hidden="true" />
+                                <Button
+                                    type="button"
+                                    variant="ghost"
+                                    onClick={() => form.reset()}
+                                    disabled={!form.isDirty || form.processing}
+                                >
+                                    <Undo2
+                                        className="size-4"
+                                        aria-hidden="true"
+                                    />
                                     {t('system.settings.actions.discard')}
                                 </Button>
-                                <Button type="submit" disabled={!form.isDirty || form.processing}>
-                                    {form.processing ? <Spinner /> : <Save className="size-4" aria-hidden="true" />}
+                                <Button
+                                    type="submit"
+                                    disabled={!form.isDirty || form.processing}
+                                >
+                                    {form.processing ? (
+                                        <Spinner />
+                                    ) : (
+                                        <Save
+                                            className="size-4"
+                                            aria-hidden="true"
+                                        />
+                                    )}
                                     {t('system.settings.actions.save')}
                                 </Button>
                             </FormActions>
@@ -133,8 +200,12 @@ function GroupEditor({ group, canManage, maxImageMb }: { group: SettingGroup; ca
             ) : null}
             <ConfirmDialog
                 open={resetting !== null}
-                onOpenChange={(open) => (!open ? setResetting(null) : undefined)}
-                title={t('system.settings.reset_confirm.title', { label: resetting ? pick(resetting.label) : '' })}
+                onOpenChange={(open) =>
+                    !open ? setResetting(null) : undefined
+                }
+                title={t('system.settings.reset_confirm.title', {
+                    label: resetting ? pick(resetting.label) : '',
+                })}
                 description={t('system.settings.reset_confirm.description')}
                 confirmLabel={t('system.settings.actions.reset')}
                 onConfirm={() =>
@@ -157,10 +228,30 @@ function GroupEditor({ group, canManage, maxImageMb }: { group: SettingGroup; ca
     );
 }
 
-export default function SettingsIndex({ groups, activeGroup, canManage, maxImageMb }: Props) {
+export default function SettingsIndex({
+    groups,
+    activeGroup,
+    canManage,
+    maxImageMb,
+}: Props) {
     const [tab, setTab] = useState(activeGroup);
     // Remount a group's form whenever the server values change (after save/reset/upload) so it shows server truth.
-    const versions = useMemo(() => Object.fromEntries(groups.map((group) => [group.key, JSON.stringify(group.items.map((item) => [item.key, item.value, item.overridden]))])), [groups]);
+    const versions = useMemo(
+        () =>
+            Object.fromEntries(
+                groups.map((group) => [
+                    group.key,
+                    JSON.stringify(
+                        group.items.map((item) => [
+                            item.key,
+                            item.value,
+                            item.overridden,
+                        ]),
+                    ),
+                ]),
+            ),
+        [groups],
+    );
 
     return (
         <>
@@ -174,7 +265,10 @@ export default function SettingsIndex({ groups, activeGroup, canManage, maxImage
                             {canManage ? (
                                 <Button variant="outline" size="sm" asChild>
                                     <Link href={setup().url}>
-                                        <ListChecks className="size-4" aria-hidden="true" />
+                                        <ListChecks
+                                            className="size-4"
+                                            aria-hidden="true"
+                                        />
                                         {t('system.settings.actions.setup')}
                                     </Link>
                                 </Button>
@@ -182,7 +276,10 @@ export default function SettingsIndex({ groups, activeGroup, canManage, maxImage
                             {can('modules.manage') ? (
                                 <Button variant="outline" size="sm" asChild>
                                     <Link href={modulesIndex().url}>
-                                        <Puzzle className="size-4" aria-hidden="true" />
+                                        <Puzzle
+                                            className="size-4"
+                                            aria-hidden="true"
+                                        />
                                         {t('system.settings.actions.modules')}
                                     </Link>
                                 </Button>
@@ -190,7 +287,10 @@ export default function SettingsIndex({ groups, activeGroup, canManage, maxImage
                             {can('banners.manage') ? (
                                 <Button variant="outline" size="sm" asChild>
                                     <Link href={bannersIndex().url}>
-                                        <Megaphone className="size-4" aria-hidden="true" />
+                                        <Megaphone
+                                            className="size-4"
+                                            aria-hidden="true"
+                                        />
                                         {t('system.settings.actions.banners')}
                                     </Link>
                                 </Button>
@@ -213,7 +313,12 @@ export default function SettingsIndex({ groups, activeGroup, canManage, maxImage
                     </TabsList>
                     {groups.map((group) => (
                         <TabsContent key={group.key} value={group.key}>
-                            <GroupEditor key={versions[group.key]} group={group} canManage={canManage} maxImageMb={maxImageMb} />
+                            <GroupEditor
+                                key={versions[group.key]}
+                                group={group}
+                                canManage={canManage}
+                                maxImageMb={maxImageMb}
+                            />
                         </TabsContent>
                     ))}
                 </Tabs>

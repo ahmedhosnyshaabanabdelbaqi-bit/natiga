@@ -5,6 +5,7 @@ namespace Tests\Feature\Integrations;
 use App\Models\User;
 use App\Modules\Integrations\Models\ExchangeRate;
 use App\Modules\Integrations\Services\ExchangeRates;
+use App\Modules\Integrations\Services\Integrations;
 use App\Support\Exceptions\DomainException;
 use Carbon\CarbonImmutable;
 use Database\Seeders\System\CurrencySeeder;
@@ -12,6 +13,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Inertia\Testing\AssertableInertia as Assert;
 use LogicException;
+use Tests\Feature\Integrations\Support\FakeExchangeRateProvider;
 use Tests\TestCase;
 
 class ExchangeRatesTest extends TestCase
@@ -38,6 +40,18 @@ class ExchangeRatesTest extends TestCase
         $this->assertSame('47.00', $this->rates->rate('USD', 'EGP', CarbonImmutable::parse('2026-01-01'))['rate']);
         $this->assertNull($this->rates->rate('USD', 'EGP', CarbonImmutable::parse('2025-12-31')));
         $this->assertSame('1', $this->rates->rate('EGP', 'EGP')['rate']);
+    }
+
+    public function test_the_rate_day_is_the_calendar_day_in_cairo_not_in_utc(): void
+    {
+        ExchangeRate::factory()->on('2026-01-10')->rate('48.00000000')->create();
+        ExchangeRate::factory()->on('2026-01-11')->rate('49.00000000')->create();
+
+        // 23:30 UTC on the 10th is 01:30 on the 11th in Cairo.
+        $moment = CarbonImmutable::parse('2026-01-10 23:30:00', 'UTC');
+
+        $this->assertSame('2026-01-11', $this->rates->rate('USD', 'EGP', $moment)['rate_date']);
+        $this->assertSame('12250.00', $this->rates->convertToBase('250', 'USD', $moment)['amount']);
     }
 
     public function test_inverse_pair_is_derived_and_flagged_in_the_source(): void
@@ -124,6 +138,26 @@ class ExchangeRatesTest extends TestCase
         $this->assertSame(0, ExchangeRate::query()->count());
     }
 
+    public function test_the_platform_currency_can_never_be_the_foreign_side_of_a_manual_rate(): void
+    {
+        // An accidental swap (1 EGP = 48.5 USD) would otherwise feed the inverse lookup: 250 USD → 5.15 EGP.
+        $accountant = $this->actingAsRole('accountant');
+
+        $this->from(route('admin.integrations.exchange-rates.index'))
+            ->post(route('admin.integrations.exchange-rates.store'), ['base_currency' => 'egp', 'quote_currency' => 'USD', 'rate' => '48.5', 'rate_date' => '2026-01-10', 'reason' => 'swapped by mistake'])
+            ->assertSessionHasErrors(['base_currency' => __('integrations.errors.base_must_be_foreign', ['currency' => 'EGP'])]);
+
+        try {
+            $this->rates->addManualRate('EGP', 'USD', '0.0206', '2026-01-10', $accountant, 'service call bypassing the form');
+            $this->fail('expected a DomainException');
+        } catch (DomainException $e) {
+            $this->assertSame('integrations.errors.base_must_be_foreign', $e->key);
+            $this->assertSame('base_currency', $e->field);
+        }
+        $this->assertSame(0, ExchangeRate::query()->count());
+        $this->assertNull($this->rates->rate('USD', 'EGP', CarbonImmutable::parse('2026-01-10')));
+    }
+
     public function test_staff_without_permission_get_403_on_the_page_and_the_form(): void
     {
         $this->actingAsStaff([]);
@@ -158,6 +192,51 @@ class ExchangeRatesTest extends TestCase
     {
         $this->actingAsRole('accountant');
         $this->from(route('admin.integrations.exchange-rates.index'))->post(route('admin.integrations.exchange-rates.sync'))->assertSessionHasErrors('domain');
+        $this->assertDatabaseCount('integration_sync_logs', 0);
+    }
+
+    public function test_provider_sync_appends_todays_rates_once_logs_the_run_and_survives_a_failing_currency(): void
+    {
+        Integrations::extend('exchange_rate', 'fake', FakeExchangeRateProvider::class);
+        config(['ev.integrations.exchange_rate.driver' => 'fake']);
+        Integrations::manager()->forget('exchange_rate');
+        $accountant = $this->actingAsRole('accountant');
+        $today = ExchangeRates::platformDay()->toDateString();
+
+        $this->get(route('admin.integrations.exchange-rates.index'))
+            ->assertInertia(fn (Assert $page) => $page->where('provider.supports_sync', true)->where('provider.configured', true));
+
+        $this->from(route('admin.integrations.exchange-rates.index'))
+            ->post(route('admin.integrations.exchange-rates.sync'))
+            ->assertRedirect(route('admin.integrations.exchange-rates.index'))
+            ->assertSessionHas('warning', __('integrations.messages.sync_completed', ['inserted' => 3, 'skipped' => 1, 'failed' => 1]));
+
+        $this->assertSame(3, ExchangeRate::query()->where('source', 'provider:fake')->count());
+        $usd = ExchangeRate::query()->pair('USD', 'EGP')->sole();
+        $this->assertSame('48.50000000', $usd->rate);
+        $this->assertSame($today, $usd->rate_date->toDateString());
+        $this->assertSame('fx-ref-USD', $usd->source_reference);
+        $this->assertNull($usd->entered_by);
+        $this->assertSame('52.13', $this->rates->convertToBase('1', 'EUR')['amount']);
+
+        $log = DB::table('integration_sync_logs')->sole();
+        $this->assertSame('partial', $log->status);
+        $this->assertSame(4, (int) $log->records_processed);
+        $this->assertSame(1, (int) $log->records_failed);
+        $this->assertStringNotContainsString('secret-123', (string) $log->summary, 'vendor errors are sanitised');
+        $this->assertDatabaseHas('audit_logs', ['action' => ExchangeRates::AUDIT_SYNCED, 'actor_id' => $accountant->id]);
+
+        // Running it again the same day appends nothing (idempotent per pair, date and source).
+        $summary = $this->rates->sync(actor: $accountant);
+        $this->assertSame(['inserted' => 0, 'skipped' => 4, 'failed' => 1], array_intersect_key($summary, array_flip(['inserted', 'skipped', 'failed'])));
+        $this->assertSame(3, ExchangeRate::query()->count());
+    }
+
+    public function test_viewers_cannot_trigger_a_provider_sync(): void
+    {
+        $this->actingAsStaff(['exchange_rates.view']);
+
+        $this->post(route('admin.integrations.exchange-rates.sync'))->assertForbidden();
         $this->assertDatabaseCount('integration_sync_logs', 0);
     }
 

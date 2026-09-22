@@ -6,6 +6,7 @@ use App\Modules\Integrations\Contracts\Data\HealthResult;
 use App\Modules\Integrations\Contracts\Data\RateResult;
 use App\Modules\Integrations\Contracts\ExchangeRateProvider;
 use App\Modules\Integrations\Models\ExchangeRate;
+use App\Modules\Integrations\Services\ExchangeRates;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Throwable;
@@ -57,7 +58,7 @@ final class ManualExchangeRateProvider implements ExchangeRateProvider
 
     public function fetchRate(string $base, string $quote, ?CarbonInterface $date = null): ?RateResult
     {
-        $date = CarbonImmutable::instance($date ?? now())->startOfDay();
+        $date = ExchangeRates::platformDay($date);
         $row = ExchangeRate::query()->pair($base, $quote)->onOrBefore($date)->latestFirst()->first();
         if (! $row) {
             return null;

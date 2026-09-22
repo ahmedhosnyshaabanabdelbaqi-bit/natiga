@@ -11,6 +11,12 @@ const tones: Record<CampaignStatus, StatusTone> = {
     failed: 'danger',
 };
 
-export function CampaignStatusBadge({ status, label }: { status: CampaignStatus; label: string }) {
+export function CampaignStatusBadge({
+    status,
+    label,
+}: {
+    status: CampaignStatus;
+    label: string;
+}) {
     return <StatusBadge status={status} label={label} tone={tones[status]} />;
 }

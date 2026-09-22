@@ -17,8 +17,9 @@ class AccountDeletionRequestPolicy
         return $user->can('members.delete_requests') || $request->user_id === $user->id;
     }
 
+    /** Staff never decide on their own request (segregation of duties); super actors pass Gate::before. */
     public function process(User $user, AccountDeletionRequest $request): bool
     {
-        return $user->can('members.delete_requests');
+        return $user->can('members.delete_requests') && $request->user_id !== $user->id;
     }
 }

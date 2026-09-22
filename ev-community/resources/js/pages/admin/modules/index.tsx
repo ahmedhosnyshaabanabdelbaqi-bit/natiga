@@ -11,9 +11,19 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Code } from '@/components/ui/code';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { pick } from '@/features/system/i18n';
 import { PageErrors } from '@/features/system/page-errors';
 import type { ModuleItem } from '@/features/system/types';
@@ -31,7 +41,10 @@ type StateFilter = 'all' | 'enabled' | 'disabled' | 'core' | 'optional';
 export default function ModulesIndex({ modules, reviewed }: Props) {
     const [query, setQuery] = useState('');
     const [state, setState] = useState<StateFilter>('all');
-    const [pending, setPending] = useState<{ module: ModuleItem; enabled: boolean } | null>(null);
+    const [pending, setPending] = useState<{
+        module: ModuleItem;
+        enabled: boolean;
+    } | null>(null);
     const [confirmReview, setConfirmReview] = useState(false);
 
     const enabledCount = modules.filter((module) => module.enabled).length;
@@ -43,7 +56,9 @@ export default function ModulesIndex({ modules, reviewed }: Props) {
             if (state === 'core' && !module.core) return false;
             if (state === 'optional' && module.core) return false;
             if (needle === '') return true;
-            return [module.key, module.name.ar, module.name.en].some((value) => value.toLowerCase().includes(needle));
+            return [module.key, module.name.ar, module.name.en].some((value) =>
+                value.toLowerCase().includes(needle),
+            );
         });
     }, [modules, query, state]);
 
@@ -72,20 +87,35 @@ export default function ModulesIndex({ modules, reviewed }: Props) {
         <>
             <Head title={t('system.modules.title')} />
             <div className="grid gap-6">
-                <PageHeader title={t('system.modules.title')} description={t('system.modules.description')}>
-                    <p className="mt-2 text-sm text-muted-foreground tabular">{t('system.modules.labels.count', { enabled: formatNumber(enabledCount, 0), total: formatNumber(modules.length, 0) })}</p>
+                <PageHeader
+                    title={t('system.modules.title')}
+                    description={t('system.modules.description')}
+                >
+                    <p className="tabular mt-2 text-sm text-muted-foreground">
+                        {t('system.modules.labels.count', {
+                            enabled: formatNumber(enabledCount, 0),
+                            total: formatNumber(modules.length, 0),
+                        })}
+                    </p>
                 </PageHeader>
 
                 <PageErrors />
 
                 {reviewed ? (
-                    <InlineAlert tone="success" icon={CheckCircle2} title={t('system.modules.review.done')} />
+                    <InlineAlert
+                        tone="success"
+                        icon={CheckCircle2}
+                        title={t('system.modules.review.done')}
+                    />
                 ) : (
                     <InlineAlert
                         tone="info"
                         title={t('system.modules.review.title')}
                         action={
-                            <Button size="sm" onClick={() => setConfirmReview(true)}>
+                            <Button
+                                size="sm"
+                                onClick={() => setConfirmReview(true)}
+                            >
                                 {t('system.modules.review.action')}
                             </Button>
                         }
@@ -96,19 +126,47 @@ export default function ModulesIndex({ modules, reviewed }: Props) {
 
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
                     <div className="relative sm:w-72">
-                        <Search className="pointer-events-none absolute start-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
-                        <Input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t('system.modules.labels.search')} aria-label={t('system.modules.labels.search')} className="ps-9" />
+                        <Search
+                            className="pointer-events-none absolute start-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+                            aria-hidden="true"
+                        />
+                        <Input
+                            type="search"
+                            value={query}
+                            onChange={(event) => setQuery(event.target.value)}
+                            placeholder={t('system.modules.labels.search')}
+                            aria-label={t('system.modules.labels.search')}
+                            className="ps-9"
+                        />
                     </div>
-                    <Select value={state} onValueChange={(value) => setState(value as StateFilter)}>
-                        <SelectTrigger className="sm:w-44" aria-label={t('system.modules.filters.state')}>
+                    <Select
+                        value={state}
+                        onValueChange={(value) =>
+                            setState(value as StateFilter)
+                        }
+                    >
+                        <SelectTrigger
+                            className="sm:w-44"
+                            aria-label={t('system.modules.filters.state')}
+                        >
                             <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="all">{t('ui.filters.all')}</SelectItem>
-                            <SelectItem value="enabled">{t('system.modules.filters.enabled')}</SelectItem>
-                            <SelectItem value="disabled">{t('system.modules.filters.disabled')}</SelectItem>
-                            <SelectItem value="core">{t('system.modules.filters.core')}</SelectItem>
-                            <SelectItem value="optional">{t('system.modules.filters.optional')}</SelectItem>
+                            <SelectItem value="all">
+                                {t('ui.filters.all')}
+                            </SelectItem>
+                            <SelectItem value="enabled">
+                                {t('system.modules.filters.enabled')}
+                            </SelectItem>
+                            <SelectItem value="disabled">
+                                {t('system.modules.filters.disabled')}
+                            </SelectItem>
+                            <SelectItem value="core">
+                                {t('system.modules.filters.core')}
+                            </SelectItem>
+                            <SelectItem value="optional">
+                                {t('system.modules.filters.optional')}
+                            </SelectItem>
                         </SelectContent>
                     </Select>
                 </div>
@@ -123,8 +181,13 @@ export default function ModulesIndex({ modules, reviewed }: Props) {
                                 <Switch
                                     checked={module.enabled}
                                     disabled={module.core}
-                                    onCheckedChange={(checked) => setPending({ module, enabled: checked })}
-                                    aria-label={t('system.modules.labels.toggle', { module: name })}
+                                    onCheckedChange={(checked) =>
+                                        setPending({ module, enabled: checked })
+                                    }
+                                    aria-label={t(
+                                        'system.modules.labels.toggle',
+                                        { module: name },
+                                    )}
                                 />
                             );
                             return (
@@ -132,20 +195,55 @@ export default function ModulesIndex({ modules, reviewed }: Props) {
                                     <Card className="h-full shadow-card">
                                         <CardContent className="flex items-start justify-between gap-3 p-4">
                                             <div className="min-w-0 space-y-2">
-                                                <p className="font-medium break-words">{name}</p>
+                                                <p className="font-medium break-words">
+                                                    {name}
+                                                </p>
                                                 <div className="flex flex-wrap items-center gap-1.5">
-                                                    <Code className="text-[0.7rem]">{module.key}</Code>
-                                                    <StatusBadge status={module.enabled ? 'active' : 'disabled'} label={module.enabled ? t('system.modules.labels.enabled') : t('system.modules.labels.disabled')} />
+                                                    <Code className="text-[0.7rem]">
+                                                        {module.key}
+                                                    </Code>
+                                                    <StatusBadge
+                                                        status={
+                                                            module.enabled
+                                                                ? 'active'
+                                                                : 'disabled'
+                                                        }
+                                                        label={
+                                                            module.enabled
+                                                                ? t(
+                                                                      'system.modules.labels.enabled',
+                                                                  )
+                                                                : t(
+                                                                      'system.modules.labels.disabled',
+                                                                  )
+                                                        }
+                                                    />
                                                     {module.core ? (
-                                                        <Badge variant="secondary" className="gap-1 font-normal">
-                                                            <Lock className="size-3" aria-hidden="true" />
-                                                            {t('system.modules.labels.core')}
+                                                        <Badge
+                                                            variant="secondary"
+                                                            className="gap-1 font-normal"
+                                                        >
+                                                            <Lock
+                                                                className="size-3"
+                                                                aria-hidden="true"
+                                                            />
+                                                            {t(
+                                                                'system.modules.labels.core',
+                                                            )}
                                                         </Badge>
                                                     ) : null}
                                                     {module.experimental ? (
-                                                        <Badge variant="outline" className="gap-1 border-warning/40 font-normal text-warning">
-                                                            <FlaskConical className="size-3" aria-hidden="true" />
-                                                            {t('system.modules.labels.experimental')}
+                                                        <Badge
+                                                            variant="outline"
+                                                            className="gap-1 border-warning/40 font-normal text-warning"
+                                                        >
+                                                            <FlaskConical
+                                                                className="size-3"
+                                                                aria-hidden="true"
+                                                            />
+                                                            {t(
+                                                                'system.modules.labels.experimental',
+                                                            )}
                                                         </Badge>
                                                     ) : null}
                                                 </div>
@@ -153,11 +251,18 @@ export default function ModulesIndex({ modules, reviewed }: Props) {
                                             {module.core ? (
                                                 <Tooltip>
                                                     <TooltipTrigger asChild>
-                                                        <span tabIndex={0} className="rounded-full focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:outline-none">
+                                                        <span
+                                                            tabIndex={0}
+                                                            className="rounded-full focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:outline-none"
+                                                        >
                                                             {switchControl}
                                                         </span>
                                                     </TooltipTrigger>
-                                                    <TooltipContent>{t('system.modules.labels.locked')}</TooltipContent>
+                                                    <TooltipContent>
+                                                        {t(
+                                                            'system.modules.labels.locked',
+                                                        )}
+                                                    </TooltipContent>
                                                 </Tooltip>
                                             ) : (
                                                 switchControl
@@ -174,14 +279,34 @@ export default function ModulesIndex({ modules, reviewed }: Props) {
             <ConfirmDialog
                 open={pending !== null}
                 onOpenChange={(open) => (!open ? setPending(null) : undefined)}
-                title={pending?.enabled ? t('system.modules.confirm.enable_title', { module: pendingName }) : t('system.modules.confirm.disable_title', { module: pendingName })}
-                description={pending?.enabled ? t('system.modules.confirm.enable_description') : t('system.modules.confirm.disable_description')}
-                confirmLabel={pending?.enabled ? t('core.actions.enable') : t('core.actions.disable')}
+                title={
+                    pending?.enabled
+                        ? t('system.modules.confirm.enable_title', {
+                              module: pendingName,
+                          })
+                        : t('system.modules.confirm.disable_title', {
+                              module: pendingName,
+                          })
+                }
+                description={
+                    pending?.enabled
+                        ? t('system.modules.confirm.enable_description')
+                        : t('system.modules.confirm.disable_description')
+                }
+                confirmLabel={
+                    pending?.enabled
+                        ? t('core.actions.enable')
+                        : t('core.actions.disable')
+                }
                 destructive={pending?.enabled === false}
                 requireReason
                 onConfirm={toggle}
             >
-                {pending?.enabled && pending.module.experimental ? <InlineAlert tone="warning">{t('system.modules.confirm.experimental_warning')}</InlineAlert> : null}
+                {pending?.enabled && pending.module.experimental ? (
+                    <InlineAlert tone="warning">
+                        {t('system.modules.confirm.experimental_warning')}
+                    </InlineAlert>
+                ) : null}
             </ConfirmDialog>
 
             <ConfirmDialog

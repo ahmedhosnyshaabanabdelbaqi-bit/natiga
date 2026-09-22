@@ -10,9 +10,18 @@ export default function AdminInbox(props: NotificationCenterProps) {
             {...props}
             title={t('notifications.center.admin_title')}
             description={t('notifications.center.admin_description')}
-            endpoints={{ index: inbox.url(), readAll: readAll.url(), read: (id) => read.url(id), unreadCount: unreadCount.url() }}
+            endpoints={{
+                index: inbox.url(),
+                readAll: readAll.url(),
+                read: (id) => read.url(id),
+                unreadCount: unreadCount.url(),
+            }}
         />
     );
 }
 
-AdminInbox.layout = () => ({ breadcrumbs: [{ title: t('notifications.center.admin_title'), href: inbox.url() }] });
+AdminInbox.layout = () => ({
+    breadcrumbs: [
+        { title: t('notifications.center.admin_title'), href: inbox.url() },
+    ],
+});

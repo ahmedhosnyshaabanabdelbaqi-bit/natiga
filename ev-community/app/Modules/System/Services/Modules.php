@@ -68,10 +68,11 @@ final class Modules
             throw new \InvalidArgumentException("Core module [{$key}] cannot be disabled");
         }
         $old = self::enabled($key);
-        $row = ModuleSetting::query()->updateOrCreate(['key' => $key], ['enabled' => $enabled, 'updated_by' => $actor?->id]);
+        ModuleSetting::query()->updateOrCreate(['key' => $key], ['enabled' => $enabled, 'updated_by' => $actor?->id]);
         self::flush();
         if ($old !== $enabled) {
-            app(AuditService::class)->log('modules.'.($enabled ? 'enabled' : 'disabled'), $row, old: ['enabled' => $old], new: ['enabled' => $enabled], reason: $reason, actor: $actor);
+            // module_settings is keyed by a string (no numeric id for audit_logs.entity_id): label the entry instead.
+            app(AuditService::class)->log('modules.'.($enabled ? 'enabled' : 'disabled'), null, old: ['enabled' => $old], new: ['enabled' => $enabled], reason: $reason, actor: $actor, entityLabel: 'module:'.$key);
         }
     }
 

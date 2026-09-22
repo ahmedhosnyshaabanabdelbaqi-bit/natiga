@@ -12,7 +12,6 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { ConfirmDialog } from '@/components/shared/confirm-dialog';
 import { Button } from '@/components/ui/button';
-import { useCan } from '@/lib/auth';
 import { t } from '@/lib/i18n';
 import {
     approve,
@@ -35,7 +34,6 @@ type ActionKey =
 
 type ActionDef = {
     key: ActionKey;
-    permission: string;
     route: (id: string) => RouteDefinition<'post'>;
     icon: LucideIcon;
     variant: 'default' | 'outline' | 'destructive';
@@ -46,7 +44,6 @@ type ActionDef = {
 const ACTIONS: Record<ActionKey, ActionDef> = {
     approve: {
         key: 'approve',
-        permission: 'members.approve',
         route: (id) => approve(id),
         icon: CheckCircle2,
         variant: 'default',
@@ -55,7 +52,6 @@ const ACTIONS: Record<ActionKey, ActionDef> = {
     },
     reject: {
         key: 'reject',
-        permission: 'members.approve',
         route: (id) => reject(id),
         icon: XCircle,
         variant: 'destructive',
@@ -64,7 +60,6 @@ const ACTIONS: Record<ActionKey, ActionDef> = {
     },
     suspend: {
         key: 'suspend',
-        permission: 'members.suspend',
         route: (id) => suspend(id),
         icon: Ban,
         variant: 'destructive',
@@ -73,7 +68,6 @@ const ACTIONS: Record<ActionKey, ActionDef> = {
     },
     reactivate: {
         key: 'reactivate',
-        permission: 'members.suspend',
         route: (id) => reactivate(id),
         icon: RotateCcw,
         variant: 'default',
@@ -82,7 +76,6 @@ const ACTIONS: Record<ActionKey, ActionDef> = {
     },
     expire: {
         key: 'expire',
-        permission: 'members.edit',
         route: (id) => expire(id),
         icon: CalendarX,
         variant: 'outline',
@@ -91,7 +84,6 @@ const ACTIONS: Record<ActionKey, ActionDef> = {
     },
     reopen: {
         key: 'reopen',
-        permission: 'members.approve',
         route: (id) => reopen(id),
         icon: Undo2,
         variant: 'outline',
@@ -120,19 +112,21 @@ export function firstError(errors: Record<string, string>): string {
     return Object.values(errors)[0] ?? t('core.states.error');
 }
 
-/** Buttons for the transitions the server allows from the current status, filtered by permission. */
+/**
+ * Buttons for the transitions the server allows from the current status, filtered by the viewer's
+ * server-evaluated abilities (permission + no self-service + no super accounts).
+ */
 export function MemberStatusActions({
     membership,
 }: {
     membership: MembershipDetail;
 }) {
-    const can = useCan();
     const [pending, setPending] = useState<ActionDef | null>(null);
     const [processing, setProcessing] = useState(false);
 
     const actions = membership.allowed_transitions
         .map((to) => ACTIONS[actionFor(membership.status, to)])
-        .filter((action) => can(action.permission));
+        .filter((action) => membership.abilities[action.key]);
     if (actions.length === 0) {
         return null;
     }

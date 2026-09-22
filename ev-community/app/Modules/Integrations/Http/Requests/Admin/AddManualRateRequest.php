@@ -3,6 +3,7 @@
 namespace App\Modules\Integrations\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class AddManualRateRequest extends FormRequest
 {
@@ -15,7 +16,8 @@ class AddManualRateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'base_currency' => ['required', 'string', 'size:3', 'exists:currencies,code'],
+            // Convention: base = foreign currency; the platform currency is always the quote.
+            'base_currency' => ['required', 'string', 'size:3', 'exists:currencies,code', Rule::notIn([strtoupper((string) config('ev.base_currency', 'EGP'))])],
             'quote_currency' => ['required', 'string', 'size:3', 'exists:currencies,code', 'different:base_currency'],
             'rate' => ['required', 'numeric', 'gt:0', 'regex:/^\d{1,10}(\.\d{1,8})?$/'],
             'rate_date' => ['required', 'date_format:Y-m-d', 'before_or_equal:today'],
@@ -32,6 +34,14 @@ class AddManualRateRequest extends FormRequest
             'quote_currency' => strtoupper(trim((string) $this->input('quote_currency'))),
             'rate' => trim((string) $this->input('rate')),
         ]);
+    }
+
+    /** @return array<string, string> */
+    public function messages(): array
+    {
+        return [
+            'base_currency.not_in' => __('integrations.errors.base_must_be_foreign', ['currency' => strtoupper((string) config('ev.base_currency', 'EGP'))]),
+        ];
     }
 
     public function attributes(): array

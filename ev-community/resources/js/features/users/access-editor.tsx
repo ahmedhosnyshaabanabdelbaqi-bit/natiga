@@ -4,7 +4,11 @@ import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Code } from '@/components/ui/code';
 import { Input } from '@/components/ui/input';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { pick } from '@/features/system/i18n';
 import { roleName } from '@/features/users/role-badges';
 import type { PermissionGroup, RoleOption } from '@/features/users/types';
@@ -28,7 +32,9 @@ type Props = {
 };
 
 function toggle(list: string[], value: string, on: boolean): string[] {
-    return on ? Array.from(new Set([...list, value])) : list.filter((item) => item !== value);
+    return on
+        ? Array.from(new Set([...list, value]))
+        : list.filter((item) => item !== value);
 }
 
 /**
@@ -57,7 +63,13 @@ export function AccessEditor({
                 .map((group) => ({
                     ...group,
                     permissions: group.permissions.filter(
-                        (permission) => needle === '' || permission.key.toLowerCase().includes(needle) || permission.label.ar.toLowerCase().includes(needle) || permission.label.en.toLowerCase().includes(needle),
+                        (permission) =>
+                            needle === '' ||
+                            permission.key.toLowerCase().includes(needle) ||
+                            permission.label.ar
+                                .toLowerCase()
+                                .includes(needle) ||
+                            permission.label.en.toLowerCase().includes(needle),
                     ),
                 }))
                 .filter((group) => group.permissions.length > 0),
@@ -76,8 +88,13 @@ export function AccessEditor({
 
     return (
         <div className="grid gap-6">
-            <fieldset className="grid gap-3" aria-describedby={rolesError ? 'access-roles-error' : undefined}>
-                <legend className="mb-1 text-sm font-medium">{t('users.fields.roles')}</legend>
+            <fieldset
+                className="grid gap-3"
+                aria-describedby={rolesError ? 'access-roles-error' : undefined}
+            >
+                <legend className="mb-1 text-sm font-medium">
+                    {t('users.fields.roles')}
+                </legend>
                 <div className="grid gap-2 sm:grid-cols-2">
                     {roles.map((role) => {
                         const locked = roleLocked(role);
@@ -88,15 +105,40 @@ export function AccessEditor({
                                 htmlFor={id}
                                 className="flex cursor-pointer items-start gap-3 rounded-lg border p-3 has-[[data-disabled]]:cursor-not-allowed has-[[data-disabled]]:opacity-60 has-[[data-state=checked]]:border-brand/50 has-[[data-state=checked]]:bg-brand-soft/20"
                             >
-                                <Checkbox id={id} checked={checked} disabled={disabled || locked !== null} onCheckedChange={(value) => onRolesChange(toggle(selectedRoles, role.slug, value === true))} className="mt-0.5" />
+                                <Checkbox
+                                    id={id}
+                                    checked={checked}
+                                    disabled={disabled || locked !== null}
+                                    onCheckedChange={(value) =>
+                                        onRolesChange(
+                                            toggle(
+                                                selectedRoles,
+                                                role.slug,
+                                                value === true,
+                                            ),
+                                        )
+                                    }
+                                    className="mt-0.5"
+                                />
                                 <span className="grid min-w-0 gap-0.5">
                                     <span className="flex flex-wrap items-center gap-1.5 text-sm font-medium">
-                                        {role.is_super ? <Crown className="size-3.5 text-warning" aria-hidden="true" /> : null}
+                                        {role.is_super ? (
+                                            <Crown
+                                                className="size-3.5 text-warning"
+                                                aria-hidden="true"
+                                            />
+                                        ) : null}
                                         {roleName(role.slug, roles)}
                                     </span>
                                     <span className="flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
-                                        <Code className="text-[0.7rem]">{role.slug}</Code>
-                                        <span>{t(`users.labels.portal_${role.portal === 'partner' ? 'partner' : role.portal === 'member' ? 'member' : 'admin'}`)}</span>
+                                        <Code className="text-[0.7rem]">
+                                            {role.slug}
+                                        </Code>
+                                        <span>
+                                            {t(
+                                                `users.labels.portal_${role.portal === 'partner' ? 'partner' : role.portal === 'member' ? 'member' : 'admin'}`,
+                                            )}
+                                        </span>
                                     </span>
                                 </span>
                             </label>
@@ -114,45 +156,115 @@ export function AccessEditor({
                     })}
                 </div>
                 {rolesError ? (
-                    <p id="access-roles-error" role="alert" className="text-sm text-danger">
+                    <p
+                        id="access-roles-error"
+                        role="alert"
+                        className="text-sm text-danger"
+                    >
                         {rolesError}
                     </p>
                 ) : null}
             </fieldset>
 
-            <fieldset className="grid gap-3" aria-describedby={permissionsError ? 'access-permissions-error' : 'access-permissions-hint'}>
+            <fieldset
+                className="grid gap-3"
+                aria-describedby={
+                    permissionsError
+                        ? 'access-permissions-error'
+                        : 'access-permissions-hint'
+                }
+            >
                 <legend className="mb-1 flex flex-wrap items-center gap-2 text-sm font-medium">
                     {t('users.fields.permissions')}
-                    {selectedPermissions.length > 0 ? <Badge variant="secondary">{t('users.labels.selected_count', { count: formatNumber(selectedPermissions.length, 0) })}</Badge> : null}
+                    {selectedPermissions.length > 0 ? (
+                        <Badge variant="secondary">
+                            {t('users.labels.selected_count', {
+                                count: formatNumber(
+                                    selectedPermissions.length,
+                                    0,
+                                ),
+                            })}
+                        </Badge>
+                    ) : null}
                 </legend>
-                <p id="access-permissions-hint" className="text-xs text-muted-foreground">
+                <p
+                    id="access-permissions-hint"
+                    className="text-xs text-muted-foreground"
+                >
                     {t('users.labels.direct_hint')}
                 </p>
                 <div className="relative sm:max-w-sm">
-                    <Search className="pointer-events-none absolute start-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
-                    <Input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t('users.labels.search_permissions')} aria-label={t('users.labels.search_permissions')} className="ps-9" />
+                    <Search
+                        className="pointer-events-none absolute start-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+                        aria-hidden="true"
+                    />
+                    <Input
+                        type="search"
+                        value={query}
+                        onChange={(event) => setQuery(event.target.value)}
+                        placeholder={t('users.labels.search_permissions')}
+                        aria-label={t('users.labels.search_permissions')}
+                        className="ps-9"
+                    />
                 </div>
                 <div className="grid max-h-[28rem] gap-4 overflow-y-auto rounded-lg border p-3">
-                    {groups.length === 0 ? <p className="text-sm text-muted-foreground">{t('roles.labels.no_permissions')}</p> : null}
+                    {groups.length === 0 ? (
+                        <p className="text-sm text-muted-foreground">
+                            {t('roles.labels.no_permissions')}
+                        </p>
+                    ) : null}
                     {groups.map((group) => (
                         <div key={group.module} className="grid gap-2">
-                            <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">{pick(group.label)}</p>
+                            <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+                                {pick(group.label)}
+                            </p>
                             <div className="grid gap-1.5 sm:grid-cols-2">
                                 {group.permissions.map((permission) => {
-                                    const checked = selectedPermissions.includes(permission.key);
-                                    const locked = permission.grantable === false && !originalPermissions.includes(permission.key);
+                                    const checked =
+                                        selectedPermissions.includes(
+                                            permission.key,
+                                        );
+                                    const locked =
+                                        permission.grantable === false &&
+                                        !originalPermissions.includes(
+                                            permission.key,
+                                        );
                                     const id = `perm-${permission.key.replace(/[^a-z0-9]+/gi, '-')}`;
                                     return (
                                         <label
                                             key={permission.key}
                                             htmlFor={id}
-                                            title={locked ? t('users.labels.not_grantable') : undefined}
+                                            title={
+                                                locked
+                                                    ? t(
+                                                          'users.labels.not_grantable',
+                                                      )
+                                                    : undefined
+                                            }
                                             className="flex cursor-pointer items-start gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted/50 has-[[data-disabled]]:cursor-not-allowed has-[[data-disabled]]:opacity-60"
                                         >
-                                            <Checkbox id={id} checked={checked} disabled={disabled || locked} onCheckedChange={(value) => onPermissionsChange(toggle(selectedPermissions, permission.key, value === true))} className="mt-0.5" />
+                                            <Checkbox
+                                                id={id}
+                                                checked={checked}
+                                                disabled={disabled || locked}
+                                                onCheckedChange={(value) =>
+                                                    onPermissionsChange(
+                                                        toggle(
+                                                            selectedPermissions,
+                                                            permission.key,
+                                                            value === true,
+                                                        ),
+                                                    )
+                                                }
+                                                className="mt-0.5"
+                                            />
                                             <span className="grid min-w-0">
-                                                <span>{pick(permission.label)}</span>
-                                                <Code className="w-fit text-[0.7rem]">{permission.key}</Code>
+                                                <span>
+                                                    {pick(permission.label)}
+                                                </span>
+                                                <Code className="w-fit text-[0.7rem]">
+                                                    {permission.key}
+                                                </Code>
                                             </span>
                                         </label>
                                     );
@@ -162,7 +274,11 @@ export function AccessEditor({
                     ))}
                 </div>
                 {permissionsError ? (
-                    <p id="access-permissions-error" role="alert" className="text-sm text-danger">
+                    <p
+                        id="access-permissions-error"
+                        role="alert"
+                        className="text-sm text-danger"
+                    >
                         {permissionsError}
                     </p>
                 ) : null}

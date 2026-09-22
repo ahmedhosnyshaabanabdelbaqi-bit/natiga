@@ -8,6 +8,7 @@ use App\Modules\Integrations\Services\Integrations;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Traits\Localizable;
 
 /**
  * Queued "send test email to me". The outcome is visible in integration_events
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Log;
  */
 class SendTestEmailJob implements ShouldQueue
 {
+    use Localizable;
     use Queueable;
 
     public int $tries = 1;
@@ -27,7 +29,8 @@ class SendTestEmailJob implements ShouldQueue
         if (! $user || ! $user->email) {
             return;
         }
-        $result = Integrations::email()->sendTest($user->email);
+        // The worker runs in the default locale; the message is written in the requesting admin's language.
+        $result = $this->withLocale($user->preferredLocale(), fn () => Integrations::email()->sendTest($user->email));
         if ($result->status === SendStatus::Failed) {
             Log::warning('integration.email.test_failed', ['user_id' => $user->id, 'error' => $result->error]);
         }

@@ -10,11 +10,11 @@ use App\Modules\Garage\Services\GarageSections;
 use App\Modules\Vehicles\Actions\CreateMemberVehicle;
 use App\Modules\Vehicles\Actions\DeleteMemberVehicle;
 use App\Modules\Vehicles\Actions\UpdateMemberVehicle;
-use App\Modules\Vehicles\Models\Enums\MarketVersion;
 use App\Modules\Vehicles\Models\Enums\VehicleStatus;
 use App\Modules\Vehicles\Models\MemberVehicle;
 use App\Modules\Vehicles\Services\MemberVehiclePresenter;
 use App\Modules\Vehicles\Services\VehicleDataService;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +27,8 @@ use Inertia\Response;
  */
 class GarageController extends Controller
 {
+    use AuthorizesRequests;
+
     public function __construct(private readonly MemberVehiclePresenter $presenter, private readonly VehicleDataService $data) {}
 
     public function index(Request $request): Response

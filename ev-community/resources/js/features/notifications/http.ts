@@ -4,13 +4,21 @@
  */
 export type JsonResult<T> =
     | { ok: true; status: number; data: T }
-    | { ok: false; status: number; errors: Record<string, string>; message: string | null };
+    | {
+          ok: false;
+          status: number;
+          errors: Record<string, string>;
+          message: string | null;
+      };
 
 function csrfToken(): string | null {
     if (typeof document === 'undefined') {
         return null;
     }
-    return document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? null;
+    return (
+        document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')
+            ?.content ?? null
+    );
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -32,8 +40,16 @@ function flattenErrors(value: unknown): Record<string, string> {
     return out;
 }
 
-export async function requestJson<T>(method: 'get' | 'post' | 'put', url: string, body?: unknown, signal?: AbortSignal): Promise<JsonResult<T>> {
-    const headers: Record<string, string> = { Accept: 'application/json', 'X-Requested-With': 'XMLHttpRequest' };
+export async function requestJson<T>(
+    method: 'get' | 'post' | 'put',
+    url: string,
+    body?: unknown,
+    signal?: AbortSignal,
+): Promise<JsonResult<T>> {
+    const headers: Record<string, string> = {
+        Accept: 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+    };
     const token = csrfToken();
     if (token) {
         headers['X-CSRF-TOKEN'] = token;
@@ -73,6 +89,9 @@ export async function requestJson<T>(method: 'get' | 'post' | 'put', url: string
         ok: false,
         status: response.status,
         errors: isRecord(payload) ? flattenErrors(payload.errors) : {},
-        message: isRecord(payload) && typeof payload.message === 'string' ? payload.message : null,
+        message:
+            isRecord(payload) && typeof payload.message === 'string'
+                ? payload.message
+                : null,
     };
 }

@@ -32,6 +32,7 @@ import {
 } from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinner';
 import { Textarea } from '@/components/ui/textarea';
+import { can } from '@/lib/auth';
 import { boot, t } from '@/lib/i18n';
 import { index as integrationsIndex } from '@/routes/admin/integrations';
 import {
@@ -39,6 +40,7 @@ import {
     store,
     sync,
 } from '@/routes/admin/integrations/exchange-rates';
+import type { Auth } from '@/types/auth';
 import { toastFirstError } from '@/features/integrations/errors';
 import { IntegrationsTabs } from '@/features/integrations/integrations-tabs';
 import type {
@@ -246,8 +248,11 @@ function AddRateForm({
     currencies: Currency[];
     baseCurrency: string;
 }) {
-    const defaultForeign =
-        currencies.find((currency) => !currency.is_base)?.code ?? '';
+    // The platform currency is never the foreign (base) side of a rate; the server enforces it too.
+    const foreignCurrencies = currencies.filter(
+        (currency) => currency.code !== baseCurrency,
+    );
+    const defaultForeign = foreignCurrencies[0]?.code ?? '';
     const today = todayInPlatformTimezone();
     const form = useForm({
         base_currency: defaultForeign,
@@ -293,7 +298,7 @@ function AddRateForm({
                                 onChange={(value) =>
                                     form.setData('base_currency', value)
                                 }
-                                currencies={currencies}
+                                currencies={foreignCurrencies}
                                 invalid={control['aria-invalid']}
                                 describedBy={control['aria-describedby']}
                             />
@@ -730,9 +735,19 @@ export default function ExchangeRatesIndex({
     );
 }
 
-ExchangeRatesIndex.layout = () => ({
+ExchangeRatesIndex.layout = (
+    props: ExchangeRatesIndexProps & { auth?: Auth },
+) => ({
     breadcrumbs: [
-        { title: t('integrations.title'), href: integrationsIndex.url() },
+        // Accountants reach this page with exchange_rates.view only: no crumb to a page they cannot open.
+        ...(props.auth && can('integrations.view', props.auth)
+            ? [
+                  {
+                      title: t('integrations.title'),
+                      href: integrationsIndex.url(),
+                  },
+              ]
+            : []),
         {
             title: t('integrations.exchange_rates.title'),
             href: exchangeRatesIndex.url(),

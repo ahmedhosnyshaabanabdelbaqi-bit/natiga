@@ -109,7 +109,7 @@ export default function AdminMemberShow(props: Props) {
                 actions={
                     <>
                         <MemberStatusActions membership={membership} />
-                        {can('members.edit') ? (
+                        {membership.abilities.update ? (
                             <EditProfileDialog
                                 membership={membership}
                                 governorates={props.governorates}
@@ -192,7 +192,7 @@ export default function AdminMemberShow(props: Props) {
                     <SectionCard
                         title={t('members.admin.profile.title')}
                         actions={
-                            can('members.edit') &&
+                            membership.abilities.resendVerification &&
                             membership.user.email_verified_at === null &&
                             membership.user.status === 'active' ? (
                                 <Button
@@ -651,7 +651,6 @@ function MembershipTab({
     referrals,
     onRotate,
 }: Props & { onRotate: () => void }) {
-    const can = useCan();
     const timeline: TimelineItem[] = history.map((entry) => ({
         id: entry.id,
         title: entry.from
@@ -682,7 +681,7 @@ function MembershipTab({
                     title={t('members.admin.membership.title')}
                     className="lg:col-span-2"
                     actions={
-                        can('members.edit') ? (
+                        membership.abilities.rotateToken ? (
                             <Button
                                 type="button"
                                 size="sm"

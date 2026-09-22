@@ -157,9 +157,16 @@ final class OsmMapProvider implements MapProvider
         }
     }
 
+    /**
+     * One retry on connection errors / 5xx / 429, spaced by at least one rate-limit interval: the retry
+     * does not take a limiter slot, so a faster retry would break the "max N requests per second"
+     * usage policy (and retrying a 429 quickly is what gets a client blocked).
+     */
     private function http(int $timeout = 10, int $connectTimeout = 5)
     {
-        return IntegrationCall::http('map', $timeout, $connectTimeout, retries: 2, backoffMs: [300, 900])
+        $retryAfterMs = (int) ceil(1000 / $this->ratePerSecond()) + 100;
+
+        return IntegrationCall::http('map', $timeout, $connectTimeout, retries: 1, backoffMs: [$retryAfterMs])
             ->withHeaders(['Referer' => (string) config('app.url')])
             ->withUserAgent($this->userAgent());
     }
@@ -187,9 +194,14 @@ final class OsmMapProvider implements MapProvider
     /**
      * Nominatim allows one request per second. Wait once for the next slot, then give up (null).
      */
+    private function ratePerSecond(): int
+    {
+        return max(1, (int) config('ev.integrations.map.nominatim_rate_per_second', 1));
+    }
+
     private function acquireSlot(): bool
     {
-        $perSecond = max(1, (int) config('ev.integrations.map.nominatim_rate_per_second', 1));
+        $perSecond = $this->ratePerSecond();
         for ($attempt = 0; $attempt < 2; $attempt++) {
             if (! RateLimiter::tooManyAttempts(self::RATE_KEY, $perSecond)) {
                 RateLimiter::hit(self::RATE_KEY, 1);

@@ -9,6 +9,7 @@ use App\Modules\Integrations\Services\Integrations;
 use App\Modules\Integrations\Services\WebhookHandlers;
 use App\Modules\Integrations\Services\WebhookIngest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Testing\TestResponse;
@@ -70,6 +71,29 @@ class WebhookTest extends TestCase
         $this->assertSame('[redacted]', $event->payload['api_key'], 'secrets are redacted before storage');
         $this->assertSame('[redacted]', $event->headers['x-signature']);
         $this->assertSame('fake', $event->headers['_driver']);
+    }
+
+    public function test_a_redelivery_requeues_an_event_that_was_stored_but_never_picked_up(): void
+    {
+        Queue::fake();
+        // First delivery stored the event but its job never ran (queue unreachable → provider got a 5xx).
+        $this->postWebhook($this->payload('evt_lost'))->assertOk();
+        Queue::assertPushed(ProcessWebhookEventJob::class, 1);
+
+        // A quick duplicate while the job is still queued does not queue another one.
+        $this->postWebhook($this->payload('evt_lost'))->assertOk()->assertJson(['duplicate' => true]);
+        Queue::assertPushed(ProcessWebhookEventJob::class, 1);
+
+        // The provider's later redelivery re-queues the stale `received` event.
+        $this->travel(WebhookIngest::STALE_RECEIVED_MINUTES + 1)->minutes();
+        $this->postWebhook($this->payload('evt_lost'))->assertOk()->assertJson(['duplicate' => true]);
+        Queue::assertPushed(ProcessWebhookEventJob::class, 2);
+        $this->assertSame(1, WebhookEvent::query()->count());
+
+        // Once processed, redeliveries never queue it again.
+        WebhookEvent::query()->sole()->forceFill(['status' => WebhookEventStatus::Processed])->save();
+        $this->postWebhook($this->payload('evt_lost'))->assertOk();
+        Queue::assertPushed(ProcessWebhookEventJob::class, 2);
     }
 
     public function test_invalid_signature_is_stored_as_ignored_and_rejected_with_401(): void
@@ -149,6 +173,46 @@ class WebhookTest extends TestCase
         $this->assertSame(WebhookEventStatus::Processed, $event->refresh()->status);
         $this->assertNull($event->error);
         $this->assertDatabaseHas('audit_logs', ['action' => 'integrations.webhook_retried', 'entity_id' => $event->id]);
+    }
+
+    public function test_an_event_left_in_processing_by_a_dead_worker_is_reclaimed_on_redelivery(): void
+    {
+        $calls = 0;
+        WebhookHandlers::register('payment', function () use (&$calls) {
+            $calls++;
+        });
+        // The worker that claimed the event was killed (timeout / OOM / deploy): status stuck in
+        // `processing`, its lock expired. The queue redelivers the job.
+        $event = WebhookEvent::factory()->create(['status' => WebhookEventStatus::Processing]);
+
+        (new ProcessWebhookEventJob($event->id))->handle();
+
+        $this->assertSame(1, $calls);
+        $this->assertSame(WebhookEventStatus::Processed, $event->refresh()->status);
+        $this->assertTrue(Cache::lock(ProcessWebhookEventJob::lockKey($event->id), 5)->get(), 'the event lock is released after processing');
+    }
+
+    public function test_an_event_held_by_a_live_worker_is_not_processed_twice(): void
+    {
+        $calls = 0;
+        WebhookHandlers::register('payment', function () use (&$calls) {
+            $calls++;
+        });
+        $event = WebhookEvent::factory()->create(['status' => WebhookEventStatus::Processing]);
+        $held = Cache::lock(ProcessWebhookEventJob::lockKey($event->id), ProcessWebhookEventJob::LOCK_SECONDS);
+        $this->assertTrue($held->get(), 'another worker is processing the event');
+
+        (new ProcessWebhookEventJob($event->id))->handle();
+
+        $this->assertSame(0, $calls);
+        $this->assertSame(WebhookEventStatus::Processing, $event->refresh()->status);
+
+        // Once the other worker is gone the next delivery processes it exactly once.
+        $held->release();
+        (new ProcessWebhookEventJob($event->id))->handle();
+        (new ProcessWebhookEventJob($event->id))->handle();
+        $this->assertSame(1, $calls);
+        $this->assertSame(WebhookEventStatus::Processed, $event->refresh()->status);
     }
 
     public function test_processed_and_ignored_events_cannot_be_retried(): void

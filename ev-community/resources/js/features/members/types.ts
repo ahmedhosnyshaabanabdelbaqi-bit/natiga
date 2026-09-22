@@ -87,7 +87,23 @@ export type MembershipDetail = {
         mfa_enabled: boolean;
         created_at: string | null;
     };
+    /** Server-evaluated policy abilities of the current viewer (UI hints; every action is re-checked). */
+    abilities: MembershipAbilities;
 };
+
+export type MembershipAbilities = Record<
+    | 'approve'
+    | 'reject'
+    | 'reopen'
+    | 'suspend'
+    | 'reactivate'
+    | 'expire'
+    | 'update'
+    | 'resendVerification'
+    | 'rotateToken'
+    | 'addNote',
+    boolean
+>;
 
 export type StatusHistoryEntry = {
     id: number;

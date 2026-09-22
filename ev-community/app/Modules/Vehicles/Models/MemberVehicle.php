@@ -11,13 +11,13 @@ use App\Modules\Members\Models\Membership;
 use App\Modules\Vehicles\Models\Enums\MarketVersion;
 use App\Modules\Vehicles\Models\Enums\VehicleStatus;
 use App\Support\Concerns\HasPublicId;
+use Carbon\CarbonInterface;
 use Database\Factories\Vehicles\MemberVehicleFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -44,7 +44,7 @@ use Illuminate\Support\Facades\Storage;
  * @property string|null $color
  * @property string|null $plate_hint
  * @property int|null $odometer_km
- * @property Carbon|null $odometer_updated_at
+ * @property CarbonInterface|null $odometer_updated_at
  * @property VehicleStatus $status
  * @property bool $is_primary
  * @property-read User $user

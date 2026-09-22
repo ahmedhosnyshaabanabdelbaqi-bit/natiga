@@ -58,6 +58,11 @@ final class HealthChecks
         return $results;
     }
 
+    public static function forget(string $key): void
+    {
+        unset(self::$checks[$key]);
+    }
+
     public static function reset(): void
     {
         self::$checks = [];

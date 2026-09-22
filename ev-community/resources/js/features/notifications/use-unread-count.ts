@@ -8,7 +8,11 @@ export const UNREAD_POLL_INTERVAL_MS = 60_000;
  * latest count. The server caches the count for 60 s, so polling is cheap. Portal layouts can use this for
  * the header bell together with the shared `unreadNotifications` prop as the initial value.
  */
-export function useUnreadCount(url: string | null, initial: number, intervalMs: number = UNREAD_POLL_INTERVAL_MS): number {
+export function useUnreadCount(
+    url: string | null,
+    initial: number,
+    intervalMs: number = UNREAD_POLL_INTERVAL_MS,
+): number {
     const [count, setCount] = useState(initial);
     const initialRef = useRef(initial);
 
@@ -31,7 +35,12 @@ export function useUnreadCount(url: string | null, initial: number, intervalMs: 
             controller?.abort();
             controller = new AbortController();
             try {
-                const result = await requestJson<{ unread: number }>('get', url, undefined, controller.signal);
+                const result = await requestJson<{ unread: number }>(
+                    'get',
+                    url,
+                    undefined,
+                    controller.signal,
+                );
                 if (result.ok && typeof result.data.unread === 'number') {
                     setCount(result.data.unread);
                 }

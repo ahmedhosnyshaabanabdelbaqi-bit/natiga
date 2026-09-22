@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Modules\Audit\Models\AuditLog;
 use App\Modules\Audit\Services\AuditQuery;
 use App\Modules\Audit\Services\AuditService;
+use App\Modules\System\Http\PerPage;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -25,7 +26,7 @@ class AuditLogsController extends Controller
         $filters = $request->only(AuditQuery::ALLOWED_FILTERS);
 
         return Inertia::render('admin/audit-logs/index', [
-            'logs' => $this->query->build($filters)->paginate($this->perPage($request))->withQueryString()->through(fn (AuditLog $log) => $this->query->summary($log)),
+            'logs' => $this->query->build($filters)->paginate(PerPage::from($request))->withQueryString()->through(fn (AuditLog $log) => $this->query->summary($log)),
             'filters' => $filters,
             'actions' => $this->query->distinctActions(),
             'entityTypes' => $this->query->distinctEntityTypes(),
@@ -95,13 +96,6 @@ class AuditLogsController extends Controller
             }, 'id');
             fclose($out);
         }, $filename, ['Content-Type' => 'text/csv; charset=UTF-8', 'X-Content-Type-Options' => 'nosniff']);
-    }
-
-    private function perPage(Request $request): int
-    {
-        $perPage = (int) $request->query('per_page', 25);
-
-        return in_array($perPage, [15, 25, 50, 100], true) ? $perPage : 25;
     }
 
     /**

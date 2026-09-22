@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Vehicles;
 
+use App\Http\Middleware\HandleInertiaRequests;
 use App\Models\User;
 use App\Modules\Vehicles\Models\ConnectorCompatibilityRule;
 use App\Modules\Vehicles\Models\ConnectorType;
@@ -62,6 +63,22 @@ trait VehicleFixtures
         }
 
         return MemberVehicle::factory()->forMember($owner)->create($attributes);
+    }
+
+    /**
+     * Headers of an Inertia partial reload (what `router.reload({ only: [...] })` sends).
+     *
+     * @param  string[]  $props
+     * @return array<string, string>
+     */
+    protected function partialReload(string $component, array $props): array
+    {
+        return [
+            'X-Inertia' => 'true',
+            'X-Inertia-Version' => (string) app(HandleInertiaRequests::class)->version(request()),
+            'X-Inertia-Partial-Component' => $component,
+            'X-Inertia-Partial-Data' => implode(',', $props),
+        ];
     }
 
     /** Valid 17-character VINs (no I/O/Q). */

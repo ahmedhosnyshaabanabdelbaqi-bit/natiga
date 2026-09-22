@@ -4,7 +4,15 @@ export type LocalizedLabel = { ar: string; en: string };
 export type SettingValue = string | number | boolean | null | SettingJson;
 export type SettingJson = { [key: string]: SettingValue } | SettingValue[];
 
-export type SettingType = 'string' | 'text' | 'int' | 'decimal' | 'bool' | 'json' | 'image' | 'select';
+export type SettingType =
+    | 'string'
+    | 'text'
+    | 'int'
+    | 'decimal'
+    | 'bool'
+    | 'json'
+    | 'image'
+    | 'select';
 export type SettingInput = SettingType | 'color' | 'secret';
 
 export type SettingItem = {
@@ -66,10 +74,19 @@ export type QueueHealth = {
     pending: { queue: string; count: number }[];
     reserved: number;
     failed: number;
-    heartbeat: { at: string | null; age_seconds: number | null; stale: boolean };
+    heartbeat: {
+        at: string | null;
+        age_seconds: number | null;
+        stale: boolean;
+    };
 };
 
-export type SetupItem = { key: string; ok: boolean; href: string | null; detail: string | null };
+export type SetupItem = {
+    key: string;
+    ok: boolean;
+    href: string | null;
+    detail: string | null;
+};
 
 export type SessionRow = {
     /** Opaque session key (never the raw session id). */
@@ -84,7 +101,8 @@ export type SessionRow = {
 export type SecurityEventRow = {
     id: number;
     type: string;
-    severity: 'info' | 'warning' | 'critical' | string;
+    /** info | warning | critical */
+    severity: string;
     ip_address: string | null;
     user_agent: string | null;
     meta: Record<string, unknown> | null;

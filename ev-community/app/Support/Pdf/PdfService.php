@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Mpdf\Config\ConfigVariables;
 use Mpdf\Config\FontVariables;
+use Mpdf\Css\DefaultCss;
 use Mpdf\Mpdf;
 use Mpdf\Output\Destination;
 
@@ -29,6 +30,23 @@ final class PdfService
     public const FONT_ARABIC = 'cairo';
 
     public const FONT_LATIN = 'dejavusans';
+
+    /**
+     * Cairo's mark-to-mark (`mkmk`) GPOS lookups use GDEF mark filtering sets, which mpdf 8 refuses
+     * ("contains MarkGlyphSets - Not tested yet"). The feature only fine-tunes stacked diacritics
+     * (e.g. shadda + fatha), so it is switched off on every element; Arabic joining, ligatures and
+     * regular mark positioning stay on.
+     */
+    private const DISABLED_FONT_FEATURES = '"mkmk" 0';
+
+    /** Tags that receive the font-feature default (mpdf merges tag defaults per element, not by inheritance). */
+    private const TEXT_TAGS = [
+        'BODY', 'DIV', 'P', 'SPAN', 'A', 'B', 'STRONG', 'I', 'EM', 'U', 'S', 'STRIKE', 'DEL', 'INS', 'MARK', 'SMALL', 'BIG',
+        'SUP', 'SUB', 'CODE', 'KBD', 'SAMP', 'TT', 'VAR', 'PRE', 'Q', 'CITE', 'DFN', 'ABBR', 'ACRONYM', 'LABEL', 'ADDRESS',
+        'BLOCKQUOTE', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'UL', 'OL', 'LI', 'DL', 'DT', 'DD', 'TABLE', 'THEAD', 'TBODY',
+        'TFOOT', 'TR', 'TH', 'TD', 'CAPTION', 'SECTION', 'ARTICLE', 'HEADER', 'FOOTER', 'ASIDE', 'NAV', 'MAIN', 'FIGURE',
+        'FIGCAPTION', 'DETAILS', 'SUMMARY', 'CENTER', 'FONT', 'LEGEND', 'FIELDSET', 'TEXTAREA', 'INPUT', 'SELECT', 'OPTION',
+    ];
 
     private ?bool $cairoAvailable = null;
 
@@ -124,6 +142,7 @@ final class PdfService
             'useSubstitutions' => false,
             'simpleTables' => false,
             'shrink_tables_to_fit' => 1,
+            'defaultCSS' => $this->defaultCss(),
         ]);
         $mpdf->SetDirectionality(ev_dir($locale));
         $mpdf->SetCreator((string) config('app.name'));
@@ -151,6 +170,17 @@ final class PdfService
     public function cairoDirectory(): string
     {
         return resource_path('fonts/cairo');
+    }
+
+    /** @return array<string, array<string, string>> mpdf's default tag CSS plus the disabled font features */
+    private function defaultCss(): array
+    {
+        $css = DefaultCss::$definition;
+        foreach (self::TEXT_TAGS as $tag) {
+            $css[$tag] = ($css[$tag] ?? []) + ['FONT-FEATURE-SETTINGS' => self::DISABLED_FONT_FEATURES];
+        }
+
+        return $css;
     }
 
     private function normalizeLocale(?string $locale): string

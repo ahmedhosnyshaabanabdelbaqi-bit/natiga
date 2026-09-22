@@ -4,6 +4,7 @@ namespace App\Modules\System\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Audit\Services\AuditService;
+use App\Modules\System\Http\PerPage;
 use App\Modules\System\Http\Requests\BannerRequest;
 use App\Modules\System\Models\StatusBanner;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -21,10 +22,9 @@ class BannersController extends Controller
     public function index(Request $request): Response
     {
         $this->authorize('viewAny', StatusBanner::class);
-        $perPage = in_array((int) $request->query('per_page', 25), [15, 25, 50, 100], true) ? (int) $request->query('per_page') : 25;
 
         return Inertia::render('admin/banners/index', [
-            'banners' => StatusBanner::query()->orderByDesc('id')->paginate($perPage)->withQueryString()->through(fn (StatusBanner $b) => $this->serialize($b)),
+            'banners' => StatusBanner::query()->orderByDesc('id')->paginate(PerPage::from($request))->withQueryString()->through(fn (StatusBanner $b) => $this->serialize($b)),
             'levels' => BannerRequest::LEVELS,
             'targets' => BannerRequest::TARGETS,
         ]);

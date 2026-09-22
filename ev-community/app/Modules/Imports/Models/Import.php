@@ -132,26 +132,25 @@ class Import extends Model implements HasAttachments
         return $this->invalid_rows + $this->failed_rows;
     }
 
-    /** Rows handled by the processing job so far. */
+    /**
+     * Rows handled by the processing job so far: imported, skipped, failed, plus rows that turned out
+     * to be duplicates only at processing time (validation duplicates were never valid).
+     */
     public function processedRows(): int
     {
-        return $this->imported_rows + $this->skipped_rows + $this->failed_rows;
+        $validationDuplicates = (int) ($this->summary['validation']['duplicate'] ?? $this->duplicate_rows);
+
+        return $this->imported_rows + $this->skipped_rows + $this->failed_rows + max(0, $this->duplicate_rows - $validationDuplicates);
     }
 
     public function progressPercent(): int
     {
-        if ($this->status === ImportStatus::Processing || $this->status === ImportStatus::Completed) {
-            $target = max(1, $this->valid_rows);
-
-            return (int) min(100, round($this->processedRows() / $target * 100));
-        }
-        if ($this->status === ImportStatus::Validating) {
-            $done = $this->rows()->where('status', '!=', 'pending')->count();
-
-            return (int) min(100, round($done / max(1, $this->total_rows) * 100));
-        }
-
-        return $this->status === ImportStatus::Validated ? 100 : 0;
+        return match ($this->status) {
+            ImportStatus::Completed, ImportStatus::Validated => 100,
+            ImportStatus::Processing => (int) min(99, floor($this->processedRows() / max(1, $this->valid_rows) * 100)),
+            ImportStatus::Validating => (int) min(99, floor(ImportRow::query()->where('import_id', $this->id)->where('status', '!=', 'pending')->count() / max(1, $this->total_rows) * 100)),
+            default => 0,
+        };
     }
 
     /** imported + rejected (invalid + failed) + skipped + duplicate == total (see ImportService::finish()). */

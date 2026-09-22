@@ -46,6 +46,7 @@ class DeletionRequestController extends Controller
 
         return Inertia::render('admin/members/deletion-requests', [
             'requests' => $query->paginate(25)->withQueryString()->through(fn (AccountDeletionRequest $r) => $details->deletionRequest($r) + [
+                'can_process' => $request->user()->can('process', $r),
                 'user' => [
                     'name' => $r->user->name,
                     'email' => $r->user->email,

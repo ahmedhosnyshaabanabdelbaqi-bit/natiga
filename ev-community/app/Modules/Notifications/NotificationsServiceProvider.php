@@ -31,7 +31,9 @@ class NotificationsServiceProvider extends ServiceProvider
         Gate::policy(AnnouncementCampaign::class, AnnouncementCampaignPolicy::class);
         Gate::policy(EmailTemplate::class, EmailTemplatePolicy::class);
 
-        User::resolveRelationUsing('notifications', fn (User $user) => $user->hasMany(Notification::class, 'user_id'));
+        // Not named `notifications`: User uses Laravel's Notifiable trait, whose notifications() (database channel,
+        // morph columns) would shadow a dynamic relation of the same name.
+        User::resolveRelationUsing('inAppNotifications', fn (User $user) => $user->hasMany(Notification::class, 'user_id'));
 
         AnnouncementAudiences::registerDefaults();
 

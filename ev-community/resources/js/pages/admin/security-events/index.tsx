@@ -4,7 +4,11 @@ import type { DataTableColumn } from '@/components/shared/data-table';
 import { DataTable } from '@/components/shared/data-table';
 import { DateTime } from '@/components/shared/date-time';
 import type { FilterDefinition } from '@/components/shared/filters-bar';
-import { FiltersBar, isFilterActive, useQueryState } from '@/components/shared/filters-bar';
+import {
+    FiltersBar,
+    isFilterActive,
+    useQueryState,
+} from '@/components/shared/filters-bar';
 import { InlineAlert } from '@/components/shared/inline-alert';
 import { PageHeader } from '@/components/shared/page-header';
 import { StatusBadge } from '@/components/shared/status-badge';
@@ -38,27 +42,69 @@ type Props = {
     criticalCount: number;
 };
 
-export default function SecurityEventsIndex({ events, types, criticalCount }: Props) {
+export default function SecurityEventsIndex({
+    events,
+    types,
+    criticalCount,
+}: Props) {
     const query = useQueryState();
     const criticalOnly = query.get('critical') === '1';
     const canViewUsers = can(['users.view', 'users.manage']);
 
     const filters: FilterDefinition[] = [
-        { key: 'user', type: 'search', label: t('audit.security.filters.user'), className: 'md:w-60' },
-        { key: 'type', type: 'select', label: t('audit.security.filters.type'), options: types.map((type) => ({ value: type, label: securityEventLabel(type) })) },
+        {
+            key: 'user',
+            type: 'search',
+            label: t('audit.security.filters.user'),
+            className: 'md:w-60',
+        },
+        {
+            key: 'type',
+            type: 'select',
+            label: t('audit.security.filters.type'),
+            options: types.map((type) => ({
+                value: type,
+                label: securityEventLabel(type),
+            })),
+        },
         {
             key: 'severity',
             type: 'select',
             label: t('audit.security.filters.severity'),
-            options: ['info', 'warning', 'critical'].map((severity) => ({ value: severity, label: t(`audit.security.severity.${severity}`) })),
+            options: ['info', 'warning', 'critical'].map((severity) => ({
+                value: severity,
+                label: t(`audit.security.severity.${severity}`),
+            })),
         },
-        { key: 'date', type: 'daterange', label: t('audit.security.filters.date'), fromKey: 'from', toKey: 'to' },
-        { key: 'critical', type: 'boolean', label: t('audit.security.filters.critical') },
+        {
+            key: 'date',
+            type: 'daterange',
+            label: t('audit.security.filters.date'),
+            fromKey: 'from',
+            toKey: 'to',
+        },
+        {
+            key: 'critical',
+            type: 'boolean',
+            label: t('audit.security.filters.critical'),
+        },
     ];
-    const filtered = filters.some((filter) => isFilterActive(filter, query.query));
+    const filtered = filters.some((filter) =>
+        isFilterActive(filter, query.query),
+    );
 
     const columns: DataTableColumn<SecurityEventListRow>[] = [
-        { key: 'created_at', header: t('audit.security.columns.created_at'), required: true, cell: (event) => <DateTime value={event.created_at} className="whitespace-nowrap" /> },
+        {
+            key: 'created_at',
+            header: t('audit.security.columns.created_at'),
+            required: true,
+            cell: (event) => (
+                <DateTime
+                    value={event.created_at}
+                    className="whitespace-nowrap"
+                />
+            ),
+        },
         {
             key: 'type',
             header: t('audit.security.columns.type'),
@@ -72,7 +118,16 @@ export default function SecurityEventsIndex({ events, types, criticalCount }: Pr
         {
             key: 'severity',
             header: t('audit.security.columns.severity'),
-            cell: (event) => <StatusBadge status={event.severity} tone={severityTone(event.severity)} label={tOr(`audit.security.severity.${event.severity}`, event.severity)} />,
+            cell: (event) => (
+                <StatusBadge
+                    status={event.severity}
+                    tone={severityTone(event.severity)}
+                    label={tOr(
+                        `audit.security.severity.${event.severity}`,
+                        event.severity,
+                    )}
+                />
+            ),
         },
         {
             key: 'user',
@@ -81,22 +136,48 @@ export default function SecurityEventsIndex({ events, types, criticalCount }: Pr
                 event.user ? (
                     <span className="grid">
                         {canViewUsers ? (
-                            <Link href={userShow(event.user.id).url} className="font-medium hover:underline">
+                            <Link
+                                href={userShow(event.user.id).url}
+                                className="font-medium hover:underline"
+                            >
                                 {event.user.name}
                             </Link>
                         ) : (
-                            <span className="font-medium">{event.user.name}</span>
+                            <span className="font-medium">
+                                {event.user.name}
+                            </span>
                         )}
-                        <span className="text-xs text-muted-foreground" dir="ltr">
+                        <span
+                            className="text-xs text-muted-foreground"
+                            dir="ltr"
+                        >
                             {event.user.email}
                         </span>
                     </span>
                 ) : (
-                    <span className="text-muted-foreground">{t('audit.security.no_user')}</span>
+                    <span className="text-muted-foreground">
+                        {t('audit.security.no_user')}
+                    </span>
                 ),
         },
-        { key: 'ip_address', header: t('audit.security.columns.ip'), cell: (event) => (event.ip_address ? <Code className="text-[0.7rem]">{event.ip_address}</Code> : <span className="text-muted-foreground">—</span>) },
-        { key: 'meta', header: t('audit.security.columns.details'), hideOnMobile: true, cell: (event) => <MetaSummary meta={event.meta} limit={4} className="max-w-80" /> },
+        {
+            key: 'ip_address',
+            header: t('audit.security.columns.ip'),
+            cell: (event) =>
+                event.ip_address ? (
+                    <Code className="text-[0.7rem]">{event.ip_address}</Code>
+                ) : (
+                    <span className="text-muted-foreground">—</span>
+                ),
+        },
+        {
+            key: 'meta',
+            header: t('audit.security.columns.details'),
+            hideOnMobile: true,
+            cell: (event) => (
+                <MetaSummary meta={event.meta} limit={4} className="max-w-80" />
+            ),
+        },
     ];
 
     return (
@@ -110,7 +191,10 @@ export default function SecurityEventsIndex({ events, types, criticalCount }: Pr
                         can('audit.view') ? (
                             <Button variant="outline" asChild>
                                 <Link href={auditIndex().url}>
-                                    <FileSearch className="size-4" aria-hidden="true" />
+                                    <FileSearch
+                                        className="size-4"
+                                        aria-hidden="true"
+                                    />
                                     {t('audit.security.audit_link')}
                                 </Link>
                             </Button>
@@ -121,10 +205,24 @@ export default function SecurityEventsIndex({ events, types, criticalCount }: Pr
                     <InlineAlert
                         tone="danger"
                         icon={ShieldAlert}
-                        title={t('audit.security.critical_banner', { count: formatNumber(criticalCount, 0) })}
+                        title={t('audit.security.critical_banner', {
+                            count: formatNumber(criticalCount, 0),
+                        })}
                         action={
-                            <Button size="sm" variant={criticalOnly ? 'outline' : 'destructive'} onClick={() => query.patch({ critical: criticalOnly ? null : '1' })}>
-                                {criticalOnly ? t('audit.security.show_all') : t('audit.security.show_critical')}
+                            <Button
+                                size="sm"
+                                variant={
+                                    criticalOnly ? 'outline' : 'destructive'
+                                }
+                                onClick={() =>
+                                    query.patch({
+                                        critical: criticalOnly ? null : '1',
+                                    })
+                                }
+                            >
+                                {criticalOnly
+                                    ? t('audit.security.show_all')
+                                    : t('audit.security.show_critical')}
                             </Button>
                         }
                     />
@@ -139,7 +237,11 @@ export default function SecurityEventsIndex({ events, types, criticalCount }: Pr
                     emptyTitle={t('audit.security.empty.title')}
                     emptyDescription={t('audit.security.empty.description')}
                     caption={t('audit.security.title')}
-                    rowClassName={(event) => (event.severity === 'critical' ? 'bg-danger-soft/20' : undefined)}
+                    rowClassName={(event) =>
+                        event.severity === 'critical'
+                            ? 'bg-danger-soft/20'
+                            : undefined
+                    }
                     dense
                 />
             </div>

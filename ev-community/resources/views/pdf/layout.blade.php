@@ -24,6 +24,8 @@
         .text-start { text-align: {{ $isRtl ? 'right' : 'left' }}; }
         .text-end { text-align: {{ $isRtl ? 'left' : 'right' }}; }
         .text-center { text-align: center; }
+        .nowrap, .money { white-space: nowrap; }
+        .money { direction: ltr; }
         table.header, table.footer { width: 100%; border-collapse: collapse; }
         table.header td { padding: 0 0 6pt; border-bottom: 1.5pt solid #0F766E; vertical-align: bottom; }
         table.footer td { padding: 6pt 0 0; border-top: 0.75pt solid #CBD5E1; color: #64748B; font-size: 8pt; }

@@ -57,6 +57,7 @@ import {
 import { toastFirstError } from '@/features/integrations/errors';
 import { IntegrationsTabs } from '@/features/integrations/integrations-tabs';
 import { JsonBlock } from '@/features/integrations/json-block';
+import { ProviderName } from '@/features/integrations/provider-name';
 import type {
     GeocodeResult,
     IntegrationEventRow,
@@ -821,7 +822,7 @@ function RecentActivity({ events }: { events: IntegrationEventRow[] }) {
         {
             key: 'provider',
             header: t('integrations.events.columns.provider'),
-            cell: (row) => t(`integrations.categories.${row.provider}`),
+            cell: (row) => <ProviderName provider={row.provider} />,
         },
         {
             key: 'direction',

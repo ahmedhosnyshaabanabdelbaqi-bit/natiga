@@ -10,7 +10,15 @@ export function roleName(slug: string, roles: RoleOption[]): string {
 }
 
 /** Role chips (member role hidden: it is managed by membership, not by the admin). */
-export function RoleBadges({ slugs, roles, className }: { slugs: string[]; roles: RoleOption[]; className?: string }) {
+export function RoleBadges({
+    slugs,
+    roles,
+    className,
+}: {
+    slugs: string[];
+    roles: RoleOption[];
+    className?: string;
+}) {
     const visible = slugs.filter((slug) => slug !== 'member');
     if (visible.length === 0) {
         return <span className="text-muted-foreground">—</span>;
@@ -20,8 +28,14 @@ export function RoleBadges({ slugs, roles, className }: { slugs: string[]; roles
             {visible.map((slug) => {
                 const role = roles.find((candidate) => candidate.slug === slug);
                 return (
-                    <Badge key={slug} variant={role?.is_super ? 'default' : 'secondary'} className="gap-1 font-normal">
-                        {role?.is_super ? <Crown className="size-3" aria-hidden="true" /> : null}
+                    <Badge
+                        key={slug}
+                        variant={role?.is_super ? 'default' : 'secondary'}
+                        className="gap-1 font-normal"
+                    >
+                        {role?.is_super ? (
+                            <Crown className="size-3" aria-hidden="true" />
+                        ) : null}
                         {roleName(slug, roles)}
                     </Badge>
                 );

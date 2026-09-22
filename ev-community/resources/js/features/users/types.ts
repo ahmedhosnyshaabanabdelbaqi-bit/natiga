@@ -1,4 +1,8 @@
-import type { LocalizedLabel, SecurityEventRow, SessionRow } from '@/features/system/types';
+import type {
+    LocalizedLabel,
+    SecurityEventRow,
+    SessionRow,
+} from '@/features/system/types';
 
 export type RoleOption = {
     slug: string;
@@ -6,21 +10,31 @@ export type RoleOption = {
     name_en: string;
     is_super: boolean;
     is_system?: boolean;
-    portal: 'admin' | 'partner' | 'member' | string;
+    /** admin | partner | member */
+    portal: string;
     /** Whether the current actor may grant this role (UI hint; enforced on the server). */
     grantable?: boolean;
 };
 
-export type PermissionOption = { key: string; label: LocalizedLabel; grantable?: boolean };
+export type PermissionOption = {
+    key: string;
+    label: LocalizedLabel;
+    grantable?: boolean;
+};
 
-export type PermissionGroup = { module: string; label: LocalizedLabel; permissions: PermissionOption[] };
+export type PermissionGroup = {
+    module: string;
+    label: LocalizedLabel;
+    permissions: PermissionOption[];
+};
 
 export type StaffUserSummary = {
     id: string;
     name: string;
     email: string;
     mobile: string | null;
-    status: 'active' | 'disabled' | string;
+    /** active | disabled */
+    status: string;
     preferred_locale: string;
     roles: string[];
     is_super: boolean;

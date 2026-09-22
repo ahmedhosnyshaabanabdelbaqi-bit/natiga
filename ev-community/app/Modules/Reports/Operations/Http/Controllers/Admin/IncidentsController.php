@@ -13,6 +13,7 @@ use App\Modules\Reports\Operations\Models\Enums\IncidentStatus;
 use App\Modules\Reports\Operations\Models\Incident;
 use App\Modules\Reports\Operations\Models\IncidentEvent;
 use App\Modules\Reports\Operations\Services\IncidentManager;
+use App\Modules\System\Http\PerPage;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
@@ -56,7 +57,7 @@ class IncidentsController extends Controller
         }
 
         return Inertia::render('admin/incidents/index', [
-            'incidents' => $query->orderByDesc('started_at')->orderByDesc('id')->paginate(in_array((int) $request->query('per_page', 25), [15, 25, 50, 100], true) ? (int) $request->query('per_page') : 25)->withQueryString()->through(fn (Incident $i) => $this->summary($i)),
+            'incidents' => $query->orderByDesc('started_at')->orderByDesc('id')->paginate(PerPage::from($request))->withQueryString()->through(fn (Incident $i) => $this->summary($i)),
             'filters' => $filters + ['status' => $status],
             'owners' => $this->owners(),
             'severities' => ExceptionSeverity::values(),

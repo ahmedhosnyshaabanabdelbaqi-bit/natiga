@@ -70,7 +70,8 @@ class InstallCommand extends Command
                 'status' => User::STATUS_ACTIVE,
                 'email_verified_at' => now(),
             ]);
-            $user->forceFill(['password_changed_at' => now()])->save();
+            // Not mass-assignable on User: the installer vouches for the address it was given.
+            $user->forceFill(['password_changed_at' => now(), 'email_verified_at' => now()])->save();
             $user->assignRole('owner');
             app(PermissionRegistrar::class)->forgetCachedPermissions();
             $audit->log('users.created', $user, new: ['email' => $user->email, 'roles' => ['owner'], 'source' => 'ev:install'], actorType: 'system');

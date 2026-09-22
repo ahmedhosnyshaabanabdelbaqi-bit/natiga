@@ -12,6 +12,7 @@ import { useEffect, useEffectEvent, useState } from 'react';
 import { DateTime } from '@/components/shared/date-time';
 import { FormField } from '@/components/shared/form-field';
 import { InlineAlert } from '@/components/shared/inline-alert';
+import { QrScanner } from '@/components/shared/qr-scanner';
 import { SectionCard } from '@/components/shared/section-card';
 import { Button } from '@/components/ui/button';
 import { Code } from '@/components/ui/code';
@@ -27,7 +28,6 @@ import { Spinner } from '@/components/ui/spinner';
 import { t } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 import type { RouteDefinition } from '@/wayfinder';
-import { QrScanner } from './qr-scanner';
 import { MembershipStatusBadge } from './status';
 import type { Option, VerifyOutcome, VerifyResponse } from './types';
 
@@ -139,7 +139,14 @@ export function VerifyPanel({ action, purposes, audience }: Props) {
                             </Select>
                         )}
                     </FormField>
-                    <QrScanner onScan={onScan} disabled={http.processing} />
+                    {/* Scanning pauses while a request runs and while a result is shown ("scan again" resumes),
+                        so a card held in front of the camera is verified and logged once. */}
+                    <QrScanner
+                        onScan={onScan}
+                        paused={http.processing || result !== null}
+                        manualEntry={false}
+                        autoStart={false}
+                    />
                     <FormField
                         label={t('members.admin.scan.token')}
                         hint={t('members.admin.scan.manual')}

@@ -9,6 +9,7 @@ use App\Modules\Auth\Services\SessionManager;
 use App\Modules\Members\Events\MemberAnonymized;
 use App\Modules\Members\Models\AccountDeletionRequest;
 use App\Modules\Members\Models\Enums\DeletionRequestStatus;
+use App\Modules\Members\Models\Membership;
 use App\Support\Exceptions\DomainException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -19,8 +20,8 @@ use Illuminate\Support\Str;
  *
  * What changes: name → 'Deleted Member', email → deleted-{id}@anonymized.local, mobile → null,
  * password/MFA/passkeys/API tokens/remember token/password-reset tokens cleared, account disabled,
- * every session ended, membership QR secret rotated (all issued cards stop verifying) and the free-text
- * referral source / legacy notes cleared. Other modules purge their own PII copies on MemberAnonymized.
+ * every session ended, membership QR secret rotated (all issued cards stop verifying), referral code replaced
+ * (the old code stops admitting registrations) and the free-text referral source / legacy notes cleared. Other modules purge their own PII copies on MemberAnonymized.
  * Idempotent: completing an already completed request returns it unchanged.
  */
 final class AnonymizeMember
@@ -76,7 +77,9 @@ final class AnonymizeMember
             if ($membership) {
                 // Invalidate every QR token ever issued for this card; keep the membership row.
                 $membership->rotateVerificationToken();
-                $membership->forceFill(['referral_source' => null, 'notes' => null])->save();
+                // A fresh referral code: the old one is tied to the erased person and must stop admitting new
+                // registrations (past referrals keep `member_referrals.referral_code_used`).
+                $membership->forceFill(['referral_source' => null, 'notes' => null, 'referral_code' => Membership::generateReferralCode()])->save();
             }
 
             $locked->forceFill([

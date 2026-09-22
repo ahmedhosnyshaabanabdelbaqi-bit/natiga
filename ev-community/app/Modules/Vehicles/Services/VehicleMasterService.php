@@ -74,7 +74,7 @@ final class VehicleMasterService
             throw DomainException::because('vehicles.errors.in_use');
         }
         DB::transaction(function () use ($make, $actor) {
-            $this->audit->log('vehicles.master_changed', $make, old: $make->only(['slug', 'name_en']), new: ['deleted' => true], actor: $actor);
+            $this->audit->log('vehicles.master_changed', $make, old: $make->only(['slug', 'name_en']), new: ['deleted' => true], actor: $actor, entityLabel: $this->labelOf($make));
             if ($make->logo_path) {
                 $this->discardLogo($make);
             }
@@ -124,7 +124,7 @@ final class VehicleMasterService
             throw DomainException::because('vehicles.errors.in_use');
         }
         DB::transaction(function () use ($model, $actor) {
-            $this->audit->log('vehicles.master_changed', $model, old: $model->only(['slug', 'name_en', 'vehicle_make_id']), new: ['deleted' => true], actor: $actor);
+            $this->audit->log('vehicles.master_changed', $model, old: $model->only(['slug', 'name_en', 'vehicle_make_id']), new: ['deleted' => true], actor: $actor, entityLabel: $this->labelOf($model));
             $model->delete();
             $this->data->flush();
         });
@@ -180,7 +180,7 @@ final class VehicleMasterService
             throw DomainException::because('vehicles.errors.in_use');
         }
         DB::transaction(function () use ($variant, $actor) {
-            $this->audit->log('vehicles.master_changed', $variant, old: $variant->only(['name_en', 'vehicle_model_id']), new: ['deleted' => true], actor: $actor);
+            $this->audit->log('vehicles.master_changed', $variant, old: $variant->only(['name_en', 'vehicle_model_id']), new: ['deleted' => true], actor: $actor, entityLabel: $this->labelOf($variant));
             $variant->delete();
             $this->data->flush();
         });
@@ -211,7 +211,7 @@ final class VehicleMasterService
             throw DomainException::because('vehicles.errors.in_use');
         }
         DB::transaction(function () use ($battery, $actor) {
-            $this->audit->log('vehicles.master_changed', $battery, old: $battery->only(['name', 'capacity_kwh']), new: ['deleted' => true], actor: $actor);
+            $this->audit->log('vehicles.master_changed', $battery, old: $battery->only(['name', 'capacity_kwh']), new: ['deleted' => true], actor: $actor, entityLabel: $this->labelOf($battery));
             $battery->delete();
             $this->data->flush();
         });
@@ -301,17 +301,49 @@ final class VehicleMasterService
         return DB::transaction(function () use ($entity, $actor) {
             $old = (bool) $entity->getAttribute('is_active');
             $entity->forceFill(['is_active' => ! $old])->save();
-            $this->audit->log('vehicles.master_changed', $entity, old: ['is_active' => $old], new: ['is_active' => ! $old], actor: $actor);
+            $this->audit->log('vehicles.master_changed', $entity, old: ['is_active' => $old], new: ['is_active' => ! $old], actor: $actor, entityLabel: $this->labelOf($entity));
             $this->data->flush();
 
             return $entity;
         });
     }
 
+    /**
+     * Audits only the changed keys. The label is passed explicitly: the master-data models expose a
+     * `name()` helper, so the audit service must not try to read a `name` attribute from them.
+     */
     private function logChange(Model $entity, array $before, array $after, User $actor): void
     {
-        $this->audit->logChanges('vehicles.master_changed', $entity, $before, $after, actor: $actor);
+        $old = [];
+        $new = [];
+        foreach ($after as $key => $value) {
+            $previous = $before[$key] ?? null;
+            if ($this->normalize($previous) !== $this->normalize($value)) {
+                $old[$key] = $this->normalize($previous);
+                $new[$key] = $this->normalize($value);
+            }
+        }
+        if ($new !== []) {
+            $this->audit->log('vehicles.master_changed', $entity, old: $old, new: $new, actor: $actor, entityLabel: $this->labelOf($entity));
+        }
         $this->data->flush();
+    }
+
+    private function normalize(mixed $value): mixed
+    {
+        return $value instanceof \BackedEnum ? $value->value : $value;
+    }
+
+    private function labelOf(Model $entity): string
+    {
+        $label = match (true) {
+            $entity instanceof VehicleMake, $entity instanceof VehicleModel, $entity instanceof VehicleVariant => (string) $entity->getAttribute('name_en'),
+            $entity instanceof ConnectorType => (string) $entity->code,
+            $entity instanceof BatteryVariant => (string) $entity->name,
+            default => (string) $entity->getKey(),
+        };
+
+        return mb_substr($label, 0, 255);
     }
 
     /** Removes the current logo after commit (attachment row + files, or a legacy public-disk path). */

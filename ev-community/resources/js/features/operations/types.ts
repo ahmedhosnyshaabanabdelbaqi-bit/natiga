@@ -1,6 +1,11 @@
 export type Severity = 'p0' | 'p1' | 'p2' | 'p3';
 export type ExceptionStatus = 'open' | 'assigned' | 'resolved' | 'ignored';
-export type IncidentStatus = 'open' | 'investigating' | 'mitigated' | 'resolved' | 'closed';
+export type IncidentStatus =
+    | 'open'
+    | 'investigating'
+    | 'mitigated'
+    | 'resolved'
+    | 'closed';
 
 export type PersonRef = { id: string; name: string };
 
@@ -36,7 +41,15 @@ export type IncidentSummary = {
     created_at: string | null;
 };
 
-export type IncidentReview = Partial<Record<'what_went_well' | 'what_went_wrong' | 'action_items' | 'timeline_summary', string>>;
+export type IncidentReview = Partial<
+    Record<
+        | 'what_went_well'
+        | 'what_went_wrong'
+        | 'action_items'
+        | 'timeline_summary',
+        string
+    >
+>;
 
 export type IncidentDetail = IncidentSummary & {
     impact: string | null;
@@ -49,7 +62,8 @@ export type IncidentDetail = IncidentSummary & {
 
 export type IncidentEventRow = {
     id: number;
-    type: 'created' | 'note' | 'status_changed' | 'review_updated' | 'owner_changed' | 'updated' | string;
+    /** created | note | status_changed | review_updated | owner_changed | updated */
+    type: string;
     message: string | null;
     meta: Record<string, unknown> | null;
     author: string | null;

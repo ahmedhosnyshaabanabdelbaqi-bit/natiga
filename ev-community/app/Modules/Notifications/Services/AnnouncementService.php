@@ -91,7 +91,7 @@ final class AnnouncementService
                 throw DomainException::because('notifications.errors.campaign_not_sendable');
             }
             $this->assertChannelsConfigured($campaign->channels);
-            if ($campaign->status !== CampaignStatus::Failed && $this->estimate($campaign->audience_type, $campaign->audience_params ?? []) === 0) {
+            if ($campaign->status !== CampaignStatus::Failed && $this->storedAudienceCount($campaign) === 0) {
                 throw DomainException::because('notifications.errors.no_recipients', [], 'audience_type');
             }
             $old = $campaign->status->value;
@@ -114,7 +114,7 @@ final class AnnouncementService
                 throw DomainException::because('notifications.errors.schedule_in_past', [], 'scheduled_at');
             }
             $this->assertChannelsConfigured($campaign->channels);
-            if ($this->estimate($campaign->audience_type, $campaign->audience_params ?? []) === 0) {
+            if ($this->storedAudienceCount($campaign) === 0) {
                 throw DomainException::because('notifications.errors.no_recipients', [], 'audience_type');
             }
             $old = ['status' => $campaign->status->value, 'scheduled_at' => $campaign->scheduled_at?->toIso8601String()];
@@ -217,6 +217,15 @@ final class AnnouncementService
         }
 
         return $campaign;
+    }
+
+    /**
+     * Current size of a saved campaign's audience. The stored params were validated when the campaign was saved; they
+     * are not re-validated here (a member suspended since then is simply no longer counted, not an error).
+     */
+    public function storedAudienceCount(AnnouncementCampaign $campaign): int
+    {
+        return AnnouncementAudiences::count($campaign->audience_type, $campaign->audience_params ?? []);
     }
 
     /** @param  array<string, mixed>  $params */

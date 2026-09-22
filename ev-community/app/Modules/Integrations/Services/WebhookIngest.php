@@ -32,6 +32,9 @@ final class WebhookIngest
 
     private const MAX_RAW_BYTES = 262_144; // 256 KB stored at most
 
+    /** A verified event still `received` this long after arrival was never picked up by a worker. */
+    public const STALE_RECEIVED_MINUTES = 5;
+
     public function __construct(private readonly IntegrationManager $manager) {}
 
     /** @return array{outcome: string, event: ?WebhookEvent} */
@@ -84,6 +87,14 @@ final class WebhookIngest
         } catch (UniqueConstraintViolationException) {
             $existing = WebhookEvent::query()->where('provider', $category)->where('fingerprint', $fingerprint)->first();
             IntegrationEvents::record($category, 'inbound', 'webhook.duplicate', IntegrationEventStatus::Success, null, null, ['driver' => $driver, 'event_type' => $identity->eventType, 'signature_valid' => $valid], $identity->externalEventId);
+            if ($valid && $existing?->signature_valid === true && $existing->status === WebhookEventStatus::Received
+                // Compared in SQL (same timestamp handling on both sides of the comparison).
+                && WebhookEvent::query()->whereKey($existing->id)->where('received_at', '<', now()->subMinutes(self::STALE_RECEIVED_MINUTES))->exists()) {
+                // Stored earlier but never processed (e.g. the queue was unreachable when it first arrived and
+                // the provider got a 5xx): the provider's redelivery queues it again. Safe — the job is
+                // idempotent and serialised per event.
+                ProcessWebhookEventJob::dispatch($existing->id);
+            }
 
             return ['outcome' => $existing?->signature_valid === false || ! $valid ? self::REJECTED : self::DUPLICATE, 'event' => $existing];
         }

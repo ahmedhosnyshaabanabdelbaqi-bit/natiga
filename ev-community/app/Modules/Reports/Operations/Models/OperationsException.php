@@ -7,6 +7,7 @@ use App\Modules\Reports\Operations\Models\Enums\ExceptionCategory;
 use App\Modules\Reports\Operations\Models\Enums\ExceptionSeverity;
 use App\Modules\Reports\Operations\Models\Enums\ExceptionStatus;
 use App\Support\Concerns\HasPublicId;
+use Carbon\CarbonImmutable;
 use Database\Factories\Reports\OperationsExceptionFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -24,8 +25,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $dedup_key
  * @property ExceptionStatus $status
  * @property int|null $assigned_to
- * @property \Carbon\CarbonImmutable $detected_at
- * @property \Carbon\CarbonImmutable|null $resolved_at
+ * @property CarbonImmutable $detected_at
+ * @property CarbonImmutable|null $resolved_at
  * @property int|null $resolved_by
  * @property string|null $resolution
  * @property int $occurrences

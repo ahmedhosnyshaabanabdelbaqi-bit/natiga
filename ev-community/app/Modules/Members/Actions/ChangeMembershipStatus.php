@@ -26,7 +26,14 @@ final class ChangeMembershipStatus
 {
     public function __construct(private AuditService $audit, private SessionManager $sessions) {}
 
-    public function execute(Membership $membership, MembershipStatus $to, ?User $actor, ?string $reason = null): Membership
+    /**
+     * @param  MembershipStatus[]|null  $expectedFrom  when given, the transition is only applied from one of these
+     *                                                 statuses (checked under the row lock). Each admin endpoint passes
+     *                                                 its own source statuses so that, e.g., `reactivate`
+     *                                                 (members.suspend) can never approve a pending membership and
+     *                                                 `approve` (members.approve) can never lift a suspension.
+     */
+    public function execute(Membership $membership, MembershipStatus $to, ?User $actor, ?string $reason = null, ?array $expectedFrom = null): Membership
     {
         $reason = $reason !== null ? trim($reason) : null;
         if ($reason === '') {
@@ -36,14 +43,14 @@ final class ChangeMembershipStatus
             throw DomainException::because('core.errors.reason_required', field: 'reason');
         }
 
-        return DB::transaction(function () use ($membership, $to, $actor, $reason) {
+        return DB::transaction(function () use ($membership, $to, $actor, $reason, $expectedFrom) {
             /** @var Membership $locked */
             $locked = Membership::query()->whereKey($membership->id)->lockForUpdate()->firstOrFail();
             $from = $locked->status;
             if ($from === $to) {
                 return $locked; // idempotent
             }
-            if (! $from->canTransitionTo($to)) {
+            if (! $from->canTransitionTo($to) || ($expectedFrom !== null && ! in_array($from, $expectedFrom, true))) {
                 throw DomainException::because('core.errors.invalid_state_transition', ['from' => $from->label(), 'to' => $to->label()], 'status');
             }
 

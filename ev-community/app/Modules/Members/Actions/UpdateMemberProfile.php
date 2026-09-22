@@ -4,6 +4,7 @@ namespace App\Modules\Members\Actions;
 
 use App\Models\User;
 use App\Modules\Audit\Services\AuditService;
+use App\Modules\Audit\Services\SecurityEvents;
 use App\Modules\Members\Models\Membership;
 use Illuminate\Support\Facades\DB;
 
@@ -37,8 +38,13 @@ final class UpdateMemberProfile
                 $userData['name'] = trim((string) $userData['name']);
             }
             $user->fill($userData);
-            if ($user->isDirty('email')) {
+            $emailChanged = $user->isDirty('email');
+            $previousEmail = $user->getOriginal('email');
+            if ($emailChanged) {
                 $user->email_verified_at = null;
+            }
+            if ($user->isDirty('mobile')) {
+                $user->mobile_verified_at = null; // a new number is unverified until confirmed again
             }
             $user->save();
 
@@ -47,6 +53,13 @@ final class UpdateMemberProfile
 
             $after = $user->only(self::USER_FIELDS) + $membership->only(self::MEMBERSHIP_FIELDS);
             $this->audit->logChanges('members.profile_updated', $membership, $before, $after, $reason, $actor);
+            if ($emailChanged) {
+                // A reset link mailed to the previous address must not outlive the change.
+                DB::table('password_reset_tokens')->where('email', $previousEmail)->delete();
+                if ($actor->id !== $user->id) {
+                    SecurityEvents::record($user, 'email_changed_by_admin', ['by' => $actor->id], 'warning');
+                }
+            }
 
             return $membership;
         });

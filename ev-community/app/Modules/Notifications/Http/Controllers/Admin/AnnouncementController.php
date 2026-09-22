@@ -70,8 +70,8 @@ class AnnouncementController extends Controller
         return Inertia::render('admin/notifications/show', [
             'campaign' => $this->announcements->present($campaign, withParams: true),
             'stats' => $this->announcements->recipientStats($campaign),
+            'audienceCount' => in_array($campaign->status, [CampaignStatus::Draft, CampaignStatus::Scheduled], true) ? $this->announcements->storedAudienceCount($campaign) : null,
             'canManage' => $user->can('create', AnnouncementCampaign::class),
-            'channels' => Channels::options(),
         ]);
     }
 

@@ -15,7 +15,12 @@ import { edit, index as usersIndex, show, update } from '@/routes/admin/users';
 type Props = UserFormProps & { user: StaffUserDetail };
 
 export default function UsersEdit({ user, locales }: Props) {
-    const form = useForm<ProfileData>({ name: user.name, email: user.email, mobile: user.mobile ?? '', preferred_locale: user.preferred_locale });
+    const form = useForm<ProfileData>({
+        name: user.name,
+        email: user.email,
+        mobile: user.mobile ?? '',
+        preferred_locale: user.preferred_locale,
+    });
     const errors = form.errors as Record<string, string | undefined>;
 
     return (
@@ -29,20 +34,44 @@ export default function UsersEdit({ user, locales }: Props) {
                 }}
                 noValidate
             >
-                <PageHeader title={t('users.edit.title', { name: user.name })} description={t('users.edit.description')} />
-                {errors.domain ? <InlineAlert tone="danger">{errors.domain}</InlineAlert> : null}
+                <PageHeader
+                    title={t('users.edit.title', { name: user.name })}
+                    description={t('users.edit.description')}
+                />
+                {errors.domain ? (
+                    <InlineAlert tone="danger">{errors.domain}</InlineAlert>
+                ) : null}
                 <SectionCard>
                     <div className="grid gap-4">
-                        <ProfileFields data={form.data} errors={form.errors} onChange={(key, value) => form.setData(key, value)} locales={locales} />
-                        {form.data.email.trim().toLowerCase() !== user.email.toLowerCase() ? <InlineAlert tone="warning">{t('users.edit.email_notice')}</InlineAlert> : null}
+                        <ProfileFields
+                            data={form.data}
+                            errors={form.errors}
+                            onChange={(key, value) => form.setData(key, value)}
+                            locales={locales}
+                        />
+                        {form.data.email.trim().toLowerCase() !==
+                        user.email.toLowerCase() ? (
+                            <InlineAlert tone="warning">
+                                {t('users.edit.email_notice')}
+                            </InlineAlert>
+                        ) : null}
                     </div>
                 </SectionCard>
                 <FormActions>
                     <Button type="button" variant="ghost" asChild>
-                        <Link href={show(user.id).url}>{t('core.actions.cancel')}</Link>
+                        <Link href={show(user.id).url}>
+                            {t('core.actions.cancel')}
+                        </Link>
                     </Button>
-                    <Button type="submit" disabled={form.processing || !form.isDirty}>
-                        {form.processing ? <Spinner /> : <Save className="size-4" aria-hidden="true" />}
+                    <Button
+                        type="submit"
+                        disabled={form.processing || !form.isDirty}
+                    >
+                        {form.processing ? (
+                            <Spinner />
+                        ) : (
+                            <Save className="size-4" aria-hidden="true" />
+                        )}
                         {t('core.actions.save')}
                     </Button>
                 </FormActions>

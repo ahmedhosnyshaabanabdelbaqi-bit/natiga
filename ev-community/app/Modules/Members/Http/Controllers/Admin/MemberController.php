@@ -71,15 +71,18 @@ class MemberController extends Controller
     public function bulkApprove(BulkApproveRequest $request, ChangeMembershipStatus $action): RedirectResponse
     {
         $approved = 0;
-        $skipped = 0;
-        Membership::query()->whereIn('public_id', $request->validated('ids'))->get()->each(function (Membership $membership) use ($request, $action, &$approved, &$skipped) {
-            if ($membership->status !== MembershipStatus::Pending) {
+        $ids = array_values(array_unique($request->validated('ids')));
+        $found = Membership::query()->with('user')->whereIn('public_id', $ids)->get();
+        $skipped = count($ids) - $found->count(); // unknown ids are reported as skipped, never silently dropped
+        $found->each(function (Membership $membership) use ($request, $action, &$approved, &$skipped) {
+            // Same per-record policy as the single approve endpoint (no self-approval, no super accounts).
+            if ($membership->status !== MembershipStatus::Pending || ! $request->user()->can('approve', $membership)) {
                 $skipped++;
 
                 return;
             }
             try {
-                $action->execute($membership, MembershipStatus::Active, $request->user(), $request->validated('reason'));
+                $action->execute($membership, MembershipStatus::Active, $request->user(), $request->validated('reason'), [MembershipStatus::Pending]);
                 $approved++;
             } catch (DomainException) {
                 $skipped++;
@@ -91,7 +94,7 @@ class MemberController extends Controller
 
     public function resendVerification(Request $request, Membership $membership, AuditService $audit): RedirectResponse
     {
-        Gate::authorize('update', $membership);
+        Gate::authorize('resendVerification', $membership);
         $user = $membership->user;
         if ($user->hasVerifiedEmail()) {
             return back()->with('warning', __('members.flash.already_verified'));

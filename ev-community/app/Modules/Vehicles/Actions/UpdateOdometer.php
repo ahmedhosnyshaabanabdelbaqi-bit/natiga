@@ -8,7 +8,7 @@ use App\Modules\Vehicles\Models\Enums\OdometerSource;
 use App\Modules\Vehicles\Models\MemberVehicle;
 use App\Modules\Vehicles\Models\VehicleOdometerEntry;
 use App\Support\Exceptions\DomainException;
-use Illuminate\Support\Carbon;
+use Carbon\CarbonInterface;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -20,15 +20,21 @@ final class UpdateOdometer
 {
     public function __construct(private AuditService $audit) {}
 
-    public function execute(MemberVehicle $vehicle, User $actor, int $odometerKm, ?string $reason = null, OdometerSource $source = OdometerSource::Manual, ?Carbon $recordedAt = null): VehicleOdometerEntry
+    /**
+     * @param  CarbonInterface|null  $recordedAt  null = a reading taken now (becomes the current one). A past date backfills
+     *                                            history (service records, imports) and only becomes current when it is
+     *                                            not older than the vehicle's current reading.
+     */
+    public function execute(MemberVehicle $vehicle, User $actor, int $odometerKm, ?string $reason = null, OdometerSource $source = OdometerSource::Manual, ?CarbonInterface $recordedAt = null): VehicleOdometerEntry
     {
         if ($odometerKm < 0) {
             throw DomainException::because('garage.odometer.invalid', field: 'odometer_km');
         }
-        $reason = $reason !== null ? trim($reason) : null;
+        $reason = $reason !== null && trim($reason) !== '' ? trim($reason) : null;
+        $backfill = $recordedAt !== null;
         $recordedAt ??= now();
 
-        return DB::transaction(function () use ($vehicle, $actor, $odometerKm, $reason, $source, $recordedAt) {
+        return DB::transaction(function () use ($vehicle, $actor, $odometerKm, $reason, $source, $recordedAt, $backfill) {
             $vehicle = MemberVehicle::query()->whereKey($vehicle->id)->lockForUpdate()->firstOrFail();
             $previous = $vehicle->odometer_km;
 
@@ -37,7 +43,12 @@ final class UpdateOdometer
                 throw DomainException::because('garage.odometer.inactive', field: 'odometer_km');
             }
 
-            if ($previous !== null && $odometerKm < $previous && ($reason === null || mb_strlen($reason) < 5)) {
+            $becomesCurrent = ! $backfill
+                || $vehicle->odometer_updated_at === null
+                || $recordedAt->greaterThanOrEqualTo($vehicle->odometer_updated_at);
+
+            // A new current reading lower than the previous one needs an explanation (typo, odometer replaced...).
+            if ($becomesCurrent && $previous !== null && $odometerKm < $previous && ($reason === null || mb_strlen($reason) < 5)) {
                 throw DomainException::because('garage.odometer.decrease_requires_reason', ['previous' => $previous], 'reason');
             }
 
@@ -45,16 +56,18 @@ final class UpdateOdometer
                 'odometer_km' => $odometerKm,
                 'source' => $source,
                 'recorded_at' => $recordedAt,
-                'note' => $reason !== '' ? $reason : null,
+                'note' => $reason,
                 'created_by' => $actor->id,
             ]);
 
-            // The vehicle keeps the most recent reading by date (imports may backfill older entries).
-            if ($vehicle->odometer_updated_at === null || $recordedAt->greaterThanOrEqualTo($vehicle->odometer_updated_at)) {
+            if ($becomesCurrent) {
                 $vehicle->forceFill(['odometer_km' => $odometerKm, 'odometer_updated_at' => $recordedAt])->save();
             }
 
-            $this->audit->log('vehicles.odometer_updated', $vehicle, old: ['odometer_km' => $previous], new: ['odometer_km' => $odometerKm, 'source' => $source->value], reason: $reason, actor: $actor, entityLabel: $vehicle->displayName());
+            $this->audit->log('vehicles.odometer_updated', $vehicle,
+                old: ['odometer_km' => $previous],
+                new: ['odometer_km' => $odometerKm, 'source' => $source->value, 'current' => $becomesCurrent],
+                reason: $reason, actor: $actor, entityLabel: $vehicle->displayName());
 
             return $entry;
         });

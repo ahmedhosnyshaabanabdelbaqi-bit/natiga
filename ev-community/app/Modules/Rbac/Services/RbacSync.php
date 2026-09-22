@@ -20,11 +20,13 @@ final class RbacSync
     {
         $created = ['permissions' => 0, 'roles' => 0];
         $registry = PermissionRegistry::permissions();
+        $newPermissions = [];
 
         foreach (array_keys($registry) as $name) {
             $permission = Permission::query()->firstOrCreate(['name' => $name, 'guard_name' => 'web']);
             if ($permission->wasRecentlyCreated) {
                 $created['permissions']++;
+                $newPermissions[] = $name;
             }
         }
 
@@ -38,8 +40,9 @@ final class RbacSync
             } elseif ($reset || PermissionRegistry::isSuperRole($slug)) {
                 $role->syncPermissions($grants[$slug]);
             } else {
-                $existing = $role->permissions->pluck('name')->all();
-                $role->givePermissionTo(array_diff($grants[$slug], $existing));
+                // Only permissions that did not exist before this run are granted to their default roles; a default
+                // permission an admin removed from a role stays removed (use --reset to restore registry defaults).
+                $role->givePermissionTo(array_values(array_intersect($grants[$slug], $newPermissions)));
             }
 
             if ($hasMeta) {

@@ -9,6 +9,7 @@ use App\Modules\Members\Models\MemberNote;
 use App\Modules\Members\Models\Membership;
 use App\Modules\Members\Models\MembershipStatusHistory;
 use App\Modules\Members\Models\MembershipVerification;
+use App\Modules\Members\Policies\MembershipPolicy;
 use App\Modules\Referrals\Models\MemberReferral;
 use App\Modules\Referrals\Services\ReferralService;
 
@@ -24,7 +25,7 @@ final class MemberDetails
         $user = $membership->user;
 
         return [
-            'membership' => $this->membership($membership),
+            'membership' => $this->membership($membership) + ['abilities' => MembershipPolicy::abilitiesFor($viewer, $membership)],
             'history' => $membership->statusHistory->map(fn (MembershipStatusHistory $h) => [
                 'id' => $h->id,
                 'from' => $h->from_status,

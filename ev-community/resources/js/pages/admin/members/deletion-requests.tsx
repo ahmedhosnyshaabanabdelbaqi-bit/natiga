@@ -33,6 +33,8 @@ import { index as membersIndex, show } from '@/routes/admin/members';
 import type { Paginated } from '@/types/pagination';
 
 type Row = DeletionRequestSummary & {
+    /** Server policy: members.delete_requests and not the viewer's own request. */
+    can_process: boolean;
     user: {
         name: string;
         email: string;
@@ -193,7 +195,7 @@ export default function AdminDeletionRequests({
             align: 'end',
             required: true,
             cell: (row) =>
-                isOpen(row) ? (
+                isOpen(row) && row.can_process ? (
                     <div className="flex flex-wrap justify-end gap-1.5">
                         {row.status === 'requested' ? (
                             <Button

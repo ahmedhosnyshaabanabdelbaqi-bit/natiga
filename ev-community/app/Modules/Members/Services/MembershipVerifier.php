@@ -106,7 +106,9 @@ final class MembershipVerifier
     }
 
     /**
-     * Anonymous page: result + masked member number (valid cards only).
+     * Anonymous page: valid / expired / invalid + masked member number (valid cards only).
+     * A suspended/rejected/expired membership or disabled account is shown as plain `invalid`, so an
+     * anonymous scanner never learns the member's account state (the log row keeps `not_active`).
      *
      * @param  array{valid: bool, authentic: bool, reason: ?string, membership: ?Membership}  $outcome
      * @return array{result: string, member_number_masked: ?string}
@@ -114,9 +116,14 @@ final class MembershipVerifier
     public function publicPayload(array $outcome): array
     {
         $membership = $outcome['membership'];
+        $result = match (true) {
+            $outcome['valid'] => VerificationResult::Valid->value,
+            $outcome['reason'] === MembershipQr::REASON_EXPIRED => VerificationResult::Expired->value,
+            default => VerificationResult::Invalid->value,
+        };
 
         return [
-            'result' => $outcome['valid'] ? VerificationResult::Valid->value : (string) $outcome['reason'],
+            'result' => $result,
             'member_number_masked' => $outcome['valid'] && $membership ? $membership->maskedMemberNumber() : null,
         ];
     }

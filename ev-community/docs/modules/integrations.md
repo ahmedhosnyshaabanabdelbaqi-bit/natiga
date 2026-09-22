@@ -63,7 +63,8 @@ point it at a self-hosted Nominatim for volume), `MAP_NOMINATIM_RATE_PER_SECOND`
 instance's usage policy), `MAP_TILE_URL`, `MAP_PUBLIC_KEY` (only key ever sent to the browser), `MAP_SERVER_KEY`
 (server side only), `MAP_DEFAULT_LAT`, `MAP_DEFAULT_LNG`, `MAP_DEFAULT_ZOOM`.
 OSM driver behaviour: identifies the app (User-Agent with contact e-mail + Referer), at most N requests/second through
-a shared rate limiter (waits once for the next slot, then gives up), results cached 24 h (not-found 1 h, per locale
+a shared rate limiter (waits once for the next slot, then gives up; a failed call — connection error, 5xx, 429 — is
+retried once, no sooner than one rate-limit interval later), results cached 24 h (not-found 1 h, per locale
 because Nominatim localises the display name), failures are logged and return `null` — never cached, never thrown.
 Distances are straight-line (haversine, mean Earth radius 6371.0088 km) and must be labelled as estimates.
 Fallback: list view without map.
@@ -111,6 +112,8 @@ health check reports `degraded`). Fallback: manual rates entered by the accounta
 
 - `base_currency` = the **foreign** currency, `quote_currency` = the local one (EGP), `rate` = how many quote
   units one base unit buys. **1 USD = 48.50 EGP → base=USD, quote=EGP, rate=48.5** (stored `decimal(18,8)`).
+- Rates are dated in **Cairo calendar days**: any moment passed to `rate()` / `convertToBase()` is converted to the
+  platform timezone first (`ExchangeRates::platformDay()`), so 2026-01-10 23:30 UTC uses the rate of 2026-01-11.
 - `ExchangeRates::rate($base, $quote, ?$date)` returns the latest row **on or before** the date (latest `rate_date`,
   then latest id). If only the inverse pair exists the reciprocal is returned (8 decimals, HALF_UP) with source
   suffixed `:inverse`. Same currency → `['rate' => '1', 'source' => 'identity']`.
@@ -120,6 +123,8 @@ health check reports `degraded`). Fallback: manual rates entered by the accounta
   Historical records keep their snapshot; they are never revalued.
 - `ExchangeRates::addManualRate($base, $quote, $rate, $date, $actor, $reason, correction: false)` — requires
   `exchange_rates.manage` and a reason (≥ 5 chars), active currencies, a positive rate and a date not in the future.
+  The platform currency (EGP) is never accepted as the base (foreign) side: a swapped `EGP/USD` entry would feed the
+  inverse lookup a wrong rate, so it is refused (`integrations.errors.base_must_be_foreign`).
   One plain entry per (pair, date, source); a duplicate returns a 409 conflict. To fix a wrong value submit it again
   with `correction: true`: a new row `source = manual:correction:<n>` with `source_reference = corrects:<id>` is
   appended and wins lookups for that date. Audited as `exchange_rates.added` / `exchange_rates.corrected`
@@ -167,7 +172,16 @@ redirect/return page for payments: verify with `verifyTransaction()` (business r
   retry afterwards.
 - Admin retry (`integrations.manage`): only `failed` + `signature_valid = true` events; the row is locked and
   re-checked so concurrent clicks queue the event once; audited as `integrations.webhook_retried`.
-- A worker crash while `processing` is marked `failed` by the job's `failed()` hook.
+- While a job works on an event it holds a per-event cache lock (`integrations:webhook-event:<id>`, 150 s; job
+  timeout 60 s). A second job for the same event that finds the lock taken is released back to the queue (60 s)
+  instead of processing concurrently.
+- A worker that dies while `processing` (timeout kill, OOM, deploy restart) leaves the event in `processing` with an
+  expired lock: the queue's redelivery reclaims it (logged as `integration.webhook.stale_processing_reclaimed`) and
+  processes it, so it never stays stuck. When the job has used all its tries, `failed()` marks it `failed` (admin
+  retry available).
+- An event stored but never picked up (queue unreachable at arrival → the provider got a 5xx) stays `received`. A
+  provider redelivery of the same event more than `WebhookIngest::STALE_RECEIVED_MINUTES` (5) after it first
+  arrived queues it again; quicker duplicates do not.
 
 ## 5. Health checks, status matrix and the Exception Center
 

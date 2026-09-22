@@ -154,6 +154,7 @@ return [
         'log_driver_production' => 'The log driver is not allowed in production; the integration is treated as not configured.',
         'rate_missing' => 'No exchange rate for :base → :quote on or before :date.',
         'same_currency' => 'Base and quote currencies must differ.',
+        'base_must_be_foreign' => ':currency is the platform currency and cannot be the foreign currency: enter the rate as 1 foreign unit = X :currency (base = foreign currency, quote = :currency).',
         'unknown_currency' => 'Unknown or inactive currency ":currency".',
         'rate_positive' => 'The rate must be a positive number.',
         'future_date' => 'The rate date cannot be in the future.',

@@ -39,7 +39,8 @@ class UpdateMemberProfileRequest extends FormRequest
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($membership->user_id)],
             'mobile' => ['nullable', 'string', 'regex:/^(\+20|0)?1[0125][0-9]{8}$/', Rule::unique('users', 'mobile')->ignore($membership->user_id)],
             'governorate_id' => ['nullable', 'integer', Rule::exists('governorates', 'id')],
-            'preferred_locale' => ['nullable', Rule::in(ev_locales())],
+            // users.preferred_locale is NOT NULL: optional in the payload, but never cleared.
+            'preferred_locale' => ['sometimes', 'required', Rule::in(ev_locales())],
             'reason' => ['nullable', 'string', 'max:500'],
         ];
     }

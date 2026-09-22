@@ -87,8 +87,20 @@ class OsmMapProviderTest extends TestCase
         $this->assertNull(Integrations::map()->geocode('Tahrir Square, Cairo'));
         $this->assertNull(Integrations::map()->geocode('Tahrir Square, Cairo'));
 
-        Http::assertSentCount(6); // 2 calls × (1 attempt + 2 retries on 5xx)
+        Http::assertSentCount(4); // 2 calls × (1 attempt + 1 retry on 5xx)
         $this->assertSame(2, IntegrationEvent::query()->where('provider', 'map')->where('operation', 'geocode')->where('status', 'failed')->count());
+    }
+
+    public function test_the_single_retry_respects_the_one_request_per_second_policy(): void
+    {
+        config(['ev.integrations.map.nominatim_rate_per_second' => 1]);
+        Http::fake([OsmMapProvider::NOMINATIM_URL.'/search*' => Http::response('slow down', 429)]);
+
+        $this->assertNull(Integrations::map()->geocode('Tahrir Square, Cairo'));
+
+        Http::assertSentCount(2);
+        Sleep::assertSlept(fn ($duration) => $duration->totalMilliseconds >= 1000, 1);
+        Sleep::assertSleptTimes(1);
     }
 
     public function test_connection_timeouts_return_null_and_are_logged_as_timeout(): void

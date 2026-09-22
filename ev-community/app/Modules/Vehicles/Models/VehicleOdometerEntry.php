@@ -4,6 +4,7 @@ namespace App\Modules\Vehicles\Models;
 
 use App\Models\User;
 use App\Modules\Vehicles\Models\Enums\OdometerSource;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $member_vehicle_id
  * @property int $odometer_km
  * @property OdometerSource $source
- * @property \Illuminate\Support\Carbon $recorded_at
+ * @property CarbonInterface $recorded_at
  * @property string|null $note
  * @property int|null $created_by
  */

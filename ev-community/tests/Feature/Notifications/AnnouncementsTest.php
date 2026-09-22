@@ -59,7 +59,7 @@ class AnnouncementsTest extends TestCase
         $this->get('/admin/notifications')->assertOk()
             ->assertInertia(fn (Assert $page) => $page->component('admin/notifications/index')->where('canManage', false)->has('campaigns.data', 1));
         $this->get("/admin/notifications/{$campaign->public_id}")->assertOk()
-            ->assertInertia(fn (Assert $page) => $page->component('admin/notifications/show')->where('canManage', false));
+            ->assertInertia(fn (Assert $page) => $page->component('admin/notifications/show')->where('canManage', false)->where('audienceCount', 0));
         $this->get('/admin/notifications/create')->assertForbidden();
         $this->post('/admin/notifications', $this->payload())->assertForbidden();
         $this->post("/admin/notifications/{$campaign->public_id}/send")->assertForbidden();
@@ -146,7 +146,7 @@ class AnnouncementsTest extends TestCase
         $a = $this->makeMember();
         $b = $this->makeMember();
         $suspended = $this->makeMember([], ['status' => 'suspended']);
-        $numbers = strtolower($a->membership->member_number)."\n".$b->membership->member_number.", ".$b->membership->member_number;
+        $numbers = strtolower($a->membership->member_number)."\n".$b->membership->member_number.', '.$b->membership->member_number;
 
         $this->postJson('/admin/notifications/estimate', ['audience_type' => 'specific_members', 'audience_params' => ['member_numbers' => $numbers]])
             ->assertOk()->assertJsonPath('data.count', 2);
@@ -192,6 +192,24 @@ class AnnouncementsTest extends TestCase
         // A double click cannot send twice.
         $this->post("/admin/notifications/{$campaign->public_id}/send")->assertSessionHasErrors('domain');
         Queue::assertPushed(SendAnnouncementJob::class, 1);
+    }
+
+    public function test_a_member_suspended_after_saving_does_not_block_sending(): void
+    {
+        Queue::fake();
+        $this->actingAsStaff(['notifications.manage']);
+        $active = $this->makeMember();
+        $later = $this->makeMember();
+        $this->post('/admin/notifications', $this->payload(['audience_type' => 'specific_members', 'audience_params' => ['member_numbers' => $active->membership->member_number."\n".$later->membership->member_number]]))->assertSessionHasNoErrors();
+        $campaign = AnnouncementCampaign::query()->firstOrFail();
+        $later->membership->forceFill(['status' => 'suspended'])->save();
+
+        $this->post("/admin/notifications/{$campaign->public_id}/send")->assertSessionHasNoErrors();
+        $this->assertSame(1, app(AnnouncementService::class)->storedAudienceCount($campaign->fresh()));
+
+        app(AnnouncementService::class)->run($campaign->id);
+        $this->assertSame(1, Notification::query()->where('dedup_key', 'announcement:'.$campaign->id)->count());
+        $this->assertSame(0, Notification::query()->where('user_id', $later->id)->count());
     }
 
     public function test_sending_to_an_empty_audience_is_refused(): void

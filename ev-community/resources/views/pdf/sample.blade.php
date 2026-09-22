@@ -21,26 +21,26 @@
     <table class="data">
         <thead>
             <tr>
-                <th class="text-start" style="width: 46%">{{ __('pdf.sample.columns.item') }}</th>
-                <th class="text-start" style="width: 18%">{{ __('pdf.sample.columns.sku') }}</th>
-                <th class="text-center" style="width: 10%">{{ __('pdf.sample.columns.quantity') }}</th>
-                <th class="text-end" style="width: 13%">{{ __('pdf.sample.columns.unit_price') }}</th>
-                <th class="text-end" style="width: 13%">{{ __('pdf.sample.columns.total') }}</th>
+                <th class="text-start" style="width: 35%">{{ __('pdf.sample.columns.item') }}</th>
+                <th class="text-start" style="width: 19%">{{ __('pdf.sample.columns.sku') }}</th>
+                <th class="text-center nowrap" style="width: 10%">{{ __('pdf.sample.columns.quantity') }}</th>
+                <th class="text-end" style="width: 18%">{{ __('pdf.sample.columns.unit_price') }}</th>
+                <th class="text-end" style="width: 18%">{{ __('pdf.sample.columns.total') }}</th>
             </tr>
         </thead>
         <tbody>
             @foreach($items as $item)
                 <tr>
                     <td class="text-start">{{ $item['name'] }}</td>
-                    <td class="code">{{ $item['sku'] }}</td>
+                    <td class="code nowrap" nowrap="nowrap">{{ $item['sku'] }}</td>
                     <td class="text-center">{{ $item['quantity'] }}</td>
-                    <td class="text-end">{{ $item['unit_price_formatted'] }}</td>
-                    <td class="text-end">{{ $item['line_total_formatted'] }}</td>
+                    <td class="text-end nowrap" nowrap="nowrap">{{ $item['unit_price_formatted'] }}</td>
+                    <td class="text-end nowrap" nowrap="nowrap">{{ $item['line_total_formatted'] }}</td>
                 </tr>
             @endforeach
             <tr class="total">
                 <td colspan="4" class="text-end">{{ __('pdf.sample.grand_total') }}</td>
-                <td class="text-end">{{ $grand_total_formatted }}</td>
+                <td class="text-end nowrap" nowrap="nowrap">{{ $grand_total_formatted }}</td>
             </tr>
         </tbody>
     </table>

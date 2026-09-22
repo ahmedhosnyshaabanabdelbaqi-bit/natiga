@@ -76,6 +76,23 @@ class EmailProviderTest extends TestCase
         $this->assertDatabaseHas('integration_events', ['provider' => 'email', 'operation' => 'send_test', 'status' => 'success']);
     }
 
+    public function test_queued_test_email_is_written_in_the_requesting_admins_language(): void
+    {
+        // The array transport keeps the rendered message; force_configured lets it count as configured.
+        config(['mail.default' => 'array', 'ev.integrations.email.force_configured' => true]);
+        Integrations::manager()->forget('email');
+        app()->setLocale('ar'); // the worker's default locale
+        $admin = $this->makeStaff(['integrations.manage']);
+        $admin->forceFill(['preferred_locale' => 'en'])->save();
+
+        (new SendTestEmailJob($admin->id))->handle();
+
+        $messages = app('mailer')->getSymfonyTransport()->messages();
+        $this->assertCount(1, $messages);
+        $this->assertSame(__('integrations.email.test_subject', ['app' => config('app.name')], 'en'), $messages->first()->getOriginalMessage()->getSubject());
+        $this->assertSame('ar', app()->getLocale(), 'the worker locale is restored');
+    }
+
     public function test_admin_test_email_button_reports_not_configured_instead_of_pretending(): void
     {
         Queue::fake();

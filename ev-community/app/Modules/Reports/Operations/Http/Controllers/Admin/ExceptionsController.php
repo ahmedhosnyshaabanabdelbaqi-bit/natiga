@@ -10,6 +10,7 @@ use App\Modules\Reports\Operations\Models\Enums\ExceptionSeverity;
 use App\Modules\Reports\Operations\Models\Enums\ExceptionStatus;
 use App\Modules\Reports\Operations\Models\OperationsException;
 use App\Modules\Reports\Operations\Services\OperationsExceptions;
+use App\Modules\System\Http\PerPage;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
@@ -59,7 +60,7 @@ class ExceptionsController extends Controller
         $query->orderByRaw("case severity when 'p0' then 0 when 'p1' then 1 when 'p2' then 2 else 3 end")->orderByDesc('detected_at');
 
         return Inertia::render('admin/operations/index', [
-            'exceptions' => $query->paginate(in_array((int) $request->query('per_page', 25), [15, 25, 50, 100], true) ? (int) $request->query('per_page') : 25)->withQueryString()->through(fn (OperationsException $e) => $this->serialize($e)),
+            'exceptions' => $query->paginate(PerPage::from($request))->withQueryString()->through(fn (OperationsException $e) => $this->serialize($e)),
             'filters' => $filters + ['status' => $status],
             'counts' => $this->exceptions->countsBySeverity(),
             'assignees' => $this->assignees(),

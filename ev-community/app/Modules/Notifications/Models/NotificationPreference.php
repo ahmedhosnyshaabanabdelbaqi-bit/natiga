@@ -4,12 +4,13 @@ namespace App\Modules\Notifications\Models;
 
 use App\Models\User;
 use App\Modules\Notifications\Models\Enums\NotificationChannel;
+use App\Modules\Notifications\Services\NotificationPreferences;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Explicit member choice for one (category, channel) pair. Absent rows fall back to the defaults matrix
- * in {@see \App\Modules\Notifications\Services\NotificationPreferences}.
+ * in {@see NotificationPreferences}.
  *
  * @property int $id
  * @property int $user_id

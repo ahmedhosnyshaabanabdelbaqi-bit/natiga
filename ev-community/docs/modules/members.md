@@ -20,8 +20,11 @@ shared UI in `resources/js/features/members`. Tests: `tests/Feature/Members`, `t
 
 `pending → active | rejected`, `active → suspended | expired`, `suspended → active`, `rejected → pending`, `expired → active`.
 
-`Actions\ChangeMembershipStatus::execute(Membership, MembershipStatus $to, ?User $actor, ?string $reason)` is the only writer
-(`$membership->transitionTo(...)` delegates to it). Inside one transaction with a row lock it validates the transition
+`Actions\ChangeMembershipStatus::execute(Membership, MembershipStatus $to, ?User $actor, ?string $reason, ?array $expectedFrom = null)`
+is the only writer (`$membership->transitionTo(...)` delegates to it). Inside one transaction with a row lock it validates the transition
+(and, when `$expectedFrom` is given, that the current status is one of those — each admin endpoint pins its own source
+statuses: approve/reject ← pending, reopen ← rejected, suspend/expire ← active, reactivate ← suspended|expired, so one
+permission can never perform another permission's transition)
 (`DomainException` → 422 JSON / validation error `status`), requires a reason of ≥ 5 characters for suspend/reject,
 stamps `approved_at/approved_by/expires_at/suspended_at`, writes a history row and the audit entry `members.status_changed`
 (old/new status + reason). Suspension also clears the remember-me token, deletes API tokens, ends every session
@@ -75,7 +78,7 @@ context model. Payload shapers:
 |---|---|---|
 | Staff | `POST /admin/members/verify` (`members.verify`, `throttle:member-verify`) | valid, reason, member {id, name, member_number, status, joined_at, expires_at, governorate, url (only with `members.view`)} |
 | Partner | `POST /partner/members/verify` (`partner.access`) | valid, reason, member {name, member_number, status} — nothing else |
-| Public | `GET /verify/{token}` (`throttle:public-forms`, `X-Robots-Tag: noindex`) | result + masked number `EV-****23` (valid cards only) |
+| Public | `GET /verify/{token}` (`throttle:public-forms`, `X-Robots-Tag: noindex`) | result `valid`/`expired`/`invalid` (a not-active membership or disabled account is shown as `invalid`; the log row keeps `not_active`) + masked number `EV-****23` (valid cards only) |
 
 Member data is disclosed only for authentic tokens: a forged token carrying a real public id is logged but returns
 `member: null`. Purposes are whitelisted per audience (`VerifyTokenRequest::ADMIN_PURPOSES`, `PARTNER_PURPOSES`;
@@ -106,7 +109,14 @@ before expiry and when the tab becomes visible again, supports regeneration with
 | `GET /admin/referrals` | `admin.referrals.index` | `referrals.view` + `module:referrals` |
 
 Every route has the permission middleware **and** a policy/FormRequest check (`MembershipPolicy`,
-`AccountDeletionRequestPolicy`). Listing filters: `search` (member number, name, email, mobile — bound and LIKE-escaped),
+`AccountDeletionRequestPolicy`). Escalation guards in `MembershipPolicy`: staff write abilities (status changes, profile
+edit) never apply to the actor's own membership or to an owner/super-admin account (only super actors manage those);
+editing the profile (name/e-mail/mobile) of a staff or partner account additionally needs the Users module's `update`
+ability on that user (`users.manage`), because an e-mail change is an account-takeover vector. Bulk approve applies the
+same per-record policy and skips (and counts) anything else. Staff never process their own deletion request. The detail
+page receives `membership.abilities` and the deletion list `can_process` so the UI only offers allowed actions. A staff
+e-mail change resets verification, drops pending password-reset tokens of the old address and records the security
+event `email_changed_by_admin`; a mobile change resets `mobile_verified_at`. Listing filters: `search` (member number, name, email, mobile — bound and LIKE-escaped),
 `status`, `governorate_id`, `joined_from/joined_to` (Cairo calendar days), `referral_source`; sort whitelist
 `member_number|name|joined_at|status` with `direction`; `per_page` 10–100. Unknown values are validation errors.
 
@@ -131,7 +141,10 @@ No member route takes a membership id: everything is resolved from the authentic
 `Actions\ProcessDeletionRequest::review|reject` and `Actions\AnonymizeMember::execute(request, actor, reason, notes)`.
 Completing a request (locked, idempotent) sets name `Deleted Member`, email `deleted-{id}@anonymized.local`, mobile null,
 random password, clears MFA secrets, passkeys, API tokens, remember and password-reset tokens, disables the account,
-ends every session, rotates the QR secret and clears the free-text referral source. Memberships, status history, orders,
+ends every session, rotates the QR secret, replaces the referral code (the erased member's old code stops admitting
+registrations; past referrals keep `referral_code_used`) and clears the free-text referral source. Staff never process
+their own request (`AccountDeletionRequestPolicy::process`). Opening a request is serialised on the user row, so a double
+submit cannot create two open requests. Memberships, status history, orders,
 payments, ledgers, receipts, consent logs and audit rows are kept. The `members.anonymized` audit row stores only
 non-identifying facts (previous status, whether a mobile/MFA existed) — the erased values are never copied into the
 immutable audit table. Older audit rows written before the request (e.g. a `members.profile_updated` diff) are immutable

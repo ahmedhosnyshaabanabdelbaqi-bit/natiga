@@ -4,6 +4,7 @@ namespace App\Modules\System\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Audit\Services\AuditService;
+use App\Modules\System\Http\PerPage;
 use App\Modules\System\Services\QueueHealth;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\RedirectResponse;
@@ -26,8 +27,7 @@ class FailedJobsController extends Controller
     public function index(Request $request): Response
     {
         Gate::authorize('jobs.manage');
-        $perPage = in_array((int) $request->query('per_page', 25), [15, 25, 50, 100], true) ? (int) $request->query('per_page') : 25;
-        $rows = DB::table('failed_jobs')->orderByDesc('failed_at')->orderByDesc('id')->paginate($perPage)->withQueryString()
+        $rows = DB::table('failed_jobs')->orderByDesc('failed_at')->orderByDesc('id')->paginate(PerPage::from($request))->withQueryString()
             ->through(fn ($row) => $this->serialize($row));
 
         return Inertia::render('admin/jobs/failed', [
@@ -40,7 +40,13 @@ class FailedJobsController extends Controller
     {
         Gate::authorize('jobs.manage');
         $row = DB::table('failed_jobs')->where('uuid', $uuid)->first() ?? abort(404);
-        Artisan::call('queue:retry', ['id' => [$uuid]]);
+        try {
+            Artisan::call('queue:retry', ['id' => [$uuid]]);
+        } catch (\Throwable $e) {
+            report($e); // e.g. an undecodable payload: keep the failed job and tell the operator
+
+            return back()->with('error', __('system.jobs.errors.retry_failed'));
+        }
         $this->audit->log('jobs.retried', null, new: ['uuid' => $uuid, 'job' => $this->jobName($row), 'queue' => $row->queue], actor: $request->user(), entityLabel: $uuid);
 
         return back()->with('success', __('system.jobs.messages.retried'));

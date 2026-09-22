@@ -38,10 +38,12 @@ final class ConsentService
      */
     public function updateMarketing(User $user, array $wanted, string $source = 'web', ?User $actor = null): array
     {
-        $current = $this->marketingState($user);
         $changed = [];
 
-        DB::transaction(function () use ($user, $wanted, $current, $source, $actor, &$changed) {
+        DB::transaction(function () use ($user, $wanted, $source, $actor, &$changed) {
+            // Per-user serialisation: a double submit must not append the same change twice.
+            User::query()->whereKey($user->id)->lockForUpdate()->firstOrFail();
+            $current = $this->marketingState($user);
             foreach (ConsentType::marketing() as $type) {
                 if (! array_key_exists($type->value, $wanted)) {
                     continue;
@@ -73,7 +75,10 @@ final class ConsentService
     /** @return array<int, array<string, mixed>> recent consent history rows for display */
     public function history(User $user, int $limit = 50): array
     {
-        return ConsentLog::query()->where('user_id', $user->id)->orderByDesc('id')->limit($limit)->get()
+        // consent_logs is a shared core table: only types this module knows are cast/displayed, so a new
+        // consent type written by another module can never break the privacy or admin pages.
+        return ConsentLog::query()->where('user_id', $user->id)->whereIn('consent_type', ConsentType::values())
+            ->orderByDesc('id')->limit($limit)->get()
             ->map(fn (ConsentLog $log) => [
                 'id' => $log->id,
                 'type' => $log->consent_type->value,
