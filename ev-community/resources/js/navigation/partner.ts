@@ -7,7 +7,15 @@ export function partnerNavigation(): NavGroup[] {
         {
             title: t('core.labels.dashboard'),
             items: [
-                { title: t('core.labels.dashboard'), href: '/partner/dashboard', icon: LayoutDashboard },
+                {
+                    title: t('core.labels.dashboard'),
+                    href: '/partner/dashboard',
+                    icon: LayoutDashboard,
+                    children: [
+                        { title: t('core.labels.dashboard'), href: '/partner/dashboard' },
+                        { title: t('members.nav.verify_member'), href: '/partner/members/scan' },
+                    ],
+                },
                 { title: t('partner.nav.bookings'), href: '/partner/bookings', icon: CalendarCheck, module: 'maintenance' },
                 { title: t('partner.nav.work_orders'), href: '/partner/work-orders', icon: Wrench, module: 'maintenance' },
                 { title: t('partner.nav.rfqs'), href: '/partner/rfqs', icon: FileSearch, module: 'maintenance' },

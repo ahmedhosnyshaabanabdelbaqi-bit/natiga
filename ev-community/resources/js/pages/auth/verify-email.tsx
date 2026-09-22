@@ -12,7 +12,10 @@ export default function VerifyEmail({ status }: { status?: string }) {
             <Head title={t('auth.verify.title')} />
 
             {status === 'verification-link-sent' && (
-                <div role="status" className="mb-4 rounded-md bg-success-soft px-3 py-2 text-center text-sm font-medium text-success">
+                <div
+                    role="status"
+                    className="mb-4 rounded-md bg-success-soft px-3 py-2 text-center text-sm font-medium text-success"
+                >
                     {t('auth.verify.sent')}
                 </div>
             )}
@@ -25,7 +28,11 @@ export default function VerifyEmail({ status }: { status?: string }) {
                             {t('auth.verify.resend')}
                         </Button>
 
-                        <TextLink href={logout()} as="button" className="mx-auto block text-sm">
+                        <TextLink
+                            href={logout()}
+                            as="button"
+                            className="mx-auto block text-sm"
+                        >
                             {t('auth.verify.logout')}
                         </TextLink>
                     </>

@@ -30,12 +30,20 @@ export default function Security(props: Props) {
             <h1 className="sr-only">{t('settings.security.title')}</h1>
 
             <div className="space-y-6">
-                <Heading variant="small" title={t('settings.security.password_heading')} description={t('settings.security.password_description')} />
+                <Heading
+                    variant="small"
+                    title={t('settings.security.password_heading')}
+                    description={t('settings.security.password_description')}
+                />
 
                 <Form
                     {...SecurityController.update.form()}
                     options={{ preserveScroll: true }}
-                    resetOnError={['password', 'password_confirmation', 'current_password']}
+                    resetOnError={[
+                        'password',
+                        'password_confirmation',
+                        'current_password',
+                    ]}
                     resetOnSuccess
                     onError={(errors) => {
                         if (errors.password) {
@@ -51,7 +59,9 @@ export default function Security(props: Props) {
                     {({ errors, processing }) => (
                         <>
                             <div className="grid gap-2">
-                                <Label htmlFor="current_password">{t('settings.security.current_password')}</Label>
+                                <Label htmlFor="current_password">
+                                    {t('settings.security.current_password')}
+                                </Label>
 
                                 <PasswordInput
                                     id="current_password"
@@ -59,15 +69,23 @@ export default function Security(props: Props) {
                                     name="current_password"
                                     className="mt-1 block w-full"
                                     autoComplete="current-password"
-                                    placeholder={t('settings.security.current_password')}
-                                    aria-invalid={errors.current_password ? true : undefined}
+                                    placeholder={t(
+                                        'settings.security.current_password',
+                                    )}
+                                    aria-invalid={
+                                        errors.current_password
+                                            ? true
+                                            : undefined
+                                    }
                                 />
 
                                 <InputError message={errors.current_password} />
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="password">{t('settings.security.new_password')}</Label>
+                                <Label htmlFor="password">
+                                    {t('settings.security.new_password')}
+                                </Label>
 
                                 <PasswordInput
                                     id="password"
@@ -75,32 +93,49 @@ export default function Security(props: Props) {
                                     name="password"
                                     className="mt-1 block w-full"
                                     autoComplete="new-password"
-                                    placeholder={t('settings.security.new_password')}
+                                    placeholder={t(
+                                        'settings.security.new_password',
+                                    )}
                                     passwordrules={props.passwordRules}
-                                    aria-invalid={errors.password ? true : undefined}
+                                    aria-invalid={
+                                        errors.password ? true : undefined
+                                    }
                                 />
 
                                 <InputError message={errors.password} />
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="password_confirmation">{t('settings.security.confirm_password')}</Label>
+                                <Label htmlFor="password_confirmation">
+                                    {t('settings.security.confirm_password')}
+                                </Label>
 
                                 <PasswordInput
                                     id="password_confirmation"
                                     name="password_confirmation"
                                     className="mt-1 block w-full"
                                     autoComplete="new-password"
-                                    placeholder={t('settings.security.confirm_password')}
+                                    placeholder={t(
+                                        'settings.security.confirm_password',
+                                    )}
                                     passwordrules={props.passwordRules}
-                                    aria-invalid={errors.password_confirmation ? true : undefined}
+                                    aria-invalid={
+                                        errors.password_confirmation
+                                            ? true
+                                            : undefined
+                                    }
                                 />
 
-                                <InputError message={errors.password_confirmation} />
+                                <InputError
+                                    message={errors.password_confirmation}
+                                />
                             </div>
 
                             <div className="flex items-center gap-4">
-                                <Button disabled={processing} data-test="update-password-button">
+                                <Button
+                                    disabled={processing}
+                                    data-test="update-password-button"
+                                >
                                     {processing ? <Spinner /> : null}
                                     {t('settings.security.save')}
                                 </Button>
@@ -110,9 +145,16 @@ export default function Security(props: Props) {
                 </Form>
             </div>
 
-            <ManageTwoFactor canManageTwoFactor={props.canManageTwoFactor} requiresConfirmation={props.requiresConfirmation} twoFactorEnabled={props.twoFactorEnabled} />
+            <ManageTwoFactor
+                canManageTwoFactor={props.canManageTwoFactor}
+                requiresConfirmation={props.requiresConfirmation}
+                twoFactorEnabled={props.twoFactorEnabled}
+            />
 
-            <ManagePasskeys canManagePasskeys={props.canManagePasskeys} passkeys={props.passkeys} />
+            <ManagePasskeys
+                canManagePasskeys={props.canManagePasskeys}
+                passkeys={props.passkeys}
+            />
         </>
     );
 }

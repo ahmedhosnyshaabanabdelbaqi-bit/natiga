@@ -23,7 +23,17 @@ type Props = {
 const sizes = { sm: 'size-3.5', md: 'size-5', lg: 'size-7' } as const;
 
 /** Star rating: read-only display or a keyboard-operable radio-group input. */
-export function Rating({ value, max = 5, onChange, readOnly = false, size = 'md', label, name, showValue = false, className }: Props) {
+export function Rating({
+    value,
+    max = 5,
+    onChange,
+    readOnly = false,
+    size = 'md',
+    label,
+    name,
+    showValue = false,
+    className,
+}: Props) {
     const [hovered, setHovered] = useState<number | null>(null);
     const interactive = !readOnly && typeof onChange === 'function';
     const shown = hovered ?? value;
@@ -31,25 +41,45 @@ export function Rating({ value, max = 5, onChange, readOnly = false, size = 'md'
 
     const star = (index: number, filled: boolean) => (
         <Star
-            className={cn(sizes[size], 'transition-colors', filled ? 'fill-warning text-warning' : 'fill-transparent text-muted-foreground/50')}
+            className={cn(
+                sizes[size],
+                'transition-colors',
+                filled
+                    ? 'fill-warning text-warning'
+                    : 'fill-transparent text-muted-foreground/50',
+            )}
             aria-hidden="true"
         />
     );
 
     if (!interactive) {
         return (
-            <span className={cn('inline-flex items-center gap-0.5', className)} role="img" aria-label={t('ui.rating.value', { value, max })}>
+            <span
+                className={cn('inline-flex items-center gap-0.5', className)}
+                role="img"
+                aria-label={t('ui.rating.value', { value, max })}
+            >
                 {stars.map((index) => (
-                    <span key={index}>{star(index, index <= Math.round(value))}</span>
+                    <span key={index}>
+                        {star(index, index <= Math.round(value))}
+                    </span>
                 ))}
-                {showValue ? <span className="ms-1.5 text-sm tabular text-muted-foreground">{value.toFixed(1)}</span> : null}
+                {showValue ? (
+                    <span className="tabular ms-1.5 text-sm text-muted-foreground">
+                        {value.toFixed(1)}
+                    </span>
+                ) : null}
             </span>
         );
     }
 
     const onKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
-        const next = isRtl() ? ['ArrowLeft', 'ArrowUp'] : ['ArrowRight', 'ArrowUp'];
-        const prev = isRtl() ? ['ArrowRight', 'ArrowDown'] : ['ArrowLeft', 'ArrowDown'];
+        const next = isRtl()
+            ? ['ArrowLeft', 'ArrowUp']
+            : ['ArrowRight', 'ArrowUp'];
+        const prev = isRtl()
+            ? ['ArrowRight', 'ArrowDown']
+            : ['ArrowLeft', 'ArrowDown'];
         let target: number | null = null;
         if (next.includes(event.key)) {
             target = Math.min(max, value + 1);
@@ -63,13 +93,21 @@ export function Rating({ value, max = 5, onChange, readOnly = false, size = 'md'
         if (target !== null) {
             event.preventDefault();
             onChange(target);
-            const button = event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('button[role="radio"]')[target - 1];
+            const button =
+                event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>(
+                    'button[role="radio"]',
+                )[target - 1];
             button?.focus();
         }
     };
 
     return (
-        <div role="radiogroup" aria-label={label ?? t('ui.rating.label')} className={cn('inline-flex items-center gap-0.5', className)} onMouseLeave={() => setHovered(null)}>
+        <div
+            role="radiogroup"
+            aria-label={label ?? t('ui.rating.label')}
+            className={cn('inline-flex items-center gap-0.5', className)}
+            onMouseLeave={() => setHovered(null)}
+        >
             {name ? <input type="hidden" name={name} value={value} /> : null}
             {stars.map((index) => {
                 const checked = index === value;
@@ -80,7 +118,9 @@ export function Rating({ value, max = 5, onChange, readOnly = false, size = 'md'
                         role="radio"
                         aria-checked={checked}
                         aria-label={t('ui.rating.star', { count: index, max })}
-                        tabIndex={checked || (value === 0 && index === 1) ? 0 : -1}
+                        tabIndex={
+                            checked || (value === 0 && index === 1) ? 0 : -1
+                        }
                         className="rounded-sm p-0.5 outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
                         onMouseEnter={() => setHovered(index)}
                         onFocus={() => setHovered(null)}

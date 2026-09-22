@@ -39,6 +39,7 @@ return [
         'pending_title' => 'Deletion request pending', 'pending_text' => 'Requested :date. Our team is reviewing it.',
         'completed_title' => 'Deletion request completed', 'rejected_title' => 'Deletion request rejected', 'processed_text' => 'Processed :date.',
         'status' => ['requested' => 'Requested', 'under_review' => 'Under review', 'completed' => 'Completed', 'rejected' => 'Rejected'],
+        'requested_on' => 'Requested', 'processed_on' => 'Processed',
         'errors' => ['already_open' => 'You already have an open deletion request.', 'not_open' => 'This deletion request is no longer open.'],
         'reviewed' => 'Request marked as under review.', 'completed' => 'Personal data anonymised and request completed.', 'rejected' => 'Deletion request rejected.',
     ],

@@ -1,8 +1,9 @@
-import { useFlashToast } from '@/hooks/use-flash-toast';
-import { useAppearance } from '@/hooks/use-appearance';
 import { Toaster as Sonner, type ToasterProps } from 'sonner';
+import { useAppearance } from '@/hooks/use-appearance';
+import { useFlashToast } from '@/hooks/use-flash-toast';
+import { currentDir, t } from '@/lib/i18n';
 
-function Toaster({ ...props }: ToasterProps) {
+function Toaster({ toastOptions, ...props }: ToasterProps) {
     const { appearance } = useAppearance();
 
     useFlashToast();
@@ -12,6 +13,9 @@ function Toaster({ ...props }: ToasterProps) {
             theme={appearance}
             className="toaster group"
             position="bottom-right"
+            dir={currentDir()}
+            containerAriaLabel={t('core.nav.notifications')}
+            toastOptions={{ closeButtonAriaLabel: t('core.actions.close'), ...toastOptions }}
             style={
                 {
                     '--normal-bg': 'var(--popover)',

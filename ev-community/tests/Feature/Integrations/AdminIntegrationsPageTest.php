@@ -89,6 +89,17 @@ class AdminIntegrationsPageTest extends TestCase
             ->whereNot('matrix.1.last_checked_at', null));
     }
 
+    public function test_outbound_test_tools_share_a_per_user_rate_limit(): void
+    {
+        $this->actingAsStaff(['integrations.view', 'integrations.manage']);
+
+        for ($i = 0; $i < 10; $i++) {
+            $this->post(route('admin.integrations.check', ['key' => 'payment']))->assertRedirect();
+        }
+        $this->post(route('admin.integrations.check', ['key' => 'payment']))->assertStatus(429);
+        $this->post(route('admin.integrations.geocode-test'), ['address' => 'Tahrir Square'])->assertStatus(429);
+    }
+
     public function test_geocode_test_shows_the_resolved_result(): void
     {
         $this->actingAsStaff(['integrations.view', 'integrations.manage']);
@@ -103,6 +114,64 @@ class AdminIntegrationsPageTest extends TestCase
                 ->where('geocodeResult.directions_url', 'https://www.google.com/maps/dir/?api=1&destination=30.0444%2C31.2357&travelmode=driving'));
 
         $this->post(route('admin.integrations.geocode-test'), ['address' => 'ab'])->assertSessionHasErrors('address');
+    }
+
+    public function test_matrix_rows_carry_everything_the_status_page_renders(): void
+    {
+        $this->actingAsStaff(['integrations.view']);
+
+        $this->get('/admin/integrations')->assertInertia(fn (Assert $page) => $page
+            ->has('matrix.0', fn (Assert $row) => $row
+                ->where('key', 'payment')
+                ->where('name', __('integrations.categories.payment'))
+                ->where('driver', 'none')
+                ->where('driver_label', __('integrations.drivers.none'))
+                ->where('configured', false)
+                ->where('status', 'not_configured')
+                ->where('fallback', __('integrations.fallback.payment'))
+                ->where('docs', 'docs/modules/integrations.md#payment')
+                ->where('webhook_url', null)
+                ->has('env')
+                ->has('public_config')
+                ->has('last_checked_at')
+                ->has('last_success_at')
+                ->has('last_error'))
+            ->where('matrix.1.public_config.provider', 'osm')
+            ->missing('matrix.1.public_config.server_key'));
+    }
+
+    public function test_exchange_rate_permission_does_not_open_the_integration_status_pages(): void
+    {
+        $this->actingAsStaff(['exchange_rates.view']);
+
+        $this->get('/admin/integrations')->assertForbidden();
+        $this->get('/admin/integrations/webhook-events')->assertForbidden();
+        $this->get('/admin/integrations/exchange-rates')->assertOk();
+        $this->post(route('admin.integrations.check', ['key' => 'all']))->assertForbidden();
+        $this->post(route('admin.integrations.test-email'))->assertForbidden();
+    }
+
+    public function test_members_cannot_reach_the_admin_integration_pages(): void
+    {
+        $this->actingAsMember();
+
+        $this->get('/admin/integrations')->assertForbidden();
+        $this->get('/admin/integrations/exchange-rates')->assertForbidden();
+        $this->post(route('admin.integrations.check', ['key' => 'map']))->assertForbidden();
+    }
+
+    public function test_every_inertia_page_rendered_by_the_module_exists(): void
+    {
+        $components = [];
+        foreach (glob(base_path('app/Modules/Integrations/Http/Controllers/**/*.php')) ?: [] as $file) {
+            preg_match_all("/Inertia::render\('([^']+)'/", (string) file_get_contents($file), $matches);
+            array_push($components, ...$matches[1]);
+        }
+
+        $this->assertNotEmpty($components);
+        foreach ($components as $component) {
+            $this->assertFileExists(resource_path('js/pages/'.$component.'.tsx'), "Missing page for Inertia::render('{$component}')");
+        }
     }
 
     public function test_geocode_test_is_refused_when_the_map_provider_is_not_configured(): void

@@ -127,9 +127,9 @@ final class WebhookIngest
     /**
      * Re-queue a failed, signature-verified event (admin retry). Row-locked so two concurrent retries
      * (double click, two admins) queue the event once; returns false when it is no longer retryable.
+     * `$onRequeued` runs inside the transaction with the state before the retry (audit trail).
      *
      * @param  (Closure(WebhookEvent, array{status: string, retry_count: int, error: ?string}): void)|null  $onRequeued
-     *                                                                                                             runs inside the transaction with the state before the retry (audit trail)
      */
     public function retry(WebhookEvent $event, ?Closure $onRequeued = null): bool
     {

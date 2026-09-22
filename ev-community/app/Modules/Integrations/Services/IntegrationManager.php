@@ -67,13 +67,13 @@ final class IntegrationManager
     /** Environment variable names per category (names only, for the admin matrix and docs). */
     public const ENV = [
         'payment' => ['PAYMENT_PROVIDER', 'PAYMENT_API_KEY', 'PAYMENT_SECRET', 'PAYMENT_WEBHOOK_SECRET'],
-        'map' => ['MAP_PROVIDER', 'MAP_PUBLIC_KEY', 'MAP_SERVER_KEY', 'MAP_TILE_URL', 'MAP_DEFAULT_LAT', 'MAP_DEFAULT_LNG', 'MAP_DEFAULT_ZOOM'],
+        'map' => ['MAP_PROVIDER', 'MAP_NOMINATIM_URL', 'MAP_NOMINATIM_RATE_PER_SECOND', 'MAP_PUBLIC_KEY', 'MAP_SERVER_KEY', 'MAP_TILE_URL', 'MAP_DEFAULT_LAT', 'MAP_DEFAULT_LNG', 'MAP_DEFAULT_ZOOM'],
         'email' => ['MAIL_MAILER', 'MAIL_HOST', 'MAIL_PORT', 'MAIL_USERNAME', 'MAIL_PASSWORD', 'MAIL_SCHEME', 'MAIL_FROM_ADDRESS', 'MAIL_FROM_NAME'],
         'sms' => ['SMS_PROVIDER', 'SMS_API_KEY', 'SMS_SENDER_ID'],
         'whatsapp' => ['WHATSAPP_PROVIDER', 'WHATSAPP_API_TOKEN', 'WHATSAPP_PHONE_NUMBER_ID'],
         'shipping' => ['SHIPPING_PROVIDER', 'SHIPPING_API_KEY'],
         'charging' => ['CHARGING_PROVIDER', 'CHARGING_API_KEY'],
-        'exchange_rate' => ['EXCHANGE_RATE_PROVIDER', 'EXCHANGE_RATE_API_KEY'],
+        'exchange_rate' => ['EXCHANGE_RATE_PROVIDER', 'EXCHANGE_RATE_API_KEY', 'EXCHANGE_RATE_STALE_DAYS'],
     ];
 
     /** Drivers that only write to the log; refused in production. */

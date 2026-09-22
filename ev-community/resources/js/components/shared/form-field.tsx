@@ -35,12 +35,24 @@ type FormFieldProps = {
  * Accessible form field: label + control + hint + error with ids wired together.
  * Errors come from Inertia's `errors` object; validation happens on the server.
  */
-export function FormField({ label, id: givenId, required = false, optional = false, hint, error, hideLabel = false, inline = false, children, className }: FormFieldProps) {
+export function FormField({
+    label,
+    id: givenId,
+    required = false,
+    optional = false,
+    hint,
+    error,
+    hideLabel = false,
+    inline = false,
+    children,
+    className,
+}: FormFieldProps) {
     const generated = useId();
     const id = givenId ?? `field-${generated}`;
     const hintId = hint ? `${id}-hint` : undefined;
     const errorId = error ? `${id}-error` : undefined;
-    const describedBy = [errorId, hintId].filter(Boolean).join(' ') || undefined;
+    const describedBy =
+        [errorId, hintId].filter(Boolean).join(' ') || undefined;
 
     const controlProps: FormFieldControlProps = {
         id,
@@ -73,12 +85,20 @@ export function FormField({ label, id: givenId, required = false, optional = fal
                     *
                 </span>
             ) : null}
-            {optional && !required ? <span className="text-xs font-normal text-muted-foreground">({t('core.labels.optional')})</span> : null}
+            {optional && !required ? (
+                <span className="text-xs font-normal text-muted-foreground">
+                    ({t('core.labels.optional')})
+                </span>
+            ) : null}
         </Label>
     );
 
     return (
-        <div className={cn('grid gap-2', className)} data-slot="form-field" data-invalid={error ? 'true' : undefined}>
+        <div
+            className={cn('grid gap-2', className)}
+            data-slot="form-field"
+            data-invalid={error ? 'true' : undefined}
+        >
             {inline ? (
                 <div className="flex items-center gap-3">
                     {control}
@@ -113,7 +133,12 @@ type FormActionsProps = {
 };
 
 /** Actions row for forms: sticky at the bottom on mobile, static on ≥md screens. */
-export function FormActions({ children, align = 'end', sticky = true, className }: FormActionsProps) {
+export function FormActions({
+    children,
+    align = 'end',
+    sticky = true,
+    className,
+}: FormActionsProps) {
     return (
         <div
             data-slot="form-actions"
@@ -123,7 +148,7 @@ export function FormActions({ children, align = 'end', sticky = true, className 
                 align === 'start' && 'justify-start',
                 align === 'between' && 'justify-between',
                 sticky &&
-                    'sticky bottom-0 z-10 -mx-4 border-t border-border/60 bg-background/95 px-4 py-3 backdrop-blur safe-bottom md:static md:mx-0 md:border-0 md:bg-transparent md:px-0 md:py-0 md:backdrop-blur-none',
+                    'safe-bottom sticky bottom-0 z-10 -mx-4 border-t border-border/60 bg-background/95 px-4 py-3 backdrop-blur md:static md:mx-0 md:border-0 md:bg-transparent md:px-0 md:py-0 md:backdrop-blur-none',
                 className,
             )}
         >

@@ -401,7 +401,9 @@ final class NotificationService
             if (! is_string($name) || str_starts_with($name, '_')) {
                 continue;
             }
-            if (is_scalar($value) || $value instanceof \Stringable) {
+            if ($value === null) {
+                $params[$name] = '';
+            } elseif (is_scalar($value) || $value instanceof \Stringable) {
                 $params[$name] = is_bool($value) ? ($value ? __('core.labels.yes', [], $locale) : __('core.labels.no', [], $locale)) : (string) $value;
             }
         }
@@ -447,8 +449,17 @@ final class NotificationService
         if (! trans()->has($translationKey, $locale)) {
             return null;
         }
+        $raw = trans()->get($translationKey, [], $locale);
+        if (! is_string($raw)) {
+            return null;
+        }
+        // Placeholders the sending module did not provide render blank (never a literal ":reason").
+        preg_match_all('/:([A-Za-z_][A-Za-z0-9_]*)/u', $raw, $matches);
+        foreach ($matches[1] as $name) {
+            $params[$name] ??= '';
+        }
         $text = trans()->get($translationKey, $params, $locale);
 
-        return is_string($text) ? $text : null;
+        return is_string($text) ? preg_replace('/[ \t]{2,}/u', ' ', trim($text)) : null;
     }
 }

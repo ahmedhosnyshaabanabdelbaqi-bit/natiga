@@ -1,5 +1,12 @@
 import { Link, useHttp } from '@inertiajs/react';
-import { CheckCircle2, CircleAlert, Clock, RotateCcw, ScanLine, ShieldX } from 'lucide-react';
+import {
+    CheckCircle2,
+    CircleAlert,
+    Clock,
+    RotateCcw,
+    ScanLine,
+    ShieldX,
+} from 'lucide-react';
 import type { FormEvent } from 'react';
 import { useEffect, useEffectEvent, useState } from 'react';
 import { DateTime } from '@/components/shared/date-time';
@@ -9,7 +16,13 @@ import { SectionCard } from '@/components/shared/section-card';
 import { Button } from '@/components/ui/button';
 import { Code } from '@/components/ui/code';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinner';
 import { t } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
@@ -32,7 +45,10 @@ type Result = { outcome: VerifyOutcome; message: string; checkedAt: string };
  * Every attempt is logged by the server with the chosen purpose.
  */
 export function VerifyPanel({ action, purposes, audience }: Props) {
-    const http = useHttp<{ token: string; purpose: string }, VerifyResponse>({ token: '', purpose: purposes[0]?.value ?? 'membership' });
+    const http = useHttp<{ token: string; purpose: string }, VerifyResponse>({
+        token: '',
+        purpose: purposes[0]?.value ?? 'membership',
+    });
     const [result, setResult] = useState<Result | null>(null);
     const [failure, setFailure] = useState<string | null>(null);
     const [autoSubmit, setAutoSubmit] = useState(false);
@@ -41,7 +57,12 @@ export function VerifyPanel({ action, purposes, audience }: Props) {
         setFailure(null);
         void http
             .post(action.url, {
-                onSuccess: (response) => setResult({ outcome: response.data, message: response.message, checkedAt: new Date().toISOString() }),
+                onSuccess: (response) =>
+                    setResult({
+                        outcome: response.data,
+                        message: response.message,
+                        checkedAt: new Date().toISOString(),
+                    }),
                 onHttpException: () => {
                     setFailure(t('members.admin.scan.error'));
                     return false;
@@ -86,17 +107,31 @@ export function VerifyPanel({ action, purposes, audience }: Props) {
 
     return (
         <div className="grid gap-4 lg:grid-cols-2">
-            <SectionCard title={t('members.admin.scan.title')} description={t('members.admin.scan.description')}>
+            <SectionCard
+                title={t('members.admin.scan.title')}
+                description={t('members.admin.scan.description')}
+            >
                 <form onSubmit={onSubmit} className="grid gap-4" noValidate>
-                    <FormField label={t('members.admin.scan.purpose')} error={http.errors.purpose}>
+                    <FormField
+                        label={t('members.admin.scan.purpose')}
+                        error={http.errors.purpose}
+                    >
                         {(control) => (
-                            <Select value={http.data.purpose} onValueChange={(value) => http.setData('purpose', value)}>
+                            <Select
+                                value={http.data.purpose}
+                                onValueChange={(value) =>
+                                    http.setData('purpose', value)
+                                }
+                            >
                                 <SelectTrigger {...control} className="w-full">
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {purposes.map((purpose) => (
-                                        <SelectItem key={purpose.value} value={purpose.value}>
+                                        <SelectItem
+                                            key={purpose.value}
+                                            value={purpose.value}
+                                        >
                                             {purpose.label}
                                         </SelectItem>
                                     ))}
@@ -105,10 +140,17 @@ export function VerifyPanel({ action, purposes, audience }: Props) {
                         )}
                     </FormField>
                     <QrScanner onScan={onScan} disabled={http.processing} />
-                    <FormField label={t('members.admin.scan.token')} hint={t('members.admin.scan.manual')} error={http.errors.token} required>
+                    <FormField
+                        label={t('members.admin.scan.token')}
+                        hint={t('members.admin.scan.manual')}
+                        error={http.errors.token}
+                        required
+                    >
                         <Input
                             value={http.data.token}
-                            onChange={(event) => http.setData('token', event.target.value)}
+                            onChange={(event) =>
+                                http.setData('token', event.target.value)
+                            }
                             dir="ltr"
                             autoComplete="off"
                             spellCheck={false}
@@ -116,58 +158,118 @@ export function VerifyPanel({ action, purposes, audience }: Props) {
                         />
                     </FormField>
                     <div className="flex flex-wrap gap-2">
-                        <Button type="submit" disabled={http.processing || http.data.token.trim() === ''}>
-                            {http.processing ? <Spinner /> : <ScanLine className="size-4" aria-hidden="true" />}
+                        <Button
+                            type="submit"
+                            disabled={
+                                http.processing || http.data.token.trim() === ''
+                            }
+                        >
+                            {http.processing ? (
+                                <Spinner />
+                            ) : (
+                                <ScanLine
+                                    className="size-4"
+                                    aria-hidden="true"
+                                />
+                            )}
                             {t('members.admin.scan.verify')}
                         </Button>
                         {result || http.data.token !== '' ? (
-                            <Button type="button" variant="ghost" onClick={reset}>
-                                <RotateCcw className="size-4" aria-hidden="true" />
+                            <Button
+                                type="button"
+                                variant="ghost"
+                                onClick={reset}
+                            >
+                                <RotateCcw
+                                    className="size-4"
+                                    aria-hidden="true"
+                                />
                                 {t('members.admin.scan.scan_again')}
                             </Button>
                         ) : null}
                     </div>
-                    {failure ? <InlineAlert tone="danger">{failure}</InlineAlert> : null}
+                    {failure ? (
+                        <InlineAlert tone="danger">{failure}</InlineAlert>
+                    ) : null}
                 </form>
             </SectionCard>
 
             <SectionCard title={t('members.admin.scan.result')}>
-                <div aria-live="polite">{result ? <ResultView result={result} audience={audience} /> : <p className="text-sm text-muted-foreground">{t('members.admin.scan.waiting')}</p>}</div>
+                <div aria-live="polite">
+                    {result ? (
+                        <ResultView result={result} audience={audience} />
+                    ) : (
+                        <p className="text-sm text-muted-foreground">
+                            {t('members.admin.scan.waiting')}
+                        </p>
+                    )}
+                </div>
             </SectionCard>
         </div>
     );
 }
 
-function ResultView({ result, audience }: { result: Result; audience: 'admin' | 'partner' }) {
+function ResultView({
+    result,
+    audience,
+}: {
+    result: Result;
+    audience: 'admin' | 'partner';
+}) {
     const { outcome, message } = result;
     const reason = outcome.valid ? 'valid' : (outcome.reason ?? 'invalid');
-    const Icon = reason === 'valid' ? CheckCircle2 : reason === 'expired' ? Clock : reason === 'not_active' ? CircleAlert : ShieldX;
-    const tone = reason === 'valid' ? 'border-success/40 bg-success-soft/50 text-success' : reason === 'expired' ? 'border-warning/40 bg-warning-soft/50 text-warning' : 'border-danger/40 bg-danger-soft/50 text-danger';
+    const Icon =
+        reason === 'valid'
+            ? CheckCircle2
+            : reason === 'expired'
+              ? Clock
+              : reason === 'not_active'
+                ? CircleAlert
+                : ShieldX;
+    const tone =
+        reason === 'valid'
+            ? 'border-success/40 bg-success-soft/50 text-success'
+            : reason === 'expired'
+              ? 'border-warning/40 bg-warning-soft/50 text-warning'
+              : 'border-danger/40 bg-danger-soft/50 text-danger';
     const member = outcome.member;
 
     return (
         <div className="grid gap-4">
-            <div className={cn('flex items-start gap-3 rounded-xl border p-4', tone)}>
+            <div
+                className={cn(
+                    'flex items-start gap-3 rounded-xl border p-4',
+                    tone,
+                )}
+            >
                 <Icon className="mt-0.5 size-6 shrink-0" aria-hidden="true" />
                 <div className="min-w-0">
-                    <p className="text-base font-semibold">{t(`members.verification.result.${reason}`)}</p>
+                    <p className="text-base font-semibold">
+                        {t(`members.verification.result.${reason}`)}
+                    </p>
                     <p className="text-sm opacity-90">{message}</p>
                 </div>
             </div>
             {member ? (
                 <dl className="grid gap-3 text-sm sm:grid-cols-2">
                     <div>
-                        <dt className="text-xs text-muted-foreground">{t('members.partner.member')}</dt>
+                        <dt className="text-xs text-muted-foreground">
+                            {t('members.partner.member')}
+                        </dt>
                         <dd className="mt-0.5 font-medium">{member.name}</dd>
                     </div>
                     <div>
-                        <dt className="text-xs text-muted-foreground">{t('members.card.member_number')}</dt>
+                        <dt className="text-xs text-muted-foreground">
+                            {t('members.card.member_number')}
+                        </dt>
                         <dd className="mt-0.5">
                             <Code>{member.member_number}</Code>
                         </dd>
                     </div>
                     <div>
-                        <dt className="text-xs text-muted-foreground">{t('members.partner.status')}</dt>
+                        <dt className="text-xs text-muted-foreground">
+                            {t('members.partner.status')}
+                        </dt>
                         <dd className="mt-0.5">
                             <MembershipStatusBadge status={member.status} />
                         </dd>
@@ -175,19 +277,33 @@ function ResultView({ result, audience }: { result: Result; audience: 'admin' | 
                     {audience === 'admin' ? (
                         <>
                             <div>
-                                <dt className="text-xs text-muted-foreground">{t('members.card.governorate')}</dt>
-                                <dd className="mt-0.5">{member.governorate ?? '—'}</dd>
-                            </div>
-                            <div>
-                                <dt className="text-xs text-muted-foreground">{t('members.card.member_since')}</dt>
+                                <dt className="text-xs text-muted-foreground">
+                                    {t('members.card.governorate')}
+                                </dt>
                                 <dd className="mt-0.5">
-                                    <DateTime value={member.joined_at ?? null} mode="date" />
+                                    {member.governorate ?? '—'}
                                 </dd>
                             </div>
                             <div>
-                                <dt className="text-xs text-muted-foreground">{t('members.card.valid_until')}</dt>
+                                <dt className="text-xs text-muted-foreground">
+                                    {t('members.card.member_since')}
+                                </dt>
                                 <dd className="mt-0.5">
-                                    <DateTime value={member.expires_at ?? null} mode="date" />
+                                    <DateTime
+                                        value={member.joined_at ?? null}
+                                        mode="date"
+                                    />
+                                </dd>
+                            </div>
+                            <div>
+                                <dt className="text-xs text-muted-foreground">
+                                    {t('members.card.valid_until')}
+                                </dt>
+                                <dd className="mt-0.5">
+                                    <DateTime
+                                        value={member.expires_at ?? null}
+                                        mode="date"
+                                    />
                                 </dd>
                             </div>
                         </>
@@ -195,12 +311,15 @@ function ResultView({ result, audience }: { result: Result; audience: 'admin' | 
                 </dl>
             ) : null}
             <p className="text-xs text-muted-foreground">
-                {t('members.public_verify.checked_at')}: <DateTime value={result.checkedAt} />
+                {t('members.public_verify.checked_at')}:{' '}
+                <DateTime value={result.checkedAt} />
             </p>
             {audience === 'admin' && member?.url ? (
                 <div>
                     <Button asChild variant="outline" size="sm">
-                        <Link href={member.url}>{t('members.admin.actions.open_member')}</Link>
+                        <Link href={member.url}>
+                            {t('members.admin.actions.open_member')}
+                        </Link>
                     </Button>
                 </div>
             ) : null}

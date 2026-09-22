@@ -41,8 +41,10 @@ class ConnectorCompatibilityRule extends Model
     }
 
     /**
-     * Compatibility lookup for a set of vehicle-side connector ids.
-     * Same-type pairs without an explicit rule are treated as direct.
+     * Compatibility lookup for a set of vehicle-side connector ids (a vehicle has an AC and/or a DC inlet).
+     * A same-type pair without an explicit rule is treated as direct. When several inlets give different
+     * answers for one station connector, the best one wins (direct > adapter > incompatible). Station
+     * connectors without any rule are not listed (unknown, never assumed compatible).
      *
      * @param  int[]  $vehicleConnectorIds
      * @return array{direct: int[], adapter: int[], incompatible: int[], rules: array<int, array{station_connector_type_id: int, vehicle_connector_type_id: int, compatibility: string, adapter_name: ?string, notes: ?string}>}
@@ -54,10 +56,10 @@ class ConnectorCompatibilityRule extends Model
         if ($vehicleConnectorIds === []) {
             return $out;
         }
-        $rules = static::query()->whereIn('vehicle_connector_type_id', $vehicleConnectorIds)->get();
-        $seen = [];
+        $rules = static::query()->whereIn('vehicle_connector_type_id', $vehicleConnectorIds)->orderBy('id')->get();
+        $explicitPairs = [];
         foreach ($rules as $rule) {
-            $seen[$rule->station_connector_type_id] = true;
+            $explicitPairs[$rule->vehicle_connector_type_id.':'.$rule->station_connector_type_id] = true;
             $out[$rule->compatibility->value][] = $rule->station_connector_type_id;
             $out['rules'][] = [
                 'station_connector_type_id' => $rule->station_connector_type_id,
@@ -68,7 +70,7 @@ class ConnectorCompatibilityRule extends Model
             ];
         }
         foreach ($vehicleConnectorIds as $id) {
-            if (! isset($seen[$id])) {
+            if (! isset($explicitPairs[$id.':'.$id])) {
                 $out['direct'][] = $id;
                 $out['rules'][] = ['station_connector_type_id' => $id, 'vehicle_connector_type_id' => $id, 'compatibility' => Compatibility::Direct->value, 'adapter_name' => null, 'notes' => null];
             }

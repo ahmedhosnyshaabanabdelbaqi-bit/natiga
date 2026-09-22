@@ -9,8 +9,15 @@ export default function AdminMembersScan({ purposes }: { purposes: Option[] }) {
     return (
         <>
             <Head title={t('members.admin.scan.title')} />
-            <PageHeader title={t('members.admin.scan.title')} description={t('members.admin.scan.page_description')} />
-            <VerifyPanel action={verify()} purposes={purposes} audience="admin" />
+            <PageHeader
+                title={t('members.admin.scan.title')}
+                description={t('members.admin.scan.page_description')}
+            />
+            <VerifyPanel
+                action={verify()}
+                purposes={purposes}
+                audience="admin"
+            />
         </>
     );
 }

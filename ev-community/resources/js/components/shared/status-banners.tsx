@@ -10,16 +10,24 @@ export function StatusBanners() {
     return (
         <div className="flex flex-col">
             {banners.map((banner) => {
-                const Icon = banner.level === 'major' ? OctagonAlert : banner.level === 'warning' ? AlertTriangle : Info;
+                const Icon =
+                    banner.level === 'major'
+                        ? OctagonAlert
+                        : banner.level === 'warning'
+                          ? AlertTriangle
+                          : Info;
                 return (
                     <div
                         key={banner.id}
                         role="status"
                         className={cn(
                             'flex items-center gap-2 px-4 py-2 text-sm md:px-6',
-                            banner.level === 'major' && 'bg-danger-soft text-danger',
-                            banner.level === 'warning' && 'bg-warning-soft text-warning',
-                            banner.level === 'information' && 'bg-info-soft text-info',
+                            banner.level === 'major' &&
+                                'bg-danger-soft text-danger',
+                            banner.level === 'warning' &&
+                                'bg-warning-soft text-warning',
+                            banner.level === 'information' &&
+                                'bg-info-soft text-info',
                         )}
                     >
                         <Icon className="size-4 shrink-0" aria-hidden="true" />

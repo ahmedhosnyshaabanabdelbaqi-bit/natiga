@@ -52,18 +52,32 @@ export function QrScanner({ onScan, disabled = false, className }: Props) {
 
     const start = async () => {
         setError(null);
-        if (typeof navigator === 'undefined' || !navigator.mediaDevices?.getUserMedia) {
+        if (
+            typeof navigator === 'undefined' ||
+            !navigator.mediaDevices?.getUserMedia
+        ) {
             setError(t('members.admin.scan.camera_unavailable'));
             return;
         }
         setStarting(true);
         try {
-            const { Html5Qrcode, Html5QrcodeSupportedFormats } = await import('html5-qrcode');
-            const scanner = new Html5Qrcode(regionId, { formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE], verbose: false, useBarCodeDetectorIfSupported: true });
+            const { Html5Qrcode, Html5QrcodeSupportedFormats } =
+                await import('html5-qrcode');
+            const scanner = new Html5Qrcode(regionId, {
+                formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE],
+                verbose: false,
+                useBarCodeDetectorIfSupported: true,
+            });
             scannerRef.current = scanner;
             await scanner.start(
                 { facingMode: 'environment' },
-                { fps: 10, qrbox: (width: number, height: number) => ({ width: Math.floor(Math.min(width, height) * 0.7), height: Math.floor(Math.min(width, height) * 0.7) }) },
+                {
+                    fps: 10,
+                    qrbox: (width: number, height: number) => ({
+                        width: Math.floor(Math.min(width, height) * 0.7),
+                        height: Math.floor(Math.min(width, height) * 0.7),
+                    }),
+                },
                 (decoded: string) => {
                     void stop();
                     onScanRef.current(decoded);
@@ -86,7 +100,10 @@ export function QrScanner({ onScan, disabled = false, className }: Props) {
             const scanner = scannerRef.current;
             scannerRef.current = null;
             if (scanner?.isScanning) {
-                void scanner.stop().then(() => scanner.clear()).catch(() => undefined);
+                void scanner
+                    .stop()
+                    .then(() => scanner.clear())
+                    .catch(() => undefined);
             }
         },
         [],
@@ -97,18 +114,34 @@ export function QrScanner({ onScan, disabled = false, className }: Props) {
             <div
                 id={regionId}
                 aria-label={t('members.admin.scan.camera_hint')}
-                className={cn('overflow-hidden rounded-xl border bg-muted/40', active ? 'min-h-64' : 'hidden')}
+                className={cn(
+                    'overflow-hidden rounded-xl border bg-muted/40',
+                    active ? 'min-h-64' : 'hidden',
+                )}
             />
-            {!active ? <p className="text-sm text-muted-foreground">{t('members.admin.scan.camera_hint')}</p> : null}
+            {!active ? (
+                <p className="text-sm text-muted-foreground">
+                    {t('members.admin.scan.camera_hint')}
+                </p>
+            ) : null}
             {error ? <InlineAlert tone="warning">{error}</InlineAlert> : null}
             <div>
                 {active ? (
-                    <Button type="button" variant="outline" onClick={() => void stop()}>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => void stop()}
+                    >
                         <CameraOff className="size-4" aria-hidden="true" />
                         {t('members.admin.scan.stop_camera')}
                     </Button>
                 ) : (
-                    <Button type="button" variant="outline" onClick={() => void start()} disabled={disabled || starting}>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => void start()}
+                        disabled={disabled || starting}
+                    >
                         <Camera className="size-4" aria-hidden="true" />
                         {t('members.admin.scan.start_camera')}
                     </Button>

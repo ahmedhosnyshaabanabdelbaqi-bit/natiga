@@ -45,7 +45,10 @@ class OperationsBridgeTest extends TestCase
 
     public function test_degraded_check_raises_one_deduplicated_p2_exception_and_recovery_resolves_it(): void
     {
-        Http::fake([OsmMapProvider::NOMINATIM_URL.'/status*' => Http::response('maintenance', 503)]);
+        $healthy = false;
+        Http::fake([OsmMapProvider::NOMINATIM_URL.'/status*' => function () use (&$healthy) {
+            return $healthy ? Http::response(['status' => 0, 'message' => 'OK']) : Http::response('maintenance', 503);
+        }]);
 
         Integrations::check('map');
         Integrations::check('map');
@@ -59,10 +62,13 @@ class OperationsBridgeTest extends TestCase
         $this->assertSame('integrations:check', $row['source']);
         $this->assertSame(1, DB::table('operations_exceptions')->where('dedup_key', 'integration:map')->count());
 
-        Http::fake([OsmMapProvider::NOMINATIM_URL.'/status*' => Http::response(['status' => 0, 'message' => 'OK'])]);
+        $healthy = true;
         Integrations::check('map');
 
-        $this->assertSame('resolved', $this->exceptionRow('map')['status']);
+        $row = $this->exceptionRow('map');
+        $this->assertSame('resolved', $row['status']);
+        $this->assertNotNull($row['resolved_at']);
+        $this->assertDatabaseHas('audit_logs', ['action' => 'operations.exception_resolved', 'entity_id' => $row['id'], 'actor_type' => 'system']);
     }
 
     public function test_unavailable_check_raises_a_p1_exception(): void

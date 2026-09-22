@@ -32,6 +32,11 @@ final class UpdateOdometer
             $vehicle = MemberVehicle::query()->whereKey($vehicle->id)->lockForUpdate()->firstOrFail();
             $previous = $vehicle->odometer_km;
 
+            // Members only record readings for cars they still drive; service records / imports may backfill any vehicle.
+            if ($source === OdometerSource::Manual && ! $vehicle->isActive()) {
+                throw DomainException::because('garage.odometer.inactive', field: 'odometer_km');
+            }
+
             if ($previous !== null && $odometerKm < $previous && ($reason === null || mb_strlen($reason) < 5)) {
                 throw DomainException::because('garage.odometer.decrease_requires_reason', ['previous' => $previous], 'reason');
             }

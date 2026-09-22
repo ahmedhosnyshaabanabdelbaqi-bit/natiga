@@ -13,7 +13,8 @@ Route::middleware('module:integrations')->prefix('integrations')->name('integrat
     });
 
     Route::middleware('permission:integrations.manage')->group(function () {
-        Route::post('check/{key}', [IntegrationsController::class, 'check'])->where('key', '[a-z_]+')->name('check');
+        // Checks call external services (SMTP connect, Nominatim...): throttled like the other test tools.
+        Route::post('check/{key}', [IntegrationsController::class, 'check'])->where('key', '[a-z_]+')->middleware('throttle:integrations-tests')->name('check');
         Route::post('test-email', [IntegrationsController::class, 'sendTestEmail'])->middleware('throttle:integrations-tests')->name('test-email');
         Route::post('geocode-test', [IntegrationsController::class, 'geocodeTest'])->middleware('throttle:integrations-tests')->name('geocode-test');
         Route::post('webhook-events/{event}/retry', [WebhookEventsController::class, 'retry'])->whereNumber('event')->name('webhook-events.retry');

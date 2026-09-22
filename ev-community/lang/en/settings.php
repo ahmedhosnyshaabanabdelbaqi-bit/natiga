@@ -62,6 +62,13 @@ return [
         'name_hint' => 'A name helps you identify this passkey later.', 'registering' => 'Registering…', 'register' => 'Register passkey',
         'default_name' => ':browser on :os', 'remove_named' => 'Remove passkey ":name"', 'exists' => 'This device is already registered as a passkey.',
     ],
+    // Fortify flashes these codes as session('status'); map with str_replace('-', '_', $status).
+    'fortify_status' => [
+        'password_updated' => 'Password updated.', 'profile_information_updated' => 'Profile updated.',
+        'recovery_codes_generated' => 'New recovery codes were generated.', 'two_factor_authentication_confirmed' => 'Two-factor authentication is now confirmed.',
+        'two_factor_authentication_disabled' => 'Two-factor authentication was disabled.', 'two_factor_authentication_enabled' => 'Two-factor authentication was enabled. Finish the setup with your authenticator app.',
+        'verification_link_sent' => 'A new verification link has been sent to your email address.',
+    ],
     'delete_account' => [
         'heading' => 'Close your account', 'description' => 'Deactivate your account or request deletion of your personal data',
         'member_text' => 'Deactivation and personal-data deletion requests are handled on the Privacy & data page. Records the law requires us to keep (orders, payments, receipts and the audit trail) are retained; your personal details are anonymised after the request is reviewed.',

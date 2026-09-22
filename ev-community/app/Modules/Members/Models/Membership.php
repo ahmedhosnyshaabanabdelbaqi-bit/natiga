@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
 /**
@@ -27,10 +28,10 @@ use Illuminate\Support\Str;
  * @property int|null $referred_by
  * @property string|null $referral_source
  * @property string $verification_token
- * @property \Illuminate\Support\Carbon|null $joined_at
- * @property \Illuminate\Support\Carbon|null $approved_at
- * @property \Illuminate\Support\Carbon|null $suspended_at
- * @property \Illuminate\Support\Carbon|null $expires_at
+ * @property Carbon|null $joined_at
+ * @property Carbon|null $approved_at
+ * @property Carbon|null $suspended_at
+ * @property Carbon|null $expires_at
  * @property-read User $user
  * @property-read Governorate|null $governorate
  */

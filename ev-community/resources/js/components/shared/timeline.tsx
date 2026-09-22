@@ -28,35 +28,78 @@ type Props = {
 };
 
 /** Vertical status history (order/payment/booking/ticket timelines). */
-export function Timeline({ items, dense = false, absolute = false, className }: Props) {
+export function Timeline({
+    items,
+    dense = false,
+    absolute = false,
+    className,
+}: Props) {
     if (items.length === 0) {
         return null;
     }
     return (
-        <ol aria-label={t('ui.timeline.label')} className={cn('relative ms-3 border-s border-border', className)}>
+        <ol
+            aria-label={t('ui.timeline.label')}
+            className={cn('relative ms-3 border-s border-border', className)}
+        >
             {items.map((item, index) => {
                 const tone = item.tone ?? 'muted';
                 const Icon = item.icon;
                 return (
-                    <li key={item.id ?? index} className={cn('relative ps-6', dense ? 'pb-4' : 'pb-6', 'last:pb-0')}>
+                    <li
+                        key={item.id ?? index}
+                        className={cn(
+                            'relative ps-6',
+                            dense ? 'pb-4' : 'pb-6',
+                            'last:pb-0',
+                        )}
+                    >
                         <span
                             aria-hidden="true"
                             className={cn(
-                                'absolute top-0.5 -start-[calc(0.5rem+1px)] flex size-4 items-center justify-center rounded-full ring-4 ring-background',
-                                Icon ? cn('size-6 -start-[calc(0.75rem+1px)]', toneSoft[tone]) : toneSolid[tone],
+                                'absolute -start-[calc(0.5rem+1px)] top-0.5 flex size-4 items-center justify-center rounded-full ring-4 ring-background',
+                                Icon
+                                    ? cn(
+                                          '-start-[calc(0.75rem+1px)] size-6',
+                                          toneSoft[tone],
+                                      )
+                                    : toneSolid[tone],
                             )}
                         >
-                            {Icon ? <Icon className="size-3.5" aria-hidden="true" /> : null}
+                            {Icon ? (
+                                <Icon className="size-3.5" aria-hidden="true" />
+                            ) : null}
                         </span>
-                        <div className={cn('flex flex-col gap-0.5', Icon && 'pt-0.5')}>
+                        <div
+                            className={cn(
+                                'flex flex-col gap-0.5',
+                                Icon && 'pt-0.5',
+                            )}
+                        >
                             <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
-                                <p className="text-sm font-medium">{item.title}</p>
+                                <p className="text-sm font-medium">
+                                    {item.title}
+                                </p>
                                 {item.at ? (
-                                    <DateTime value={item.at} mode={absolute ? 'datetime' : 'relative'} className="text-xs text-muted-foreground tabular" />
+                                    <DateTime
+                                        value={item.at}
+                                        mode={
+                                            absolute ? 'datetime' : 'relative'
+                                        }
+                                        className="tabular text-xs text-muted-foreground"
+                                    />
                                 ) : null}
                             </div>
-                            {item.description ? <div className="text-sm text-muted-foreground">{item.description}</div> : null}
-                            {item.actor ? <p className="text-xs text-muted-foreground">{t('ui.timeline.by', { actor: item.actor })}</p> : null}
+                            {item.description ? (
+                                <div className="text-sm text-muted-foreground">
+                                    {item.description}
+                                </div>
+                            ) : null}
+                            {item.actor ? (
+                                <p className="text-xs text-muted-foreground">
+                                    {t('ui.timeline.by', { actor: item.actor })}
+                                </p>
+                            ) : null}
                         </div>
                     </li>
                 );

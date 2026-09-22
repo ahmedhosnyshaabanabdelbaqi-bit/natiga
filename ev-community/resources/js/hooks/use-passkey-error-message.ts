@@ -20,7 +20,11 @@ export function usePasskeyErrorMessage(error: PasskeyErrorLike): string | null {
         case 'InvalidDomainError':
             return t('auth.passkey.invalid_domain');
         default:
-            if (error.message === '' || error.message === 'An unknown error occurred.' || error.message.startsWith('Request failed with status')) {
+            if (
+                error.message === '' ||
+                error.message === 'An unknown error occurred.' ||
+                error.message.startsWith('Request failed with status')
+            ) {
                 return t('core.states.error');
             }
             return error.message;

@@ -19,17 +19,37 @@ export default function ResetPassword({ token, email, passwordRules }: Props) {
         <>
             <Head title={t('auth.reset.title')} />
 
-            <Form {...update.form()} transform={(data) => ({ ...data, token, email })} resetOnSuccess={['password', 'password_confirmation']}>
+            <Form
+                {...update.form()}
+                transform={(data) => ({ ...data, token, email })}
+                resetOnSuccess={['password', 'password_confirmation']}
+            >
                 {({ processing, errors }) => (
                     <div className="grid gap-6">
                         <div className="grid gap-2">
-                            <Label htmlFor="email">{t('auth.fields.email')}</Label>
-                            <Input id="email" type="email" name="email" autoComplete="email" value={email} dir="ltr" className="code mt-1 block w-full" readOnly />
-                            <InputError message={errors.email} className="mt-2" />
+                            <Label htmlFor="email">
+                                {t('auth.fields.email')}
+                            </Label>
+                            <Input
+                                id="email"
+                                type="email"
+                                name="email"
+                                autoComplete="email"
+                                value={email}
+                                dir="ltr"
+                                className="code mt-1 block w-full"
+                                readOnly
+                            />
+                            <InputError
+                                message={errors.email}
+                                className="mt-2"
+                            />
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="password">{t('auth.fields.password')}</Label>
+                            <Label htmlFor="password">
+                                {t('auth.fields.password')}
+                            </Label>
                             <PasswordInput
                                 id="password"
                                 name="password"
@@ -39,27 +59,45 @@ export default function ResetPassword({ token, email, passwordRules }: Props) {
                                 required
                                 placeholder={t('auth.fields.password')}
                                 passwordrules={passwordRules}
-                                aria-invalid={errors.password ? true : undefined}
+                                aria-invalid={
+                                    errors.password ? true : undefined
+                                }
                             />
                             <InputError message={errors.password} />
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="password_confirmation">{t('auth.fields.password_confirmation')}</Label>
+                            <Label htmlFor="password_confirmation">
+                                {t('auth.fields.password_confirmation')}
+                            </Label>
                             <PasswordInput
                                 id="password_confirmation"
                                 name="password_confirmation"
                                 autoComplete="new-password"
                                 className="mt-1 block w-full"
                                 required
-                                placeholder={t('auth.fields.password_confirmation')}
+                                placeholder={t(
+                                    'auth.fields.password_confirmation',
+                                )}
                                 passwordrules={passwordRules}
-                                aria-invalid={errors.password_confirmation ? true : undefined}
+                                aria-invalid={
+                                    errors.password_confirmation
+                                        ? true
+                                        : undefined
+                                }
                             />
-                            <InputError message={errors.password_confirmation} className="mt-2" />
+                            <InputError
+                                message={errors.password_confirmation}
+                                className="mt-2"
+                            />
                         </div>
 
-                        <Button type="submit" className="mt-4 w-full" disabled={processing} data-test="reset-password-button">
+                        <Button
+                            type="submit"
+                            className="mt-4 w-full"
+                            disabled={processing}
+                            data-test="reset-password-button"
+                        >
                             {processing && <Spinner />}
                             {t('auth.reset.submit')}
                         </Button>

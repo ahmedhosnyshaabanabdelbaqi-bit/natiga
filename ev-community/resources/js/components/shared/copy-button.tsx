@@ -13,12 +13,19 @@ type Props = {
     /** Render the label next to the icon (default: icon only). */
     showLabel?: boolean;
     size?: 'icon' | 'sm' | 'default';
-    variant?: 'ghost' | 'outline' | 'secondary';
+    variant?: 'default' | 'ghost' | 'outline' | 'secondary';
     className?: string;
 };
 
 /** Copies `value` to the clipboard and confirms with a check icon for two seconds. */
-export function CopyButton({ value, label, showLabel = false, size = 'icon', variant = 'ghost', className }: Props) {
+export function CopyButton({
+    value,
+    label,
+    showLabel = false,
+    size = 'icon',
+    variant = 'ghost',
+    className,
+}: Props) {
     const [, copy] = useClipboard();
     const [copied, setCopied] = useState(false);
 
@@ -47,7 +54,9 @@ export function CopyButton({ value, label, showLabel = false, size = 'icon', var
             }}
         >
             <Icon className="size-4" aria-hidden="true" />
-            {showLabel ? <span>{copied ? t('core.actions.copied') : name}</span> : null}
+            {showLabel ? (
+                <span>{copied ? t('core.actions.copied') : name}</span>
+            ) : null}
             <span className="sr-only" aria-live="polite">
                 {copied ? t('core.actions.copied') : ''}
             </span>

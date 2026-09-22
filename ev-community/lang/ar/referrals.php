@@ -8,6 +8,7 @@ return [
     'share_link' => 'رابط المشاركة',
     'copy_code' => 'نسخ الكود',
     'copy_link' => 'نسخ الرابط',
+    'share_whatsapp' => 'مشاركة عبر واتساب',
     'share' => 'مشاركة',
     'share_text' => 'انضم إلى مجتمع السيارات الكهربائية في مصر عبر رابط دعوتي: :link',
     'stats' => ['invited' => 'مدعوون', 'registered' => 'مسجّلون', 'approved' => 'معتمدون'],

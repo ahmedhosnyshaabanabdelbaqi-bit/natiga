@@ -46,13 +46,14 @@ function defaultPasskeyName(): string {
 export default function PasskeyRegistration({ onSuccess }: Props) {
     const [name, setName] = useState(defaultPasskeyName);
     const [showForm, setShowForm] = useState(false);
-    const { register, isLoading, errorInstance, isSupported } = usePasskeyRegister({
-        onSuccess: () => {
-            setName('');
-            setShowForm(false);
-            onSuccess();
-        },
-    });
+    const { register, isLoading, errorInstance, isSupported } =
+        usePasskeyRegister({
+            onSuccess: () => {
+                setName('');
+                setShowForm(false);
+                onSuccess();
+            },
+        });
 
     const error = usePasskeyErrorMessage(errorInstance);
 
@@ -72,21 +73,34 @@ export default function PasskeyRegistration({ onSuccess }: Props) {
     };
 
     if (!isSupported) {
-        return <div className="text-sm text-muted-foreground">{t('settings.passkeys.unsupported')}</div>;
+        return (
+            <div className="text-sm text-muted-foreground">
+                {t('settings.passkeys.unsupported')}
+            </div>
+        );
     }
 
     if (!showForm) {
         return (
-            <Button type="button" variant="outline" onClick={() => setShowForm(true)}>
+            <Button
+                type="button"
+                variant="outline"
+                onClick={() => setShowForm(true)}
+            >
                 {t('settings.passkeys.add')}
             </Button>
         );
     }
 
     return (
-        <form onSubmit={(event) => void handleSubmit(event)} className="space-y-4 rounded-lg border border-border bg-muted/50 p-4">
+        <form
+            onSubmit={(event) => void handleSubmit(event)}
+            className="space-y-4 rounded-lg border border-border bg-muted/50 p-4"
+        >
             <div className="grid gap-2">
-                <Label htmlFor="passkey-name">{t('settings.passkeys.name')}</Label>
+                <Label htmlFor="passkey-name">
+                    {t('settings.passkeys.name')}
+                </Label>
                 <Input
                     id="passkey-name"
                     type="text"
@@ -98,7 +112,10 @@ export default function PasskeyRegistration({ onSuccess }: Props) {
                     maxLength={255}
                     autoFocus
                 />
-                <p id="passkey-name-hint" className="text-xs text-muted-foreground">
+                <p
+                    id="passkey-name-hint"
+                    className="text-xs text-muted-foreground"
+                >
                     {t('settings.passkeys.name_hint')}
                 </p>
             </div>
@@ -108,7 +125,9 @@ export default function PasskeyRegistration({ onSuccess }: Props) {
             <div className="flex gap-2">
                 <Button type="submit" disabled={isLoading || !name.trim()}>
                     {isLoading ? <Spinner /> : null}
-                    {isLoading ? t('settings.passkeys.registering') : t('settings.passkeys.register')}
+                    {isLoading
+                        ? t('settings.passkeys.registering')
+                        : t('settings.passkeys.register')}
                 </Button>
                 <Button type="button" variant="ghost" onClick={handleCancel}>
                     {t('settings.passkeys.cancel')}

@@ -6,13 +6,22 @@ import { t } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 
 /** Password input with a keyboard-reachable show/hide toggle (placed at the inline end in both directions). */
-export default function PasswordInput({ className, ref, ...props }: Omit<ComponentProps<'input'>, 'type'> & { ref?: Ref<HTMLInputElement> }) {
+export default function PasswordInput({
+    className,
+    ref,
+    ...props
+}: Omit<ComponentProps<'input'>, 'type'> & { ref?: Ref<HTMLInputElement> }) {
     const [showPassword, setShowPassword] = useState(false);
     const label = showPassword ? t('ui.password.hide') : t('ui.password.show');
 
     return (
         <div className="relative">
-            <Input type={showPassword ? 'text' : 'password'} className={cn('pe-10', className)} ref={ref} {...props} />
+            <Input
+                type={showPassword ? 'text' : 'password'}
+                className={cn('pe-10', className)}
+                ref={ref}
+                {...props}
+            />
             <button
                 type="button"
                 onClick={() => setShowPassword((prev) => !prev)}
@@ -23,7 +32,11 @@ export default function PasswordInput({ className, ref, ...props }: Omit<Compone
                 title={label}
                 disabled={props.disabled}
             >
-                {showPassword ? <EyeOff className="size-4" aria-hidden="true" /> : <Eye className="size-4" aria-hidden="true" />}
+                {showPassword ? (
+                    <EyeOff className="size-4" aria-hidden="true" />
+                ) : (
+                    <Eye className="size-4" aria-hidden="true" />
+                )}
             </button>
         </div>
     );

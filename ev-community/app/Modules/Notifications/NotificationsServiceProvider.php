@@ -35,15 +35,16 @@ class NotificationsServiceProvider extends ServiceProvider
 
         AnnouncementAudiences::registerDefaults();
 
-        // Unread badge for every portal layout (cheap: cached 60s per user, invalidated on write).
-        Inertia::share('unreadNotifications', fn () => Auth::check() ? Notify::unreadCount(Auth::user()) : 0);
+        // Unread badge for every portal layout (cheap: cached 60s per user, invalidated on write). Lazy: only evaluated
+        // when an Inertia response is rendered.
+        Inertia::share('unreadNotifications', fn () => Auth::user() instanceof User ? Notify::unreadCount(Auth::user()) : 0);
 
         DashboardKpis::register(
             'failed_deliveries_24h',
             'notifications.view',
             fn () => NotificationDelivery::query()->where('status', DeliveryStatus::Failed->value)->where('updated_at', '>=', now()->subDay())->count(),
             'notifications.kpis.failed_deliveries_24h',
-            '/admin/notifications',
+            '/admin/notifications/deliveries?status=failed',
             'notification_deliveries.status = failed, last 24h',
             tone: 'danger',
             order: 90,

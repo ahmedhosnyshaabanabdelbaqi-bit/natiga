@@ -18,7 +18,8 @@ use InvalidArgumentException;
  * client is base64url(token_id ‖ HMAC-SHA256(token_id|purpose, APP_KEY)).
  *
  *   $token = $qr->token('membership_card', ['membership_id' => $m->id], ttlSeconds: 600);
- *   $payload = $qr->verify($token, 'membership_card');          // null when invalid/expired/used
+ *   $payload = $qr->verify($token, 'membership_card');          // null when invalid/expired/used/revoked
+ *   $qr->revoke($token, 'membership_card');                     // e.g. card reissued
  *   $svg = $qr->svg(route('shared.qr.verify', ['token' => $token]));
  */
 final class QrService
@@ -67,23 +68,21 @@ final class QrService
     {
         $this->assertPurpose($purpose);
 
-        $raw = $this->decode($token);
-        if ($raw === null || strlen($raw) !== self::TOKEN_ID_LENGTH + self::SIGNATURE_BYTES) {
-            return null;
-        }
-        $tokenId = substr($raw, 0, self::TOKEN_ID_LENGTH);
-        $signature = substr($raw, self::TOKEN_ID_LENGTH);
-        if (! preg_match('/^[0-9a-z]{26}$/', $tokenId) || ! hash_equals($this->sign($tokenId, $purpose), $signature)) {
+        $tokenId = $this->tokenIdFrom($token, $purpose);
+        if ($tokenId === null) {
             return null;
         }
 
         $row = QrToken::query()->where('token_id', $tokenId)->where('purpose', $purpose)->first();
-        if ($row === null || $row->isExpired()) {
+        // used_at is set when a single-use token was consumed or any token was revoked.
+        if ($row === null || $row->isExpired() || $row->used_at !== null) {
             return null;
         }
 
         if ($row->single_use) {
+            // Atomic consume: of two concurrent scans exactly one gets the payload.
             $claimed = QrToken::query()->whereKey($row->id)->whereNull('used_at')
+                ->where(fn ($q) => $q->whereNull('expires_at')->orWhere('expires_at', '>', now()))
                 ->update(['used_at' => now(), 'used_by' => $user?->id]);
             if ($claimed !== 1) {
                 return null;
@@ -93,16 +92,33 @@ final class QrService
         return $row->payload;
     }
 
-    /** Invalidate a token before its expiry (e.g. card reissued). */
-    public function revoke(string $token): bool
+    /**
+     * Inspect a token without consuming it (for "show what this QR is" screens). Same checks as verify().
+     *
+     * @return array<string, mixed>|null
+     */
+    public function peek(string $token, string $purpose): ?array
     {
-        $raw = $this->decode($token);
-        if ($raw === null || strlen($raw) !== self::TOKEN_ID_LENGTH + self::SIGNATURE_BYTES) {
+        $this->assertPurpose($purpose);
+        $tokenId = $this->tokenIdFrom($token, $purpose);
+        if ($tokenId === null) {
+            return null;
+        }
+        $row = QrToken::query()->where('token_id', $tokenId)->where('purpose', $purpose)->first();
+
+        return $row === null || $row->isExpired() || $row->used_at !== null ? null : $row->payload;
+    }
+
+    /** Invalidate a token before its expiry (e.g. card reissued). Only correctly signed tokens can be revoked. */
+    public function revoke(string $token, string $purpose): bool
+    {
+        $this->assertPurpose($purpose);
+        $tokenId = $this->tokenIdFrom($token, $purpose);
+        if ($tokenId === null) {
             return false;
         }
-        $tokenId = substr($raw, 0, self::TOKEN_ID_LENGTH);
 
-        return QrToken::query()->where('token_id', $tokenId)->whereNull('used_at')->update(['used_at' => now()]) === 1;
+        return QrToken::query()->where('token_id', $tokenId)->where('purpose', $purpose)->whereNull('used_at')->update(['used_at' => now()]) === 1;
     }
 
     public function purgeExpired(): int
@@ -166,6 +182,22 @@ final class QrService
     }
 
     // --------------------------------------------------------------- internals
+
+    /** Token id when the token is well-formed and its signature matches the purpose, otherwise null. */
+    private function tokenIdFrom(string $token, string $purpose): ?string
+    {
+        $raw = $this->decode($token);
+        if ($raw === null || strlen($raw) !== self::TOKEN_ID_LENGTH + self::SIGNATURE_BYTES) {
+            return null;
+        }
+        $tokenId = substr($raw, 0, self::TOKEN_ID_LENGTH);
+        $signature = substr($raw, self::TOKEN_ID_LENGTH);
+        if (! preg_match('/^[0-9a-z]{26}$/', $tokenId) || ! hash_equals($this->sign($tokenId, $purpose), $signature)) {
+            return null;
+        }
+
+        return $tokenId;
+    }
 
     private function sign(string $tokenId, string $purpose): string
     {

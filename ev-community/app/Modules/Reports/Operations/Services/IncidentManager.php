@@ -52,7 +52,14 @@ final class IncidentManager
         return DB::transaction(function () use ($incident, $data, $actor) {
             $incident = $this->lock($incident);
             $before = $this->snapshot($incident);
-            $incident->fill(array_intersect_key($data, array_flip(['title', 'affected_module', 'impact', 'started_at', 'detected_at', 'owner_id'])));
+            $changes = array_intersect_key($data, array_flip(['title', 'affected_module', 'impact', 'started_at', 'detected_at', 'owner_id']));
+            // started_at / detected_at are required columns: an empty value on edit keeps the recorded time.
+            foreach (['title', 'started_at', 'detected_at'] as $required) {
+                if (array_key_exists($required, $changes) && ($changes[$required] === null || $changes[$required] === '')) {
+                    unset($changes[$required]);
+                }
+            }
+            $incident->fill($changes);
             if (isset($data['severity'])) {
                 $incident->severity = ExceptionSeverity::from($data['severity']);
             }

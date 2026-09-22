@@ -18,16 +18,29 @@ export default function DeleteUser() {
 
     return (
         <div className="space-y-6">
-            <Heading variant="small" title={t('settings.delete_account.heading')} description={t('settings.delete_account.description')} />
+            <Heading
+                variant="small"
+                title={t('settings.delete_account.heading')}
+                description={t('settings.delete_account.description')}
+            />
             <div className="space-y-4 rounded-lg border border-warning/30 bg-warning-soft/40 p-4">
                 <div className="flex gap-3 text-sm">
-                    <ShieldAlert className="mt-0.5 size-4 shrink-0 text-warning" aria-hidden="true" />
-                    <p className="text-foreground/90">{isMember ? t('settings.delete_account.member_text') : t('settings.delete_account.managed_text')}</p>
+                    <ShieldAlert
+                        className="mt-0.5 size-4 shrink-0 text-warning"
+                        aria-hidden="true"
+                    />
+                    <p className="text-foreground/90">
+                        {isMember
+                            ? t('settings.delete_account.member_text')
+                            : t('settings.delete_account.managed_text')}
+                    </p>
                 </div>
 
                 {isMember ? (
                     <Button variant="outline" asChild data-test="privacy-link">
-                        <Link href={privacyIndex()}>{t('settings.delete_account.privacy_link')}</Link>
+                        <Link href={privacyIndex()}>
+                            {t('settings.delete_account.privacy_link')}
+                        </Link>
                     </Button>
                 ) : null}
             </div>

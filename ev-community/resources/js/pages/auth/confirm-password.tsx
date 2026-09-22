@@ -1,5 +1,8 @@
 import { Form, Head } from '@inertiajs/react';
-import { index as confirmOptions, store as confirmStore } from '@/actions/Laravel/Passkeys/Http/Controllers/PasskeyConfirmationController';
+import {
+    index as confirmOptions,
+    store as confirmStore,
+} from '@/actions/Laravel/Passkeys/Http/Controllers/PasskeyConfirmationController';
 import InputError from '@/components/input-error';
 import PasskeyVerify from '@/components/passkey-verify';
 import PasswordInput from '@/components/password-input';
@@ -28,7 +31,9 @@ export default function ConfirmPassword() {
                 {({ processing, errors }) => (
                     <div className="space-y-6">
                         <div className="grid gap-2">
-                            <Label htmlFor="password">{t('auth.fields.password')}</Label>
+                            <Label htmlFor="password">
+                                {t('auth.fields.password')}
+                            </Label>
                             <PasswordInput
                                 id="password"
                                 name="password"
@@ -36,14 +41,20 @@ export default function ConfirmPassword() {
                                 autoComplete="current-password"
                                 required
                                 autoFocus
-                                aria-invalid={errors.password ? true : undefined}
+                                aria-invalid={
+                                    errors.password ? true : undefined
+                                }
                             />
 
                             <InputError message={errors.password} />
                         </div>
 
                         <div className="flex items-center">
-                            <Button className="w-full" disabled={processing} data-test="confirm-password-button">
+                            <Button
+                                className="w-full"
+                                disabled={processing}
+                                data-test="confirm-password-button"
+                            >
                                 {processing && <Spinner />}
                                 {t('auth.confirm_password.submit')}
                             </Button>

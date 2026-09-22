@@ -23,8 +23,13 @@ class UpdateUserAccessRequest extends FormRequest
             'roles.*' => ['string', 'distinct', 'max:40'],
             'permissions' => ['present', 'array', 'max:200'],
             'permissions.*' => ['string', 'distinct', 'max:100'],
-            'reason' => ['nullable', 'string', 'max:500'],
+            'reason' => ['required', 'string', 'min:5', 'max:500'],
         ];
+    }
+
+    public function messages(): array
+    {
+        return ['reason.required' => __('core.errors.reason_required'), 'reason.min' => __('core.errors.reason_required')];
     }
 
     public function attributes(): array

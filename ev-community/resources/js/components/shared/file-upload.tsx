@@ -48,13 +48,20 @@ function fileKey(file: File): string {
 
 function formatSize(bytes: number): string {
     if (bytes < 1024 * 1024) {
-        return t('ui.upload.size_kb', { size: formatNumber(Math.max(1, Math.round(bytes / 1024)), 0) });
+        return t('ui.upload.size_kb', {
+            size: formatNumber(Math.max(1, Math.round(bytes / 1024)), 0),
+        });
     }
-    return t('ui.upload.size_mb', { size: formatNumber(bytes / 1024 / 1024, 1) });
+    return t('ui.upload.size_mb', {
+        size: formatNumber(bytes / 1024 / 1024, 1),
+    });
 }
 
 /** Mirrors the browser's `accept` matching: extensions (".pdf"), exact MIME types and wildcards ("image/*"). */
-export function fileMatchesAccept(file: File, accept: string | undefined): boolean {
+export function fileMatchesAccept(
+    file: File,
+    accept: string | undefined,
+): boolean {
     if (!accept) {
         return true;
     }
@@ -80,7 +87,14 @@ function describeAccept(accept: string): string {
         .split(',')
         .map((part) => part.trim())
         .filter(Boolean)
-        .map((part) => (part.endsWith('/*') ? part.slice(0, -2) : part.startsWith('.') ? part.slice(1) : (part.split('/')[1] ?? part)).toUpperCase())
+        .map((part) =>
+            (part.endsWith('/*')
+                ? part.slice(0, -2)
+                : part.startsWith('.')
+                  ? part.slice(1)
+                  : (part.split('/')[1] ?? part)
+            ).toUpperCase(),
+        )
         .join(', ');
 }
 
@@ -89,7 +103,9 @@ function describeAccept(accept: string): string {
  * cleanup, so removed files, re-renders and unmounts (including StrictMode's double mount) never leak.
  */
 function useImagePreviews(files: File[]): Map<string, string> {
-    const [previews, setPreviews] = useState<Map<string, string>>(() => new Map());
+    const [previews, setPreviews] = useState<Map<string, string>>(
+        () => new Map(),
+    );
 
     useEffect(() => {
         const created = new Map<string, string>();
@@ -116,7 +132,15 @@ function useImagePreviews(files: File[]): Map<string, string> {
  * `forceFormData: true`; the server (AttachmentService) remains the authority on type and size.
  */
 export function FileUpload(props: FileUploadProps) {
-    const { accept, maxSizeMb, name, error, disabled = false, capture, className } = props;
+    const {
+        accept,
+        maxSizeMb,
+        name,
+        error,
+        disabled = false,
+        capture,
+        className,
+    } = props;
     const generatedId = useId();
     const inputId = props.id ?? `file-upload-${generatedId}`;
     const hintId = `${inputId}-hint`;
@@ -126,7 +150,10 @@ export function FileUpload(props: FileUploadProps) {
     const [dragging, setDragging] = useState(false);
     const [rejections, setRejections] = useState<string[]>([]);
 
-    const files = useMemo<File[]>(() => (props.multiple ? props.value : props.value ? [props.value] : []), [props.multiple, props.value]);
+    const files = useMemo<File[]>(
+        () => (props.multiple ? props.value : props.value ? [props.value] : []),
+        [props.multiple, props.value],
+    );
     const previews = useImagePreviews(files);
     const maxFiles = props.multiple ? props.maxFiles : 1;
 
@@ -147,8 +174,16 @@ export function FileUpload(props: FileUploadProps) {
         for (const file of incoming) {
             if (!fileMatchesAccept(file, accept)) {
                 problems.push(t('ui.upload.not_accepted', { name: file.name }));
-            } else if (maxSizeMb !== undefined && file.size > maxSizeMb * 1024 * 1024) {
-                problems.push(t('ui.upload.too_large', { name: file.name, size: formatNumber(maxSizeMb, 1) }));
+            } else if (
+                maxSizeMb !== undefined &&
+                file.size > maxSizeMb * 1024 * 1024
+            ) {
+                problems.push(
+                    t('ui.upload.too_large', {
+                        name: file.name,
+                        size: formatNumber(maxSizeMb, 1),
+                    }),
+                );
             } else {
                 accepted.push(file);
             }
@@ -163,7 +198,10 @@ export function FileUpload(props: FileUploadProps) {
         }
 
         const known = new Set(files.map(fileKey));
-        let next = [...files, ...accepted.filter((file) => !known.has(fileKey(file)))];
+        let next = [
+            ...files,
+            ...accepted.filter((file) => !known.has(fileKey(file))),
+        ];
         if (maxFiles !== undefined && next.length > maxFiles) {
             problems.push(t('ui.upload.too_many', { count: maxFiles }));
             next = next.slice(0, maxFiles);
@@ -210,11 +248,29 @@ export function FileUpload(props: FileUploadProps) {
     };
 
     const invalid = Boolean(error) || props['aria-invalid'] === true;
-    const hints = [maxSizeMb !== undefined ? t('ui.upload.max_size', { size: formatNumber(maxSizeMb, 1) }) : null, accept ? t('ui.upload.accepted', { types: describeAccept(accept) }) : null, props.multiple && maxFiles !== undefined ? t('ui.upload.max_files', { count: maxFiles }) : null].filter(
-        (hint): hint is string => hint !== null,
-    );
-    const describedBy = [props['aria-describedby'], error ? errorId : null, hints.length > 0 ? hintId : null].filter(Boolean).join(' ') || undefined;
-    const full = maxFiles !== undefined && props.multiple === true && files.length >= maxFiles;
+    const hints = [
+        maxSizeMb !== undefined
+            ? t('ui.upload.max_size', { size: formatNumber(maxSizeMb, 1) })
+            : null,
+        accept
+            ? t('ui.upload.accepted', { types: describeAccept(accept) })
+            : null,
+        props.multiple && maxFiles !== undefined
+            ? t('ui.upload.max_files', { count: maxFiles })
+            : null,
+    ].filter((hint): hint is string => hint !== null);
+    const describedBy =
+        [
+            props['aria-describedby'],
+            error ? errorId : null,
+            hints.length > 0 ? hintId : null,
+        ]
+            .filter(Boolean)
+            .join(' ') || undefined;
+    const full =
+        maxFiles !== undefined &&
+        props.multiple === true &&
+        files.length >= maxFiles;
 
     return (
         <div className={cn('grid gap-2', className)} data-slot="file-upload">
@@ -231,18 +287,33 @@ export function FileUpload(props: FileUploadProps) {
                 className={cn(
                     'relative flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed px-4 py-6 text-center text-sm transition-colors',
                     'focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/40',
-                    dragging ? 'border-brand bg-brand-soft/30' : 'border-border bg-muted/30 hover:bg-muted/50',
+                    dragging
+                        ? 'border-brand bg-brand-soft/30'
+                        : 'border-border bg-muted/30 hover:bg-muted/50',
                     invalid && 'border-danger/60',
-                    disabled || full ? 'cursor-not-allowed opacity-60' : 'cursor-pointer',
+                    disabled || full
+                        ? 'cursor-not-allowed opacity-60'
+                        : 'cursor-pointer',
                 )}
             >
-                <UploadCloud className={cn('size-8', dragging ? 'text-brand' : 'text-muted-foreground')} aria-hidden="true" />
+                <UploadCloud
+                    className={cn(
+                        'size-8',
+                        dragging ? 'text-brand' : 'text-muted-foreground',
+                    )}
+                    aria-hidden="true"
+                />
                 <p className="text-muted-foreground">
                     {dragging ? (
                         t('ui.upload.release')
                     ) : (
                         <>
-                            {props.multiple ? t('ui.upload.drop') : t('ui.upload.single_drop')} <span className="font-medium text-brand underline underline-offset-4">{t('ui.upload.browse')}</span>
+                            {props.multiple
+                                ? t('ui.upload.drop')
+                                : t('ui.upload.single_drop')}{' '}
+                            <span className="font-medium text-brand underline underline-offset-4">
+                                {t('ui.upload.browse')}
+                            </span>
                         </>
                     )}
                 </p>
@@ -274,28 +345,50 @@ export function FileUpload(props: FileUploadProps) {
                 <ul className="grid gap-2" aria-label={t('ui.upload.selected')}>
                     {files.map((file) => {
                         const preview = previews.get(fileKey(file));
-                        const Icon = file.type.startsWith('image/') ? ImageIcon : FileText;
+                        const Icon = file.type.startsWith('image/')
+                            ? ImageIcon
+                            : FileText;
                         return (
-                            <li key={fileKey(file)} className="flex items-center gap-3 rounded-lg border bg-card p-2 pe-1">
+                            <li
+                                key={fileKey(file)}
+                                className="flex items-center gap-3 rounded-lg border bg-card p-2 pe-1"
+                            >
                                 {preview ? (
-                                    <img src={preview} alt={t('ui.upload.preview', { name: file.name })} className="size-12 shrink-0 rounded-md border object-cover" />
+                                    <img
+                                        src={preview}
+                                        alt={t('ui.upload.preview', {
+                                            name: file.name,
+                                        })}
+                                        className="size-12 shrink-0 rounded-md border object-cover"
+                                    />
                                 ) : (
                                     <span className="flex size-12 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
-                                        <Icon className="size-5" aria-hidden="true" />
+                                        <Icon
+                                            className="size-5"
+                                            aria-hidden="true"
+                                        />
                                     </span>
                                 )}
                                 <div className="min-w-0 flex-1">
-                                    <p className="truncate text-sm font-medium" dir="auto" title={file.name}>
+                                    <p
+                                        className="truncate text-sm font-medium"
+                                        dir="auto"
+                                        title={file.name}
+                                    >
                                         {file.name}
                                     </p>
-                                    <p className="text-xs text-muted-foreground tabular">{formatSize(file.size)}</p>
+                                    <p className="tabular text-xs text-muted-foreground">
+                                        {formatSize(file.size)}
+                                    </p>
                                 </div>
                                 <button
                                     type="button"
                                     onClick={() => removeFile(file)}
                                     disabled={disabled}
                                     className="rounded-md p-2 text-muted-foreground outline-none hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60 disabled:pointer-events-none disabled:opacity-50"
-                                    aria-label={t('ui.upload.remove', { name: file.name })}
+                                    aria-label={t('ui.upload.remove', {
+                                        name: file.name,
+                                    })}
                                 >
                                     <X className="size-4" aria-hidden="true" />
                                 </button>

@@ -3,7 +3,14 @@
  * Every map is keyed by the same union so modules can pass a `tone` prop and
  * get consistent colors in light and dark mode.
  */
-export type Tone = 'default' | 'brand' | 'success' | 'warning' | 'danger' | 'info' | 'muted';
+export type Tone =
+    | 'default'
+    | 'brand'
+    | 'success'
+    | 'warning'
+    | 'danger'
+    | 'info'
+    | 'muted';
 
 export const toneText: Record<Tone, string> = {
     default: 'text-foreground',
@@ -19,8 +26,10 @@ export const toneText: Record<Tone, string> = {
 export const toneSoft: Record<Tone, string> = {
     default: 'bg-muted text-foreground',
     brand: 'bg-brand-soft text-brand dark:text-brand-foreground dark:bg-brand',
-    success: 'bg-success-soft text-success dark:text-success-foreground dark:bg-success/80',
-    warning: 'bg-warning-soft text-warning dark:text-warning-foreground dark:bg-warning/80',
+    success:
+        'bg-success-soft text-success dark:text-success-foreground dark:bg-success/80',
+    warning:
+        'bg-warning-soft text-warning dark:text-warning-foreground dark:bg-warning/80',
     danger: 'bg-danger-soft text-danger dark:text-danger-foreground dark:bg-danger/80',
     info: 'bg-info-soft text-info dark:text-info-foreground dark:bg-info/80',
     muted: 'bg-muted text-muted-foreground',
@@ -47,7 +56,15 @@ export const toneBorder: Record<Tone, string> = {
     muted: 'border-border',
 };
 
-export const tones: Tone[] = ['default', 'brand', 'success', 'warning', 'danger', 'info', 'muted'];
+export const tones: Tone[] = [
+    'default',
+    'brand',
+    'success',
+    'warning',
+    'danger',
+    'info',
+    'muted',
+];
 
 export function isTone(value: unknown): value is Tone {
     return typeof value === 'string' && (tones as string[]).includes(value);

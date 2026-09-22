@@ -15,7 +15,10 @@ export default function ForgotPassword({ status }: { status?: string }) {
             <Head title={t('auth.forgot.title')} />
 
             {status && (
-                <div role="status" className="mb-4 rounded-md bg-success-soft px-3 py-2 text-center text-sm font-medium text-success">
+                <div
+                    role="status"
+                    className="mb-4 rounded-md bg-success-soft px-3 py-2 text-center text-sm font-medium text-success"
+                >
                     {status}
                 </div>
             )}
@@ -25,7 +28,9 @@ export default function ForgotPassword({ status }: { status?: string }) {
                     {({ processing, errors }) => (
                         <>
                             <div className="grid gap-2">
-                                <Label htmlFor="email">{t('auth.fields.email')}</Label>
+                                <Label htmlFor="email">
+                                    {t('auth.fields.email')}
+                                </Label>
                                 <Input
                                     id="email"
                                     type="email"
@@ -36,14 +41,20 @@ export default function ForgotPassword({ status }: { status?: string }) {
                                     dir="ltr"
                                     className="code"
                                     placeholder="email@example.com"
-                                    aria-invalid={errors.email ? true : undefined}
+                                    aria-invalid={
+                                        errors.email ? true : undefined
+                                    }
                                 />
 
                                 <InputError message={errors.email} />
                             </div>
 
                             <div className="my-6 flex items-center justify-start">
-                                <Button className="w-full" disabled={processing} data-test="email-password-reset-link-button">
+                                <Button
+                                    className="w-full"
+                                    disabled={processing}
+                                    data-test="email-password-reset-link-button"
+                                >
                                     {processing && <Spinner />}
                                     {t('auth.forgot.submit')}
                                 </Button>
@@ -54,7 +65,9 @@ export default function ForgotPassword({ status }: { status?: string }) {
 
                 <div className="flex justify-center gap-1 text-center text-sm text-muted-foreground">
                     <span>{t('auth.forgot.or_return')}</span>
-                    <TextLink href={login()}>{t('auth.forgot.login_link')}</TextLink>
+                    <TextLink href={login()}>
+                        {t('auth.forgot.login_link')}
+                    </TextLink>
                 </div>
             </div>
         </>

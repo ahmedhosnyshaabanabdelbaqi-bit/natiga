@@ -8,6 +8,7 @@ return [
     'share_link' => 'Share link',
     'copy_code' => 'Copy code',
     'copy_link' => 'Copy link',
+    'share_whatsapp' => 'Share on WhatsApp',
     'share' => 'Share',
     'share_text' => 'Join the EV Community Egypt with my invitation link: :link',
     'stats' => ['invited' => 'Invited', 'registered' => 'Registered', 'approved' => 'Approved'],

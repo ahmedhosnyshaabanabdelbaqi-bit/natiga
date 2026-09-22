@@ -1,5 +1,6 @@
 import { Head, Link, router } from '@inertiajs/react';
 import { ExternalLink, Webhook } from 'lucide-react';
+import type { ReactNode } from 'react';
 import { useState } from 'react';
 import type { DataTableColumn } from '@/components/shared/data-table';
 import { DataTable } from '@/components/shared/data-table';
@@ -49,19 +50,54 @@ const FILTER_KEYS = ['provider', 'status', 'q'] as const;
 function EventDrawer({
     selected,
     requestedId,
+    open,
     loading,
     canManage,
     onClose,
 }: {
     selected: WebhookEventDetail | null;
+    /** Event id from the URL (`?event=`). */
     requestedId: number | null;
+    open: boolean;
     loading: boolean;
     canManage: boolean;
     onClose: () => void;
 }) {
     const { isRtl } = useLocale();
-    const open = requestedId !== null;
-    const event = selected && selected.id === requestedId ? selected : null;
+    const current =
+        selected && requestedId !== null && selected.id === requestedId
+            ? selected
+            : null;
+    // Keep the last event rendered while the sheet animates out (the URL/prop update lags behind).
+    const [lastShown, setLastShown] = useState<WebhookEventDetail | null>(
+        current,
+    );
+    if (current !== null && current !== lastShown) {
+        setLastShown(current);
+    }
+    const event = open ? current : lastShown;
+    const titleId = open ? requestedId : (lastShown?.id ?? null);
+
+    let body: ReactNode = null;
+    if (event) {
+        body = <WebhookEventDetailBody event={event} />;
+    } else if (open && loading) {
+        body = (
+            <div className="space-y-3" aria-busy="true">
+                <span className="sr-only">{t('core.states.loading')}</span>
+                <Skeleton className="h-4 w-2/3" />
+                <Skeleton className="h-4 w-1/2" />
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-40 w-full" />
+            </div>
+        );
+    } else if (open) {
+        body = (
+            <InlineAlert tone="warning">
+                {t('integrations.webhooks.not_found')}
+            </InlineAlert>
+        );
+    }
 
     return (
         <Sheet
@@ -79,7 +115,7 @@ function EventDrawer({
                 <SheetHeader className="border-b text-start">
                     <SheetTitle className="pe-6">
                         {t('integrations.webhooks.detail_title', {
-                            id: requestedId ?? '',
+                            id: titleId ?? '',
                         })}
                     </SheetTitle>
                     <SheetDescription>
@@ -88,25 +124,7 @@ function EventDrawer({
                             : t('integrations.webhooks.drawer_description')}
                     </SheetDescription>
                 </SheetHeader>
-                <div className="px-4 pb-4">
-                    {loading && !event ? (
-                        <div className="space-y-3" aria-busy="true">
-                            <span className="sr-only">
-                                {t('core.states.loading')}
-                            </span>
-                            <Skeleton className="h-4 w-2/3" />
-                            <Skeleton className="h-4 w-1/2" />
-                            <Skeleton className="h-4 w-3/4" />
-                            <Skeleton className="h-40 w-full" />
-                        </div>
-                    ) : event ? (
-                        <WebhookEventDetailBody event={event} />
-                    ) : (
-                        <InlineAlert tone="warning">
-                            {t('integrations.webhooks.not_found')}
-                        </InlineAlert>
-                    )}
-                </div>
+                <div className="px-4 pb-4">{body}</div>
                 {event ? (
                     <SheetFooter className="flex-row flex-wrap justify-end gap-2 border-t">
                         <Button asChild variant="ghost" size="sm">
@@ -140,6 +158,8 @@ export default function WebhookEventsIndex({
     const query = useQueryState();
     const listLoading = useListLoading();
     const [drawerLoading, setDrawerLoading] = useState(false);
+    // Closing is optimistic: the sheet animates out before the URL round-trip completes.
+    const [dismissedId, setDismissedId] = useState<number | null>(null);
 
     const requestedParam = query.get('event');
     const requestedId =
@@ -147,7 +167,14 @@ export default function WebhookEventsIndex({
             ? Number(requestedParam)
             : null;
 
+    if (requestedId === null && dismissedId !== null) {
+        // The close round-trip finished; history navigation back to ?event= must reopen the drawer.
+        setDismissedId(null);
+    }
+    const drawerOpen = requestedId !== null && requestedId !== dismissedId;
+
     const openEvent = (id: number) => {
+        setDismissedId(null);
         router.visit(query.href({ event: String(id) }), {
             only: ['selected'],
             preserveState: true,
@@ -156,12 +183,14 @@ export default function WebhookEventsIndex({
             onFinish: () => setDrawerLoading(false),
         });
     };
-    const closeEvent = () =>
+    const closeEvent = () => {
+        setDismissedId(requestedId);
         query.remove(['event'], {
             only: ['selected'],
             resetPage: false,
             replace: false,
         });
+    };
 
     const filterDefinitions: FilterDefinition[] = [
         {
@@ -374,6 +403,7 @@ export default function WebhookEventsIndex({
             <EventDrawer
                 selected={selected}
                 requestedId={requestedId}
+                open={drawerOpen}
                 loading={drawerLoading}
                 canManage={canManage}
                 onClose={closeEvent}

@@ -3,7 +3,13 @@
  * (App\Modules\Vehicles\Services\VehicleDataService) and of the shared `selectedVehicle` prop.
  */
 
-export type MarketVersion = 'china' | 'europe' | 'gulf' | 'egypt' | 'other' | 'unknown';
+export type MarketVersion =
+    | 'china'
+    | 'europe'
+    | 'gulf'
+    | 'egypt'
+    | 'other'
+    | 'unknown';
 
 export type Option<T extends string = string> = { value: T; label: string };
 
@@ -39,9 +45,19 @@ export type CatalogMake = {
     models: CatalogModel[];
 };
 
-export type ConnectorTypeOption = { id: number; code: string; name: string; current_type: 'ac' | 'dc' };
+export type ConnectorTypeOption = {
+    id: number;
+    code: string;
+    name: string;
+    current_type: 'ac' | 'dc';
+};
 
-export type BatteryOption = { id: number; name: string; capacity_kwh: string; chemistry: string | null };
+export type BatteryOption = {
+    id: number;
+    name: string;
+    capacity_kwh: string;
+    chemistry: string | null;
+};
 
 export type VehicleCatalog = {
     generated_at: string;
@@ -74,4 +90,9 @@ export type VehicleSelection = {
     year: number | null;
 };
 
-export type ConnectorSummary = { id: number; code: string; name: string; current_type: 'ac' | 'dc' };
+export type ConnectorSummary = {
+    id: number;
+    code: string;
+    name: string;
+    current_type: 'ac' | 'dc';
+};

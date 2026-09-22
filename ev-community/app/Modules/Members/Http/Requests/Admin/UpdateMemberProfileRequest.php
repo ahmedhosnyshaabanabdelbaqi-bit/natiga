@@ -18,6 +18,11 @@ class UpdateMemberProfileRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
+        // Normalise before validating so uniqueness is checked against the stored (lower-case) form.
+        $email = $this->input('email');
+        if (is_string($email)) {
+            $this->merge(['email' => strtolower(trim($email))]);
+        }
         $mobile = $this->input('mobile');
         if (is_string($mobile) && trim($mobile) !== '') {
             $this->merge(['mobile' => UpdateMemberProfile::normalizeMobile($mobile)]);

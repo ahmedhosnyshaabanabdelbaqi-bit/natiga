@@ -85,11 +85,10 @@ class GarageController extends Controller
             'canDelete' => $user->can('delete', $vehicle),
             'canRevealVin' => $user->can('revealVin', $vehicle) && $vehicle->hasVin(),
         ];
-        // Section data is resolved lazily: the active tab is a deferred prop (fetched right after first
-        // paint); the other tabs are optional props fetched by a partial reload when they are opened.
+        // Section data is resolved lazily (Inertia optional props): the page fetches `section_<key>` with a
+        // partial reload when the tab is first shown, so heavy sections never block the first paint.
         foreach ($keys as $key) {
-            $resolver = fn () => GarageSections::resolve($key, $vehicle, $user);
-            $props['section_'.$key] = $key === $active ? Inertia::defer($resolver, 'garage-section') : Inertia::optional($resolver);
+            $props['section_'.$key] = Inertia::optional(fn () => GarageSections::resolve($key, $vehicle, $user));
         }
 
         return Inertia::render('member/garage/show', $props);

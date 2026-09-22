@@ -15,8 +15,18 @@ class UpdateRolePermissionsRequest extends FormRequest
     {
         return [
             'permissions' => ['present', 'array'],
-            'permissions.*' => ['string', 'max:100'],
-            'reason' => ['nullable', 'string', 'max:500'],
+            'permissions.*' => ['string', 'distinct', 'max:100'],
+            'reason' => ['required', 'string', 'min:5', 'max:500'],
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge(['permissions' => $this->input('permissions', [])]);
+    }
+
+    public function messages(): array
+    {
+        return ['reason.required' => __('core.errors.reason_required'), 'reason.min' => __('core.errors.reason_required')];
     }
 }

@@ -6,6 +6,7 @@ use App\Modules\Members\Models\Membership;
 use App\Modules\Referrals\Models\Enums\ReferralStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -13,8 +14,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $referred_membership_id
  * @property string $referral_code_used
  * @property ReferralStatus $status
- * @property \Illuminate\Support\Carbon $created_at
- * @property \Illuminate\Support\Carbon|null $approved_at
+ * @property Carbon $created_at
+ * @property Carbon|null $approved_at
  * @property-read Membership $referrer
  * @property-read Membership $referred
  */

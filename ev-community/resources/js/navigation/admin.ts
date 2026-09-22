@@ -50,7 +50,19 @@ export function adminNavigation(): NavGroup[] {
         {
             title: t('admin.nav.community'),
             items: [
-                { title: t('admin.nav.members'), href: '/admin/members', icon: Users, permission: ['members.view'] },
+                {
+                    title: t('admin.nav.members'),
+                    href: '/admin/members',
+                    icon: Users,
+                    permission: ['members.view'],
+                    children: [
+                        { title: t('members.nav.all'), href: '/admin/members', permission: 'members.view' },
+                        { title: t('members.nav.pending'), href: '/admin/members/pending', permission: 'members.view' },
+                        { title: t('members.nav.scan'), href: '/admin/members/scan', permission: 'members.verify' },
+                        { title: t('members.nav.deletion_requests'), href: '/admin/members/deletion-requests', permission: 'members.delete_requests' },
+                        { title: t('members.nav.referrals'), href: '/admin/referrals', permission: 'referrals.view', module: 'referrals' },
+                    ],
+                },
                 { title: t('admin.nav.vehicles'), href: '/admin/vehicles', icon: Car, permission: ['vehicles.view', 'vehicles.manage_master'] },
                 { title: t('admin.nav.garage_data'), href: '/admin/garage', icon: Home, permission: ['vehicles.view'], module: 'garage' },
             ],

@@ -76,7 +76,8 @@ class AnnouncementCampaign extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function title(?string $locale = null): string
+    /** Title in the given (default: current) locale. Not named `title()`: that would shadow the `title` attribute lookups. */
+    public function localizedTitle(?string $locale = null): string
     {
         $locale ??= app()->getLocale();
 

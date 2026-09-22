@@ -16,17 +16,38 @@ function digitsOf(value: string): string {
 }
 
 /** Renders a phone number as a forced-LTR `tel:` link (numbers never flip in RTL). */
-export function PhoneNumber({ value, whatsapp = false, icon = false, className }: Props) {
+export function PhoneNumber({
+    value,
+    whatsapp = false,
+    icon = false,
+    className,
+}: Props) {
     if (!value) {
-        return <span className={cn('text-muted-foreground', className)}>—</span>;
+        return (
+            <span className={cn('text-muted-foreground', className)}>—</span>
+        );
     }
     const digits = digitsOf(value);
-    const international = digits.startsWith('+') ? digits.slice(1) : digits.startsWith('0') ? `20${digits.slice(1)}` : digits;
+    const international = digits.startsWith('+')
+        ? digits.slice(1)
+        : digits.startsWith('0')
+          ? `20${digits.slice(1)}`
+          : digits;
 
     return (
         <span className={cn('inline-flex items-center gap-1.5', className)}>
-            {icon ? <Phone className="size-3.5 shrink-0 text-muted-foreground" aria-hidden="true" /> : null}
-            <a href={`tel:${digits}`} dir="ltr" className="code underline-offset-4 hover:underline" aria-label={t('ui.phone.call', { number: value })}>
+            {icon ? (
+                <Phone
+                    className="size-3.5 shrink-0 text-muted-foreground"
+                    aria-hidden="true"
+                />
+            ) : null}
+            <a
+                href={`tel:${digits}`}
+                dir="ltr"
+                className="code underline-offset-4 hover:underline"
+                aria-label={t('ui.phone.call', { number: value })}
+            >
                 {value}
             </a>
             {whatsapp ? (

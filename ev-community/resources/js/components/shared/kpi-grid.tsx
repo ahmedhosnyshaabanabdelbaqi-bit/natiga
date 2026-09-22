@@ -22,8 +22,20 @@ export function KpiGrid({ kpis }: { kpis: Kpi[] }) {
                 <StatCard
                     key={kpi.key}
                     label={kpi.label}
-                    value={kpi.value === null ? '—' : kpi.format === 'money' ? formatMoney(kpi.value) : kpi.format === 'number' ? formatNumber(kpi.value, 0) : kpi.value}
-                    hint={kpi.source ? `${t('admin.dashboard.source')}: ${kpi.source}` : undefined}
+                    value={
+                        kpi.value === null
+                            ? '—'
+                            : kpi.format === 'money'
+                              ? formatMoney(kpi.value)
+                              : kpi.format === 'number'
+                                ? formatNumber(kpi.value, 0)
+                                : kpi.value
+                    }
+                    hint={
+                        kpi.source
+                            ? `${t('admin.dashboard.source')}: ${kpi.source}`
+                            : undefined
+                    }
                     href={kpi.href ?? undefined}
                     tone={kpi.tone}
                 />

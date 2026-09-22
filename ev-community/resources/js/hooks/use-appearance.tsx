@@ -29,7 +29,8 @@ const setCookie = (name: string, value: string, days = 365): void => {
     document.cookie = `${name}=${value};path=/;max-age=${maxAge};SameSite=Lax`;
 };
 
-const isAppearance = (value: unknown): value is Appearance => value === 'light' || value === 'dark' || value === 'system';
+const isAppearance = (value: unknown): value is Appearance =>
+    value === 'light' || value === 'dark' || value === 'system';
 
 /** localStorage can throw (private mode, blocked storage); the theme is only a convenience. */
 const readStorage = (): string | null => {

@@ -1,8 +1,17 @@
 import type { Paginated } from '@/types/pagination';
 
-export type MembershipStatus = 'pending' | 'active' | 'suspended' | 'rejected' | 'expired';
+export type MembershipStatus =
+    | 'pending'
+    | 'active'
+    | 'suspended'
+    | 'rejected'
+    | 'expired';
 export type ReferralStatus = 'invited' | 'registered' | 'approved';
-export type DeletionRequestStatus = 'requested' | 'under_review' | 'completed' | 'rejected';
+export type DeletionRequestStatus =
+    | 'requested'
+    | 'under_review'
+    | 'completed'
+    | 'rejected';
 export type VerificationResult = 'valid' | 'invalid' | 'expired' | 'not_active';
 
 export type Option = { value: string; label: string };
@@ -57,7 +66,11 @@ export type MembershipDetail = {
     expires_at: string | null;
     referral_code: string;
     referral_source: string | null;
-    referred_by: { id: string; member_number: string; name: string | null } | null;
+    referred_by: {
+        id: string;
+        member_number: string;
+        name: string | null;
+    } | null;
     qr_rotated_at: string | null;
     created_at: string | null;
     user: {
@@ -115,7 +128,10 @@ export type ConsentEntry = {
     created_at: string | null;
 };
 
-export type MarketingConsents = Record<'marketing_email' | 'marketing_sms' | 'marketing_whatsapp', boolean>;
+export type MarketingConsents = Record<
+    'marketing_email' | 'marketing_sms' | 'marketing_whatsapp',
+    boolean
+>;
 
 export type SecurityEventEntry = {
     id: number;
@@ -135,7 +151,11 @@ export type DeletionRequestSummary = {
     notes: string | null;
 };
 
-export type ReferralStats = { invited: number; registered: number; approved: number };
+export type ReferralStats = {
+    invited: number;
+    registered: number;
+    approved: number;
+};
 
 export type AdminReferredMember = {
     id: string;

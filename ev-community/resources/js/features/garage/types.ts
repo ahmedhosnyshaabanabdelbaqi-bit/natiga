@@ -1,6 +1,12 @@
-import type { ConnectorSummary, MarketVersion } from '@/features/vehicles/types';
+import type {
+    ConnectorSummary,
+    MarketVersion,
+} from '@/features/vehicles/types';
 
-export type LabeledValue<T extends string = string> = { value: T; label: string };
+export type LabeledValue<T extends string = string> = {
+    value: T;
+    label: string;
+};
 
 export type VehicleStatusValue = 'active' | 'sold' | 'archived';
 
@@ -34,7 +40,12 @@ export type GarageVehicleDetail = GarageVehicleCard & {
 };
 
 /** GarageSections::tabsFor() */
-export type GarageSectionTab = { key: string; label: string; module: string | null; order: number };
+export type GarageSectionTab = {
+    key: string;
+    label: string;
+    module: string | null;
+    order: number;
+};
 
 /** Props every section component (`resources/js/features/garage/sections/<key>.tsx`) receives. */
 export type GarageSectionProps<TData = Record<string, unknown>> = {
@@ -54,7 +65,11 @@ export type InfoSectionData = {
     trim: string | null;
     year: number;
     market_version: string;
-    battery: { name: string; capacity_kwh: string; chemistry: string | null } | null;
+    battery: {
+        name: string;
+        capacity_kwh: string;
+        chemistry: string | null;
+    } | null;
     battery_capacity_kwh: string | null;
     motor_kw: number | null;
     range_km_wltp: number | null;
@@ -78,9 +93,16 @@ export type OdometerEntry = {
 };
 
 /** "odometer" section — MemberVehiclePresenter::odometer() */
-export type OdometerSectionData = { current_km: number | null; updated_at: string | null; history: OdometerEntry[] };
+export type OdometerSectionData = {
+    current_km: number | null;
+    updated_at: string | null;
+    history: OdometerEntry[];
+};
 
-export type CompatibleConnector = ConnectorSummary & { adapter_name: string | null; notes: string | null };
+export type CompatibleConnector = ConnectorSummary & {
+    adapter_name: string | null;
+    notes: string | null;
+};
 
 /** "charging_compatibility" section — MemberVehiclePresenter::chargingCompatibility() */
 export type ChargingSectionData = {

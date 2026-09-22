@@ -1,5 +1,13 @@
 import type { ReactNode } from 'react';
-import { createContext, useCallback, useContext, useId, useMemo, useRef, useState } from 'react';
+import {
+    createContext,
+    useCallback,
+    useContext,
+    useId,
+    useMemo,
+    useRef,
+    useState,
+} from 'react';
 import { FormField } from '@/components/shared/form-field';
 import {
     AlertDialog,
@@ -99,21 +107,37 @@ export function ConfirmDialog({
                     <AlertDialogTitle>{title}</AlertDialogTitle>
                     <AlertDialogDescription>
                         {description ?? t('core.confirm.message')}
-                        {destructive ? <span className="mt-1 block font-medium text-danger">{t('core.confirm.irreversible')}</span> : null}
+                        {destructive ? (
+                            <span className="mt-1 block font-medium text-danger">
+                                {t('core.confirm.irreversible')}
+                            </span>
+                        ) : null}
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 {children}
                 {requireReason ? (
-                    <FormField id={reasonId} label={reasonLabel ?? t('ui.confirm.reason_label')} required error={reasonError}>
+                    <FormField
+                        id={reasonId}
+                        label={reasonLabel ?? t('ui.confirm.reason_label')}
+                        required
+                        error={reasonError}
+                    >
                         <Textarea
                             value={reason}
                             onChange={(event) => {
                                 setReason(event.target.value);
-                                if (reasonError && event.target.value.trim().length >= CONFIRM_REASON_MIN_LENGTH) {
+                                if (
+                                    reasonError &&
+                                    event.target.value.trim().length >=
+                                        CONFIRM_REASON_MIN_LENGTH
+                                ) {
                                     setReasonError(null);
                                 }
                             }}
-                            placeholder={reasonPlaceholder ?? t('ui.confirm.reason_placeholder')}
+                            placeholder={
+                                reasonPlaceholder ??
+                                t('ui.confirm.reason_placeholder')
+                            }
                             minLength={CONFIRM_REASON_MIN_LENGTH}
                             rows={3}
                             disabled={busy}
@@ -122,10 +146,19 @@ export function ConfirmDialog({
                     </FormField>
                 ) : null}
                 <AlertDialogFooter>
-                    <AlertDialogCancel disabled={busy} onClick={() => onCancel?.()}>
+                    <AlertDialogCancel
+                        disabled={busy}
+                        onClick={() => onCancel?.()}
+                    >
                         {cancelLabel ?? t('core.actions.cancel')}
                     </AlertDialogCancel>
-                    <Button type="button" variant={destructive ? 'destructive' : 'default'} disabled={busy} onClick={() => void handleConfirm()} data-test="confirm-dialog-confirm">
+                    <Button
+                        type="button"
+                        variant={destructive ? 'destructive' : 'default'}
+                        disabled={busy}
+                        onClick={() => void handleConfirm()}
+                        data-test="confirm-dialog-confirm"
+                    >
                         {busy ? <Spinner /> : null}
                         {confirmLabel ?? t('core.actions.confirm')}
                     </Button>
@@ -137,7 +170,14 @@ export function ConfirmDialog({
 
 export type ConfirmOptions = Pick<
     ConfirmDialogProps,
-    'title' | 'description' | 'confirmLabel' | 'cancelLabel' | 'destructive' | 'requireReason' | 'reasonLabel' | 'reasonPlaceholder'
+    | 'title'
+    | 'description'
+    | 'confirmLabel'
+    | 'cancelLabel'
+    | 'destructive'
+    | 'requireReason'
+    | 'reasonLabel'
+    | 'reasonPlaceholder'
 >;
 
 export type ConfirmResult = { confirmed: boolean; reason?: string };
@@ -196,7 +236,9 @@ export function ConfirmProvider({ children }: { children: ReactNode }) {
 export function useConfirm(): ConfirmFn {
     const confirm = useContext(ConfirmContext);
     if (!confirm) {
-        throw new Error('useConfirm() must be used inside <ConfirmProvider>. Mount it in the portal layout or around your page.');
+        throw new Error(
+            'useConfirm() must be used inside <ConfirmProvider>. Mount it in the portal layout or around your page.',
+        );
     }
     return confirm;
 }

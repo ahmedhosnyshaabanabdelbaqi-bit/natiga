@@ -39,6 +39,7 @@ return [
         'pending_title' => 'طلب الحذف قيد الانتظار', 'pending_text' => 'تم الطلب في :date. فريقنا يراجعه.',
         'completed_title' => 'تم إتمام طلب الحذف', 'rejected_title' => 'تم رفض طلب الحذف', 'processed_text' => 'تمت المعالجة في :date.',
         'status' => ['requested' => 'مطلوب', 'under_review' => 'قيد المراجعة', 'completed' => 'مكتمل', 'rejected' => 'مرفوض'],
+        'requested_on' => 'تاريخ الطلب', 'processed_on' => 'تاريخ المعالجة',
         'errors' => ['already_open' => 'لديك بالفعل طلب حذف مفتوح.', 'not_open' => 'طلب الحذف هذا لم يعد مفتوحًا.'],
         'reviewed' => 'تم تحديد الطلب كقيد المراجعة.', 'completed' => 'تم إخفاء هوية البيانات الشخصية وإتمام الطلب.', 'rejected' => 'تم رفض طلب الحذف.',
     ],

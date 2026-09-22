@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
  * GET /files/{attachment}?variant=thumb|medium|large  (route: shared.files.download)
  *
  * Authorization (AttachmentPolicy::view): uploader, owner-authorized user or `files.manage`.
+ * Images and PDFs are served inline, everything else as a download (see AttachmentService::response()).
  */
 class FileDownloadController extends Controller
 {
@@ -23,10 +24,10 @@ class FileDownloadController extends Controller
         Gate::authorize('view', $attachment);
 
         $variant = $request->query('variant');
-        if ($variant !== null && ! array_key_exists((string) $variant, AttachmentService::VARIANTS)) {
+        if ($variant !== null && (! is_string($variant) || ! array_key_exists($variant, AttachmentService::VARIANTS))) {
             abort(404, __('files.errors.variant_missing'));
         }
 
-        return $this->attachments->response($attachment, $variant === null ? null : (string) $variant);
+        return $this->attachments->response($attachment, $variant);
     }
 }

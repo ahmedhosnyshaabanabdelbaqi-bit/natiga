@@ -61,6 +61,13 @@ return [
         'name_hint' => 'يساعدك الاسم على التعرف على هذا المفتاح لاحقًا.', 'registering' => 'جارٍ التسجيل…', 'register' => 'تسجيل مفتاح المرور',
         'default_name' => ':browser على :os', 'remove_named' => 'إزالة مفتاح المرور ":name"', 'exists' => 'هذا الجهاز مسجّل بالفعل كمفتاح مرور.',
     ],
+    // رموز الحالة التي يرسلها Fortify في session('status')؛ تُحوَّل بـ str_replace('-', '_', $status).
+    'fortify_status' => [
+        'password_updated' => 'تم تحديث كلمة المرور.', 'profile_information_updated' => 'تم تحديث الملف الشخصي.',
+        'recovery_codes_generated' => 'تم توليد رموز استرداد جديدة.', 'two_factor_authentication_confirmed' => 'تم تأكيد المصادقة الثنائية.',
+        'two_factor_authentication_disabled' => 'تم إلغاء المصادقة الثنائية.', 'two_factor_authentication_enabled' => 'تم تفعيل المصادقة الثنائية. أكمل الإعداد باستخدام تطبيق المصادقة.',
+        'verification_link_sent' => 'تم إرسال رابط تأكيد جديد إلى بريدك الإلكتروني.',
+    ],
     'delete_account' => [
         'heading' => 'إغلاق الحساب', 'description' => 'إلغاء تفعيل حسابك أو طلب حذف بياناتك الشخصية',
         'member_text' => 'تتم معالجة طلبات إلغاء التفعيل وحذف البيانات الشخصية من صفحة الخصوصية والبيانات. نحتفظ بالسجلات التي يُلزمنا القانون بها (الطلبات والمدفوعات والإيصالات وسجل التدقيق)، ويتم إخفاء هوية بياناتك الشخصية بعد مراجعة الطلب.',

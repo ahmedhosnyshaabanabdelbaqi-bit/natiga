@@ -63,6 +63,8 @@ class Attachment extends Model
             'variants' => 'array',
             'meta' => 'array',
             'size' => 'int',
+            'owner_id' => 'int',
+            'uploaded_by' => 'int',
             'scanned_at' => 'datetime',
         ];
     }

@@ -14,7 +14,11 @@ export default function AdminMembersIndex(props: MemberListProps) {
     const can = useCan();
     const query = useQueryState();
     // The export applies exactly the filters/sort currently shown in the table.
-    const exportUrl = exportMethod.url({ query: Object.fromEntries(Object.entries(query.query).filter(([key]) => key !== 'page')) });
+    const exportUrl = exportMethod.url({
+        query: Object.fromEntries(
+            Object.entries(query.query).filter(([key]) => key !== 'page'),
+        ),
+    });
 
     return (
         <>
@@ -28,13 +32,20 @@ export default function AdminMembersIndex(props: MemberListProps) {
                             <Link href={pending.url()}>
                                 <Clock className="size-4" aria-hidden="true" />
                                 {t('members.admin.actions.view_pending')}
-                                {props.counts.pending > 0 ? <span className="rounded-full bg-warning-soft px-1.5 text-xs text-warning tabular">{props.counts.pending}</span> : null}
+                                {props.counts.pending > 0 ? (
+                                    <span className="tabular rounded-full bg-warning-soft px-1.5 text-xs text-warning">
+                                        {props.counts.pending}
+                                    </span>
+                                ) : null}
                             </Link>
                         </Button>
                         {can('members.verify') ? (
                             <Button asChild variant="outline" size="sm">
                                 <Link href={scan.url()}>
-                                    <ScanLine className="size-4" aria-hidden="true" />
+                                    <ScanLine
+                                        className="size-4"
+                                        aria-hidden="true"
+                                    />
                                     {t('members.admin.actions.scan')}
                                 </Link>
                             </Button>
@@ -42,15 +53,23 @@ export default function AdminMembersIndex(props: MemberListProps) {
                         {can('members.delete_requests') ? (
                             <Button asChild variant="outline" size="sm">
                                 <Link href={deletionRequestsIndex.url()}>
-                                    <UserX className="size-4" aria-hidden="true" />
-                                    {t('members.admin.actions.deletion_requests')}
+                                    <UserX
+                                        className="size-4"
+                                        aria-hidden="true"
+                                    />
+                                    {t(
+                                        'members.admin.actions.deletion_requests',
+                                    )}
                                 </Link>
                             </Button>
                         ) : null}
                         {can('members.export') ? (
                             <Button asChild size="sm">
                                 <a href={exportUrl} download>
-                                    <Download className="size-4" aria-hidden="true" />
+                                    <Download
+                                        className="size-4"
+                                        aria-hidden="true"
+                                    />
                                     {t('members.admin.actions.export_csv')}
                                 </a>
                             </Button>
@@ -63,4 +82,6 @@ export default function AdminMembersIndex(props: MemberListProps) {
     );
 }
 
-AdminMembersIndex.layout = () => ({ breadcrumbs: [{ title: t('members.admin.title'), href: index.url() }] });
+AdminMembersIndex.layout = () => ({
+    breadcrumbs: [{ title: t('members.admin.title'), href: index.url() }],
+});

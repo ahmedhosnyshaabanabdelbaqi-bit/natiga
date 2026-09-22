@@ -17,7 +17,7 @@ class AttachmentPolicy
 {
     public function view(User $user, Attachment $attachment): bool
     {
-        if ($attachment->uploaded_by !== null && $attachment->uploaded_by === $user->id) {
+        if ($attachment->uploaded_by !== null && (int) $attachment->uploaded_by === (int) $user->id) {
             return true;
         }
 
@@ -40,6 +40,6 @@ class AttachmentPolicy
         }
 
         // Uploaders may remove their own files only while the file is not yet attached to a record.
-        return $attachment->isPending() && $attachment->uploaded_by === $user->id;
+        return $attachment->isPending() && $attachment->uploaded_by !== null && (int) $attachment->uploaded_by === (int) $user->id;
     }
 }

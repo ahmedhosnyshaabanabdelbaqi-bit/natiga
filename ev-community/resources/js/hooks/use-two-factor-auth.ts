@@ -56,7 +56,10 @@ export const useTwoFactorAuth = (): UseTwoFactorAuthReturn => {
 
             setQrCodeSvg(svg);
         } catch {
-            setErrors((prev) => [...prev, t('settings.two_factor.errors.qr_code')]);
+            setErrors((prev) => [
+                ...prev,
+                t('settings.two_factor.errors.qr_code'),
+            ]);
             setQrCodeSvg(null);
         }
     }, [submit]);
@@ -69,7 +72,10 @@ export const useTwoFactorAuth = (): UseTwoFactorAuthReturn => {
 
             setManualSetupKey(key);
         } catch {
-            setErrors((prev) => [...prev, t('settings.two_factor.errors.setup_key')]);
+            setErrors((prev) => [
+                ...prev,
+                t('settings.two_factor.errors.setup_key'),
+            ]);
             setManualSetupKey(null);
         }
     }, [submit]);
@@ -80,7 +86,10 @@ export const useTwoFactorAuth = (): UseTwoFactorAuthReturn => {
             const codes = (await submit(recoveryCodes())) as string[];
             setRecoveryCodesList(codes);
         } catch {
-            setErrors((prev) => [...prev, t('settings.two_factor.errors.recovery_codes')]);
+            setErrors((prev) => [
+                ...prev,
+                t('settings.two_factor.errors.recovery_codes'),
+            ]);
             setRecoveryCodesList([]);
         }
     }, [submit]);

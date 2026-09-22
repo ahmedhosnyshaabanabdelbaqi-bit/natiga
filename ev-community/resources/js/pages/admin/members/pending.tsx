@@ -9,7 +9,10 @@ export default function AdminMembersPending(props: MemberListProps) {
     return (
         <>
             <Head title={t('members.admin.pending_title')} />
-            <PageHeader title={t('members.admin.pending_title')} description={t('members.admin.pending_description')} />
+            <PageHeader
+                title={t('members.admin.pending_title')}
+                description={t('members.admin.pending_description')}
+            />
             <MembersTable {...props} mode="pending" />
         </>
     );

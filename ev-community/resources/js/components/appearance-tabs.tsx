@@ -7,13 +7,20 @@ import { isRtl, t } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 
 /** Light / dark / system theme switch (a keyboard-operable radio group). */
-export default function AppearanceToggleTab({ className = '', ...props }: HTMLAttributes<HTMLDivElement>) {
+export default function AppearanceToggleTab({
+    className = '',
+    ...props
+}: HTMLAttributes<HTMLDivElement>) {
     const { appearance, updateAppearance } = useAppearance();
 
     const tabs: { value: Appearance; icon: LucideIcon; label: string }[] = [
         { value: 'light', icon: Sun, label: t('settings.appearance.light') },
         { value: 'dark', icon: Moon, label: t('settings.appearance.dark') },
-        { value: 'system', icon: Monitor, label: t('settings.appearance.system') },
+        {
+            value: 'system',
+            icon: Monitor,
+            label: t('settings.appearance.system'),
+        },
     ];
 
     const onKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
@@ -29,12 +36,22 @@ export default function AppearanceToggleTab({ className = '', ...props }: HTMLAt
         if (next !== null) {
             event.preventDefault();
             updateAppearance(tabs[next].value);
-            event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('button[role="radio"]')[next]?.focus();
+            event.currentTarget.parentElement
+                ?.querySelectorAll<HTMLButtonElement>('button[role="radio"]')
+                [next]?.focus();
         }
     };
 
     return (
-        <div role="radiogroup" aria-label={t('settings.appearance.label')} className={cn('inline-flex gap-1 rounded-lg bg-neutral-100 p-1 dark:bg-neutral-800', className)} {...props}>
+        <div
+            role="radiogroup"
+            aria-label={t('settings.appearance.label')}
+            className={cn(
+                'inline-flex gap-1 rounded-lg bg-neutral-100 p-1 dark:bg-neutral-800',
+                className,
+            )}
+            {...props}
+        >
             {tabs.map(({ value, icon: Icon, label }) => {
                 const checked = appearance === value;
                 return (

@@ -331,7 +331,7 @@ final class AnnouncementService
         $locale = app()->getLocale();
         $row = [
             'id' => $campaign->public_id,
-            'title' => $campaign->title($locale),
+            'title' => $campaign->localizedTitle($locale),
             'title_ar' => $campaign->title_ar,
             'title_en' => $campaign->title_en,
             'body_ar' => $campaign->body_ar,

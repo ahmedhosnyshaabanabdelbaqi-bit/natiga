@@ -9,7 +9,17 @@ export function memberNavigation(): NavGroup[] {
             items: [
                 { title: t('core.labels.dashboard'), href: '/account', icon: LayoutDashboard },
                 { title: t('core.nav.my_garage'), href: '/account/garage', icon: Car, module: 'garage' },
-                { title: t('core.nav.membership_card'), href: '/account/membership-card', icon: IdCard },
+                {
+                    title: t('core.nav.membership_card'),
+                    href: '/account/membership-card',
+                    icon: IdCard,
+                    children: [
+                        { title: t('members.nav.card'), href: '/account/membership-card' },
+                        { title: t('members.nav.profile'), href: '/account/profile' },
+                        { title: t('members.nav.invite'), href: '/account/referrals', module: 'referrals' },
+                        { title: t('members.nav.privacy'), href: '/account/privacy' },
+                    ],
+                },
             ],
         },
         {

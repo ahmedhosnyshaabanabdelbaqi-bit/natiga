@@ -39,6 +39,9 @@ final class AttachmentService
     /** Decompression-bomb guard for variant generation (width × height). */
     public const MAX_IMAGE_PIXELS = 40_000_000;
 
+    /** Upper bound the memory limit may be raised to while generating variants. */
+    private const MAX_VARIANT_MEMORY_BYTES = 512 * 1024 * 1024;
+
     private const MIME_EXTENSIONS = [
         'image/jpeg' => ['jpg', 'jpeg'],
         'image/png' => ['png'],
@@ -72,8 +75,10 @@ final class AttachmentService
     /**
      * Store server-generated content (PDF receipts, export files, error reports...).
      * The same safety checks apply, so generated files must still be of an allowed type.
+     * `$maxBytes` overrides the upload size ceiling for trusted, server-generated files only
+     * (large exports); never pass it for user uploads.
      */
-    public function storeContents(string $contents, string $filename, ?Model $owner, string $collection, string $visibility = Attachment::VISIBILITY_PRIVATE, string $kind = 'document', ?User $uploader = null): Attachment
+    public function storeContents(string $contents, string $filename, ?Model $owner, string $collection, string $visibility = Attachment::VISIBILITY_PRIVATE, string $kind = 'document', ?User $uploader = null, ?int $maxBytes = null): Attachment
     {
         $temp = tempnam(sys_get_temp_dir(), 'ev-att-');
         if ($temp === false) {
@@ -82,7 +87,7 @@ final class AttachmentService
         try {
             file_put_contents($temp, $contents);
 
-            return $this->storeFromPath($temp, $filename, $owner, $collection, $visibility, $kind, $uploader);
+            return $this->storeFromPath($temp, $filename, $owner, $collection, $visibility, $kind, $uploader, $maxBytes);
         } finally {
             @unlink($temp);
         }
@@ -90,14 +95,16 @@ final class AttachmentService
 
     /**
      * Core storing routine shared by uploads and generated files.
+     *
+     * @param  int|null  $maxBytes  size ceiling override for server-generated files (see storeContents())
      */
-    public function storeFromPath(string $sourcePath, string $originalName, ?Model $owner, string $collection, string $visibility = Attachment::VISIBILITY_PRIVATE, string $kind = 'document', ?User $uploader = null): Attachment
+    public function storeFromPath(string $sourcePath, string $originalName, ?Model $owner, string $collection, string $visibility = Attachment::VISIBILITY_PRIVATE, string $kind = 'document', ?User $uploader = null, ?int $maxBytes = null): Attachment
     {
         if (! in_array($visibility, [Attachment::VISIBILITY_PRIVATE, Attachment::VISIBILITY_PUBLIC], true)) {
             throw new InvalidArgumentException("Unknown visibility [{$visibility}]");
         }
         $collection = $this->sanitizeCollection($collection);
-        $info = $this->inspect($sourcePath, $kind, $originalName);
+        $info = $this->inspect($sourcePath, $kind, $originalName, $maxBytes);
 
         $diskName = $this->diskNameFor($visibility);
         $disk = Storage::disk($diskName);
@@ -161,7 +168,7 @@ final class AttachmentService
      *
      * @throws InvalidUploadException
      */
-    public function inspect(UploadedFile|string $file, string $kind, ?string $clientName = null): array
+    public function inspect(UploadedFile|string $file, string $kind, ?string $clientName = null, ?int $maxBytes = null): array
     {
         if (! in_array($kind, self::KINDS, true)) {
             throw new InvalidArgumentException("Unknown upload kind [{$kind}]");
@@ -186,7 +193,7 @@ final class AttachmentService
             throw InvalidUploadException::reason('empty');
         }
 
-        $max = $this->maxBytes($kind);
+        $max = $maxBytes !== null && $maxBytes > 0 ? $maxBytes : $this->maxBytes($kind);
         if ($size > $max) {
             throw InvalidUploadException::reason('too_large', ['max' => $this->megabytes($max)]);
         }
@@ -364,13 +371,24 @@ final class AttachmentService
             throw DomainException::because('files.errors.already_claimed', [], 'file');
         }
 
-        $attachment->forceFill([
+        $values = [
             'owner_type' => $owner->getMorphClass(),
             'owner_id' => $owner->getKey(),
             'collection' => $this->sanitizeCollection($collection ?? ($attachment->isPending() ? 'default' : $attachment->collection)),
-        ])->save();
+            'updated_at' => now(),
+        ];
 
-        return $attachment;
+        if ($attachment->isPending()) {
+            // Atomic claim: two concurrent requests can never attach the same pending upload to two records.
+            $claimed = Attachment::query()->whereKey($attachment->getKey())->pending()->update($values);
+            if ($claimed !== 1) {
+                throw DomainException::because('files.errors.already_claimed', [], 'file');
+            }
+        } else {
+            Attachment::query()->whereKey($attachment->getKey())->update($values);
+        }
+
+        return $attachment->refresh();
     }
 
     public function diskNameFor(string $visibility): string
@@ -432,6 +450,12 @@ final class AttachmentService
         $meta = [];
         $variants = [];
         try {
+            if (! $this->ensureMemoryForImage($sourcePath)) {
+                // Not enough memory to decode safely: keep the original only (a fatal OOM would lose the upload).
+                $size = @getimagesize($sourcePath);
+
+                return [$size ? ['width' => $size[0], 'height' => $size[1]] : [], null];
+            }
             $image = ImageManager::gd()->read($sourcePath);
             $meta = ['width' => $image->width(), 'height' => $image->height()];
 
@@ -459,6 +483,50 @@ final class AttachmentService
 
             return [$meta, null];
         }
+    }
+
+    /**
+     * GD needs roughly width × height × 5 bytes (+ encoder overhead) to decode and resample an image.
+     * Raise the memory limit for this request when possible (capped), and report whether it suffices.
+     */
+    private function ensureMemoryForImage(string $path): bool
+    {
+        $size = @getimagesize($path);
+        if ($size === false) {
+            return false;
+        }
+        $needed = (int) ($size[0] * $size[1] * 5) + 48 * 1024 * 1024;
+        $limit = $this->bytesFromIni((string) ini_get('memory_limit'));
+        if ($limit < 0) {
+            return true;
+        }
+        $available = $limit - memory_get_usage(true);
+        if ($available >= $needed) {
+            return true;
+        }
+        $target = memory_get_usage(true) + $needed;
+        if ($target > self::MAX_VARIANT_MEMORY_BYTES) {
+            return false;
+        }
+
+        return @ini_set('memory_limit', (string) $target) !== false;
+    }
+
+    private function bytesFromIni(string $value): int
+    {
+        $value = trim($value);
+        if ($value === '' || $value === '-1') {
+            return -1;
+        }
+        $unit = strtolower(substr($value, -1));
+        $number = (int) $value;
+
+        return match ($unit) {
+            'g' => $number * 1024 * 1024 * 1024,
+            'm' => $number * 1024 * 1024,
+            'k' => $number * 1024,
+            default => $number,
+        };
     }
 
     private function sanitizeCollection(string $collection): string

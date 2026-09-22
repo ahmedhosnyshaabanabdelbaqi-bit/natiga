@@ -5,7 +5,15 @@
  *
  * See docs/modules/vehicles-garage.md.
  */
-export { findMake, findModel, findVariant, marketLabel, variantLabel, yearOptions, yearRange } from '@/features/vehicles/catalog';
+export {
+    findMake,
+    findModel,
+    findVariant,
+    marketLabel,
+    variantLabel,
+    yearOptions,
+    yearRange,
+} from '@/features/vehicles/catalog';
 export type * from '@/features/vehicles/types';
 export { useSelectedVehicle } from '@/features/vehicles/use-selected-vehicle';
 export type { UseSelectedVehicle } from '@/features/vehicles/use-selected-vehicle';

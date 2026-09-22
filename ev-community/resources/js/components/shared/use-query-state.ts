@@ -14,7 +14,11 @@ export function parseQuery(url: string): { path: string; query: QueryRecord } {
         const key = isArray ? rawKey.slice(0, -2) : rawKey;
         const existing = query[key];
         if (isArray || existing !== undefined) {
-            const list = Array.isArray(existing) ? existing : existing !== undefined ? [existing] : [];
+            const list = Array.isArray(existing)
+                ? existing
+                : existing !== undefined
+                  ? [existing]
+                  : [];
             list.push(value);
             query[key] = list;
         } else {
@@ -64,18 +68,31 @@ export type QueryState = {
     get: (key: string) => string | undefined;
     getAll: (key: string) => string[];
     /** Build an href with the changes merged into the current query. */
-    href: (changes: Record<string, QueryValue>, options?: Pick<QueryNavigateOptions, 'resetPage'>) => string;
+    href: (
+        changes: Record<string, QueryValue>,
+        options?: Pick<QueryNavigateOptions, 'resetPage'>,
+    ) => string;
     /** Merge changes into the query and navigate (Inertia GET, preserveState + preserveScroll). */
-    patch: (changes: Record<string, QueryValue>, options?: QueryNavigateOptions) => void;
+    patch: (
+        changes: Record<string, QueryValue>,
+        options?: QueryNavigateOptions,
+    ) => void;
     /** Replace the whole query. */
-    set: (next: Record<string, QueryValue>, options?: QueryNavigateOptions) => void;
+    set: (
+        next: Record<string, QueryValue>,
+        options?: QueryNavigateOptions,
+    ) => void;
     /** Remove the given keys. */
     remove: (keys: string[], options?: QueryNavigateOptions) => void;
     /** Clear every param except `keep`. */
     reset: (keep?: string[], options?: QueryNavigateOptions) => void;
 };
 
-function merge(current: QueryRecord, changes: Record<string, QueryValue>, resetPage: boolean): Record<string, QueryValue> {
+function merge(
+    current: QueryRecord,
+    changes: Record<string, QueryValue>,
+    resetPage: boolean,
+): Record<string, QueryValue> {
     const next: Record<string, QueryValue> = { ...current, ...changes };
     if (resetPage && !('page' in changes)) {
         delete next.page;
@@ -89,7 +106,10 @@ export function useQueryState(): QueryState {
     const parsed = useMemo(() => parseQuery(url), [url]);
 
     const navigate = useCallback(
-        (next: Record<string, QueryValue>, options: QueryNavigateOptions = {}) => {
+        (
+            next: Record<string, QueryValue>,
+            options: QueryNavigateOptions = {},
+        ) => {
             router.visit(`${parsed.path}${buildQuery(next)}`, {
                 method: 'get',
                 preserveState: options.preserveState ?? true,
@@ -111,10 +131,19 @@ export function useQueryState(): QueryState {
             },
             getAll: (key) => {
                 const value = parsed.query[key];
-                return value === undefined ? [] : Array.isArray(value) ? value : [value];
+                return value === undefined
+                    ? []
+                    : Array.isArray(value)
+                      ? value
+                      : [value];
             },
-            href: (changes, options = {}) => `${parsed.path}${buildQuery(merge(parsed.query, changes, options.resetPage ?? false))}`,
-            patch: (changes, options = {}) => navigate(merge(parsed.query, changes, options.resetPage ?? true), options),
+            href: (changes, options = {}) =>
+                `${parsed.path}${buildQuery(merge(parsed.query, changes, options.resetPage ?? false))}`,
+            patch: (changes, options = {}) =>
+                navigate(
+                    merge(parsed.query, changes, options.resetPage ?? true),
+                    options,
+                ),
             set: (next, options = {}) => navigate(next, options),
             remove: (keys, options = {}) => {
                 const next: Record<string, QueryValue> = { ...parsed.query };

@@ -245,41 +245,52 @@ final class VehicleMasterService
     }
 
     /**
-     * Bulk save of the vehicle × station matrix. verified_by / verified_at are set on every saved cell.
+     * Bulk save of the vehicle × station matrix from the admin editor. Every submitted cell is (re)confirmed
+     * by the actor: verified_by / verified_at are set on it even when its value did not change, so staff can
+     * verify seeded rules. Every saved cell is audited ('vehicles.master_changed').
      *
      * @param  array<int, array{vehicle_connector_type_id: int, station_connector_type_id: int, compatibility: string, adapter_name?: ?string, notes?: ?string}>  $rules
-     * @return int number of changed cells
+     * @return int number of saved (changed or verified) cells
      */
     public function saveCompatibilityMatrix(array $rules, User $actor): int
     {
         return DB::transaction(function () use ($rules, $actor) {
-            $changed = 0;
+            $codes = ConnectorType::query()->pluck('code', 'id');
+            $saved = 0;
             foreach ($rules as $row) {
                 $compatibility = Compatibility::from($row['compatibility']);
-                $rule = ConnectorCompatibilityRule::query()->firstOrNew([
+                $rule = ConnectorCompatibilityRule::query()->lockForUpdate()->firstOrNew([
                     'vehicle_connector_type_id' => (int) $row['vehicle_connector_type_id'],
                     'station_connector_type_id' => (int) $row['station_connector_type_id'],
                 ]);
-                $before = $rule->exists ? ['compatibility' => $rule->compatibility->value, 'adapter_name' => $rule->adapter_name, 'notes' => $rule->notes] : [];
+                $before = $rule->exists ? [
+                    'compatibility' => $rule->compatibility->value,
+                    'adapter_name' => $rule->adapter_name,
+                    'notes' => $rule->notes,
+                    'verified_by' => $rule->verified_by,
+                ] : [];
                 $rule->fill([
                     'compatibility' => $compatibility,
                     'adapter_name' => $compatibility === Compatibility::Adapter ? $this->clean($row['adapter_name'] ?? null) : null,
                     'notes' => $this->clean($row['notes'] ?? null),
                 ]);
-                $after = ['compatibility' => $rule->compatibility->value, 'adapter_name' => $rule->adapter_name, 'notes' => $rule->notes];
-                if (! $rule->exists || $before != $after) {
-                    $rule->verified_by = $actor->id;
-                    $rule->verified_at = now();
-                    $rule->save();
-                    $codes = ConnectorType::query()->whereIn('id', [$rule->vehicle_connector_type_id, $rule->station_connector_type_id])->pluck('code', 'id');
-                    $label = ($codes[$rule->vehicle_connector_type_id] ?? $rule->vehicle_connector_type_id).' → '.($codes[$rule->station_connector_type_id] ?? $rule->station_connector_type_id);
-                    $this->audit->log('vehicles.master_changed', $rule, old: $before, new: $after + ['verified_at' => $rule->verified_at?->toIso8601String()], actor: $actor, entityLabel: $label);
-                    $changed++;
-                }
+                $rule->verified_by = $actor->id;
+                $rule->verified_at = now();
+                $rule->save();
+
+                $label = ($codes[$rule->vehicle_connector_type_id] ?? $rule->vehicle_connector_type_id).' → '.($codes[$rule->station_connector_type_id] ?? $rule->station_connector_type_id);
+                $this->audit->log('vehicles.master_changed', $rule, old: $before, new: [
+                    'compatibility' => $rule->compatibility->value,
+                    'adapter_name' => $rule->adapter_name,
+                    'notes' => $rule->notes,
+                    'verified_by' => $actor->id,
+                    'verified_at' => $rule->verified_at?->toIso8601String(),
+                ], actor: $actor, entityLabel: $label);
+                $saved++;
             }
             $this->data->flush();
 
-            return $changed;
+            return $saved;
         });
     }
 

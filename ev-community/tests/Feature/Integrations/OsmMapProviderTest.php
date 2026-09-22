@@ -139,6 +139,48 @@ class OsmMapProviderTest extends TestCase
         $this->assertStringNotContainsString('super-secret', json_encode($config));
     }
 
+    public function test_the_configured_nominatim_url_is_used_for_every_call(): void
+    {
+        config(['ev.integrations.map.nominatim_url' => 'https://geo.internal.example/']);
+        Http::fake([
+            'https://geo.internal.example/search*' => Http::response($this->nominatimHit()),
+            'https://geo.internal.example/status*' => Http::response(['status' => 0]),
+        ]);
+
+        $this->assertNotNull(Integrations::map()->geocode('Tahrir Square, Cairo'));
+        $this->assertSame(HealthStatus::Operational, Integrations::map()->healthCheck()->status);
+
+        Http::assertSent(fn (Request $request) => str_starts_with($request->url(), 'https://geo.internal.example/search?'));
+        Http::assertNotSent(fn (Request $request) => str_contains($request->url(), 'nominatim.openstreetmap.org'));
+    }
+
+    public function test_cache_is_per_locale_because_nominatim_localises_the_display_name(): void
+    {
+        Http::fake([OsmMapProvider::NOMINATIM_URL.'/search*' => Http::response($this->nominatimHit())]);
+
+        app()->setLocale('ar');
+        Integrations::map()->geocode('Tahrir Square, Cairo');
+        app()->setLocale('en');
+        Integrations::map()->geocode('Tahrir Square, Cairo');
+        Integrations::map()->geocode('Tahrir Square, Cairo');
+
+        Http::assertSentCount(2);
+        Http::assertSent(fn (Request $request) => $request['accept-language'] === 'ar');
+        Http::assertSent(fn (Request $request) => $request['accept-language'] === 'en');
+    }
+
+    public function test_rate_limit_exhaustion_fails_gracefully_without_calling_nominatim(): void
+    {
+        config(['ev.integrations.map.nominatim_rate_per_second' => 1]);
+        RateLimiter::hit(self::RATE_KEY, 60); // slot already taken and it does not free up (Sleep is faked)
+        Http::fake([OsmMapProvider::NOMINATIM_URL.'/search*' => Http::response($this->nominatimHit())]);
+
+        $this->assertNull(Integrations::map()->geocode('Tahrir Square, Cairo'));
+
+        Http::assertNothingSent();
+        Sleep::assertSleptTimes(1);
+    }
+
     public function test_geometry_helpers_work_without_any_vendor(): void
     {
         $map = Integrations::map();
