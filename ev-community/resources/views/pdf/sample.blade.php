@@ -1,6 +1,7 @@
 {{--
     Reference document used by `php artisan pdf:test` and the PdfService unit tests.
-    Data: $title, $intro, $reference, $items[] (name, sku, quantity, unit_price, currency), $notes, $qr (data URI, optional).
+    Data (see PdfTestCommand::sampleData): $title, $intro, $reference, $items[] (name, sku, quantity,
+    unit_price_formatted, line_total_formatted), $grand_total_formatted, $notes, $qr (data URI, optional).
 --}}
 @extends('pdf.layout')
 
@@ -28,21 +29,18 @@
             </tr>
         </thead>
         <tbody>
-            @php($grandTotal = '0')
             @foreach($items as $item)
-                @php($lineTotal = \App\Support\Money\Money::mul($item['unit_price'], $item['quantity'], $item['currency']))
-                @php($grandTotal = \App\Support\Money\Money::add($grandTotal, $lineTotal, $item['currency']))
                 <tr>
                     <td class="text-start">{{ $item['name'] }}</td>
                     <td class="code">{{ $item['sku'] }}</td>
                     <td class="text-center">{{ $item['quantity'] }}</td>
-                    <td class="text-end">{{ \App\Support\Money\Money::format($item['unit_price'], $item['currency'], $pdfLocale) }}</td>
-                    <td class="text-end">{{ \App\Support\Money\Money::format($lineTotal, $item['currency'], $pdfLocale) }}</td>
+                    <td class="text-end">{{ $item['unit_price_formatted'] }}</td>
+                    <td class="text-end">{{ $item['line_total_formatted'] }}</td>
                 </tr>
             @endforeach
             <tr class="total">
                 <td colspan="4" class="text-end">{{ __('pdf.sample.grand_total') }}</td>
-                <td class="text-end">{{ \App\Support\Money\Money::format($grandTotal, $items[0]['currency'] ?? 'EGP', $pdfLocale) }}</td>
+                <td class="text-end">{{ $grand_total_formatted }}</td>
             </tr>
         </tbody>
     </table>

@@ -33,7 +33,7 @@ final class MemberDirectory
             'per_page' => ['nullable', 'integer', 'min:10', 'max:100'],
         ]);
 
-        return array_filter($validated, fn ($v) => $v !== null && $v !== '') + $overrides;
+        return array_merge(array_filter($validated, fn ($v) => $v !== null && $v !== ''), $overrides);
     }
 
     public function query(array $filters): Builder

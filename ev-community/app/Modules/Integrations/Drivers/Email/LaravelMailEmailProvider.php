@@ -120,6 +120,7 @@ final class LaravelMailEmailProvider implements EmailProvider
         if ($host === '' || $port <= 0) {
             return false;
         }
+
         // A relay on localhost without credentials is fine for development; production requires authentication.
         return filled($config['username'] ?? null) || ! app()->isProduction();
     }

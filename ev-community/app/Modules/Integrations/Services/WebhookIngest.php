@@ -11,6 +11,7 @@ use App\Modules\Integrations\Models\WebhookEvent;
 use App\Modules\Integrations\Support\Sanitizer;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
@@ -79,7 +80,8 @@ final class WebhookIngest
         ];
 
         try {
-            $event = WebhookEvent::query()->create($attributes);
+            // Own transaction (savepoint when nested) so a duplicate-key failure never poisons an outer transaction.
+            $event = DB::transaction(fn () => WebhookEvent::query()->create($attributes));
         } catch (UniqueConstraintViolationException) {
             $existing = WebhookEvent::query()->where('provider', $category)->where('fingerprint', $fingerprint)->first();
             IntegrationEvents::record($category, 'inbound', 'webhook.duplicate', IntegrationEventStatus::Success, null, null, ['driver' => $driver, 'event_type' => $identity->eventType, 'signature_valid' => $valid], $identity->externalEventId);

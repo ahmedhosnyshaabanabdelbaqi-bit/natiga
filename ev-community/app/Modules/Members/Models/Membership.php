@@ -91,6 +91,11 @@ class Membership extends Model
         return $this->belongsTo(Governorate::class);
     }
 
+    public function approvedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
+
     public function statusHistory(): HasMany
     {
         return $this->hasMany(MembershipStatusHistory::class)->orderByDesc('id');

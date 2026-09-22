@@ -143,9 +143,10 @@ final class IntegrationManager
             $class = self::NOT_CONFIGURED[$category];
         }
 
+        $contract = self::CONTRACTS[$category];
         $instance = $this->app->make($class);
-        if (! $instance instanceof self::CONTRACTS[$category]) {
-            throw new LogicException(sprintf('Driver [%s] does not implement %s', $class, self::CONTRACTS[$category]));
+        if (! $instance instanceof $contract) {
+            throw new LogicException(sprintf('Driver [%s] does not implement %s', $class, $contract));
         }
         $this->notes[$category] = $note;
 

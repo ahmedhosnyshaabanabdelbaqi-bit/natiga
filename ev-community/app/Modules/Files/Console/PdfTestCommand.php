@@ -4,6 +4,7 @@ namespace App\Modules\Files\Console;
 
 use App\Support\Pdf\PdfService;
 use App\Support\Qr\QrService;
+use Brick\Math\BigDecimal;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 
@@ -39,15 +40,32 @@ class PdfTestCommand extends Command
         return self::SUCCESS;
     }
 
-    /** @return array<string, mixed> */
-    public static function sampleData(string $locale, ?string $qrDataUri = null): array
+    /**
+     * Sample data with pre-formatted amounts (the view only prints strings).
+     *
+     * @param  list<string>|null  $productNames  override the product names (tests use very long names to verify wrapping)
+     * @return array<string, mixed>
+     */
+    public static function sampleData(string $locale, ?string $qrDataUri = null, ?array $productNames = null): array
     {
-        $names = (array) __('pdf.sample.products', [], $locale);
+        $names = $productNames ?? array_values((array) __('pdf.sample.products', [], $locale));
         $skus = ['BRK-BYD-A3-F', 'BAT-12V-AGM60', 'FLT-MG4-CAB', 'CBL-T2-74-5M'];
         $prices = ['1850.00', '2400.00', '350.00', '3200.00'];
+        $currency = 'EGP';
         $items = [];
+        $grandTotal = BigDecimal::of('0.00');
         foreach (array_values($names) as $i => $name) {
-            $items[] = ['name' => $name, 'sku' => $skus[$i] ?? 'SKU-'.$i, 'quantity' => $i + 1, 'unit_price' => $prices[$i] ?? '100.00', 'currency' => 'EGP'];
+            $quantity = $i + 1;
+            $unitPrice = BigDecimal::of($prices[$i % count($prices)]);
+            $lineTotal = $unitPrice->multipliedBy($quantity)->toScale(2);
+            $grandTotal = $grandTotal->plus($lineTotal);
+            $items[] = [
+                'name' => $name,
+                'sku' => $skus[$i % count($skus)].($i >= count($skus) ? '-'.$i : ''),
+                'quantity' => $quantity,
+                'unit_price_formatted' => self::formatAmount((string) $unitPrice, $currency, $locale),
+                'line_total_formatted' => self::formatAmount((string) $lineTotal, $currency, $locale),
+            ];
         }
 
         return [
@@ -55,8 +73,27 @@ class PdfTestCommand extends Command
             'intro' => __('pdf.sample.intro', [], $locale),
             'reference' => 'ORD-2026-000123',
             'items' => $items,
+            'grand_total_formatted' => self::formatAmount((string) $grandTotal->toScale(2), $currency, $locale),
             'notes' => __('pdf.sample.notes_text', [], $locale),
             'qr' => $qrDataUri,
         ];
+    }
+
+    private static function formatAmount(string $amount, string $currency, string $locale): string
+    {
+        $formatted = number_format((float) $amount, 2, '.', ',');
+        if ($locale === 'ar') {
+            $label = match ($currency) {
+                'EGP' => 'ج.م',
+                'USD' => 'دولار',
+                'EUR' => 'يورو',
+                'CNY' => 'يوان',
+                default => $currency,
+            };
+
+            return $formatted.' '.$label;
+        }
+
+        return $currency.' '.$formatted;
     }
 }

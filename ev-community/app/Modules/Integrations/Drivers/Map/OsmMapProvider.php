@@ -12,6 +12,7 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Sleep;
 use Throwable;
 
 /**
@@ -186,7 +187,7 @@ final class OsmMapProvider implements MapProvider
                 return true;
             }
             if ($attempt === 0) {
-                usleep(1_050_000);
+                Sleep::usleep(1_050_000);
             }
         }
 

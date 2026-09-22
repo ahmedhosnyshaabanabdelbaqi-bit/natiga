@@ -3,6 +3,9 @@
 namespace App\Modules\Vehicles\Models;
 
 use App\Models\User;
+use App\Modules\Files\Concerns\HasAttachmentsTrait;
+use App\Modules\Files\Contracts\HasAttachments;
+use App\Modules\Files\Models\Attachment;
 use App\Modules\Garage\Services\VehicleDeletionGuards;
 use App\Modules\Members\Models\Membership;
 use App\Modules\Vehicles\Models\Enums\MarketVersion;
@@ -15,7 +18,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -52,10 +54,12 @@ use Illuminate\Support\Facades\Storage;
  * @property-read VehicleVariant|null $variant
  * @property-read BatteryVariant|null $battery
  */
-class MemberVehicle extends Model
+class MemberVehicle extends Model implements HasAttachments
 {
     /** @use HasFactory<MemberVehicleFactory> */
-    use HasFactory, HasPublicId;
+    use HasAttachmentsTrait, HasFactory, HasPublicId;
+
+    public const IMAGE_COLLECTION = 'vehicle_image';
 
     public const VIN_PATTERN = '/^[A-HJ-NPR-Z0-9]{17}$/';
 
@@ -123,6 +127,11 @@ class MemberVehicle extends Model
     public function battery(): BelongsTo
     {
         return $this->belongsTo(BatteryVariant::class, 'battery_variant_id');
+    }
+
+    public function image(): BelongsTo
+    {
+        return $this->belongsTo(Attachment::class, 'image_attachment_id');
     }
 
     public function odometerHistory(): HasMany
@@ -283,22 +292,16 @@ class MemberVehicle extends Model
 
     // ---- Image -----------------------------------------------------------------------------
 
-    public function imageUrl(): ?string
+    /** Authorized download URL of the photo (medium variant), or the public-disk URL of an imported image. */
+    public function imageUrl(string $variant = 'medium'): ?string
     {
         if ($this->image_attachment_id) {
-            $name = match (true) {
-                Route::has('shared.files.download') => 'shared.files.download',
-                Route::has('files.download') => 'files.download',
-                default => null,
-            };
-            if ($name) {
-                $attachment = $this->attachmentModel();
-                if ($attachment) {
-                    return route($name, $attachment);
-                }
+            $attachment = $this->relationLoaded('image') ? $this->image : $this->image()->first();
+            if ($attachment) {
+                return route('shared.files.download', ['attachment' => $attachment, 'variant' => $attachment->variantPath($variant) ? $variant : null]);
             }
         }
-        // integration: switch to AttachmentService (image_path is the pre-Files-module fallback)
+        // `image_path` is reserved for images placed on the public disk by imports (no attachment row).
         if ($this->image_path) {
             return Storage::disk('public')->url($this->image_path);
         }
@@ -306,22 +309,8 @@ class MemberVehicle extends Model
         return null;
     }
 
-    /** integration: replace with a belongsTo(Attachment::class) once the Files module lands. */
-    private function attachmentModel(): ?Model
-    {
-        $class = 'App\\Modules\\Files\\Models\\Attachment';
-        if (! class_exists($class)) {
-            return null;
-        }
-
-        return $class::query()->find($this->image_attachment_id);
-    }
-
-    /**
-     * Files module contract (`HasAttachments::attachmentViewableBy`): the owner, or staff with vehicles.view.
-     * integration: add `implements App\Modules\Files\Contracts\HasAttachments` once that interface exists.
-     */
-    public function attachmentViewableBy(User $user, mixed $attachment = null): bool
+    /** Files contract: the owner, or staff with vehicles.view, may see this vehicle's files. */
+    public function attachmentViewableBy(User $user, Attachment $attachment): bool
     {
         return $this->isOwnedBy($user) || $user->can('vehicles.view');
     }

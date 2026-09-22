@@ -2,55 +2,40 @@
 
 namespace App\Modules\Vehicles\Services;
 
+use App\Models\User;
+use App\Modules\Files\Models\Attachment;
+use App\Modules\Files\Services\AttachmentService;
 use App\Modules\Vehicles\Models\MemberVehicle;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 /**
- * Stores/removes the vehicle photo. Uses the Files module AttachmentService when available,
- * otherwise falls back to the public disk (`image_path`).
- *
- * integration: switch to AttachmentService only, and drop the `image_path` fallback.
+ * Stores/removes the vehicle photo through the Files module (private disk, authorized download,
+ * MIME sniffing and size limits from settings). One photo per vehicle.
  */
 final class VehicleImageStore
 {
-    public const ATTACHMENT_SERVICE = 'App\\Modules\\Files\\Services\\AttachmentService';
+    public function __construct(private AttachmentService $attachments) {}
 
-    public const COLLECTION = 'vehicle_image';
-
-    /** Sets image_attachment_id / image_path on the model (caller saves). */
-    public function attach(UploadedFile $file, MemberVehicle $vehicle): void
+    /** Sets image_attachment_id on a persisted vehicle (caller saves). Replaces any previous photo. */
+    public function attach(UploadedFile $file, MemberVehicle $vehicle, ?User $uploader = null): Attachment
     {
         $this->detach($vehicle);
+        $attachment = $this->attachments->store($file, $vehicle, MemberVehicle::IMAGE_COLLECTION, Attachment::VISIBILITY_PRIVATE, 'image', $uploader);
+        $vehicle->image_attachment_id = $attachment->id;
+        $vehicle->image_path = null;
 
-        if (class_exists(self::ATTACHMENT_SERVICE)) {
-            $attachment = app(self::ATTACHMENT_SERVICE)->store($file, $vehicle, self::COLLECTION, 'private', 'image');
-            $vehicle->image_attachment_id = $attachment->id;
-            $vehicle->image_path = null;
-
-            return;
-        }
-
-        // integration: switch to AttachmentService
-        $extension = strtolower($file->extension() ?: $file->getClientOriginalExtension() ?: 'jpg');
-        $path = $file->storeAs('vehicles', Str::lower((string) Str::ulid()).'.'.$extension, ['disk' => 'public']);
-        $vehicle->image_path = $path ?: null;
-        $vehicle->image_attachment_id = null;
+        return $attachment;
     }
 
     public function detach(MemberVehicle $vehicle): void
     {
-        if ($vehicle->image_path) {
-            Storage::disk('public')->delete($vehicle->image_path);
-            $vehicle->image_path = null;
-        }
         if ($vehicle->image_attachment_id) {
-            $model = 'App\\Modules\\Files\\Models\\Attachment';
-            if (class_exists($model)) {
-                $model::query()->whereKey($vehicle->image_attachment_id)->first()?->delete();
+            $attachment = Attachment::query()->find($vehicle->image_attachment_id);
+            if ($attachment) {
+                $this->attachments->delete($attachment);
             }
             $vehicle->image_attachment_id = null;
         }
+        $vehicle->image_path = null;
     }
 }

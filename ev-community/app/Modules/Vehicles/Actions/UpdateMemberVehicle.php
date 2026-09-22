@@ -51,7 +51,7 @@ final class UpdateMemberVehicle
                 $this->images->detach($vehicle);
             }
             if ($image) {
-                $this->images->attach($image, $vehicle);
+                $this->images->attach($image, $vehicle, $actor);
             }
             $vehicle->save();
 

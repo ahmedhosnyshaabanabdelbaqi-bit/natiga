@@ -56,10 +56,11 @@ final class CreateMemberVehicle
                 $vehicle->odometer_km = (int) $data['odometer_km'];
                 $vehicle->odometer_updated_at = now();
             }
-            if ($image) {
-                $this->images->attach($image, $vehicle);
-            }
             $vehicle->save();
+            if ($image) {
+                $this->images->attach($image, $vehicle, $actor);
+                $vehicle->save();
+            }
 
             if ($vehicle->odometer_km !== null) {
                 $vehicle->odometerHistory()->create([

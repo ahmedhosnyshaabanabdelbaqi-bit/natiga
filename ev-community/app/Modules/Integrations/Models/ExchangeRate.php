@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * Append-only FX table. Convention: `base_currency` is the FOREIGN currency, `quote_currency`
@@ -19,7 +20,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $quote_currency
  * @property string $rate
  * @property string $source
- * @property \Illuminate\Support\Carbon $rate_date
+ * @property Carbon $rate_date
  */
 class ExchangeRate extends Model
 {
