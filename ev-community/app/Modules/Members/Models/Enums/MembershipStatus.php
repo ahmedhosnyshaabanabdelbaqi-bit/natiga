@@ -29,4 +29,38 @@ enum MembershipStatus: string implements HasLabel
             self::Expired => 'muted',
         };
     }
+
+    /**
+     * State machine: pending→active|rejected, active→suspended|expired, suspended→active,
+     * rejected→pending (re-open), expired→active (renewal).
+     *
+     * @return self[]
+     */
+    public function allowedTransitions(): array
+    {
+        return match ($this) {
+            self::Pending => [self::Active, self::Rejected],
+            self::Active => [self::Suspended, self::Expired],
+            self::Suspended => [self::Active],
+            self::Rejected => [self::Pending],
+            self::Expired => [self::Active],
+        };
+    }
+
+    public function canTransitionTo(self $to): bool
+    {
+        return in_array($to, $this->allowedTransitions(), true);
+    }
+
+    /** Suspending or rejecting a member always needs a stored reason. */
+    public function requiresReason(): bool
+    {
+        return in_array($this, [self::Suspended, self::Rejected], true);
+    }
+
+    /** @return string[] */
+    public function allowedTransitionValues(): array
+    {
+        return array_map(fn (self $s) => $s->value, $this->allowedTransitions());
+    }
 }
