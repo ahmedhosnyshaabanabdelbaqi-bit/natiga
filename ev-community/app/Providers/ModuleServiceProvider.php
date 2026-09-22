@@ -90,6 +90,12 @@ class ModuleServiceProvider extends ServiceProvider
                 $this->requireRouteFiles($modules, 'api');
             });
 
+        // Shared web routes without a portal prefix (file downloads, public QR verification, health...).
+        Route::middleware(['web'])->name('shared.')
+            ->group(function () use ($modules) {
+                $this->requireRouteFiles($modules, 'shared');
+            });
+
         // Webhooks: unauthenticated, signed by the provider, rate limited.
         Route::middleware(['api', 'throttle:webhooks'])->prefix('webhooks')->name('webhooks.')
             ->group(function () use ($modules) {

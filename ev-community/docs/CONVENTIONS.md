@@ -46,6 +46,8 @@ Four spaces, one `users` table, one `web` guard. Access is enforced server-side 
 | Admin panel | `/admin` | `auth`, `admin.portal` | `admin.` | `AdminLayout` |
 | Partner portal | `/partner` | `auth`, `partner.portal` | `partner.` | `PartnerLayout` |
 | API | `/api/v1` | `auth:sanctum` | `api.v1.` | JSON `{data,message,errors,meta}` |
+| Shared (no prefix) | `/` | `web` | `shared.` | e.g. `files.download`, public QR verification; name routes explicitly (`->name('files.download')` gives `shared.files.download`) |
+| Webhooks | `/webhooks` | `api`, `throttle:webhooks` | `webhooks.` | provider callbacks, signature-verified |
 
 Module route files are loaded already inside the right group. Write only the inner routes, e.g. in
 `app/Modules/Orders/routes/admin.php`:
