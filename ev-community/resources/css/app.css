@@ -1,0 +1,259 @@
+@import 'tailwindcss';
+
+@import 'tw-animate-css';
+
+@source '../views';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+@custom-variant dark (&:is(.dark *));
+@custom-variant rtl (&:where([dir='rtl'], [dir='rtl'] *));
+@custom-variant ltr (&:where([dir='ltr'], [dir='ltr'] *));
+
+@theme {
+    --font-sans:
+        'Inter', 'Cairo', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif,
+        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-arabic:
+        'Cairo', 'Tajawal', 'Segoe UI', Tahoma, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+
+    --radius-lg: var(--radius);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-sm: calc(var(--radius) - 4px);
+    --radius-xl: calc(var(--radius) + 4px);
+
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-brand: var(--brand);
+    --color-brand-foreground: var(--brand-foreground);
+    --color-brand-soft: var(--brand-soft);
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+    --color-success: var(--success);
+    --color-success-foreground: var(--success-foreground);
+    --color-success-soft: var(--success-soft);
+    --color-warning: var(--warning);
+    --color-warning-foreground: var(--warning-foreground);
+    --color-warning-soft: var(--warning-soft);
+    --color-danger: var(--danger);
+    --color-danger-foreground: var(--danger-foreground);
+    --color-danger-soft: var(--danger-soft);
+    --color-info: var(--info);
+    --color-info-foreground: var(--info-foreground);
+    --color-info-soft: var(--info-soft);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+
+    --shadow-card: 0 1px 2px 0 rgb(11 18 32 / 0.04), 0 1px 3px 1px rgb(11 18 32 / 0.06);
+    --shadow-elevated: 0 10px 30px -12px rgb(11 18 32 / 0.25);
+}
+
+/*
+ * Design tokens. Brand colors: primary #0B1220 (deep navy), accent #0F766E (teal), background #F8FAFC.
+ * The three brand values can be overridden at runtime by the admin (branding settings) through
+ * --brand-primary / --brand-accent / --brand-background injected in the root template.
+ */
+:root {
+    --radius: 0.75rem;
+    --background: var(--brand-background, #f8fafc);
+    --foreground: #0b1220;
+    --card: #ffffff;
+    --card-foreground: #0b1220;
+    --popover: #ffffff;
+    --popover-foreground: #0b1220;
+    --primary: var(--brand-primary, #0b1220);
+    --primary-foreground: #f8fafc;
+    --secondary: #eef2f7;
+    --secondary-foreground: #0b1220;
+    --muted: #f1f5f9;
+    --muted-foreground: #64748b;
+    --accent: #f1f5f9;
+    --accent-foreground: #0b1220;
+    --brand: var(--brand-accent, #0f766e);
+    --brand-foreground: #ffffff;
+    --brand-soft: #ccfbf1;
+    --destructive: #dc2626;
+    --destructive-foreground: #ffffff;
+    --success: #15803d;
+    --success-foreground: #ffffff;
+    --success-soft: #dcfce7;
+    --warning: #b45309;
+    --warning-foreground: #ffffff;
+    --warning-soft: #fef3c7;
+    --danger: #b91c1c;
+    --danger-foreground: #ffffff;
+    --danger-soft: #fee2e2;
+    --info: #1d4ed8;
+    --info-foreground: #ffffff;
+    --info-soft: #dbeafe;
+    --border: #e2e8f0;
+    --input: #e2e8f0;
+    --ring: var(--brand-accent, #0f766e);
+    --chart-1: #0f766e;
+    --chart-2: #0b1220;
+    --chart-3: #f59e0b;
+    --chart-4: #3b82f6;
+    --chart-5: #94a3b8;
+    --sidebar: var(--brand-primary, #0b1220);
+    --sidebar-foreground: #e2e8f0;
+    --sidebar-primary: var(--brand-accent, #0f766e);
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: rgb(255 255 255 / 0.08);
+    --sidebar-accent-foreground: #ffffff;
+    --sidebar-border: rgb(255 255 255 / 0.1);
+    --sidebar-ring: var(--brand-accent, #0f766e);
+}
+
+.dark {
+    --background: #0b1220;
+    --foreground: #e2e8f0;
+    --card: #111a2e;
+    --card-foreground: #e2e8f0;
+    --popover: #111a2e;
+    --popover-foreground: #e2e8f0;
+    --primary: #e2e8f0;
+    --primary-foreground: #0b1220;
+    --secondary: #1b2540;
+    --secondary-foreground: #e2e8f0;
+    --muted: #1b2540;
+    --muted-foreground: #94a3b8;
+    --accent: #1b2540;
+    --accent-foreground: #e2e8f0;
+    --brand: #14b8a6;
+    --brand-foreground: #052e2b;
+    --brand-soft: #134e4a;
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+    --success: #22c55e;
+    --success-foreground: #052e16;
+    --success-soft: #14532d;
+    --warning: #f59e0b;
+    --warning-foreground: #451a03;
+    --warning-soft: #78350f;
+    --danger: #f87171;
+    --danger-foreground: #450a0a;
+    --danger-soft: #7f1d1d;
+    --info: #60a5fa;
+    --info-foreground: #172554;
+    --info-soft: #1e3a8a;
+    --border: rgb(255 255 255 / 0.1);
+    --input: rgb(255 255 255 / 0.15);
+    --ring: #14b8a6;
+    --chart-1: #14b8a6;
+    --chart-2: #e2e8f0;
+    --chart-3: #fbbf24;
+    --chart-4: #60a5fa;
+    --chart-5: #64748b;
+    --sidebar: #070d1a;
+    --sidebar-foreground: #e2e8f0;
+    --sidebar-primary: #14b8a6;
+    --sidebar-primary-foreground: #052e2b;
+    --sidebar-accent: rgb(255 255 255 / 0.08);
+    --sidebar-accent-foreground: #ffffff;
+    --sidebar-border: rgb(255 255 255 / 0.1);
+    --sidebar-ring: #14b8a6;
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    html {
+        scroll-behavior: smooth;
+        -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+        font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    }
+
+    /* Arabic UI uses Cairo; Latin keeps Inter. Technical codes stay LTR (see .code utility). */
+    [dir='rtl'] body,
+    [lang='ar'] body {
+        font-family: var(--font-arabic);
+    }
+
+    :focus-visible {
+        @apply outline-none ring-2 ring-ring/60 ring-offset-2 ring-offset-background;
+    }
+
+    input,
+    textarea,
+    select {
+        font-size: max(16px, 1em); /* prevents iOS zoom on focus */
+    }
+
+    @media (min-width: 768px) {
+        input,
+        textarea,
+        select {
+            font-size: inherit;
+        }
+    }
+}
+
+@layer utilities {
+    /* Technical identifiers (SKU, VIN, part numbers, phone numbers) never flip in RTL. */
+    .code,
+    .ltr-only {
+        direction: ltr;
+        unicode-bidi: isolate;
+        text-align: start;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .tabular {
+        font-variant-numeric: tabular-nums;
+    }
+
+    .safe-bottom {
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .touch-target {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    .scrollbar-thin {
+        scrollbar-width: thin;
+    }
+
+    .text-balance {
+        text-wrap: balance;
+    }
+}
+
+/* Leaflet map container */
+.leaflet-container {
+    font-family: inherit;
+    z-index: 0;
+}
