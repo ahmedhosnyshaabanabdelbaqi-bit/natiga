@@ -1,0 +1,78 @@
+name: Tests
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    name: PHP ${{ matrix.php }} · PostgreSQL 16
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+
+    # PostgreSQL, not SQLite: this system relies on row locks, partial unique
+    # indexes, CHECK constraints and exact `numeric` arithmetic.
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: pos
+          POSTGRES_PASSWORD: pos_secret
+          POSTGRES_DB: pos_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, intl, gd, pdo, pgsql, pdo_pgsql
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Prepare environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      # The backup/restore acceptance test restores into a separate database.
+      - name: Create the restore-verification database
+        env:
+          PGPASSWORD: pos_secret
+        run: psql -h 127.0.0.1 -U pos -d pos_test -c 'CREATE DATABASE pos_restore_test OWNER pos;'
+
+      - name: Run the test suite
+        run: php artisan test
+
+  frontend:
+    runs-on: ubuntu-latest
+    name: Frontend build and type-check
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run build:fast

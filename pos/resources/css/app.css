@@ -1,0 +1,84 @@
+@import 'tailwindcss';
+
+@theme {
+    --font-sans: 'Cairo', 'Tajawal', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+    --color-ink-50: #f8fafc;
+    --color-ink-100: #f1f5f9;
+    --color-ink-200: #e2e8f0;
+    --color-ink-300: #cbd5e1;
+    --color-ink-400: #94a3b8;
+    --color-ink-500: #64748b;
+    --color-ink-600: #475569;
+    --color-ink-700: #334155;
+    --color-ink-800: #1e293b;
+    --color-ink-900: #0f172a;
+
+    --color-brand-500: #0d9488;
+    --color-brand-600: #0f766e;
+    --color-brand-700: #115e59;
+
+    --color-cash-500: #16a34a;
+    --color-cash-600: #15803d;
+    --color-warn-500: #f59e0b;
+    --color-danger-500: #dc2626;
+    --color-danger-600: #b91c1c;
+}
+
+@font-face {
+    font-family: 'Cairo';
+    font-style: normal;
+    font-weight: 400 900;
+    font-display: swap;
+    src: local('Cairo');
+}
+
+html {
+    font-family: var(--font-sans);
+}
+
+/* The till runs full screen for hours: no bounce, no accidental text selection
+   when tapping fast, and no iOS zoom on input focus. */
+html, body, #app {
+    height: 100%;
+    overscroll-behavior: none;
+}
+
+body {
+    margin: 0;
+    background: var(--color-ink-100);
+    color: var(--color-ink-900);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.pos-screen {
+    user-select: none;
+}
+
+.pos-screen input,
+.pos-screen textarea {
+    user-select: text;
+    font-size: 16px; /* prevents mobile zoom-on-focus */
+}
+
+/* Numeric columns read correctly in an RTL page when kept LTR. */
+.num {
+    direction: ltr;
+    unicode-bidi: plaintext;
+    font-variant-numeric: tabular-nums;
+    text-align: end;
+}
+
+/* Deliberately restrained motion: no animation is allowed to sit between the
+   cashier and the next scan. */
+@media (prefers-reduced-motion: no-preference) {
+    .fade-fast {
+        transition: opacity 120ms ease-out, background-color 120ms ease-out;
+    }
+}
+
+.scrollbar-slim::-webkit-scrollbar { width: 10px; height: 10px; }
+.scrollbar-slim::-webkit-scrollbar-thumb {
+    background: var(--color-ink-300);
+    border-radius: 9999px;
+}
