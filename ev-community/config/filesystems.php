@@ -17,6 +17,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Platform disks (App\Modules\Files)
+    |--------------------------------------------------------------------------
+    |
+    | AttachmentService stores private files (payment proofs, receipts, PDFs,
+    | exports...) on `private_disk` and public assets (product images, logos)
+    | on `public_disk`. Point them at "s3" to use S3-compatible object storage
+    | (AWS, MinIO, DigitalOcean Spaces, Cloudflare R2 via AWS_ENDPOINT).
+    |
+    */
+
+    'private_disk' => env('FILESYSTEM_PRIVATE_DISK', 'private'),
+    'public_disk' => env('FILESYSTEM_PUBLIC_DISK', 'public'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Filesystem Disks
     |--------------------------------------------------------------------------
     |
@@ -38,6 +53,17 @@ return [
             'report' => false,
         ],
 
+        // Private attachments: never served directly; downloads go through the
+        // authorized route `shared.files.download` (see FileDownloadController).
+        'private' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private'),
+            'serve' => false,
+            'visibility' => 'private',
+            'throw' => true,
+            'report' => false,
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
@@ -51,12 +77,13 @@ return [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
-            'region' => env('AWS_DEFAULT_REGION'),
+            'region' => env('AWS_DEFAULT_REGION', 'eu-central-1'),
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
-            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
-            'throw' => false,
+            'use_path_style_endpoint' => (bool) env('AWS_USE_PATH_STYLE_ENDPOINT', false),
+            'visibility' => 'private',
+            'throw' => true,
             'report' => false,
         ],
 

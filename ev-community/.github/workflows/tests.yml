@@ -2,9 +2,10 @@ name: tests
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+    paths: ['ev-community/**', '.github/**']
   pull_request:
+    paths: ['ev-community/**', '.github/**']
 
 permissions:
   contents: read
@@ -12,27 +13,88 @@ permissions:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ev-community
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: ev
+          POSTGRES_PASSWORD: ev_secret
+          POSTGRES_DB: ev_community_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U ev"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:7
+        ports: ['6379:6379']
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v4
         with:
           persist-credentials: false
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
+        uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
+          php-version: '8.4'
+          extensions: pdo_pgsql, pgsql, intl, gd, zip, bcmath, redis
           tools: composer:v2
           coverage: none
 
       - name: Setup Node
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        uses: actions/setup-node@v4
         with:
           node-version: '22'
+          cache: npm
+          cache-dependency-path: ev-community/package-lock.json
 
-      - name: Setup Application
-        run: composer setup
+      - name: Install PHP dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
 
-      - name: Run CI Checks
-        run: composer ci:check
+      - name: Prepare environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          sed -i 's/^DB_PASSWORD=.*/DB_PASSWORD=ev_secret/' .env
+
+      - name: Install JS dependencies
+        run: npm ci
+
+      - name: Build assets
+        run: npm run build
+
+      - name: Lint (Pint)
+        run: vendor/bin/pint --test
+
+      - name: Frontend checks
+        run: |
+          npm run check
+          npm run types:check
+
+      - name: Migrate (fresh database) and seed master data
+        run: php artisan migrate:fresh --seed --force
+        env:
+          DB_CONNECTION: pgsql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 5432
+          DB_DATABASE: ev_community_test
+          DB_USERNAME: ev
+          DB_PASSWORD: ev_secret
+
+      - name: Run tests
+        run: php artisan test --compact
+        env:
+          DB_CONNECTION: pgsql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 5432
+          DB_DATABASE: ev_community_test
+          DB_USERNAME: ev
+          DB_PASSWORD: ev_secret
+          REDIS_HOST: 127.0.0.1
