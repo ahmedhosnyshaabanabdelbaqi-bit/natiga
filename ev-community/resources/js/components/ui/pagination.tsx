@@ -1,4 +1,4 @@
-import { Slot } from "@radix-ui/react-slot"
+import { Slot, Slottable } from "@radix-ui/react-slot"
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -41,13 +41,11 @@ function PaginationItem({ ...props }: React.ComponentProps<"li">) {
 
 type PaginationLinkProps = {
   isActive?: boolean
+  /** Render the single child element (e.g. an Inertia `<Link>`) instead of an anchor. */
   asChild?: boolean
 } & Pick<React.ComponentProps<typeof Button>, "size"> &
   React.ComponentProps<"a">
 
-/**
- * Renders an anchor by default; pass `asChild` to wrap an Inertia `<Link>`.
- */
 function PaginationLink({
   className,
   isActive,
@@ -74,21 +72,34 @@ function PaginationLink({
   )
 }
 
+type PaginationNavProps = React.ComponentProps<typeof PaginationLink> & {
+  /** Visible text (defaults to core.actions.previous / next). */
+  label?: string
+}
+
+/**
+ * With `asChild`, pass the `<Link>` as the only child: the icon and label are
+ * rendered inside it (Radix Slottable).
+ */
 function PaginationPrevious({
   className,
   children,
+  label,
+  asChild = false,
   ...props
-}: React.ComponentProps<typeof PaginationLink>) {
+}: PaginationNavProps) {
   return (
     <PaginationLink
       aria-label={t("ui.pagination.previous")}
       size="default"
+      asChild={asChild}
       className={cn("gap-1 px-2.5 sm:ps-2.5", className)}
       {...props}
     >
+      {asChild ? <Slottable>{children}</Slottable> : null}
       <ChevronLeftIcon className="rtl:rotate-180" />
       <span className="hidden sm:block">
-        {children ?? t("core.actions.previous")}
+        {label ?? t("core.actions.previous")}
       </span>
     </PaginationLink>
   )
@@ -97,17 +108,21 @@ function PaginationPrevious({
 function PaginationNext({
   className,
   children,
+  label,
+  asChild = false,
   ...props
-}: React.ComponentProps<typeof PaginationLink>) {
+}: PaginationNavProps) {
   return (
     <PaginationLink
       aria-label={t("ui.pagination.next")}
       size="default"
+      asChild={asChild}
       className={cn("gap-1 px-2.5 sm:pe-2.5", className)}
       {...props}
     >
+      {asChild ? <Slottable>{children}</Slottable> : null}
       <span className="hidden sm:block">
-        {children ?? t("core.actions.next")}
+        {label ?? t("core.actions.next")}
       </span>
       <ChevronRightIcon className="rtl:rotate-180" />
     </PaginationLink>
