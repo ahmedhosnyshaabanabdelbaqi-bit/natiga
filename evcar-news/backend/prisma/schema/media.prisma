@@ -89,10 +89,11 @@ enum TourMatchType {
   @@map("tour_match_type")
 }
 
+/// Seat position of a scene (one independent panorama per position).
 enum ScenePosition {
-  driver_seat
+  driver
   front_passenger
-  rear_seats
+  rear
   third_row
   cargo
   other
@@ -101,13 +102,16 @@ enum ScenePosition {
 }
 
 enum HotspotType {
+  /// Plain-text explanation (ar/en translations).
   info
-  /// Navigates to another scene of the same tour.
-  scene
-  image
+  /// Opens a licensed detail image (media_asset_id, kind image).
+  detail_image
+  /// Plays a licensed video (media_asset_id, kind video).
   video
   /// Shows a linked spec (spec_definitions.key) of the tour's variant.
-  spec
+  spec_link
+  /// Navigates to another scene of the same tour (target_scene_id).
+  scene_link
 
   @@map("hotspot_type")
 }
@@ -116,59 +120,73 @@ enum HotspotType {
 /// renditions/tiles are in asset_variants. Replacing a file creates a new
 /// asset row that points to the previous version.
 model MediaAsset {
-  id                 String           @id @default(uuid(7)) @db.Uuid
-  kind               MediaKind
-  status             MediaStatus      @default(uploading)
-  storageDriver      StorageDriver    @map("storage_driver")
-  storageKey         String           @unique @map("storage_key") @db.VarChar(1024)
-  bucket             String?          @db.VarChar(255)
-  originalFilename   String?          @map("original_filename") @db.VarChar(255)
+  id                  String           @id @default(uuid(7)) @db.Uuid
+  kind                MediaKind
+  status              MediaStatus      @default(uploading)
+  storageDriver       StorageDriver    @map("storage_driver")
+  storageKey          String           @unique @map("storage_key") @db.VarChar(1024)
+  bucket              String?          @db.VarChar(255)
+  originalFilename    String?          @map("original_filename") @db.VarChar(255)
   /// Sniffed from content (not the client-declared type).
-  mimeType           String?          @map("mime_type") @db.VarChar(100)
-  sizeBytes          BigInt?          @map("size_bytes")
-  width              Int?
-  height             Int?
-  durationSeconds    Decimal?         @map("duration_seconds") @db.Decimal(10, 2)
-  checksumSha256     String?          @map("checksum_sha256") @db.Char(64)
-  projection         MediaProjection?
+  mimeType            String?          @map("mime_type") @db.VarChar(100)
+  sizeBytes           BigInt?          @map("size_bytes")
+  width               Int?
+  height              Int?
+  durationSeconds     Decimal?         @map("duration_seconds") @db.Decimal(10, 2)
+  checksumSha256      String?          @map("checksum_sha256") @db.Char(64)
+  projection          MediaProjection?
   /// Safe metadata subset (EXIF orientation, XMP GPano...), no GPS by default.
-  metadata           Json             @default("{}")
-  processingProgress Int              @default(0) @map("processing_progress") @db.SmallInt
-  processingError    String?          @map("processing_error")
-  processedAt        DateTime?        @map("processed_at") @db.Timestamptz(3)
-  licenseId          String?          @map("license_id") @db.Uuid
-  altTextEn          String?          @map("alt_text_en") @db.VarChar(500)
-  altTextAr          String?          @map("alt_text_ar") @db.VarChar(500)
-  captionEn          String?          @map("caption_en") @db.VarChar(1000)
-  captionAr          String?          @map("caption_ar") @db.VarChar(1000)
-  version            Int              @default(1)
-  previousVersionId  String?          @map("previous_version_id") @db.Uuid
-  uploadedById       String?          @map("uploaded_by_id") @db.Uuid
-  isDemo             Boolean          @default(false) @map("is_demo")
-  createdAt          DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt          DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
-  deletedAt          DateTime?        @map("deleted_at") @db.Timestamptz(3)
+  metadata            Json             @default("{}")
+  processingProgress  Int              @default(0) @map("processing_progress") @db.SmallInt
+  processingError     String?          @map("processing_error")
+  /// Background processing runs (retries included) and start of the last run.
+  processingAttempts  Int              @default(0) @map("processing_attempts") @db.SmallInt
+  processingStartedAt DateTime?        @map("processing_started_at") @db.Timestamptz(3)
+  processedAt         DateTime?        @map("processed_at") @db.Timestamptz(3)
+  /// Pannellum multires parameters of a processed panorama, relative to the
+  /// asset's tile prefix: {"path":"/%l/%s%y_%x","fallbackPath":"/fallback/%s",
+  /// "extension":"jpg","tileResolution":512,"maxLevel":4,"cubeResolution":2048}.
+  /// NULL = no tiles (use the preview + device renditions).
+  multiresConfig      Json?            @map("multires_config")
+  licenseId           String?          @map("license_id") @db.Uuid
+  /// Credit line shown with the asset when its licence needs one and the
+  /// licence-level attribution_text is generic (e.g. photographer name).
+  creditText          String?          @map("credit_text") @db.VarChar(300)
+  altTextEn           String?          @map("alt_text_en") @db.VarChar(500)
+  altTextAr           String?          @map("alt_text_ar") @db.VarChar(500)
+  captionEn           String?          @map("caption_en") @db.VarChar(1000)
+  captionAr           String?          @map("caption_ar") @db.VarChar(1000)
+  version             Int              @default(1)
+  previousVersionId   String?          @map("previous_version_id") @db.Uuid
+  uploadedById        String?          @map("uploaded_by_id") @db.Uuid
+  isDemo              Boolean          @default(false) @map("is_demo")
+  createdAt           DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt           DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt           DateTime?        @map("deleted_at") @db.Timestamptz(3)
 
-  license         AssetLicense?       @relation("AssetLicenseAssignment", fields: [licenseId], references: [id], onDelete: SetNull)
-  previousVersion MediaAsset?         @relation("MediaAssetVersion", fields: [previousVersionId], references: [id], onDelete: SetNull)
-  nextVersions    MediaAsset[]        @relation("MediaAssetVersion")
-  uploadedBy      User?               @relation("MediaUploader", fields: [uploadedById], references: [id], onDelete: SetNull)
-  variants        AssetVariant[]
-  uploadSession   UploadSession?
-  licenseProofs   AssetLicense[]      @relation("LicenseProof")
-  brandLogos      Brand[]             @relation("BrandLogo")
-  modelHeroes     CarModel[]          @relation("ModelHero")
-  vehicleMedia    VehicleMedia[]
-  articleCovers   Article[]           @relation("ArticleCover")
-  tourScenes      TourScene[]
-  hotspots        SceneHotspot[]
-  spinFrames      ExteriorSpinFrame[]
-  stationMedia    StationMedia[]
-  stationReports  StationReport[]
-  operatorLogos   ChargingOperator[]
-  encyclopedia    EncyclopediaEntry[]
-  adCreatives     AdCreative[]
-  importJobs      ImportJob[]
+  license                   AssetLicense?       @relation("AssetLicenseAssignment", fields: [licenseId], references: [id], onDelete: SetNull)
+  previousVersion           MediaAsset?         @relation("MediaAssetVersion", fields: [previousVersionId], references: [id], onDelete: SetNull)
+  nextVersions              MediaAsset[]        @relation("MediaAssetVersion")
+  uploadedBy                User?               @relation("MediaUploader", fields: [uploadedById], references: [id], onDelete: SetNull)
+  variants                  AssetVariant[]
+  uploadSession             UploadSession?
+  licenseProofs             AssetLicense[]      @relation("LicenseProof")
+  brandLogos                Brand[]             @relation("BrandLogo")
+  modelHeroes               CarModel[]          @relation("ModelHero")
+  vehicleMedia              VehicleMedia[]
+  articleCovers             Article[]           @relation("ArticleCover")
+  tourScenes                TourScene[]
+  hotspots                  SceneHotspot[]
+  spinFrames                ExteriorSpinFrame[]
+  stationMedia              StationMedia[]
+  stationReports            StationReport[]
+  stationSuggestions        StationSuggestion[]
+  ownerVerificationEvidence OwnerVerification[]
+  serviceProviderLogos      ServiceProvider[]
+  operatorLogos             ChargingOperator[]
+  encyclopedia              EncyclopediaEntry[]
+  adCreatives               AdCreative[]
+  importJobs                ImportJob[]
 
   @@index([kind, status])
   @@index([checksumSha256])
@@ -229,32 +247,48 @@ model AssetVariant {
   @@map("asset_variants")
 }
 
-/// Resumable chunked upload: client appends chunks at `receivedBytes` offset.
+/// Resumable chunked upload (tus-like semantics without a tus dependency):
+/// the client sends chunks at the `receivedBytes` offset; a chunk whose
+/// offset differs is refused (409) and the client resumes from the stored
+/// offset. With S3 each chunk is a multipart part (`multipartUploadId`,
+/// `parts`); with the local driver chunks are appended to `tempKey`.
 model UploadSession {
-  id               String              @id @default(uuid(7)) @db.Uuid
-  userId           String?             @map("user_id") @db.Uuid
-  kind             MediaKind
-  filename         String              @db.VarChar(255)
-  declaredMimeType String?             @map("declared_mime_type") @db.VarChar(100)
-  totalBytes       BigInt              @map("total_bytes")
-  receivedBytes    BigInt              @default(0) @map("received_bytes")
-  chunkSizeBytes   Int?                @map("chunk_size_bytes")
-  expectedSha256   String?             @map("expected_sha256") @db.Char(64)
+  id                String              @id @default(uuid(7)) @db.Uuid
+  userId            String?             @map("user_id") @db.Uuid
+  kind              MediaKind
+  /// What the file is for, e.g. tour_scene, hotspot_media, article_image,
+  /// station_photo, report_photo, suggestion_photo, owner_evidence,
+  /// license_proof, import_csv (CHECK ^[a-z][a-z0-9_]{1,63}$).
+  purpose           String?             @db.VarChar(64)
+  filename          String              @db.VarChar(255)
+  declaredMimeType  String?             @map("declared_mime_type") @db.VarChar(100)
+  totalBytes        BigInt              @map("total_bytes")
+  receivedBytes     BigInt              @default(0) @map("received_bytes")
+  chunkSizeBytes    Int?                @map("chunk_size_bytes")
+  expectedSha256    String?             @map("expected_sha256") @db.Char(64)
   /// Temporary storage location of the partial file.
-  tempKey          String              @map("temp_key") @db.VarChar(1024)
-  status           UploadSessionStatus @default(active)
-  assetId          String?             @unique @map("asset_id") @db.Uuid
-  error            String?
-  expiresAt        DateTime            @map("expires_at") @db.Timestamptz(3)
-  completedAt      DateTime?           @map("completed_at") @db.Timestamptz(3)
-  createdAt        DateTime            @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt        DateTime            @updatedAt @map("updated_at") @db.Timestamptz(3)
+  tempKey           String              @map("temp_key") @db.VarChar(1024)
+  /// S3 multipart upload id (NULL for the local driver).
+  multipartUploadId String?             @map("multipart_upload_id") @db.VarChar(1024)
+  /// Uploaded S3 parts [{"partNumber":1,"etag":"..."}] (array, CHECK).
+  parts             Json                @default("[]")
+  /// Client metadata (e.g. tus Upload-Metadata, intended license id); never trusted for validation.
+  metadata          Json                @default("{}")
+  lastChunkAt       DateTime?           @map("last_chunk_at") @db.Timestamptz(3)
+  status            UploadSessionStatus @default(active)
+  assetId           String?             @unique @map("asset_id") @db.Uuid
+  error             String?
+  expiresAt         DateTime            @map("expires_at") @db.Timestamptz(3)
+  completedAt       DateTime?           @map("completed_at") @db.Timestamptz(3)
+  createdAt         DateTime            @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime            @updatedAt @map("updated_at") @db.Timestamptz(3)
 
   user  User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
   asset MediaAsset? @relation(fields: [assetId], references: [id], onDelete: SetNull)
 
   @@index([userId, status])
   @@index([status, expiresAt])
+  @@index([purpose])
   @@map("upload_sessions")
 }
 
@@ -285,6 +319,8 @@ model InteriorTour {
   approvedById        String?       @map("approved_by_id") @db.Uuid
   approvedAt          DateTime?     @map("approved_at") @db.Timestamptz(3)
   initialSceneId      String?       @unique @map("initial_scene_id") @db.Uuid
+  /// Reviewer feedback when a tour is sent back to draft.
+  reviewNote          String?       @map("review_note") @db.VarChar(2000)
   publishedAt         DateTime?     @map("published_at") @db.Timestamptz(3)
   isDemo              Boolean       @default(false) @map("is_demo")
   createdById         String?       @map("created_by_id") @db.Uuid
@@ -325,6 +361,9 @@ model TourScene {
   initialHfov  Decimal       @default(100) @map("initial_hfov") @db.Decimal(6, 2)
   minHfov      Decimal?      @map("min_hfov") @db.Decimal(6, 2)
   maxHfov      Decimal?      @map("max_hfov") @db.Decimal(6, 2)
+  /// Optional pitch limits (-90..90, min ≤ max) e.g. to hide the tripod.
+  minPitch     Decimal?      @map("min_pitch") @db.Decimal(6, 2)
+  maxPitch     Decimal?      @map("max_pitch") @db.Decimal(6, 2)
   northOffset  Decimal?      @map("north_offset") @db.Decimal(6, 2)
   createdAt    DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt    DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
@@ -343,7 +382,10 @@ model TourScene {
 }
 
 /// Hotspot inside a scene. Text lives in scene_hotspot_translations and is
-/// plain text only (never HTML/JS). tour_id ties the hotspot, its scene and
+/// plain text only (never HTML/JS; CHECK rejects markup). Type rules (CHECK +
+/// trigger): scene_link → target_scene_id; detail_image → media asset of kind
+/// image; video → media asset of kind video; spec_link → spec_key. Media of a
+/// published tour must be ready + licensed like the scenes. tour_id ties the hotspot, its scene and
 /// its target scene to ONE tour (composite FKs): a hotspot can never lead
 /// into another trim's tour.
 model SceneHotspot {
@@ -376,6 +418,7 @@ model SceneHotspot {
   @@map("scene_hotspots")
 }
 
+/// locale ar | en (CHECK).
 model SceneHotspotTranslation {
   id        String   @id @default(uuid(7)) @db.Uuid
   hotspotId String   @map("hotspot_id") @db.Uuid

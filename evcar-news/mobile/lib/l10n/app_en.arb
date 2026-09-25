@@ -135,6 +135,8 @@
   "chargingLogsTitle": "Charging log",
   "chargingStationTitle": "Station details",
   "chargingTitle": "Charging stations",
+  "commonAdLabel": "Ad",
+  "commonApply": "Apply",
   "commonCachedDataNotice": "Saved copy from {time}; it may not be up to date.",
   "@commonCachedDataNotice": {
     "description": "Shown whenever cached data is displayed instead of live data.",
@@ -145,7 +147,34 @@
     }
   },
   "commonCancel": "Cancel",
+  "commonClearSearch": "Clear search",
   "commonClose": "Close",
+  "commonCompareAdd": "Add to compare",
+  "commonCompareAddedSnack": "Added to comparison",
+  "commonCompareClear": "Clear",
+  "commonCompareFull": "You can compare up to {max} cars. Remove one first.",
+  "@commonCompareFull": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "commonCompareInTray": "In comparison",
+  "commonCompareNeedTwo": "Choose at least two cars to compare.",
+  "commonCompareNow": "Compare",
+  "commonCompareRemove": "Remove from comparison",
+  "commonCompareTrayCount": "{count} of {max} cars selected",
+  "@commonCompareTrayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
   "commonConfirm": "Confirm",
   "commonCreateAccount": "Create account",
   "commonDaysAgo": "{count, plural, =1{1 day ago} other{{count} days ago}}",
@@ -156,10 +185,15 @@
       }
     }
   },
+  "commonDemoDescription": "Sample data for testing — not real information.",
+  "@commonDemoDescription": {
+    "description": "Explains the demo badge (isDemo=true records)."
+  },
   "commonDemoLabel": "Demo data",
   "@commonDemoLabel": {
     "description": "Label for isDemo=true records."
   },
+  "commonDone": "Done",
   "commonEmptyMessage": "There are no items to show right now.",
   "commonEmptyTitle": "Nothing here yet",
   "commonErrorGeneric": "The request could not be completed. Please try again.",
@@ -167,6 +201,21 @@
   "commonExternalVideo": "Watch the video at its source",
   "@commonExternalVideo": {
     "description": "Replaces embedded videos in article HTML."
+  },
+  "commonFavoriteAdd": "Add to favorites",
+  "commonFavoriteAdded": "Added to favorites",
+  "commonFavoriteFailed": "Couldn't update favorites. Please try again.",
+  "commonFavoriteLocalOnly": "Saved on this device. Sign in to sync across devices.",
+  "commonFavoriteRemove": "Remove from favorites",
+  "commonFavoriteRemoved": "Removed from favorites",
+  "commonFilters": "Filters",
+  "commonFiltersActive": "{count, plural, =1{1 filter on} other{{count} filters on}}",
+  "@commonFiltersActive": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
   "commonForbiddenMessage": "You don't have access to this content.",
   "commonHidePassword": "Hide password",
@@ -178,9 +227,36 @@
       }
     }
   },
+  "commonImageCredit": "Image: {credit}",
+  "@commonImageCredit": {
+    "placeholders": {
+      "credit": {
+        "type": "String"
+      }
+    }
+  },
+  "commonImageUnavailable": "Image not available",
   "commonJustNow": "just now",
+  "commonLastUpdated": "Last updated {time}",
+  "@commonLastUpdated": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "commonLastUpdatedUnknown": "Last update: not available",
   "commonLinkOpenFailed": "Couldn't open the link.",
   "commonLoading": "Loading…",
+  "commonMayBeOutdated": "May be out of date",
+  "commonMeasuredBy": "Measured: {cycle}",
+  "@commonMeasuredBy": {
+    "placeholders": {
+      "cycle": {
+        "type": "String"
+      }
+    }
+  },
   "commonMinutesAgo": "{count, plural, =1{1 minute ago} other{{count} minutes ago}}",
   "@commonMinutesAgo": {
     "placeholders": {
@@ -189,6 +265,8 @@
       }
     }
   },
+  "commonMore": "More",
+  "commonMoreInfo": "More information",
   "commonNotAvailable": "Not available",
   "@commonNotAvailable": {
     "description": "Shown instead of a missing value (never 0)."
@@ -196,12 +274,43 @@
   "commonNotConfiguredMessage": "This service has not been set up by the administrators yet.",
   "commonNotConfiguredTitle": "Service not configured",
   "commonNotFoundMessage": "The requested content does not exist or is no longer available.",
+  "commonNotSupportedOnPlatformMessage": "This feature works in the Android and iOS apps.",
+  "commonNotSupportedOnPlatformTitle": "Not available in the web preview",
   "commonOfflineBanner": "You are offline",
   "commonOfflineMessage": "Check your connection and try again. Content you saved is still available offline.",
   "commonOfflineTitle": "You're offline",
   "commonOpenSettings": "Open device settings",
   "commonPermissionDeniedMessage": "This feature needs a permission that has not been granted. You can allow it in the device settings.",
   "commonPermissionDeniedTitle": "Permission not granted",
+  "commonPermissionLocationMessage": "Your location is used only while the app is open, to show nearby stations. Allow it in the device settings or choose a place manually.",
+  "commonPermissionLocationTitle": "Location not allowed",
+  "commonPermissionMotionMessage": "Motion control is optional. You can still look around by dragging.",
+  "commonPermissionMotionTitle": "Motion sensors not allowed",
+  "commonPermissionNotificationsMessage": "Reminders need notification permission. You can allow it in the device settings.",
+  "commonPermissionNotificationsTitle": "Notifications not allowed",
+  "commonPowertrainBev": "Electric",
+  "commonPowertrainErev": "Range extender",
+  "commonPowertrainHev": "Hybrid",
+  "commonPowertrainPhev": "Plug-in hybrid",
+  "commonPriceAsOf": "as of {date}",
+  "@commonPriceAsOf": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "commonPriceConverted": "Estimate after conversion",
+  "@commonPriceConverted": {
+    "description": "Mandatory label for prices converted from another currency (never an official local price)."
+  },
+  "commonPriceDealer": "Dealer price",
+  "commonPriceMarketEstimate": "Market estimate",
+  "commonPriceNotAvailable": "Price not available",
+  "commonPriceOfficialMsrp": "Official price",
+  "commonRangeCycleOther": "Other cycle",
+  "commonRangeElectric": "Electric range",
+  "commonRangeTotal": "Total range",
   "commonRateLimitedMessage": "Too many requests. Please wait a moment and try again.",
   "commonReliabilityDisputed": "Disputed",
   "commonReliabilityEstimated": "Estimated",
@@ -216,14 +325,27 @@
   "commonReliabilityManufacturerClaim": "Manufacturer claim",
   "commonReliabilityUnverified": "Unverified",
   "commonReliabilityVerified": "Verified",
+  "commonReset": "Reset",
   "commonRetry": "Try again",
   "commonSave": "Save",
+  "commonSearchHint": "Search",
   "commonSeeAll": "See all",
+  "commonSeeAllSection": "See all: {section}",
+  "@commonSeeAllSection": {
+    "placeholders": {
+      "section": {
+        "type": "String"
+      }
+    }
+  },
+  "commonSelected": "Selected",
   "commonServerErrorMessage": "The server is currently unavailable. Please try again later.",
+  "commonShare": "Share",
   "commonShowPassword": "Show password",
   "commonSignIn": "Sign in",
   "commonSignInRequiredMessage": "This feature stores your personal data, so it needs an account. You can keep browsing the rest of the app without one.",
   "commonSignInRequiredTitle": "Sign in to continue",
+  "commonSortBy": "Sort by",
   "commonSource": "Source: {source}",
   "@commonSource": {
     "placeholders": {
@@ -233,7 +355,19 @@
     }
   },
   "commonSourceUnknown": "Source not specified",
+  "commonSponsoredBy": "Sponsored by {name}",
+  "@commonSponsoredBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "commonSponsoredDescription": "Paid placement. It never changes comparison results or rankings.",
+  "commonSponsoredLabel": "Sponsored",
   "commonTimeoutMessage": "The server took too long to respond. Please try again.",
+  "commonTour360": "360° tour",
+  "commonTour360Available": "Interior 360° tour available",
   "commonUnderConstructionMessage": "This screen is not built yet and shows no data until it is connected to the server.",
   "commonUnderConstructionRequested": "Requested route: {path}",
   "@commonUnderConstructionRequested": {
@@ -247,6 +381,7 @@
   "@commonUnderConstructionTitle": {
     "description": "Honest placeholder for screens not built yet."
   },
+  "commonUnknown": "Unknown",
   "commonVerifiedOn": "Verified on {date}",
   "@commonVerifiedOn": {
     "placeholders": {
@@ -255,6 +390,7 @@
       }
     }
   },
+  "commonWebPreviewBanner": "Web preview",
   "compareRecommendationsTitle": "Find the right car",
   "compareSharedTitle": "Shared comparison",
   "compareTitle": "Comparisons",

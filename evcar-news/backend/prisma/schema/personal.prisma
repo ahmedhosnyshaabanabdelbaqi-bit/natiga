@@ -25,9 +25,11 @@ enum ChargingLocationType {
 enum ReminderType {
   maintenance
   insurance
-  registration
+  /// Vehicle licence / registration renewal (ترخيص).
+  licence
   tyres
-  other
+  /// User-defined (title says what).
+  custom
 
   @@map("reminder_type")
 }
@@ -137,17 +139,21 @@ model UserVehicle {
   nickname          String?   @db.VarChar(100)
   purchaseDate      DateTime? @map("purchase_date") @db.Date
   initialOdometerKm Decimal?  @map("initial_odometer_km") @db.Decimal(10, 1)
+  /// Latest odometer reading entered by the user (km) and when it was entered.
+  currentOdometerKm Decimal?  @map("current_odometer_km") @db.Decimal(10, 1)
+  odometerUpdatedAt DateTime? @map("odometer_updated_at") @db.Timestamptz(3)
   isPrimary         Boolean   @default(false) @map("is_primary")
   notes             String?
   createdAt         DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt         DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
 
-  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  variant      VehicleVariant @relation(fields: [variantId], references: [id], onDelete: Restrict)
-  market       Market         @relation(fields: [marketCode], references: [code], onDelete: Restrict)
-  chargingLogs ChargingLog[]
-  reminders    Reminder[]
-  tripPlans    TripPlan[]
+  user               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  variant            VehicleVariant      @relation(fields: [variantId], references: [id], onDelete: Restrict)
+  market             Market              @relation(fields: [marketCode], references: [code], onDelete: Restrict)
+  chargingLogs       ChargingLog[]
+  reminders          Reminder[]
+  tripPlans          TripPlan[]
+  ownerVerifications OwnerVerification[]
 
   /// Target of the (user_id, user_vehicle_id) composite FKs: a user's log or
   /// reminder can only point at that user's own car.
@@ -158,6 +164,8 @@ model UserVehicle {
 }
 
 /// User-entered charging sessions (reports are computed from these only).
+/// soc_start/soc_end are the battery % before/after (0..100, end > start when
+/// both are given); cost needs its currency (CHECK).
 model ChargingLog {
   id              String               @id @default(uuid(7)) @db.Uuid
   userId          String               @map("user_id") @db.Uuid
@@ -172,6 +180,8 @@ model ChargingLog {
   socEnd          Decimal?             @map("soc_end") @db.Decimal(5, 2)
   durationMinutes Decimal?             @map("duration_minutes") @db.Decimal(8, 2)
   chargerPowerKw  Decimal?             @map("charger_power_kw") @db.Decimal(8, 2)
+  /// AC or DC session when the user states it.
+  currentType     CurrentType?         @map("current_type")
   locationType    ChargingLocationType @default(other) @map("location_type")
   notes           String?
   createdAt       DateTime             @default(now()) @map("created_at") @db.Timestamptz(3)
@@ -196,8 +206,12 @@ model Reminder {
   notes                String?
   dueDate              DateTime?    @map("due_date") @db.Date
   dueOdometerKm        Decimal?     @map("due_odometer_km") @db.Decimal(10, 1)
+  /// Repeat after N months and/or N km (NULL = one-off).
   repeatIntervalMonths Int?         @map("repeat_interval_months")
+  repeatIntervalKm     Decimal?     @map("repeat_interval_km") @db.Decimal(10, 1)
   notifyDaysBefore     Int          @default(7) @map("notify_days_before")
+  /// For odometer-based reminders: notify this many km before (NULL = at due).
+  notifyKmBefore       Decimal?     @map("notify_km_before") @db.Decimal(10, 1)
   lastNotifiedAt       DateTime?    @map("last_notified_at") @db.Timestamptz(3)
   completedAt          DateTime?    @map("completed_at") @db.Timestamptz(3)
   createdAt            DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
@@ -214,26 +228,28 @@ model Reminder {
 /// Trip plans are stored ONLY when the user explicitly saves one (no
 /// background location history).
 model TripPlan {
-  id                   String   @id @default(uuid(7)) @db.Uuid
-  userId               String   @map("user_id") @db.Uuid
-  userVehicleId        String?  @map("user_vehicle_id") @db.Uuid
-  variantId            String?  @map("variant_id") @db.Uuid
-  title                String?  @db.VarChar(200)
-  originLabel          String   @map("origin_label") @db.VarChar(300)
-  originLat            Float    @map("origin_lat")
-  originLng            Float    @map("origin_lng")
-  destinationLabel     String   @map("destination_label") @db.VarChar(300)
-  destinationLat       Float    @map("destination_lat")
-  destinationLng       Float    @map("destination_lng")
-  startSocPercent      Decimal  @map("start_soc_percent") @db.Decimal(5, 2)
-  minArrivalSocPercent Decimal  @map("min_arrival_soc_percent") @db.Decimal(5, 2)
+  id                   String    @id @default(uuid(7)) @db.Uuid
+  userId               String    @map("user_id") @db.Uuid
+  userVehicleId        String?   @map("user_vehicle_id") @db.Uuid
+  variantId            String?   @map("variant_id") @db.Uuid
+  title                String?   @db.VarChar(200)
+  originLabel          String    @map("origin_label") @db.VarChar(300)
+  originLat            Float     @map("origin_lat")
+  originLng            Float     @map("origin_lng")
+  destinationLabel     String    @map("destination_label") @db.VarChar(300)
+  destinationLat       Float     @map("destination_lat")
+  destinationLng       Float     @map("destination_lng")
+  startSocPercent      Decimal   @map("start_soc_percent") @db.Decimal(5, 2)
+  minArrivalSocPercent Decimal   @map("min_arrival_soc_percent") @db.Decimal(5, 2)
+  /// Planned departure (used to check opening hours at the expected arrival).
+  plannedDepartureAt   DateTime? @map("planned_departure_at") @db.Timestamptz(3)
   /// Visible, editable assumptions (consumption, speed factor, reserve...).
-  assumptions          Json     @default("{}")
+  assumptions          Json      @default("{}")
   /// Computed plan (legs, stops, energy, time, cost, confidence).
   result               Json?
-  routingProvider      String?  @map("routing_provider") @db.VarChar(64)
-  createdAt            DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt            DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+  routingProvider      String?   @map("routing_provider") @db.VarChar(64)
+  createdAt            DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt            DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
 
   user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   userVehicle UserVehicle?    @relation(fields: [userVehicleId], references: [id], onDelete: SetNull)
@@ -241,4 +257,30 @@ model TripPlan {
 
   @@index([userId, createdAt(sort: Desc)])
   @@map("trip_plans")
+}
+
+/// Home personalization interests (REQUIREMENTS §4): brands, models and news
+/// categories the user follows. Exactly one target per row (CHECK); deleted
+/// with the user or the target. Separate from notification subscriptions
+/// (following ≠ being notified).
+model UserInterest {
+  id         String   @id @default(uuid(7)) @db.Uuid
+  userId     String   @map("user_id") @db.Uuid
+  brandId    String?  @map("brand_id") @db.Uuid
+  modelId    String?  @map("model_id") @db.Uuid
+  categoryId String?  @map("category_id") @db.Uuid
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  brand    Brand?    @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  model    CarModel? @relation(fields: [modelId], references: [id], onDelete: Cascade)
+  category Category? @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, brandId])
+  @@unique([userId, modelId])
+  @@unique([userId, categoryId])
+  @@index([brandId])
+  @@index([modelId])
+  @@index([categoryId])
+  @@map("user_interests")
 }

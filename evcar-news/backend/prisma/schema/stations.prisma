@@ -93,7 +93,8 @@ enum TariffPriceUnit {
 enum StationReportType {
   not_working
   wrong_location
-  connector_mismatch
+  /// The connector on site differs from the listed one.
+  different_connector
   price_changed
   access_restricted
   other
@@ -108,6 +109,30 @@ enum ReportStatus {
   rejected
 
   @@map("report_status")
+}
+
+/// Review state of a user-suggested station (station_suggestions).
+enum StationSuggestionStatus {
+  pending
+  /// A station was created (or completed) from it: created_station_id.
+  approved
+  rejected
+  /// The station already exists: duplicate_of_station_id.
+  duplicate
+  /// Withdrawn by its author before review.
+  withdrawn
+
+  @@map("station_suggestion_status")
+}
+
+/// Review state of a possible duplicate pair found by an import/sync.
+enum StationDuplicateStatus {
+  pending
+  /// Confirmed and merged: the loser has charging_stations.duplicate_of_id.
+  merged
+  not_duplicate
+
+  @@map("station_duplicate_status")
 }
 
 enum CheckinOutcome {
@@ -167,6 +192,9 @@ model ChargingStation {
   openingHours        Json?                                 @map("opening_hours")
   /// true = 24/7, false = see opening_hours, NULL = unknown.
   isAlwaysOpen        Boolean?                              @map("is_always_open")
+  /// Opening hours exactly as published by a source that has no structured
+  /// schedule (never parsed into opening_hours); shown as text.
+  openingHoursText    String?                               @map("opening_hours_text") @db.VarChar(500)
   /// IANA time zone used to evaluate "open now".
   timezone            String                                @db.VarChar(64)
   phone               String?                               @db.VarChar(50)
@@ -195,6 +223,9 @@ model ChargingStation {
   sourceUpdatedAt     DateTime?                             @map("source_updated_at") @db.Timestamptz(3)
   /// Normalized (Arabic-aware) search text, maintained by trigger.
   searchText          String?                               @map("search_text")
+  /// Set when this row was merged into another station (duplicate from another
+  /// source). A merged station is never published (CHECK).
+  duplicateOfId       String?                               @map("duplicate_of_id") @db.Uuid
   isDemo              Boolean                               @default(false) @map("is_demo")
   createdById         String?                               @map("created_by_id") @db.Uuid
   updatedById         String?                               @map("updated_by_id") @db.Uuid
@@ -202,8 +233,14 @@ model ChargingStation {
   updatedAt           DateTime                              @updatedAt @map("updated_at") @db.Timestamptz(3)
   deletedAt           DateTime?                             @map("deleted_at") @db.Timestamptz(3)
 
-  operator                  ChargingOperator?          @relation(fields: [operatorId], references: [id], onDelete: SetNull)
-  market                    Market?                    @relation(fields: [marketCode], references: [code], onDelete: Restrict)
+  operator                  ChargingOperator?           @relation(fields: [operatorId], references: [id], onDelete: SetNull)
+  market                    Market?                     @relation(fields: [marketCode], references: [code], onDelete: Restrict)
+  duplicateOf               ChargingStation?            @relation("StationDuplicateOf", fields: [duplicateOfId], references: [id], onDelete: SetNull)
+  duplicates                ChargingStation[]           @relation("StationDuplicateOf")
+  duplicateCandidatesA      StationDuplicateCandidate[] @relation("DuplicateCandidateStation")
+  duplicateCandidatesB      StationDuplicateCandidate[] @relation("DuplicateCandidateOther")
+  suggestionsCreated        StationSuggestion[]         @relation("SuggestionCreatedStation")
+  suggestionsDuplicate      StationSuggestion[]         @relation("SuggestionDuplicateStation")
   points                    ChargingPoint[]
   connectors                Connector[]
   tariffs                   Tariff[]
@@ -224,6 +261,7 @@ model ChargingStation {
   @@index([marketCode])
   @@index([operatorId])
   @@index([countryCode, city])
+  @@index([duplicateOfId])
   @@map("charging_stations")
 }
 
@@ -246,6 +284,7 @@ model ChargingPoint {
   connectors               Connector[]
   tariffs                  Tariff[]
   availabilityObservations AvailabilityObservation[]
+  providerRecords          ProviderRecord[]
 
   @@unique([stationId, id])
   @@index([stationId])
@@ -309,6 +348,7 @@ model Connector {
   availabilityObservations AvailabilityObservation[]
   reports                  StationReport[]
   checkins                 StationCheckin[]
+  providerRecords          ProviderRecord[]
 
   @@unique([stationId, id])
   @@index([stationId])
@@ -381,20 +421,29 @@ model TariffElement {
 
 /// Raw provenance of imported records. Unique per (provider, external_id):
 /// re-running a sync upserts instead of duplicating. Sub-entities of the same
-/// provider use prefixed ids (e.g. "conn:123") to stay unique.
+/// provider use prefixed ids (e.g. "conn:123") to stay unique; the row points
+/// at the local entity it produced (station / operator / point / connector).
 model ProviderRecord {
   id                String    @id @default(uuid(7)) @db.Uuid
-  /// e.g. "ocm", "csv", "partner:<name>".
+  /// e.g. "ocm", "csv", "partner:<name>" (CHECK ^[a-z][a-z0-9_:.-]{1,63}$).
   provider          String    @db.VarChar(64)
   externalId        String    @map("external_id") @db.VarChar(200)
-  /// station | operator | point | connector
+  /// station | operator | point | connector | tariff (CHECK)
   entityType        String    @default("station") @map("entity_type") @db.VarChar(32)
   stationId         String?   @map("station_id") @db.Uuid
   operatorId        String?   @map("operator_id") @db.Uuid
+  chargingPointId   String?   @map("charging_point_id") @db.Uuid
+  connectorId       String?   @map("connector_id") @db.Uuid
+  /// Last import job that saw this record (import_jobs, e.g. stations.ocm_sync).
+  lastImportJobId   String?   @map("last_import_job_id") @db.Uuid
   /// Stored only as far as the provider licence allows.
   payload           Json?
+  /// sha256 (lower-case hex) of the normalized payload: unchanged → skip.
   payloadHash       String?   @map("payload_hash") @db.Char(64)
   dataLicense       String?   @map("data_license") @db.VarChar(200)
+  licenseUrl        String?   @map("license_url") @db.VarChar(2048)
+  /// Public page of the record at the provider (e.g. OCM POI URL).
+  sourceUrl         String?   @map("source_url") @db.VarChar(2048)
   attribution       String?
   firstSeenAt       DateTime  @default(now()) @map("first_seen_at") @db.Timestamptz(3)
   lastSeenAt        DateTime  @default(now()) @map("last_seen_at") @db.Timestamptz(3)
@@ -404,12 +453,18 @@ model ProviderRecord {
   createdAt         DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt         DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
 
-  station  ChargingStation?  @relation(fields: [stationId], references: [id], onDelete: SetNull)
-  operator ChargingOperator? @relation(fields: [operatorId], references: [id], onDelete: SetNull)
+  station       ChargingStation?  @relation(fields: [stationId], references: [id], onDelete: SetNull)
+  operator      ChargingOperator? @relation(fields: [operatorId], references: [id], onDelete: SetNull)
+  chargingPoint ChargingPoint?    @relation(fields: [chargingPointId], references: [id], onDelete: SetNull)
+  connector     Connector?        @relation(fields: [connectorId], references: [id], onDelete: SetNull)
+  lastImportJob ImportJob?        @relation(fields: [lastImportJobId], references: [id], onDelete: SetNull)
 
   @@unique([provider, externalId])
   @@index([stationId])
   @@index([operatorId])
+  @@index([chargingPointId])
+  @@index([connectorId])
+  @@index([provider, lastSeenAt])
   @@map("provider_records")
 }
 
@@ -470,38 +525,131 @@ model StationReport {
 }
 
 /// User check-ins (community data, dated; not live availability).
+/// success / failure (outcome), connector used, kW observed, comment.
 model StationCheckin {
   id              String           @id @default(uuid(7)) @db.Uuid
   stationId       String           @map("station_id") @db.Uuid
   userId          String?          @map("user_id") @db.Uuid
   connectorId     String?          @map("connector_id") @db.Uuid
+  /// Car used (public catalog variant, not the user's garage row) — lets the
+  /// community see "charged successfully with <variant>"; never a compatibility proof.
+  variantId       String?          @map("variant_id") @db.Uuid
   outcome         CheckinOutcome
   observedPowerKw Decimal?         @map("observed_power_kw") @db.Decimal(8, 2)
-  comment         String?
+  /// Minutes waited for a free charger (NULL = not stated).
+  waitMinutes     Int?             @map("wait_minutes")
+  comment         String?          @db.VarChar(2000)
   status          ModerationStatus @default(approved)
   createdAt       DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
 
   station   ChargingStation @relation(fields: [stationId], references: [id], onDelete: Cascade)
   user      User?           @relation(fields: [userId], references: [id], onDelete: SetNull)
   connector Connector?      @relation(fields: [connectorId], references: [id], onDelete: SetNull)
+  variant   VehicleVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
 
   @@index([stationId, createdAt(sort: Desc)])
   @@index([userId])
+  @@index([variantId])
   @@map("station_checkins")
 }
 
+/// Station photos. Staff photos are approved directly; photos sent by users
+/// start `pending` and are shown only once approved.
 model StationMedia {
-  id        String   @id @default(uuid(7)) @db.Uuid
-  stationId String   @map("station_id") @db.Uuid
-  assetId   String   @map("asset_id") @db.Uuid
-  caption   String?  @db.VarChar(500)
-  sortOrder Int      @default(0) @map("sort_order")
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  id           String           @id @default(uuid(7)) @db.Uuid
+  stationId    String           @map("station_id") @db.Uuid
+  assetId      String           @map("asset_id") @db.Uuid
+  caption      String?          @db.VarChar(500)
+  sortOrder    Int              @default(0) @map("sort_order")
+  status       ModerationStatus @default(approved)
+  /// Author when sent by a user (anonymized to NULL when the account is deleted).
+  uploadedById String?          @map("uploaded_by_id") @db.Uuid
+  createdAt    DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
 
-  station ChargingStation @relation(fields: [stationId], references: [id], onDelete: Cascade)
-  asset   MediaAsset      @relation(fields: [assetId], references: [id], onDelete: Restrict)
+  station    ChargingStation @relation(fields: [stationId], references: [id], onDelete: Cascade)
+  asset      MediaAsset      @relation(fields: [assetId], references: [id], onDelete: Restrict)
+  uploadedBy User?           @relation("StationMediaUploader", fields: [uploadedById], references: [id], onDelete: SetNull)
 
   @@unique([stationId, assetId])
   @@index([assetId])
+  @@index([stationId, status, sortOrder])
   @@map("station_media")
+}
+
+/// A station proposed by a user (REQUIREMENTS §10: "اقتراحات مستخدمين تمر
+/// بالمراجعة"). Never shown on the public map: a reviewer creates / completes a
+/// real station (approved → created_station_id) or marks it as a duplicate.
+/// `location` is maintained by trigger (GIST) so reviewers see nearby stations.
+model StationSuggestion {
+  id                   String                                @id @default(uuid(7)) @db.Uuid
+  userId               String?                               @map("user_id") @db.Uuid
+  status               StationSuggestionStatus               @default(pending)
+  name                 String                                @db.VarChar(300)
+  operatorName         String?                               @map("operator_name") @db.VarChar(200)
+  latitude             Float
+  longitude            Float
+  location             Unsupported("geography(Point,4326)")?
+  addressText          String?                               @map("address_text") @db.VarChar(500)
+  city                 String?                               @db.VarChar(120)
+  countryCode          String                                @map("country_code") @db.Char(2)
+  marketCode           String?                               @map("market_code") @db.VarChar(8)
+  accessType           StationAccessType                     @default(unknown) @map("access_type")
+  /// [{"connectorTypeCode":"ccs2","currentType":"DC","maxPowerKw":60,"quantity":2}] (≤ 20, CHECK array)
+  connectors           Json                                  @default("[]")
+  openingHoursText     String?                               @map("opening_hours_text") @db.VarChar(500)
+  notes                String?                               @db.VarChar(2000)
+  photoAssetId         String?                               @map("photo_asset_id") @db.Uuid
+  reviewedById         String?                               @map("reviewed_by_id") @db.Uuid
+  reviewedAt           DateTime?                             @map("reviewed_at") @db.Timestamptz(3)
+  reviewNote           String?                               @map("review_note") @db.VarChar(2000)
+  createdStationId     String?                               @map("created_station_id") @db.Uuid
+  duplicateOfStationId String?                               @map("duplicate_of_station_id") @db.Uuid
+  isDemo               Boolean                               @default(false) @map("is_demo")
+  createdAt            DateTime                              @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt            DateTime                              @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  user               User?            @relation("StationSuggestionAuthor", fields: [userId], references: [id], onDelete: SetNull)
+  reviewedBy         User?            @relation("StationSuggestionReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+  market             Market?          @relation(fields: [marketCode], references: [code], onDelete: SetNull)
+  photo              MediaAsset?      @relation(fields: [photoAssetId], references: [id], onDelete: SetNull)
+  createdStation     ChargingStation? @relation("SuggestionCreatedStation", fields: [createdStationId], references: [id], onDelete: SetNull)
+  duplicateOfStation ChargingStation? @relation("SuggestionDuplicateStation", fields: [duplicateOfStationId], references: [id], onDelete: SetNull)
+
+  @@index([location], type: Gist, map: "station_suggestions_location_gist")
+  @@index([status, createdAt])
+  @@index([userId])
+  @@map("station_suggestions")
+}
+
+/// Possible duplicate pair found by an import / sync or a reviewer (same
+/// place from two sources). Ordered pair (station_id < other_station_id,
+/// CHECK) so (a, b) and (b, a) cannot both exist. Candidates are found with
+/// ST_DWithin on charging_stations.location (GIST) + similarity() on
+/// search_text (trigram); a confirmed pair is merged by setting the loser's
+/// duplicate_of_id and hiding it.
+model StationDuplicateCandidate {
+  id             String                 @id @default(uuid(7)) @db.Uuid
+  stationId      String                 @map("station_id") @db.Uuid
+  otherStationId String                 @map("other_station_id") @db.Uuid
+  /// Distance between the two stations in metres.
+  distanceM      Decimal?               @map("distance_m") @db.Decimal(10, 1)
+  /// pg_trgm similarity of the normalized names, 0..1.
+  nameSimilarity Decimal?               @map("name_similarity") @db.Decimal(4, 3)
+  /// Why it was flagged, e.g. "ocm+manual, 12 m, same operator".
+  reason         String?                @db.VarChar(300)
+  status         StationDuplicateStatus @default(pending)
+  reviewedById   String?                @map("reviewed_by_id") @db.Uuid
+  reviewedAt     DateTime?              @map("reviewed_at") @db.Timestamptz(3)
+  note           String?                @db.VarChar(1000)
+  createdAt      DateTime               @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt      DateTime               @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  station      ChargingStation @relation("DuplicateCandidateStation", fields: [stationId], references: [id], onDelete: Cascade)
+  otherStation ChargingStation @relation("DuplicateCandidateOther", fields: [otherStationId], references: [id], onDelete: Cascade)
+  reviewedBy   User?           @relation("StationDuplicateReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+
+  @@unique([stationId, otherStationId])
+  @@index([otherStationId])
+  @@index([status, createdAt])
+  @@map("station_duplicate_candidates")
 }

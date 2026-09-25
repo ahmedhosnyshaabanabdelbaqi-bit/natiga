@@ -91,9 +91,10 @@ model ImportJob {
   createdAt     DateTime        @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt     DateTime        @updatedAt @map("updated_at") @db.Timestamptz(3)
 
-  createdBy User?          @relation(fields: [createdById], references: [id], onDelete: SetNull)
-  fileAsset MediaAsset?    @relation(fields: [fileAssetId], references: [id], onDelete: SetNull)
-  rows      ImportJobRow[]
+  createdBy       User?            @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  fileAsset       MediaAsset?      @relation(fields: [fileAssetId], references: [id], onDelete: SetNull)
+  rows            ImportJobRow[]
+  providerRecords ProviderRecord[]
 
   @@index([type, createdAt(sort: Desc)])
   @@index([status])
@@ -196,7 +197,8 @@ model SearchAlias {
 /// comparison → views/shares.
 model ContentDailyStat {
   id          String   @id @default(uuid(7)) @db.Uuid
-  /// article | brand | model | variant | comparison | tour | station | encyclopedia (CHECK)
+  /// article | brand | model | variant | comparison | tour | station | encyclopedia |
+  /// service_provider (CHECK)
   entityType  String   @map("entity_type") @db.VarChar(32)
   entityId    String   @map("entity_id") @db.Uuid
   day         DateTime @db.Date

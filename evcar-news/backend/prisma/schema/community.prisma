@@ -36,6 +36,79 @@ enum ContentReportReason {
   @@map("content_report_reason")
 }
 
+/// Rating dimensions of a review (1..5 each, optional). Car dimensions are
+/// only allowed on variant reviews, station_* only on station reviews
+/// (trigger).
+enum ReviewRatingDimension {
+  range_real_world
+  charging
+  comfort
+  technology
+  build_quality
+  value_for_money
+  reliability
+  after_sales
+  station_reliability
+  station_access
+  station_price
+  station_amenities
+
+  @@map("review_rating_dimension")
+}
+
+enum VoteTargetType {
+  review
+  comment
+  question
+  answer
+
+  @@map("vote_target_type")
+}
+
+enum SpamSignalType {
+  rate_limited
+  duplicate_content
+  link_spam
+  blocked_words
+  new_account
+  user_reports
+  other
+
+  @@map("spam_signal_type")
+}
+
+/// How ownership of a car was verified ("مالك موثّق" needs a real check).
+enum OwnerVerificationMethod {
+  /// Staff reviewed an ownership document (evidence deleted after the decision).
+  document_review
+  /// Confirmed by a dealer / importer through a recorded channel.
+  dealer_confirmation
+  /// Another verifiable method described in decision_note.
+  other
+
+  @@map("owner_verification_method")
+}
+
+enum OwnerVerificationStatus {
+  pending
+  approved
+  rejected
+  revoked
+  expired
+
+  @@map("owner_verification_status")
+}
+
+/// Which report vocabulary a report_reasons row labels.
+enum ReportReasonScope {
+  /// station_reports.type (station_report_type)
+  station
+  /// content_reports.reason (content_report_reason)
+  content
+
+  @@map("report_reason_scope")
+}
+
 enum ModerationActionType {
   approve
   reject
@@ -50,36 +123,49 @@ enum ModerationActionType {
 }
 
 /// Owner review of a variant or a station (exactly one; CHECK). The
-/// "verified owner" badge requires a real verification (CHECK).
+/// "verified owner" badge is maintained by trigger from
+/// `ownerVerificationId`: it must be an APPROVED owner_verifications row of
+/// the same user and the same variant (station reviews never carry it);
+/// revoking / deleting the verification removes the badge.
+/// upvote/downvote counts and content_hash are maintained by triggers.
 model Review {
-  id                      String           @id @default(uuid(7)) @db.Uuid
-  userId                  String?          @map("user_id") @db.Uuid
-  variantId               String?          @map("variant_id") @db.Uuid
-  stationId               String?          @map("station_id") @db.Uuid
+  id                  String           @id @default(uuid(7)) @db.Uuid
+  userId              String?          @map("user_id") @db.Uuid
+  variantId           String?          @map("variant_id") @db.Uuid
+  stationId           String?          @map("station_id") @db.Uuid
   /// 1..5 (CHECK)
-  rating                  Int              @db.SmallInt
-  title                   String?          @db.VarChar(200)
-  body                    String
-  pros                    String?
-  cons                    String?
-  ownershipMonths         Int?             @map("ownership_months")
-  locale                  String           @db.VarChar(10)
-  marketCode              String?          @map("market_code") @db.VarChar(8)
-  isVerifiedOwner         Boolean          @default(false) @map("is_verified_owner")
-  ownerVerifiedAt         DateTime?        @map("owner_verified_at") @db.Timestamptz(3)
-  ownerVerificationMethod String?          @map("owner_verification_method") @db.VarChar(64)
-  status                  ModerationStatus @default(pending)
-  isDemo                  Boolean          @default(false) @map("is_demo")
-  createdAt               DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt               DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
-  deletedAt               DateTime?        @map("deleted_at") @db.Timestamptz(3)
+  rating              Int              @db.SmallInt
+  title               String?          @db.VarChar(200)
+  body                String
+  pros                String?
+  cons                String?
+  ownershipMonths     Int?             @map("ownership_months")
+  locale              String           @db.VarChar(10)
+  marketCode          String?          @map("market_code") @db.VarChar(8)
+  /// Maintained by trigger (= ownerVerificationId IS NOT NULL); never set directly.
+  isVerifiedOwner     Boolean          @default(false) @map("is_verified_owner")
+  ownerVerificationId String?          @map("owner_verification_id") @db.Uuid
+  upvoteCount         Int              @default(0) @map("upvote_count")
+  downvoteCount       Int              @default(0) @map("downvote_count")
+  /// sha256 of the normalized text (trigger) — duplicate / spam detection.
+  contentHash         String?          @map("content_hash") @db.Char(64)
+  status              ModerationStatus @default(pending)
+  isDemo              Boolean          @default(false) @map("is_demo")
+  createdAt           DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt           DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt           DateTime?        @map("deleted_at") @db.Timestamptz(3)
 
-  user     User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
-  variant  VehicleVariant?  @relation(fields: [variantId], references: [id], onDelete: Cascade)
-  station  ChargingStation? @relation(fields: [stationId], references: [id], onDelete: Cascade)
-  market   Market?          @relation(fields: [marketCode], references: [code], onDelete: SetNull)
-  comments Comment[]
+  user              User?              @relation(fields: [userId], references: [id], onDelete: SetNull)
+  variant           VehicleVariant?    @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  station           ChargingStation?   @relation(fields: [stationId], references: [id], onDelete: Cascade)
+  market            Market?            @relation(fields: [marketCode], references: [code], onDelete: SetNull)
+  ownerVerification OwnerVerification? @relation(fields: [ownerVerificationId], references: [id], onDelete: SetNull)
+  comments          Comment[]
+  ratings           ReviewRating[]
+  votes             CommunityVote[]
 
+  @@index([contentHash])
+  @@index([ownerVerificationId])
   @@index([variantId, status, createdAt(sort: Desc)])
   @@index([stationId, status, createdAt(sort: Desc)])
   @@index([userId])
@@ -87,29 +173,42 @@ model Review {
   @@map("reviews")
 }
 
-/// Comment on an article or a review (exactly one; CHECK), optionally threaded.
+/// Comment on an article, a review, a car model page or a variant page
+/// (exactly one target; CHECK), optionally threaded: a reply must have the
+/// same target as its parent (trigger).
 model Comment {
-  id        String           @id @default(uuid(7)) @db.Uuid
-  userId    String?          @map("user_id") @db.Uuid
-  articleId String?          @map("article_id") @db.Uuid
-  reviewId  String?          @map("review_id") @db.Uuid
-  parentId  String?          @map("parent_id") @db.Uuid
-  body      String
-  locale    String?          @db.VarChar(10)
-  status    ModerationStatus @default(pending)
-  editedAt  DateTime?        @map("edited_at") @db.Timestamptz(3)
-  createdAt DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
-  deletedAt DateTime?        @map("deleted_at") @db.Timestamptz(3)
+  id            String           @id @default(uuid(7)) @db.Uuid
+  userId        String?          @map("user_id") @db.Uuid
+  articleId     String?          @map("article_id") @db.Uuid
+  reviewId      String?          @map("review_id") @db.Uuid
+  modelId       String?          @map("model_id") @db.Uuid
+  variantId     String?          @map("variant_id") @db.Uuid
+  parentId      String?          @map("parent_id") @db.Uuid
+  body          String
+  locale        String?          @db.VarChar(10)
+  status        ModerationStatus @default(pending)
+  upvoteCount   Int              @default(0) @map("upvote_count")
+  downvoteCount Int              @default(0) @map("downvote_count")
+  contentHash   String?          @map("content_hash") @db.Char(64)
+  editedAt      DateTime?        @map("edited_at") @db.Timestamptz(3)
+  createdAt     DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt     DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt     DateTime?        @map("deleted_at") @db.Timestamptz(3)
 
-  user    User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
-  article Article?  @relation(fields: [articleId], references: [id], onDelete: Cascade)
-  review  Review?   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
-  parent  Comment?  @relation("CommentThread", fields: [parentId], references: [id], onDelete: Cascade)
-  replies Comment[] @relation("CommentThread")
+  user    User?           @relation(fields: [userId], references: [id], onDelete: SetNull)
+  article Article?        @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  review  Review?         @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  model   CarModel?       @relation(fields: [modelId], references: [id], onDelete: Cascade)
+  variant VehicleVariant? @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  parent  Comment?        @relation("CommentThread", fields: [parentId], references: [id], onDelete: Cascade)
+  replies Comment[]       @relation("CommentThread")
+  votes   CommunityVote[]
 
   @@index([articleId, status, createdAt])
   @@index([reviewId, status, createdAt])
+  @@index([modelId, status, createdAt])
+  @@index([variantId, status, createdAt])
+  @@index([contentHash])
   @@index([parentId])
   @@index([userId])
   @@map("comments")
@@ -126,7 +225,12 @@ model Question {
   locale           String           @db.VarChar(10)
   marketCode       String?          @map("market_code") @db.VarChar(8)
   status           ModerationStatus @default(pending)
+  /// Must be an answer of this question (trigger).
   acceptedAnswerId String?          @unique @map("accepted_answer_id") @db.Uuid
+  upvoteCount      Int              @default(0) @map("upvote_count")
+  downvoteCount    Int              @default(0) @map("downvote_count")
+  contentHash      String?          @map("content_hash") @db.Char(64)
+  editedAt         DateTime?        @map("edited_at") @db.Timestamptz(3)
   createdAt        DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt        DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
   deletedAt        DateTime?        @map("deleted_at") @db.Timestamptz(3)
@@ -138,7 +242,9 @@ model Question {
   market         Market?          @relation(fields: [marketCode], references: [code], onDelete: SetNull)
   acceptedAnswer Answer?          @relation("AcceptedAnswer", fields: [acceptedAnswerId], references: [id], onDelete: SetNull)
   answers        Answer[]         @relation("QuestionAnswers")
+  votes          CommunityVote[]
 
+  @@index([contentHash])
   @@index([modelId, status, createdAt(sort: Desc)])
   @@index([variantId, status, createdAt(sort: Desc)])
   @@index([stationId, status])
@@ -148,25 +254,33 @@ model Question {
 }
 
 model Answer {
-  id         String           @id @default(uuid(7)) @db.Uuid
-  questionId String           @map("question_id") @db.Uuid
-  userId     String?          @map("user_id") @db.Uuid
-  body       String
-  status     ModerationStatus @default(pending)
-  createdAt  DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt  DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
-  deletedAt  DateTime?        @map("deleted_at") @db.Timestamptz(3)
+  id            String           @id @default(uuid(7)) @db.Uuid
+  questionId    String           @map("question_id") @db.Uuid
+  userId        String?          @map("user_id") @db.Uuid
+  body          String
+  status        ModerationStatus @default(pending)
+  upvoteCount   Int              @default(0) @map("upvote_count")
+  downvoteCount Int              @default(0) @map("downvote_count")
+  contentHash   String?          @map("content_hash") @db.Char(64)
+  editedAt      DateTime?        @map("edited_at") @db.Timestamptz(3)
+  createdAt     DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt     DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt     DateTime?        @map("deleted_at") @db.Timestamptz(3)
 
-  question    Question  @relation("QuestionAnswers", fields: [questionId], references: [id], onDelete: Cascade)
-  user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
-  acceptedFor Question? @relation("AcceptedAnswer")
+  question    Question        @relation("QuestionAnswers", fields: [questionId], references: [id], onDelete: Cascade)
+  user        User?           @relation(fields: [userId], references: [id], onDelete: SetNull)
+  acceptedFor Question?       @relation("AcceptedAnswer")
+  votes       CommunityVote[]
 
   @@index([questionId, status, createdAt])
   @@index([userId])
+  @@index([contentHash])
   @@map("answers")
 }
 
-/// "Report this" flags raised by users on community content.
+/// "Report this" flags raised by users on community content. One open
+/// report per reporter × target (partial unique index); reasons and their
+/// labels: report_reasons (scope content).
 model ContentReport {
   id          String              @id @default(uuid(7)) @db.Uuid
   reporterId  String?             @map("reporter_id") @db.Uuid
@@ -208,11 +322,12 @@ model ModerationAction {
 }
 
 /// Moderator-imposed restriction of a user (e.g. no community posting).
+/// At most one unrevoked block per user × scope (partial unique index).
 model UserBlock {
   id          String    @id @default(uuid(7)) @db.Uuid
   userId      String    @map("user_id") @db.Uuid
   blockedById String?   @map("blocked_by_id") @db.Uuid
-  /// community | all
+  /// community | all (CHECK)
   scope       String    @default("community") @db.VarChar(32)
   reason      String?
   expiresAt   DateTime? @map("expires_at") @db.Timestamptz(3)
@@ -224,4 +339,147 @@ model UserBlock {
 
   @@index([userId, revokedAt])
   @@map("user_blocks")
+}
+
+/// Optional per-dimension scores of a review (1..5, CHECK).
+model ReviewRating {
+  reviewId  String                @map("review_id") @db.Uuid
+  dimension ReviewRatingDimension
+  score     Int                   @db.SmallInt
+
+  review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+
+  @@id([reviewId, dimension])
+  @@map("review_ratings")
+}
+
+/// Helpful / not helpful votes (value +1 / -1). Exactly one target FK set,
+/// matching target_type (CHECK); one vote per user per target. The target's
+/// upvote_count / downvote_count are maintained by trigger. Votes are
+/// personal (deleted with the user; counts follow).
+model CommunityVote {
+  id         String         @id @default(uuid(7)) @db.Uuid
+  userId     String         @map("user_id") @db.Uuid
+  targetType VoteTargetType @map("target_type")
+  reviewId   String?        @map("review_id") @db.Uuid
+  commentId  String?        @map("comment_id") @db.Uuid
+  questionId String?        @map("question_id") @db.Uuid
+  answerId   String?        @map("answer_id") @db.Uuid
+  value      Int            @db.SmallInt
+  createdAt  DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt  DateTime       @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  review   Review?   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  comment  Comment?  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  question Question? @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  answer   Answer?   @relation(fields: [answerId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, reviewId])
+  @@unique([userId, commentId])
+  @@unique([userId, questionId])
+  @@unique([userId, answerId])
+  @@index([reviewId])
+  @@index([commentId])
+  @@index([questionId])
+  @@index([answerId])
+  @@map("community_votes")
+}
+
+/// A user hides another user's community content for themselves ("block
+/// this user" in the app). Not a moderation action (that is user_blocks).
+model UserMute {
+  userId      String   @map("user_id") @db.Uuid
+  mutedUserId String   @map("muted_user_id") @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  user      User @relation("UserMuteOwner", fields: [userId], references: [id], onDelete: Cascade)
+  mutedUser User @relation("UserMuteTarget", fields: [mutedUserId], references: [id], onDelete: Cascade)
+
+  @@id([userId, mutedUserId])
+  @@index([mutedUserId])
+  @@map("user_mutes")
+}
+
+/// Anti-spam evidence recorded by the community service (rate limit hits,
+/// duplicate text via content_hash, link spam, reports...). Aggregated per
+/// user / target to hold content for review. `ipHash` = HMAC of the IP
+/// (never the raw IP); cleared when the user deletes the account (trigger).
+model SpamSignal {
+  id          String               @id @default(uuid(7)) @db.Uuid
+  userId      String?              @map("user_id") @db.Uuid
+  targetType  CommunityTargetType? @map("target_type")
+  targetId    String?              @map("target_id") @db.Uuid
+  signal      SpamSignalType
+  /// 0..100 weight of this signal.
+  score       Int                  @default(10) @db.SmallInt
+  contentHash String?              @map("content_hash") @db.Char(64)
+  ipHash      String?              @map("ip_hash") @db.Char(64)
+  details     Json                 @default("{}")
+  createdAt   DateTime             @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([targetType, targetId])
+  @@index([contentHash])
+  @@index([ipHash, createdAt(sort: Desc)])
+  @@map("spam_signals")
+}
+
+/// Real ownership verification behind the "مالك موثّق / verified owner"
+/// badge (REQUIREMENTS §15). Bound to a variant (and optionally the user's
+/// garage car, which must belong to the same user — trigger). Only
+/// `approved` rows can back a review badge. The evidence file is a PRIVATE
+/// media asset, deleted after the decision (`evidenceDeletedAt`).
+model OwnerVerification {
+  id                String                  @id @default(uuid(7)) @db.Uuid
+  userId            String                  @map("user_id") @db.Uuid
+  variantId         String                  @map("variant_id") @db.Uuid
+  userVehicleId     String?                 @map("user_vehicle_id") @db.Uuid
+  method            OwnerVerificationMethod
+  status            OwnerVerificationStatus @default(pending)
+  evidenceAssetId   String?                 @map("evidence_asset_id") @db.Uuid
+  evidenceDeletedAt DateTime?               @map("evidence_deleted_at") @db.Timestamptz(3)
+  reviewedById      String?                 @map("reviewed_by_id") @db.Uuid
+  reviewedAt        DateTime?               @map("reviewed_at") @db.Timestamptz(3)
+  decisionNote      String?                 @map("decision_note") @db.VarChar(2000)
+  /// Optional end of validity (e.g. the car was sold); the service expires it.
+  expiresAt         DateTime?               @map("expires_at") @db.Timestamptz(3)
+  createdAt         DateTime                @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime                @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  user          User           @relation("OwnerVerificationUser", fields: [userId], references: [id], onDelete: Cascade)
+  variant       VehicleVariant @relation(fields: [variantId], references: [id], onDelete: Restrict)
+  userVehicle   UserVehicle?   @relation(fields: [userVehicleId], references: [id], onDelete: SetNull)
+  evidenceAsset MediaAsset?    @relation(fields: [evidenceAssetId], references: [id], onDelete: SetNull)
+  reviewedBy    User?          @relation("OwnerVerificationReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+  reviews       Review[]
+
+  @@index([userId, status])
+  @@index([status, createdAt])
+  @@index([variantId])
+  @@index([userVehicleId])
+  @@map("owner_verifications")
+}
+
+/// Display labels, help texts and order of the report vocabularies (seeded
+/// reference data; admins may edit texts / order / deactivate). `code` must
+/// be a value of the scope's enum (CHECK) — the enum stays the stored value.
+model ReportReason {
+  scope           ReportReasonScope
+  code            String            @db.VarChar(64)
+  labelAr         String            @map("label_ar") @db.VarChar(120)
+  labelEn         String            @map("label_en") @db.VarChar(120)
+  descriptionAr   String?           @map("description_ar") @db.VarChar(500)
+  descriptionEn   String?           @map("description_en") @db.VarChar(500)
+  /// The client must ask for a description (e.g. "other").
+  requiresDetails Boolean           @default(false) @map("requires_details")
+  sortOrder       Int               @default(0) @map("sort_order")
+  isActive        Boolean           @default(true) @map("is_active")
+  createdAt       DateTime          @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt       DateTime          @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@id([scope, code])
+  @@map("report_reasons")
 }

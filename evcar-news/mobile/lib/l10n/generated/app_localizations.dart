@@ -590,6 +590,18 @@ abstract class AppLocalizations {
   /// **'Charging stations'**
   String get chargingTitle;
 
+  /// No description provided for @commonAdLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Ad'**
+  String get commonAdLabel;
+
+  /// No description provided for @commonApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get commonApply;
+
   /// Shown whenever cached data is displayed instead of live data.
   ///
   /// In en, this message translates to:
@@ -602,11 +614,71 @@ abstract class AppLocalizations {
   /// **'Cancel'**
   String get commonCancel;
 
+  /// No description provided for @commonClearSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear search'**
+  String get commonClearSearch;
+
   /// No description provided for @commonClose.
   ///
   /// In en, this message translates to:
   /// **'Close'**
   String get commonClose;
+
+  /// No description provided for @commonCompareAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to compare'**
+  String get commonCompareAdd;
+
+  /// No description provided for @commonCompareAddedSnack.
+  ///
+  /// In en, this message translates to:
+  /// **'Added to comparison'**
+  String get commonCompareAddedSnack;
+
+  /// No description provided for @commonCompareClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get commonCompareClear;
+
+  /// No description provided for @commonCompareFull.
+  ///
+  /// In en, this message translates to:
+  /// **'You can compare up to {max} cars. Remove one first.'**
+  String commonCompareFull(int max);
+
+  /// No description provided for @commonCompareInTray.
+  ///
+  /// In en, this message translates to:
+  /// **'In comparison'**
+  String get commonCompareInTray;
+
+  /// No description provided for @commonCompareNeedTwo.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose at least two cars to compare.'**
+  String get commonCompareNeedTwo;
+
+  /// No description provided for @commonCompareNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare'**
+  String get commonCompareNow;
+
+  /// No description provided for @commonCompareRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from comparison'**
+  String get commonCompareRemove;
+
+  /// No description provided for @commonCompareTrayCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of {max} cars selected'**
+  String commonCompareTrayCount(int count, int max);
 
   /// No description provided for @commonConfirm.
   ///
@@ -626,11 +698,23 @@ abstract class AppLocalizations {
   /// **'{count, plural, =1{1 day ago} other{{count} days ago}}'**
   String commonDaysAgo(int count);
 
+  /// Explains the demo badge (isDemo=true records).
+  ///
+  /// In en, this message translates to:
+  /// **'Sample data for testing — not real information.'**
+  String get commonDemoDescription;
+
   /// Label for isDemo=true records.
   ///
   /// In en, this message translates to:
   /// **'Demo data'**
   String get commonDemoLabel;
+
+  /// No description provided for @commonDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get commonDone;
 
   /// No description provided for @commonEmptyMessage.
   ///
@@ -662,6 +746,54 @@ abstract class AppLocalizations {
   /// **'Watch the video at its source'**
   String get commonExternalVideo;
 
+  /// No description provided for @commonFavoriteAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to favorites'**
+  String get commonFavoriteAdd;
+
+  /// No description provided for @commonFavoriteAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Added to favorites'**
+  String get commonFavoriteAdded;
+
+  /// No description provided for @commonFavoriteFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t update favorites. Please try again.'**
+  String get commonFavoriteFailed;
+
+  /// No description provided for @commonFavoriteLocalOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved on this device. Sign in to sync across devices.'**
+  String get commonFavoriteLocalOnly;
+
+  /// No description provided for @commonFavoriteRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from favorites'**
+  String get commonFavoriteRemove;
+
+  /// No description provided for @commonFavoriteRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed from favorites'**
+  String get commonFavoriteRemoved;
+
+  /// No description provided for @commonFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get commonFilters;
+
+  /// No description provided for @commonFiltersActive.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 filter on} other{{count} filters on}}'**
+  String commonFiltersActive(int count);
+
   /// No description provided for @commonForbiddenMessage.
   ///
   /// In en, this message translates to:
@@ -680,11 +812,35 @@ abstract class AppLocalizations {
   /// **'{count, plural, =1{1 hour ago} other{{count} hours ago}}'**
   String commonHoursAgo(int count);
 
+  /// No description provided for @commonImageCredit.
+  ///
+  /// In en, this message translates to:
+  /// **'Image: {credit}'**
+  String commonImageCredit(String credit);
+
+  /// No description provided for @commonImageUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Image not available'**
+  String get commonImageUnavailable;
+
   /// No description provided for @commonJustNow.
   ///
   /// In en, this message translates to:
   /// **'just now'**
   String get commonJustNow;
+
+  /// No description provided for @commonLastUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated {time}'**
+  String commonLastUpdated(String time);
+
+  /// No description provided for @commonLastUpdatedUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Last update: not available'**
+  String get commonLastUpdatedUnknown;
 
   /// No description provided for @commonLinkOpenFailed.
   ///
@@ -698,11 +854,35 @@ abstract class AppLocalizations {
   /// **'Loading…'**
   String get commonLoading;
 
+  /// No description provided for @commonMayBeOutdated.
+  ///
+  /// In en, this message translates to:
+  /// **'May be out of date'**
+  String get commonMayBeOutdated;
+
+  /// No description provided for @commonMeasuredBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Measured: {cycle}'**
+  String commonMeasuredBy(String cycle);
+
   /// No description provided for @commonMinutesAgo.
   ///
   /// In en, this message translates to:
   /// **'{count, plural, =1{1 minute ago} other{{count} minutes ago}}'**
   String commonMinutesAgo(int count);
+
+  /// No description provided for @commonMore.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get commonMore;
+
+  /// No description provided for @commonMoreInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'More information'**
+  String get commonMoreInfo;
 
   /// Shown instead of a missing value (never 0).
   ///
@@ -727,6 +907,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The requested content does not exist or is no longer available.'**
   String get commonNotFoundMessage;
+
+  /// No description provided for @commonNotSupportedOnPlatformMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This feature works in the Android and iOS apps.'**
+  String get commonNotSupportedOnPlatformMessage;
+
+  /// No description provided for @commonNotSupportedOnPlatformTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Not available in the web preview'**
+  String get commonNotSupportedOnPlatformTitle;
 
   /// No description provided for @commonOfflineBanner.
   ///
@@ -763,6 +955,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Permission not granted'**
   String get commonPermissionDeniedTitle;
+
+  /// No description provided for @commonPermissionLocationMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your location is used only while the app is open, to show nearby stations. Allow it in the device settings or choose a place manually.'**
+  String get commonPermissionLocationMessage;
+
+  /// No description provided for @commonPermissionLocationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Location not allowed'**
+  String get commonPermissionLocationTitle;
+
+  /// No description provided for @commonPermissionMotionMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Motion control is optional. You can still look around by dragging.'**
+  String get commonPermissionMotionMessage;
+
+  /// No description provided for @commonPermissionMotionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Motion sensors not allowed'**
+  String get commonPermissionMotionTitle;
+
+  /// No description provided for @commonPermissionNotificationsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders need notification permission. You can allow it in the device settings.'**
+  String get commonPermissionNotificationsMessage;
+
+  /// No description provided for @commonPermissionNotificationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications not allowed'**
+  String get commonPermissionNotificationsTitle;
+
+  /// No description provided for @commonPowertrainBev.
+  ///
+  /// In en, this message translates to:
+  /// **'Electric'**
+  String get commonPowertrainBev;
+
+  /// No description provided for @commonPowertrainErev.
+  ///
+  /// In en, this message translates to:
+  /// **'Range extender'**
+  String get commonPowertrainErev;
+
+  /// No description provided for @commonPowertrainHev.
+  ///
+  /// In en, this message translates to:
+  /// **'Hybrid'**
+  String get commonPowertrainHev;
+
+  /// No description provided for @commonPowertrainPhev.
+  ///
+  /// In en, this message translates to:
+  /// **'Plug-in hybrid'**
+  String get commonPowertrainPhev;
+
+  /// No description provided for @commonPriceAsOf.
+  ///
+  /// In en, this message translates to:
+  /// **'as of {date}'**
+  String commonPriceAsOf(String date);
+
+  /// Mandatory label for prices converted from another currency (never an official local price).
+  ///
+  /// In en, this message translates to:
+  /// **'Estimate after conversion'**
+  String get commonPriceConverted;
+
+  /// No description provided for @commonPriceDealer.
+  ///
+  /// In en, this message translates to:
+  /// **'Dealer price'**
+  String get commonPriceDealer;
+
+  /// No description provided for @commonPriceMarketEstimate.
+  ///
+  /// In en, this message translates to:
+  /// **'Market estimate'**
+  String get commonPriceMarketEstimate;
+
+  /// No description provided for @commonPriceNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Price not available'**
+  String get commonPriceNotAvailable;
+
+  /// No description provided for @commonPriceOfficialMsrp.
+  ///
+  /// In en, this message translates to:
+  /// **'Official price'**
+  String get commonPriceOfficialMsrp;
+
+  /// No description provided for @commonRangeCycleOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other cycle'**
+  String get commonRangeCycleOther;
+
+  /// No description provided for @commonRangeElectric.
+  ///
+  /// In en, this message translates to:
+  /// **'Electric range'**
+  String get commonRangeElectric;
+
+  /// No description provided for @commonRangeTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total range'**
+  String get commonRangeTotal;
 
   /// No description provided for @commonRateLimitedMessage.
   ///
@@ -806,6 +1112,12 @@ abstract class AppLocalizations {
   /// **'Verified'**
   String get commonReliabilityVerified;
 
+  /// No description provided for @commonReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get commonReset;
+
   /// No description provided for @commonRetry.
   ///
   /// In en, this message translates to:
@@ -818,17 +1130,41 @@ abstract class AppLocalizations {
   /// **'Save'**
   String get commonSave;
 
+  /// No description provided for @commonSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get commonSearchHint;
+
   /// No description provided for @commonSeeAll.
   ///
   /// In en, this message translates to:
   /// **'See all'**
   String get commonSeeAll;
 
+  /// No description provided for @commonSeeAllSection.
+  ///
+  /// In en, this message translates to:
+  /// **'See all: {section}'**
+  String commonSeeAllSection(String section);
+
+  /// No description provided for @commonSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected'**
+  String get commonSelected;
+
   /// No description provided for @commonServerErrorMessage.
   ///
   /// In en, this message translates to:
   /// **'The server is currently unavailable. Please try again later.'**
   String get commonServerErrorMessage;
+
+  /// No description provided for @commonShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get commonShare;
 
   /// No description provided for @commonShowPassword.
   ///
@@ -854,6 +1190,12 @@ abstract class AppLocalizations {
   /// **'Sign in to continue'**
   String get commonSignInRequiredTitle;
 
+  /// No description provided for @commonSortBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort by'**
+  String get commonSortBy;
+
   /// No description provided for @commonSource.
   ///
   /// In en, this message translates to:
@@ -866,11 +1208,41 @@ abstract class AppLocalizations {
   /// **'Source not specified'**
   String get commonSourceUnknown;
 
+  /// No description provided for @commonSponsoredBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Sponsored by {name}'**
+  String commonSponsoredBy(String name);
+
+  /// No description provided for @commonSponsoredDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid placement. It never changes comparison results or rankings.'**
+  String get commonSponsoredDescription;
+
+  /// No description provided for @commonSponsoredLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Sponsored'**
+  String get commonSponsoredLabel;
+
   /// No description provided for @commonTimeoutMessage.
   ///
   /// In en, this message translates to:
   /// **'The server took too long to respond. Please try again.'**
   String get commonTimeoutMessage;
+
+  /// No description provided for @commonTour360.
+  ///
+  /// In en, this message translates to:
+  /// **'360° tour'**
+  String get commonTour360;
+
+  /// No description provided for @commonTour360Available.
+  ///
+  /// In en, this message translates to:
+  /// **'Interior 360° tour available'**
+  String get commonTour360Available;
 
   /// No description provided for @commonUnderConstructionMessage.
   ///
@@ -890,11 +1262,23 @@ abstract class AppLocalizations {
   /// **'Under construction'**
   String get commonUnderConstructionTitle;
 
+  /// No description provided for @commonUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get commonUnknown;
+
   /// No description provided for @commonVerifiedOn.
   ///
   /// In en, this message translates to:
   /// **'Verified on {date}'**
   String commonVerifiedOn(String date);
+
+  /// No description provided for @commonWebPreviewBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Web preview'**
+  String get commonWebPreviewBanner;
 
   /// No description provided for @compareRecommendationsTitle.
   ///

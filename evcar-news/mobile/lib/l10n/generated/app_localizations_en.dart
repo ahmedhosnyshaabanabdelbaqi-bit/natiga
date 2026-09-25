@@ -277,6 +277,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chargingTitle => 'Charging stations';
 
   @override
+  String get commonAdLabel => 'Ad';
+
+  @override
+  String get commonApply => 'Apply';
+
+  @override
   String commonCachedDataNotice(String time) {
     return 'Saved copy from $time; it may not be up to date.';
   }
@@ -285,7 +291,41 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonCancel => 'Cancel';
 
   @override
+  String get commonClearSearch => 'Clear search';
+
+  @override
   String get commonClose => 'Close';
+
+  @override
+  String get commonCompareAdd => 'Add to compare';
+
+  @override
+  String get commonCompareAddedSnack => 'Added to comparison';
+
+  @override
+  String get commonCompareClear => 'Clear';
+
+  @override
+  String commonCompareFull(int max) {
+    return 'You can compare up to $max cars. Remove one first.';
+  }
+
+  @override
+  String get commonCompareInTray => 'In comparison';
+
+  @override
+  String get commonCompareNeedTwo => 'Choose at least two cars to compare.';
+
+  @override
+  String get commonCompareNow => 'Compare';
+
+  @override
+  String get commonCompareRemove => 'Remove from comparison';
+
+  @override
+  String commonCompareTrayCount(int count, int max) {
+    return '$count of $max cars selected';
+  }
 
   @override
   String get commonConfirm => 'Confirm';
@@ -300,7 +340,13 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get commonDemoDescription => 'Sample data for testing — not real information.';
+
+  @override
   String get commonDemoLabel => 'Demo data';
+
+  @override
+  String get commonDone => 'Done';
 
   @override
   String get commonEmptyMessage => 'There are no items to show right now.';
@@ -318,6 +364,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonExternalVideo => 'Watch the video at its source';
 
   @override
+  String get commonFavoriteAdd => 'Add to favorites';
+
+  @override
+  String get commonFavoriteAdded => 'Added to favorites';
+
+  @override
+  String get commonFavoriteFailed => 'Couldn\'t update favorites. Please try again.';
+
+  @override
+  String get commonFavoriteLocalOnly => 'Saved on this device. Sign in to sync across devices.';
+
+  @override
+  String get commonFavoriteRemove => 'Remove from favorites';
+
+  @override
+  String get commonFavoriteRemoved => 'Removed from favorites';
+
+  @override
+  String get commonFilters => 'Filters';
+
+  @override
+  String commonFiltersActive(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count filters on', one: '1 filter on');
+    return '$_temp0';
+  }
+
+  @override
   String get commonForbiddenMessage => 'You don\'t have access to this content.';
 
   @override
@@ -330,7 +403,23 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String commonImageCredit(String credit) {
+    return 'Image: $credit';
+  }
+
+  @override
+  String get commonImageUnavailable => 'Image not available';
+
+  @override
   String get commonJustNow => 'just now';
+
+  @override
+  String commonLastUpdated(String time) {
+    return 'Last updated $time';
+  }
+
+  @override
+  String get commonLastUpdatedUnknown => 'Last update: not available';
 
   @override
   String get commonLinkOpenFailed => 'Couldn\'t open the link.';
@@ -339,10 +428,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonLoading => 'Loading…';
 
   @override
+  String get commonMayBeOutdated => 'May be out of date';
+
+  @override
+  String commonMeasuredBy(String cycle) {
+    return 'Measured: $cycle';
+  }
+
+  @override
   String commonMinutesAgo(int count) {
     String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count minutes ago', one: '1 minute ago');
     return '$_temp0';
   }
+
+  @override
+  String get commonMore => 'More';
+
+  @override
+  String get commonMoreInfo => 'More information';
 
   @override
   String get commonNotAvailable => 'Not available';
@@ -355,6 +458,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get commonNotFoundMessage => 'The requested content does not exist or is no longer available.';
+
+  @override
+  String get commonNotSupportedOnPlatformMessage => 'This feature works in the Android and iOS apps.';
+
+  @override
+  String get commonNotSupportedOnPlatformTitle => 'Not available in the web preview';
 
   @override
   String get commonOfflineBanner => 'You are offline';
@@ -375,6 +484,67 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get commonPermissionDeniedTitle => 'Permission not granted';
+
+  @override
+  String get commonPermissionLocationMessage =>
+      'Your location is used only while the app is open, to show nearby stations. Allow it in the device settings or choose a place manually.';
+
+  @override
+  String get commonPermissionLocationTitle => 'Location not allowed';
+
+  @override
+  String get commonPermissionMotionMessage => 'Motion control is optional. You can still look around by dragging.';
+
+  @override
+  String get commonPermissionMotionTitle => 'Motion sensors not allowed';
+
+  @override
+  String get commonPermissionNotificationsMessage =>
+      'Reminders need notification permission. You can allow it in the device settings.';
+
+  @override
+  String get commonPermissionNotificationsTitle => 'Notifications not allowed';
+
+  @override
+  String get commonPowertrainBev => 'Electric';
+
+  @override
+  String get commonPowertrainErev => 'Range extender';
+
+  @override
+  String get commonPowertrainHev => 'Hybrid';
+
+  @override
+  String get commonPowertrainPhev => 'Plug-in hybrid';
+
+  @override
+  String commonPriceAsOf(String date) {
+    return 'as of $date';
+  }
+
+  @override
+  String get commonPriceConverted => 'Estimate after conversion';
+
+  @override
+  String get commonPriceDealer => 'Dealer price';
+
+  @override
+  String get commonPriceMarketEstimate => 'Market estimate';
+
+  @override
+  String get commonPriceNotAvailable => 'Price not available';
+
+  @override
+  String get commonPriceOfficialMsrp => 'Official price';
+
+  @override
+  String get commonRangeCycleOther => 'Other cycle';
+
+  @override
+  String get commonRangeElectric => 'Electric range';
+
+  @override
+  String get commonRangeTotal => 'Total range';
 
   @override
   String get commonRateLimitedMessage => 'Too many requests. Please wait a moment and try again.';
@@ -400,16 +570,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonReliabilityVerified => 'Verified';
 
   @override
+  String get commonReset => 'Reset';
+
+  @override
   String get commonRetry => 'Try again';
 
   @override
   String get commonSave => 'Save';
 
   @override
+  String get commonSearchHint => 'Search';
+
+  @override
   String get commonSeeAll => 'See all';
 
   @override
+  String commonSeeAllSection(String section) {
+    return 'See all: $section';
+  }
+
+  @override
+  String get commonSelected => 'Selected';
+
+  @override
   String get commonServerErrorMessage => 'The server is currently unavailable. Please try again later.';
+
+  @override
+  String get commonShare => 'Share';
 
   @override
   String get commonShowPassword => 'Show password';
@@ -425,6 +612,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonSignInRequiredTitle => 'Sign in to continue';
 
   @override
+  String get commonSortBy => 'Sort by';
+
+  @override
   String commonSource(String source) {
     return 'Source: $source';
   }
@@ -433,7 +623,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonSourceUnknown => 'Source not specified';
 
   @override
+  String commonSponsoredBy(String name) {
+    return 'Sponsored by $name';
+  }
+
+  @override
+  String get commonSponsoredDescription => 'Paid placement. It never changes comparison results or rankings.';
+
+  @override
+  String get commonSponsoredLabel => 'Sponsored';
+
+  @override
   String get commonTimeoutMessage => 'The server took too long to respond. Please try again.';
+
+  @override
+  String get commonTour360 => '360° tour';
+
+  @override
+  String get commonTour360Available => 'Interior 360° tour available';
 
   @override
   String get commonUnderConstructionMessage =>
@@ -448,9 +655,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonUnderConstructionTitle => 'Under construction';
 
   @override
+  String get commonUnknown => 'Unknown';
+
+  @override
   String commonVerifiedOn(String date) {
     return 'Verified on $date';
   }
+
+  @override
+  String get commonWebPreviewBanner => 'Web preview';
 
   @override
   String get compareRecommendationsTitle => 'Find the right car';

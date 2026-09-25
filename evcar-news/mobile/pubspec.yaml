@@ -50,6 +50,17 @@ dependencies:
 
   package_info_plus: 10.2.1
 
+  # Phase 2+ feature dependencies (added by prep-mobile, see
+  # docs/decisions/prep-mobile.md). Features must not add more without
+  # recording why.
+  collection: 1.19.1                     # firstWhereOrNull, equality helpers
+  fl_chart: 1.2.0                        # charging curves, spend reports
+  flutter_local_notifications: 22.3.1    # local reminders only (no push)
+  timezone: 0.11.1                       # zoned scheduling, station open-now
+  flutter_timezone: 5.1.0                # device IANA timezone name
+  photo_view: 0.15.0                     # zoomable images / galleries
+  visibility_detector: 0.4.0+2           # pause 360 sensors when hidden
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

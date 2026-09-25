@@ -6,6 +6,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../core/cache/cache_database.dart';
+import '../core/platform/platform_capabilities.dart';
 import '../core/settings/settings_controller.dart';
 import 'di/providers.dart';
 
@@ -16,11 +17,15 @@ abstract final class Bootstrap {
     final prefs = await SharedPreferences.getInstance();
 
     CacheDatabase? db;
-    try {
-      db = await CacheDatabase.open();
-    } on Exception catch (e) {
-      // The app still works (in-memory cache); offline copies are not kept.
-      debugPrint('EV Car News: cache database unavailable: $e');
+    // sqflite has no web implementation: the web design preview uses the
+    // in-memory caches (see PlatformCapabilities.offlineDatabase).
+    if (PlatformCapabilities.current.offlineDatabase) {
+      try {
+        db = await CacheDatabase.open();
+      } on Exception catch (e) {
+        // The app still works (in-memory cache); offline copies are not kept.
+        debugPrint('EV Car News: cache database unavailable: $e');
+      }
     }
 
     String? version;

@@ -7,6 +7,9 @@
 # configured (android/key.properties), so it is for testing only: uninstall
 # the previous test build before installing a new one.
 #
+# Trigger: a push whose commit message contains "[apk]" (so work-in-progress
+# pushes don't publish a release each time), or a manual run.
+#
 # API base URL: set the repository variable EVCAR_API_BASE_URL
 # (Settings → Secrets and variables → Actions → Variables), e.g.
 # https://api.evcar.news/api/v1. Without a reachable backend the app shows
@@ -21,13 +24,14 @@ on:
 
 concurrency:
   group: evcar-android-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 permissions:
   contents: write
 
 jobs:
   apk:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[apk]')
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     defaults:

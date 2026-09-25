@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 /// Compile-time configuration passed with `--dart-define`.
 ///
 /// ```sh
@@ -9,8 +11,14 @@ abstract final class Env {
   /// Base URL of the REST API including the `/api/v1` prefix.
   ///
   /// The default targets the host machine from the Android emulator
-  /// (`10.0.2.2`) during local development.
-  static const String apiBaseUrl = String.fromEnvironment('API_BASE_URL', defaultValue: 'http://10.0.2.2:3000/api/v1');
+  /// (`10.0.2.2`) during local development; the web design preview defaults
+  /// to `http://localhost:3000/api/v1` (the backend must list the preview
+  /// origin in `CORS_ORIGINS`).
+  static String get apiBaseUrl => _definedApiBaseUrl.isNotEmpty
+      ? _definedApiBaseUrl
+      : (kIsWeb ? 'http://localhost:3000/api/v1' : 'http://10.0.2.2:3000/api/v1');
+
+  static const String _definedApiBaseUrl = String.fromEnvironment('API_BASE_URL');
 
   /// Public web origin used for share links when `/app-config` has not been
   /// loaded yet (the server value `share.baseUrl` wins once available).

@@ -179,6 +179,7 @@ model Brand {
   articleLinks              ArticleVehicleLink[]
   notificationSubscriptions NotificationSubscription[]
   serviceProviders          ServiceProviderBrand[]
+  userInterests             UserInterest[]
 
   @@index([status, sortOrder])
   @@map("brands")
@@ -215,6 +216,8 @@ model CarModel {
   questions                 Question[]
   favorites                 Favorite[]
   notificationSubscriptions NotificationSubscription[]
+  comments                  Comment[]
+  userInterests             UserInterest[]
 
   @@index([brandId])
   @@index([status, sortOrder])
@@ -304,6 +307,9 @@ model VehicleVariant {
   userVehicles              UserVehicle[]
   tripPlans                 TripPlan[]
   notificationSubscriptions NotificationSubscription[]
+  comments                  Comment[]
+  stationCheckins           StationCheckin[]
+  ownerVerifications        OwnerVerification[]
 
   /// Same trim name may exist for BEV and PHEV of one model year, but never twice per powertrain.
   @@unique([modelYearId, powertrainType, nameEn])

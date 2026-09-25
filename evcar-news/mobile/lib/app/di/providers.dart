@@ -17,6 +17,7 @@ import '../../core/cache/cache_database.dart';
 import '../../core/cache/json_cache.dart';
 import '../../core/cache/saved_items_store.dart';
 import '../../core/config/env.dart';
+import '../../core/platform/platform_capabilities.dart';
 import '../../core/settings/app_settings.dart';
 import '../../core/settings/settings_controller.dart';
 
@@ -39,10 +40,16 @@ final savedItemsStoreProvider = Provider<SavedItemsStore>((ref) {
   return db == null ? MemorySavedItemsStore() : SqfliteSavedItemsStore(db);
 });
 
-final tokenStorageProvider = Provider<TokenStorage>((ref) => SecureTokenStorage());
+/// Keystore/keychain on Android/iOS. The web design preview keeps tokens in
+/// memory only (never in browser storage), so a reload signs out.
+final tokenStorageProvider = Provider<TokenStorage>(
+  (ref) => ref.watch(platformCapabilitiesProvider).secureTokenStorage ? SecureTokenStorage() : InMemoryTokenStorage(),
+);
 
 /// Installation id sent as `X-Device-Id` on sign-in (see [DeviceIdStore]).
-final deviceIdStoreProvider = Provider<DeviceIdStore>((ref) => SecureDeviceIdStore());
+final deviceIdStoreProvider = Provider<DeviceIdStore>(
+  (ref) => ref.watch(platformCapabilitiesProvider).secureTokenStorage ? SecureDeviceIdStore() : InMemoryDeviceIdStore(),
+);
 
 final sessionEventsProvider = Provider<SessionEvents>((ref) {
   final events = SessionEvents();

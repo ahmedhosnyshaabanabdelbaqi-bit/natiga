@@ -276,6 +276,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get chargingTitle => 'محطات الشحن';
 
   @override
+  String get commonAdLabel => 'إعلان';
+
+  @override
+  String get commonApply => 'تطبيق';
+
+  @override
   String commonCachedDataNotice(String time) {
     return 'نسخة محفوظة من $time، وقد لا تكون أحدث البيانات.';
   }
@@ -284,7 +290,41 @@ class AppLocalizationsAr extends AppLocalizations {
   String get commonCancel => 'إلغاء';
 
   @override
+  String get commonClearSearch => 'مسح البحث';
+
+  @override
   String get commonClose => 'إغلاق';
+
+  @override
+  String get commonCompareAdd => 'أضف للمقارنة';
+
+  @override
+  String get commonCompareAddedSnack => 'أُضيفت إلى المقارنة';
+
+  @override
+  String get commonCompareClear => 'مسح';
+
+  @override
+  String commonCompareFull(int max) {
+    return 'يمكن مقارنة $max سيارات كحد أقصى. أزل سيارة أولًا.';
+  }
+
+  @override
+  String get commonCompareInTray => 'ضمن المقارنة';
+
+  @override
+  String get commonCompareNeedTwo => 'اختر سيارتين على الأقل للمقارنة.';
+
+  @override
+  String get commonCompareNow => 'قارن';
+
+  @override
+  String get commonCompareRemove => 'إزالة من المقارنة';
+
+  @override
+  String commonCompareTrayCount(int count, int max) {
+    return '$count من $max سيارات محددة';
+  }
 
   @override
   String get commonConfirm => 'تأكيد';
@@ -306,7 +346,13 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get commonDemoDescription => 'بيانات للاختبار فقط — ليست معلومات حقيقية.';
+
+  @override
   String get commonDemoLabel => 'بيانات تجريبية';
+
+  @override
+  String get commonDone => 'تم';
 
   @override
   String get commonEmptyMessage => 'لا توجد عناصر لعرضها حاليًا.';
@@ -322,6 +368,40 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get commonExternalVideo => 'مشاهدة الفيديو من المصدر';
+
+  @override
+  String get commonFavoriteAdd => 'أضف إلى المفضلة';
+
+  @override
+  String get commonFavoriteAdded => 'أُضيفت إلى المفضلة';
+
+  @override
+  String get commonFavoriteFailed => 'تعذر تحديث المفضلة. حاول مرة أخرى.';
+
+  @override
+  String get commonFavoriteLocalOnly => 'محفوظة على هذا الجهاز. سجّل الدخول لمزامنتها بين أجهزتك.';
+
+  @override
+  String get commonFavoriteRemove => 'إزالة من المفضلة';
+
+  @override
+  String get commonFavoriteRemoved => 'أُزيلت من المفضلة';
+
+  @override
+  String get commonFilters => 'الفلاتر';
+
+  @override
+  String commonFiltersActive(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count فلترًا مفعّلًا',
+      few: '$count فلاتر مفعّلة',
+      two: 'فلتران مفعّلان',
+      one: 'فلتر واحد مفعّل',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get commonForbiddenMessage => 'ليست لديك صلاحية لعرض هذا المحتوى.';
@@ -343,13 +423,37 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String commonImageCredit(String credit) {
+    return 'الصورة: $credit';
+  }
+
+  @override
+  String get commonImageUnavailable => 'الصورة غير متاحة';
+
+  @override
   String get commonJustNow => 'الآن';
+
+  @override
+  String commonLastUpdated(String time) {
+    return 'آخر تحديث $time';
+  }
+
+  @override
+  String get commonLastUpdatedUnknown => 'آخر تحديث: غير متوفر';
 
   @override
   String get commonLinkOpenFailed => 'تعذر فتح الرابط.';
 
   @override
   String get commonLoading => 'جارٍ التحميل…';
+
+  @override
+  String get commonMayBeOutdated => 'قد لا تكون محدّثة';
+
+  @override
+  String commonMeasuredBy(String cycle) {
+    return 'معيار القياس: $cycle';
+  }
 
   @override
   String commonMinutesAgo(int count) {
@@ -365,6 +469,12 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get commonMore => 'المزيد';
+
+  @override
+  String get commonMoreInfo => 'مزيد من المعلومات';
+
+  @override
   String get commonNotAvailable => 'غير متوفر';
 
   @override
@@ -375,6 +485,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get commonNotFoundMessage => 'المحتوى المطلوب غير موجود أو لم يعد متاحًا.';
+
+  @override
+  String get commonNotSupportedOnPlatformMessage => 'تعمل هذه الميزة في تطبيقي Android وiOS.';
+
+  @override
+  String get commonNotSupportedOnPlatformTitle => 'غير متاح في معاينة الويب';
 
   @override
   String get commonOfflineBanner => 'أنت غير متصل بالإنترنت';
@@ -393,6 +509,67 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get commonPermissionDeniedTitle => 'الإذن غير ممنوح';
+
+  @override
+  String get commonPermissionLocationMessage =>
+      'نستخدم موقعك أثناء فتح التطبيق فقط لعرض المحطات القريبة. يمكنك السماح به من إعدادات الجهاز أو اختيار مكان يدويًا.';
+
+  @override
+  String get commonPermissionLocationTitle => 'إذن الموقع غير ممنوح';
+
+  @override
+  String get commonPermissionMotionMessage => 'التحكم بالحركة اختياري. يمكنك دائمًا التجوّل بالسحب.';
+
+  @override
+  String get commonPermissionMotionTitle => 'مستشعرات الحركة غير مسموح بها';
+
+  @override
+  String get commonPermissionNotificationsMessage =>
+      'تحتاج التذكيرات إلى إذن الإشعارات. يمكنك السماح به من إعدادات الجهاز.';
+
+  @override
+  String get commonPermissionNotificationsTitle => 'الإشعارات غير مسموح بها';
+
+  @override
+  String get commonPowertrainBev => 'كهربائية بالكامل';
+
+  @override
+  String get commonPowertrainErev => 'بموسّع مدى';
+
+  @override
+  String get commonPowertrainHev => 'هجينة';
+
+  @override
+  String get commonPowertrainPhev => 'هجينة قابلة للشحن';
+
+  @override
+  String commonPriceAsOf(String date) {
+    return 'بتاريخ $date';
+  }
+
+  @override
+  String get commonPriceConverted => 'تقديري بعد التحويل';
+
+  @override
+  String get commonPriceDealer => 'سعر الوكيل';
+
+  @override
+  String get commonPriceMarketEstimate => 'سعر تقديري للسوق';
+
+  @override
+  String get commonPriceNotAvailable => 'السعر غير متوفر';
+
+  @override
+  String get commonPriceOfficialMsrp => 'السعر الرسمي';
+
+  @override
+  String get commonRangeCycleOther => 'معيار آخر';
+
+  @override
+  String get commonRangeElectric => 'المدى الكهربائي';
+
+  @override
+  String get commonRangeTotal => 'المدى الإجمالي';
 
   @override
   String get commonRateLimitedMessage => 'طلبات كثيرة خلال وقت قصير. انتظر قليلًا ثم حاول مجددًا.';
@@ -418,16 +595,33 @@ class AppLocalizationsAr extends AppLocalizations {
   String get commonReliabilityVerified => 'موثّق';
 
   @override
+  String get commonReset => 'إعادة ضبط';
+
+  @override
   String get commonRetry => 'إعادة المحاولة';
 
   @override
   String get commonSave => 'حفظ';
 
   @override
+  String get commonSearchHint => 'بحث';
+
+  @override
   String get commonSeeAll => 'عرض الكل';
 
   @override
+  String commonSeeAllSection(String section) {
+    return 'عرض الكل: $section';
+  }
+
+  @override
+  String get commonSelected => 'محدد';
+
+  @override
   String get commonServerErrorMessage => 'الخادم غير متاح حاليًا. حاول لاحقًا.';
+
+  @override
+  String get commonShare => 'مشاركة';
 
   @override
   String get commonShowPassword => 'إظهار كلمة المرور';
@@ -443,6 +637,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get commonSignInRequiredTitle => 'سجّل الدخول للمتابعة';
 
   @override
+  String get commonSortBy => 'الترتيب حسب';
+
+  @override
   String commonSource(String source) {
     return 'المصدر: $source';
   }
@@ -451,7 +648,24 @@ class AppLocalizationsAr extends AppLocalizations {
   String get commonSourceUnknown => 'المصدر غير محدد';
 
   @override
+  String commonSponsoredBy(String name) {
+    return 'برعاية $name';
+  }
+
+  @override
+  String get commonSponsoredDescription => 'محتوى مدفوع. لا يغيّر نتائج المقارنة أو الترتيب أبدًا.';
+
+  @override
+  String get commonSponsoredLabel => 'رعاية';
+
+  @override
   String get commonTimeoutMessage => 'استغرق الخادم وقتًا طويلًا في الرد. حاول مرة أخرى.';
+
+  @override
+  String get commonTour360 => 'جولة 360°';
+
+  @override
+  String get commonTour360Available => 'تتوفر جولة داخلية 360°';
 
   @override
   String get commonUnderConstructionMessage => 'هذه الشاشة لم تُنفَّذ بعد، ولا تعرض أي بيانات حتى يكتمل ربطها بالخادم.';
@@ -465,9 +679,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get commonUnderConstructionTitle => 'قيد التنفيذ';
 
   @override
+  String get commonUnknown => 'غير معروف';
+
+  @override
   String commonVerifiedOn(String date) {
     return 'تاريخ التحقق: $date';
   }
+
+  @override
+  String get commonWebPreviewBanner => 'معاينة ويب';
 
   @override
   String get compareRecommendationsTitle => 'ترشيح سيارة مناسبة';

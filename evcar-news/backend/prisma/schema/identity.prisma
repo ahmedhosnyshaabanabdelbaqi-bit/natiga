@@ -67,44 +67,55 @@ model User {
   createdAt         DateTime   @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt         DateTime   @updatedAt @map("updated_at") @db.Timestamptz(3)
 
-  roles                     UserRole[]                 @relation("UserRoles")
-  grantedRoles              UserRole[]                 @relation("UserRoleGrantedBy")
-  sessions                  UserSession[]
-  preferences               UserPreference?
-  emailTokens               EmailToken[]
-  oauthAccounts             UserOAuthAccount[]
-  authoredArticles          Article[]                  @relation("ArticleAuthor")
-  reviewedArticles          Article[]                  @relation("ArticleReviewer")
-  articleRevisions          ArticleRevision[]
-  articleCorrections        ArticleCorrection[]        @relation("ArticleCorrectionAuthor")
-  mediaUploads              MediaAsset[]               @relation("MediaUploader")
-  uploadSessions            UploadSession[]
-  approvedTours             InteriorTour[]             @relation("TourApprover")
-  stationReports            StationReport[]            @relation("StationReportReporter")
-  resolvedStationReports    StationReport[]            @relation("StationReportResolver")
-  stationCheckins           StationCheckin[]
-  reviews                   Review[]
-  comments                  Comment[]
-  questions                 Question[]
-  answers                   Answer[]
-  contentReports            ContentReport[]            @relation("ContentReportReporter")
-  handledContentReports     ContentReport[]            @relation("ContentReportHandler")
-  moderationActions         ModerationAction[]
-  blocks                    UserBlock[]                @relation("UserBlockTarget")
-  blocksIssued              UserBlock[]                @relation("UserBlockIssuer")
-  favorites                 Favorite[]
-  comparisons               Comparison[]
-  vehicles                  UserVehicle[]
-  chargingLogs              ChargingLog[]
-  reminders                 Reminder[]
-  tripPlans                 TripPlan[]
-  notificationPreference    NotificationPreference?
-  notificationSubscriptions NotificationSubscription[]
-  notifications             Notification[]
-  deviceTokens              DeviceToken[]
-  auditLogs                 AuditLog[]
-  importJobs                ImportJob[]
-  reviewedEncyclopedia      EncyclopediaEntry[]        @relation("EncyclopediaReviewer")
+  roles                      UserRole[]                  @relation("UserRoles")
+  grantedRoles               UserRole[]                  @relation("UserRoleGrantedBy")
+  sessions                   UserSession[]
+  preferences                UserPreference?
+  emailTokens                EmailToken[]
+  oauthAccounts              UserOAuthAccount[]
+  authoredArticles           Article[]                   @relation("ArticleAuthor")
+  reviewedArticles           Article[]                   @relation("ArticleReviewer")
+  articleRevisions           ArticleRevision[]
+  articleCorrections         ArticleCorrection[]         @relation("ArticleCorrectionAuthor")
+  mediaUploads               MediaAsset[]                @relation("MediaUploader")
+  uploadSessions             UploadSession[]
+  approvedTours              InteriorTour[]              @relation("TourApprover")
+  stationReports             StationReport[]             @relation("StationReportReporter")
+  resolvedStationReports     StationReport[]             @relation("StationReportResolver")
+  stationCheckins            StationCheckin[]
+  reviews                    Review[]
+  comments                   Comment[]
+  questions                  Question[]
+  answers                    Answer[]
+  contentReports             ContentReport[]             @relation("ContentReportReporter")
+  handledContentReports      ContentReport[]             @relation("ContentReportHandler")
+  moderationActions          ModerationAction[]
+  blocks                     UserBlock[]                 @relation("UserBlockTarget")
+  blocksIssued               UserBlock[]                 @relation("UserBlockIssuer")
+  favorites                  Favorite[]
+  comparisons                Comparison[]
+  vehicles                   UserVehicle[]
+  chargingLogs               ChargingLog[]
+  reminders                  Reminder[]
+  tripPlans                  TripPlan[]
+  notificationPreference     NotificationPreference?
+  notificationSubscriptions  NotificationSubscription[]
+  notifications              Notification[]
+  deviceTokens               DeviceToken[]
+  auditLogs                  AuditLog[]
+  importJobs                 ImportJob[]
+  reviewedEncyclopedia       EncyclopediaEntry[]         @relation("EncyclopediaReviewer")
+  interests                  UserInterest[]
+  stationSuggestions         StationSuggestion[]         @relation("StationSuggestionAuthor")
+  reviewedStationSuggestions StationSuggestion[]         @relation("StationSuggestionReviewer")
+  reviewedStationDuplicates  StationDuplicateCandidate[] @relation("StationDuplicateReviewer")
+  stationMediaUploads        StationMedia[]              @relation("StationMediaUploader")
+  communityVotes             CommunityVote[]
+  mutes                      UserMute[]                  @relation("UserMuteOwner")
+  mutedBy                    UserMute[]                  @relation("UserMuteTarget")
+  spamSignals                SpamSignal[]
+  ownerVerifications         OwnerVerification[]         @relation("OwnerVerificationUser")
+  reviewedOwnerVerifications OwnerVerification[]         @relation("OwnerVerificationReviewer")
 
   @@index([status])
   @@map("users")
@@ -238,10 +249,10 @@ model UserPreference {
   preferredMarketCode String?         @map("preferred_market_code") @db.VarChar(8)
   theme               ThemePreference @default(system)
   unitSystem          UnitSystem      @default(metric) @map("unit_system")
+  /// Interests (brands / models / categories) are rows of user_interests;
+  /// quiet hours live in notification_preferences.
   /// Reading font scale for articles (1.0 = default). CHECK 0.5..3.
   fontScale           Decimal?        @map("font_scale") @db.Decimal(3, 2)
-  /// Interests for home personalization, e.g. {"brandIds":[],"categoryIds":[]}.
-  interests           Json            @default("{}")
   /// When the user consented to location use for "nearby" features (NULL = never).
   locationConsentAt   DateTime?       @map("location_consent_at") @db.Timestamptz(3)
   analyticsConsent    Boolean         @default(false) @map("analytics_consent")

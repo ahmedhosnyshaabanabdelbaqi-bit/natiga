@@ -119,5 +119,141 @@
   "commonExternalVideo": "Watch the video at its source",
   "@commonExternalVideo": {
     "description": "Replaces embedded videos in article HTML."
-  }
+  },
+  "commonDemoDescription": "Sample data for testing — not real information.",
+  "@commonDemoDescription": {
+    "description": "Explains the demo badge (isDemo=true records)."
+  },
+  "commonAdLabel": "Ad",
+  "commonSponsoredLabel": "Sponsored",
+  "commonSponsoredBy": "Sponsored by {name}",
+  "@commonSponsoredBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "commonSponsoredDescription": "Paid placement. It never changes comparison results or rankings.",
+  "commonLastUpdated": "Last updated {time}",
+  "@commonLastUpdated": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "commonLastUpdatedUnknown": "Last update: not available",
+  "commonMayBeOutdated": "May be out of date",
+  "commonImageUnavailable": "Image not available",
+  "commonImageCredit": "Image: {credit}",
+  "@commonImageCredit": {
+    "placeholders": {
+      "credit": {
+        "type": "String"
+      }
+    }
+  },
+  "commonSeeAllSection": "See all: {section}",
+  "@commonSeeAllSection": {
+    "placeholders": {
+      "section": {
+        "type": "String"
+      }
+    }
+  },
+  "commonMoreInfo": "More information",
+  "commonSelected": "Selected",
+  "commonUnknown": "Unknown",
+  "commonShare": "Share",
+  "commonMore": "More",
+  "commonDone": "Done",
+  "commonApply": "Apply",
+  "commonReset": "Reset",
+  "commonFilters": "Filters",
+  "commonSortBy": "Sort by",
+  "commonClearSearch": "Clear search",
+  "commonSearchHint": "Search",
+  "commonFiltersActive": "{count, plural, =1{1 filter on} other{{count} filters on}}",
+  "@commonFiltersActive": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commonPermissionLocationTitle": "Location not allowed",
+  "commonPermissionLocationMessage": "Your location is used only while the app is open, to show nearby stations. Allow it in the device settings or choose a place manually.",
+  "commonPermissionNotificationsTitle": "Notifications not allowed",
+  "commonPermissionNotificationsMessage": "Reminders need notification permission. You can allow it in the device settings.",
+  "commonPermissionMotionTitle": "Motion sensors not allowed",
+  "commonPermissionMotionMessage": "Motion control is optional. You can still look around by dragging.",
+  "commonWebPreviewBanner": "Web preview",
+  "commonNotSupportedOnPlatformTitle": "Not available in the web preview",
+  "commonNotSupportedOnPlatformMessage": "This feature works in the Android and iOS apps.",
+  "commonPriceOfficialMsrp": "Official price",
+  "commonPriceDealer": "Dealer price",
+  "commonPriceMarketEstimate": "Market estimate",
+  "commonPriceConverted": "Estimate after conversion",
+  "@commonPriceConverted": {
+    "description": "Mandatory label for prices converted from another currency (never an official local price)."
+  },
+  "commonPriceAsOf": "as of {date}",
+  "@commonPriceAsOf": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "commonPriceNotAvailable": "Price not available",
+  "commonRangeCycleOther": "Other cycle",
+  "commonRangeElectric": "Electric range",
+  "commonRangeTotal": "Total range",
+  "commonMeasuredBy": "Measured: {cycle}",
+  "@commonMeasuredBy": {
+    "placeholders": {
+      "cycle": {
+        "type": "String"
+      }
+    }
+  },
+  "commonPowertrainBev": "Electric",
+  "commonPowertrainPhev": "Plug-in hybrid",
+  "commonPowertrainErev": "Range extender",
+  "commonPowertrainHev": "Hybrid",
+  "commonTour360": "360° tour",
+  "commonTour360Available": "Interior 360° tour available",
+  "commonCompareAdd": "Add to compare",
+  "commonCompareInTray": "In comparison",
+  "commonCompareRemove": "Remove from comparison",
+  "commonCompareTrayCount": "{count} of {max} cars selected",
+  "@commonCompareTrayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "commonCompareNow": "Compare",
+  "commonCompareClear": "Clear",
+  "commonCompareFull": "You can compare up to {max} cars. Remove one first.",
+  "@commonCompareFull": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "commonCompareNeedTwo": "Choose at least two cars to compare.",
+  "commonCompareAddedSnack": "Added to comparison",
+  "commonFavoriteAdd": "Add to favorites",
+  "commonFavoriteRemove": "Remove from favorites",
+  "commonFavoriteAdded": "Added to favorites",
+  "commonFavoriteRemoved": "Removed from favorites",
+  "commonFavoriteLocalOnly": "Saved on this device. Sign in to sync across devices.",
+  "commonFavoriteFailed": "Couldn't update favorites. Please try again."
 }

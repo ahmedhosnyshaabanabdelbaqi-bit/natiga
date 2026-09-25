@@ -58,21 +58,31 @@ enum CampaignStatus {
   @@map("campaign_status")
 }
 
+/// Per-user channel and type switches. Topic filters (brand / model /
+/// market / category / station / price alert) are notification_subscriptions.
+/// `unsubscribedAt` = "stop everything except account/security mail"
+/// (one-click unsubscribe); switching anything back on clears it.
 model NotificationPreference {
-  userId             String   @id @map("user_id") @db.Uuid
-  inAppEnabled       Boolean  @default(true) @map("in_app_enabled")
-  pushEnabled        Boolean  @default(true) @map("push_enabled")
-  emailEnabled       Boolean  @default(false) @map("email_enabled")
-  newsEnabled        Boolean  @default(true) @map("news_enabled")
-  priceAlertsEnabled Boolean  @default(true) @map("price_alerts_enabled")
-  remindersEnabled   Boolean  @default(true) @map("reminders_enabled")
-  communityEnabled   Boolean  @default(true) @map("community_enabled")
+  userId               String    @id @map("user_id") @db.Uuid
+  inAppEnabled         Boolean   @default(true) @map("in_app_enabled")
+  pushEnabled          Boolean   @default(true) @map("push_enabled")
+  emailEnabled         Boolean   @default(false) @map("email_enabled")
+  newsEnabled          Boolean   @default(true) @map("news_enabled")
+  priceAlertsEnabled   Boolean   @default(true) @map("price_alerts_enabled")
+  remindersEnabled     Boolean   @default(true) @map("reminders_enabled")
+  communityEnabled     Boolean   @default(true) @map("community_enabled")
+  /// Status changes of followed / favourite stations.
+  stationAlertsEnabled Boolean   @default(true) @map("station_alerts_enabled")
+  /// Editorial broadcast campaigns (notification_campaigns).
+  campaignsEnabled     Boolean   @default(true) @map("campaigns_enabled")
+  unsubscribedAt       DateTime? @map("unsubscribed_at") @db.Timestamptz(3)
   /// Local "HH:MM" quiet-hours window in `timezone`; NULL = none.
-  quietHoursStart    String?  @map("quiet_hours_start") @db.VarChar(5)
-  quietHoursEnd      String?  @map("quiet_hours_end") @db.VarChar(5)
-  timezone           String?  @db.VarChar(64)
-  createdAt          DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt          DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+  quietHoursStart      String?   @map("quiet_hours_start") @db.VarChar(5)
+  quietHoursEnd        String?   @map("quiet_hours_end") @db.VarChar(5)
+  /// IANA time zone (validated by trigger); required when quiet hours are set.
+  timezone             String?   @db.VarChar(64)
+  createdAt            DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt            DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -80,10 +90,18 @@ model NotificationPreference {
 }
 
 /// Topic subscriptions (brand/model/variant/market/category/station/price).
+/// Columns per topic (CHECK): brand → brand_id, model → model_id, variant →
+/// variant_id, category → category_id, station → station_id (each optionally
+/// narrowed by market_code, except station), market → market_code only,
+/// price_alert → variant_id + market_code. `targetKey` is maintained by
+/// trigger ("<topic>:<id>@<market|*>") and unique per user, so a repeated
+/// subscribe is a 409 / no-op instead of a duplicate row.
 model NotificationSubscription {
   id         String                @id @default(uuid(7)) @db.Uuid
   userId     String                @map("user_id") @db.Uuid
   topicType  NotificationTopicType @map("topic_type")
+  /// Maintained by trigger; never written by services.
+  targetKey  String?               @map("target_key") @db.VarChar(160)
   brandId    String?               @map("brand_id") @db.Uuid
   modelId    String?               @map("model_id") @db.Uuid
   variantId  String?               @map("variant_id") @db.Uuid
@@ -100,6 +118,7 @@ model NotificationSubscription {
   category Category?        @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   station  ChargingStation? @relation(fields: [stationId], references: [id], onDelete: Cascade)
 
+  @@unique([userId, targetKey])
   @@index([userId, topicType])
   @@index([brandId])
   @@index([modelId])
@@ -110,7 +129,8 @@ model NotificationSubscription {
 }
 
 /// In-app notification (already localized for the recipient). `dedupeKey`
-/// prevents duplicates per user (unique).
+/// prevents duplicates per user (unique), e.g. "article.published:<id>".
+/// `deepLink` is an app path ("/cars/<slug>") or an https URL (CHECK).
 model Notification {
   id         String    @id @default(uuid(7)) @db.Uuid
   userId     String    @map("user_id") @db.Uuid
@@ -138,26 +158,37 @@ model Notification {
   @@map("notifications")
 }
 
+/// Push token of one app installation. Re-registering the same installation
+/// (`installationId` = the random X-Device-Id of the app) replaces its token;
+/// tokens the push provider reports as invalid are revoked.
 model DeviceToken {
-  id         String         @id @default(uuid(7)) @db.Uuid
-  userId     String?        @map("user_id") @db.Uuid
-  token      String         @unique @db.VarChar(1024)
-  platform   DevicePlatform
-  provider   PushProvider
-  appVersion String?        @map("app_version") @db.VarChar(32)
-  locale     String?        @db.VarChar(10)
-  lastSeenAt DateTime       @default(now()) @map("last_seen_at") @db.Timestamptz(3)
-  revokedAt  DateTime?      @map("revoked_at") @db.Timestamptz(3)
-  createdAt  DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt  DateTime       @updatedAt @map("updated_at") @db.Timestamptz(3)
+  id             String         @id @default(uuid(7)) @db.Uuid
+  userId         String?        @map("user_id") @db.Uuid
+  token          String         @unique @db.VarChar(1024)
+  platform       DevicePlatform
+  provider       PushProvider
+  installationId String?        @map("installation_id") @db.VarChar(64)
+  appVersion     String?        @map("app_version") @db.VarChar(32)
+  locale         String?        @db.VarChar(10)
+  lastSeenAt     DateTime       @default(now()) @map("last_seen_at") @db.Timestamptz(3)
+  failureCount   Int            @default(0) @map("failure_count")
+  lastFailureAt  DateTime?      @map("last_failure_at") @db.Timestamptz(3)
+  revokedAt      DateTime?      @map("revoked_at") @db.Timestamptz(3)
+  createdAt      DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt      DateTime       @updatedAt @map("updated_at") @db.Timestamptz(3)
 
   user       User?                  @relation(fields: [userId], references: [id], onDelete: Cascade)
   deliveries NotificationDelivery[]
 
   @@index([userId])
+  @@index([installationId])
   @@map("device_tokens")
 }
 
+/// One attempt target per notification × channel (× device for push):
+/// partial unique indexes make retries idempotent. Quiet hours postpone a
+/// push (`scheduledFor`); anything not attempted is `skipped` with a reason
+/// (channel_not_configured, quiet_hours, opted_out, token_revoked...).
 model NotificationDelivery {
   id                String              @id @default(uuid(7)) @db.Uuid
   notificationId    String              @map("notification_id") @db.Uuid
@@ -165,6 +196,8 @@ model NotificationDelivery {
   deviceTokenId     String?             @map("device_token_id") @db.Uuid
   status            DeliveryStatus      @default(pending)
   attempts          Int                 @default(0)
+  scheduledFor      DateTime?           @map("scheduled_for") @db.Timestamptz(3)
+  skipReason        String?             @map("skip_reason") @db.VarChar(64)
   lastError         String?             @map("last_error")
   providerMessageId String?             @map("provider_message_id") @db.VarChar(255)
   sentAt            DateTime?           @map("sent_at") @db.Timestamptz(3)
@@ -176,6 +209,8 @@ model NotificationDelivery {
 
   @@index([notificationId])
   @@index([status, createdAt])
+  @@index([status, scheduledFor])
+  @@index([deviceTokenId])
   @@map("notification_deliveries")
 }
 
