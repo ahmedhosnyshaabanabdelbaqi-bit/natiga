@@ -589,6 +589,16 @@ describe('Phase 2 data model (e2e)', () => {
   });
 
   describe('search and analytics', () => {
+    it('search.manage is granted to content reviewers and vehicle data managers', async () => {
+      const holders = await db.role.findMany({
+        where: { permissions: { some: { permission: { key: 'search.manage' } } } },
+        select: { key: true },
+      });
+      expect(holders.map((r) => r.key).sort()).toEqual(
+        ['admin', 'content_reviewer', 'owner', 'vehicle_data_manager'].sort(),
+      );
+    });
+
     it('a document can be visible in several markets (empty = all)', async () => {
       const doc = (marketCodes: string[]) =>
         db.searchDocument.create({
