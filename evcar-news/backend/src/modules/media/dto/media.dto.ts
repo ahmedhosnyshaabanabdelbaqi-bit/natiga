@@ -138,14 +138,11 @@ export class CreateUploadDto {
   previousVersionId?: string | null;
 
   @ApiPropertyOptional({ nullable: true, type: String }) @NullableText(300) creditText?:
-    | string
-    | null;
+    string | null;
   @ApiPropertyOptional({ nullable: true, type: String }) @NullableText(500) altTextAr?:
-    | string
-    | null;
+    string | null;
   @ApiPropertyOptional({ nullable: true, type: String }) @NullableText(500) altTextEn?:
-    | string
-    | null;
+    string | null;
 }
 
 export class UploadSessionDto {
@@ -211,20 +208,15 @@ export class UpdateMediaAssetDto {
   licenseId?: string | null;
 
   @ApiPropertyOptional({ nullable: true, type: String }) @NullableText(300) creditText?:
-    | string
-    | null;
+    string | null;
   @ApiPropertyOptional({ nullable: true, type: String }) @NullableText(500) altTextAr?:
-    | string
-    | null;
+    string | null;
   @ApiPropertyOptional({ nullable: true, type: String }) @NullableText(500) altTextEn?:
-    | string
-    | null;
+    string | null;
   @ApiPropertyOptional({ nullable: true, type: String }) @NullableMultiline(1000) captionAr?:
-    | string
-    | null;
+    string | null;
   @ApiPropertyOptional({ nullable: true, type: String }) @NullableMultiline(1000) captionEn?:
-    | string
-    | null;
+    string | null;
 }
 
 export class VisualCheckDto {
@@ -250,8 +242,7 @@ export class VisualCheckDto {
   acknowledgedWarnings?: string[];
 
   @ApiPropertyOptional({ nullable: true, type: String }) @NullableMultiline(1000) note?:
-    | string
-    | null;
+    string | null;
 }
 
 export class EmbedVideoDto {
@@ -269,14 +260,11 @@ export class EmbedVideoDto {
   licenseId?: string | null;
 
   @ApiPropertyOptional({ nullable: true, type: String }) @NullableText(300) creditText?:
-    | string
-    | null;
+    string | null;
   @ApiPropertyOptional({ nullable: true, type: String }) @NullableText(500) altTextAr?:
-    | string
-    | null;
+    string | null;
   @ApiPropertyOptional({ nullable: true, type: String }) @NullableText(500) altTextEn?:
-    | string
-    | null;
+    string | null;
 }
 
 export class MediaMessageDto {
@@ -302,9 +290,7 @@ export class MediaLicenseSummaryDto {
   @ApiProperty() attributionRequired!: boolean;
   @ApiProperty({ nullable: true, type: String }) licenseUrl!: string | null;
   @ApiProperty({ nullable: true, type: String }) sourceUrl!: string | null;
-  @ApiProperty({ nullable: true, type: String, example: '2027-12-31' }) validUntil!:
-    | string
-    | null;
+  @ApiProperty({ nullable: true, type: String, example: '2027-12-31' }) validUntil!: string | null;
   @ApiProperty({ description: 'Valid today (not expired, already started).' }) isValid!: boolean;
 }
 
@@ -323,10 +309,11 @@ export class AdminMediaAssetDto {
   projection!: string | null;
   @ApiProperty({ nullable: true, type: String }) checksumSha256!: string | null;
   @ApiProperty() version!: number;
-  @ApiProperty({ nullable: true, format: 'uuid', type: String }) previousVersionId!:
-    | string
-    | null;
-  @ApiProperty({ type: Object, description: '{ progress 0..100, attempts, error, startedAt, processedAt }' })
+  @ApiProperty({ nullable: true, format: 'uuid', type: String }) previousVersionId!: string | null;
+  @ApiProperty({
+    type: Object,
+    description: '{ progress 0..100, attempts, error, startedAt, processedAt }',
+  })
   processing!: {
     progress: number;
     attempts: number;
@@ -339,14 +326,16 @@ export class AdminMediaAssetDto {
   @ApiProperty({
     nullable: true,
     type: Object,
-    description: 'Editor confirmation of a panorama: { confirmedAt, confirmedById, note, acknowledgedWarnings }.',
+    description:
+      'Editor confirmation of a panorama: { confirmedAt, confirmedById, note, acknowledgedWarnings }.',
   })
   visualCheck!: Record<string, unknown> | null;
-  @ApiProperty({ description: 'Panorama: the editor must confirm the visual check before publishing.' })
+  @ApiProperty({
+    description: 'Panorama: the editor must confirm the visual check before publishing.',
+  })
   visualCheckRequired!: boolean;
-  @ApiProperty({ nullable: true, type: MediaLicenseSummaryDto }) license!:
-    | MediaLicenseSummaryDto
-    | null;
+  @ApiProperty({ nullable: true, type: MediaLicenseSummaryDto })
+  license!: MediaLicenseSummaryDto | null;
   @ApiProperty({ nullable: true, type: String }) creditText!: string | null;
   @ApiProperty({ nullable: true, type: String }) altTextAr!: string | null;
   @ApiProperty({ nullable: true, type: String }) altTextEn!: string | null;
@@ -462,11 +451,9 @@ export class CreateLicenseDto {
   sourceUrl?: string | null;
 
   @ApiPropertyOptional({ nullable: true, type: String }) @NullableMultiline(2000) permittedUses?:
-    | string
-    | null;
+    string | null;
   @ApiPropertyOptional({ nullable: true, type: String }) @NullableMultiline(2000) restrictions?:
-    | string
-    | null;
+    string | null;
   @ApiPropertyOptional({ nullable: true, type: String, example: '2026-01-01' })
   @NullableDateOnly()
   validFrom?: string | null;
@@ -483,8 +470,7 @@ export class CreateLicenseDto {
   proofAssetId?: string | null;
 
   @ApiPropertyOptional({ nullable: true, type: String }) @NullableMultiline(4000) notes?:
-    | string
-    | null;
+    string | null;
 }
 
 export class UpdateLicenseDto {
@@ -495,8 +481,7 @@ export class UpdateLicenseDto {
   @ApiPropertyOptional() @OptionalNotNull() @RequiredText(300) rightsHolder?: string;
   @ApiPropertyOptional() @OptionalNotNull() @IsBoolean() attributionRequired?: boolean;
   @ApiPropertyOptional({ nullable: true, type: String }) @NullableText(500) attributionText?:
-    | string
-    | null;
+    string | null;
   @ApiPropertyOptional({ nullable: true, type: String })
   @IsOptional()
   @IsString()
@@ -510,23 +495,17 @@ export class UpdateLicenseDto {
   @HttpsUrl()
   sourceUrl?: string | null;
   @ApiPropertyOptional({ nullable: true, type: String }) @NullableMultiline(2000) permittedUses?:
-    | string
-    | null;
+    string | null;
   @ApiPropertyOptional({ nullable: true, type: String }) @NullableMultiline(2000) restrictions?:
-    | string
-    | null;
+    string | null;
   @ApiPropertyOptional({ nullable: true, type: String }) @NullableDateOnly() validFrom?:
-    | string
-    | null;
+    string | null;
   @ApiPropertyOptional({ nullable: true, type: String }) @NullableDateOnly() validUntil?:
-    | string
-    | null;
+    string | null;
   @ApiPropertyOptional({ nullable: true, format: 'uuid' }) @NullableUuid() proofAssetId?:
-    | string
-    | null;
+    string | null;
   @ApiPropertyOptional({ nullable: true, type: String }) @NullableMultiline(4000) notes?:
-    | string
-    | null;
+    string | null;
 }
 
 export class LicenseDto {
@@ -542,7 +521,11 @@ export class LicenseDto {
   @ApiProperty({ nullable: true, type: String }) validFrom!: string | null;
   @ApiProperty({ nullable: true, type: String }) validUntil!: string | null;
   @ApiProperty({ enum: ['valid', 'expired', 'not_yet_valid'] }) validity!: string;
-  @ApiProperty({ nullable: true, type: Number, description: 'Days until validUntil (negative = expired).' })
+  @ApiProperty({
+    nullable: true,
+    type: Number,
+    description: 'Days until validUntil (negative = expired).',
+  })
   daysLeft!: number | null;
   @ApiProperty({ nullable: true, format: 'uuid', type: String }) proofAssetId!: string | null;
   @ApiProperty({ nullable: true, type: String }) notes!: string | null;

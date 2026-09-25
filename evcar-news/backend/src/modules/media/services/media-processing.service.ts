@@ -87,7 +87,10 @@ class Progress {
   ) {}
   async set(p: number, force = false): Promise<void> {
     const value = Math.max(0, Math.min(99, Math.floor(p)));
-    if (!force && (value === this.last || (value - this.last < 5 && Date.now() - this.lastAt < 1500))) {
+    if (
+      !force &&
+      (value === this.last || (value - this.last < 5 && Date.now() - this.lastAt < 1500))
+    ) {
       return;
     }
     this.last = value;
@@ -352,7 +355,9 @@ export class MediaProcessingService {
     let step = 0;
     for (const face of CUBE_FACES) {
       const faceRaw = renderCubeFace(frame, face, plan.cubeResolution);
-      const raw = { raw: { width: plan.cubeResolution, height: plan.cubeResolution, channels: 3 as const } };
+      const raw = {
+        raw: { width: plan.cubeResolution, height: plan.cubeResolution, channels: 3 as const },
+      };
       for (const level of plan.levels) {
         const levelBuf =
           level.size === plan.cubeResolution
@@ -371,7 +376,7 @@ export class MediaProcessingService {
           const key = `${prefix}/${rel}`;
           files.push({
             kind: AssetVariantKind.tile,
-            label: rel,
+            label: rel.replace(/\.jpg$/, ''),
             storageKey: key,
             mimeType: 'image/jpeg',
             width: r.width,
@@ -392,7 +397,7 @@ export class MediaProcessingService {
       const fbKey = `${prefix}/${fbRel}`;
       files.push({
         kind: AssetVariantKind.cubemap_face,
-        label: fbRel,
+        label: fbRel.replace(/\.jpg$/, ''),
         storageKey: fbKey,
         mimeType: 'image/jpeg',
         width: plan.fallbackSize,

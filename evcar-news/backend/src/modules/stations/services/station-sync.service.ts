@@ -270,14 +270,15 @@ export class StationSyncService {
   /** Runs a created job page by page (never throws; failures end the job as failed). */
   async runOcm(jobId: string, options: SyncOptions): Promise<void> {
     let source: StationSource;
+    let ctx: SyncContext;
     try {
       source = await this.ocm();
       await this.importJobs.start(jobId);
+      ctx = await this.context(jobId, options);
     } catch (err) {
       await this.importJobs.fail(jobId, err).catch(() => undefined);
       return;
     }
-    const ctx = await this.context(jobId, options);
     let cursor: string | null = null;
     let rowNumber = 0;
     let pages = 0;

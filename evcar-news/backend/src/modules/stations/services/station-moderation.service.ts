@@ -374,6 +374,7 @@ export class StationModerationService {
     });
     if (updated.count === 0) throw StationErrors.suggestionNotPending();
     this.audit.annotate({
+      action: 'station-suggestions.approve',
       entityType: 'station_suggestion',
       entityId: id,
       before: { status: 'pending' },

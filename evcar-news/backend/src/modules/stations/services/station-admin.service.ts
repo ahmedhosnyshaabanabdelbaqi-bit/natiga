@@ -348,10 +348,11 @@ export class StationAdminService {
       where: { code },
       select: { code: true, timezone: true },
     });
-    return {
-      marketCode: m?.code ?? (marketCode ? marketCode : null),
-      timezone: m?.timezone ?? null,
-    };
+    if (!m && marketCode) {
+      throw fieldError('marketCode', 'exists', { ar: 'السوق غير موجود.', en: 'Unknown market.' });
+    }
+    // No market for this country: the station has no market (time zone must be given).
+    return { marketCode: m?.code ?? null, timezone: m?.timezone ?? null };
   }
 
   // --- stations ----------------------------------------------------------------------------
@@ -419,7 +420,14 @@ export class StationAdminService {
         attribution: dto.attribution ?? MANUAL_ATTRIBUTION,
         publishedPointCount: dto.publishedPointCount ?? null,
         usageCostText: dto.usageCostText ?? null,
-        lastVerifiedAt: dto.lastVerifiedAt ? new Date(dto.lastVerifiedAt) : this.clock.now(),
+        // Staff-entered stations count as verified now unless told otherwise;
+        // an explicit null (e.g. an approved user suggestion) stays unverified.
+        lastVerifiedAt:
+          dto.lastVerifiedAt === undefined
+            ? this.clock.now()
+            : dto.lastVerifiedAt === null
+              ? null
+              : new Date(dto.lastVerifiedAt),
         createdById: user.id,
         updatedById: user.id,
         connectors: {
@@ -440,7 +448,9 @@ export class StationAdminService {
     const flagged = await this.duplicates.findCandidates(s.id);
     this.audit.annotate({ entityType: 'station', entityId: s.id, after: s });
     // Possible duplicates wait for a reviewer even when publishing was asked for.
-    if (dto.publish && flagged.length === 0) return this.setPublication(s.id, 'published', user);
+    if (dto.publish && flagged.length === 0) {
+      return this.setPublication(s.id, 'published', user, false);
+    }
     return this.get(s.id);
   }
 
@@ -503,12 +513,22 @@ export class StationAdminService {
       },
     });
     if (moved) await this.duplicates.findCandidates(id);
-    if (dto.publish) await this.setPublication(id, 'published', user);
+    if (dto.publish) await this.setPublication(id, 'published', user, false);
     this.audit.annotate({ entityType: 'station', entityId: id, before, after: s });
     return this.get(id);
   }
 
-  async setPublication(id: string, status: StationPublicationStatus, user: AuthUser) {
+  /**
+   * Changes the publication status. `annotate = false` when called from
+   * another audited action (create / update / approve) so that action's
+   * audit record keeps its own name.
+   */
+  async setPublication(
+    id: string,
+    status: StationPublicationStatus,
+    user: AuthUser,
+    annotate = true,
+  ) {
     const before = await this.load(id);
     if (status === 'published') {
       this.assertCanPublish(user);
@@ -524,6 +544,7 @@ export class StationAdminService {
       where: { id },
       data: { publicationStatus: status, updatedById: user.id },
     });
+    if (!annotate) return this.get(id);
     this.audit.annotate({
       action: `stations.publication.${status}`,
       entityType: 'station',

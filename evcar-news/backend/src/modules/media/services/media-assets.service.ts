@@ -63,7 +63,7 @@ export interface AssetMetadata {
 
 export function metadataOf(asset: Pick<MediaAsset, 'metadata'>): AssetMetadata {
   const m = asset.metadata;
-  return m && typeof m === 'object' && !Array.isArray(m) ? (m as AssetMetadata) : {};
+  return m && typeof m === 'object' && !Array.isArray(m) ? m : {};
 }
 
 export function warningsOf(asset: Pick<MediaAsset, 'metadata'>): ValidationWarning[] {
@@ -230,18 +230,25 @@ export class MediaAssetsService {
 
   async usage(id: string): Promise<AdminMediaAssetDetailDto['usage']> {
     const published = { status: ContentStatus.published, deletedAt: null };
-    const [tourScenes, hotspots, publishedScenes, publishedHotspots, articleCovers, vehicleMedia, stationMedia] =
-      await Promise.all([
-        this.prisma.tourScene.count({ where: { assetId: id, tour: { deletedAt: null } } }),
-        this.prisma.sceneHotspot.count({
-          where: { mediaAssetId: id, scene: { tour: { deletedAt: null } } },
-        }),
-        this.prisma.tourScene.count({ where: { assetId: id, tour: published } }),
-        this.prisma.sceneHotspot.count({ where: { mediaAssetId: id, scene: { tour: published } } }),
-        this.prisma.article.count({ where: { coverAssetId: id, deletedAt: null } }),
-        this.prisma.vehicleMedia.count({ where: { assetId: id } }),
-        this.prisma.stationMedia.count({ where: { assetId: id } }),
-      ]);
+    const [
+      tourScenes,
+      hotspots,
+      publishedScenes,
+      publishedHotspots,
+      articleCovers,
+      vehicleMedia,
+      stationMedia,
+    ] = await Promise.all([
+      this.prisma.tourScene.count({ where: { assetId: id, tour: { deletedAt: null } } }),
+      this.prisma.sceneHotspot.count({
+        where: { mediaAssetId: id, scene: { tour: { deletedAt: null } } },
+      }),
+      this.prisma.tourScene.count({ where: { assetId: id, tour: published } }),
+      this.prisma.sceneHotspot.count({ where: { mediaAssetId: id, scene: { tour: published } } }),
+      this.prisma.article.count({ where: { coverAssetId: id, deletedAt: null } }),
+      this.prisma.vehicleMedia.count({ where: { assetId: id } }),
+      this.prisma.stationMedia.count({ where: { assetId: id } }),
+    ]);
     return {
       tourScenes,
       hotspots,
@@ -258,10 +265,7 @@ export class MediaAssetsService {
     const ext = a.mimeType ? a.mimeType.split('/')[1] : 'bin';
     const originalUrl = meta.embed
       ? meta.embed.embedUrl
-      : await this.urls.signedUrl(
-          a.storageKey,
-          a.originalFilename ?? `original-${a.id}.${ext}`,
-        );
+      : await this.urls.signedUrl(a.storageKey, a.originalFilename ?? `original-${a.id}.${ext}`);
     return {
       ...this.view(a),
       originalUrl,
@@ -367,7 +371,11 @@ export class MediaAssetsService {
     if (a.deletedAt) return;
     const usage = await this.usage(id);
     const used =
-      usage.tourScenes + usage.hotspots + usage.articleCovers + usage.vehicleMedia + usage.stationMedia;
+      usage.tourScenes +
+      usage.hotspots +
+      usage.articleCovers +
+      usage.vehicleMedia +
+      usage.stationMedia;
     if (used > 0) throw MediaErrors.inUse({ ...usage });
     await this.prisma.mediaAsset.update({ where: { id }, data: { deletedAt: new Date() } });
     this.audit.annotate({ entityId: id, before: this.view(a) });

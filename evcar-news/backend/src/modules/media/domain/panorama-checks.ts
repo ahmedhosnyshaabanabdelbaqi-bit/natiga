@@ -264,9 +264,7 @@ export function parseGPano(xmp: Buffer | string | null | undefined): GPanoInfo |
     isPartial: false,
   };
   info.isPartial =
-    (info.fullWidth !== null &&
-      info.croppedWidth !== null &&
-      info.croppedWidth < info.fullWidth) ||
+    (info.fullWidth !== null && info.croppedWidth !== null && info.croppedWidth < info.fullWidth) ||
     (info.fullHeight !== null &&
       info.croppedHeight !== null &&
       info.croppedHeight < info.fullHeight);

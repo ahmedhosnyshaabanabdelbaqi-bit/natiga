@@ -24,7 +24,11 @@ import {
 import type { ValidationProblem } from '../domain/panorama-checks';
 import type { CreateUploadDto, MediaCompletionDto, UploadSessionDto } from '../dto/media.dto';
 import { MediaErrors, mediaFieldError } from '../media-errors';
-import { ADMIN_ASSET_INCLUDE, MediaAssetsService, type AssetMetadata } from './media-assets.service';
+import {
+  ADMIN_ASSET_INCLUDE,
+  MediaAssetsService,
+  type AssetMetadata,
+} from './media-assets.service';
 import { MediaJobsService } from './media-jobs.service';
 import { MediaValidationService, type ValidationReport } from './media-validation.service';
 
@@ -440,7 +444,10 @@ export class UploadSessionsService {
           height: report.height,
           checksumSha256: report.sha256 || null,
           metadata: this.assetMetadata(s, report) as Prisma.InputJsonValue,
-          processingError: problems.map((p) => p.code).join(', ').slice(0, 1000),
+          processingError: problems
+            .map((p) => p.code)
+            .join(', ')
+            .slice(0, 1000),
           uploadedById: actor.id,
         },
       });

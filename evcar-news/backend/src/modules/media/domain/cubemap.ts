@@ -98,7 +98,10 @@ export function renderCubeFace(src: RawFrame, face: CubeFace, size: number): Buf
       for (let c = 0; c < 3; c++) {
         const cc = C >= 3 ? c : 0;
         out[o++] =
-          data[p00 + cc] * w00 + data[p10 + cc] * w10 + data[p01 + cc] * w01 + data[p11 + cc] * w11 +
+          data[p00 + cc] * w00 +
+          data[p10 + cc] * w10 +
+          data[p01 + cc] * w01 +
+          data[p11 + cc] * w11 +
           0.5;
       }
     }
