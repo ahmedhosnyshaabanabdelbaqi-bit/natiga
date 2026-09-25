@@ -1,10 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { normalizeSearchText } from '../../../common/i18n/arabic-normalize';
-import { paginated, type PaginatedResponse } from '../../../common/http/responses';
+import { paginated } from '../../../common/http/responses';
 import { toPageRequest } from '../../../common/http/pagination';
 import { Prisma } from '../../../generated/prisma/client';
 import type {
-  StationAccessType,
   StationDataSource,
   StationOperationalStatus,
   StationPublicationStatus,
@@ -13,7 +12,12 @@ import { PrismaService } from '../../../prisma/prisma.service';
 import { AuditService } from '../../audit';
 import type { AuthUser } from '../../auth';
 import { STATIONS_CLOCK, type StationsClock } from '../common/clock';
-import { evaluateOpenNow, type OpeningHours, validateOpeningHours, isValidTimezone } from '../common/opening-hours';
+import {
+  evaluateOpenNow,
+  type OpeningHours,
+  validateOpeningHours,
+  isValidTimezone,
+} from '../common/opening-hours';
 import { fieldError, fieldErrors, StationErrors } from '../common/station-errors';
 import { iso, num } from '../common/values';
 import type {
@@ -22,7 +26,6 @@ import type {
   CreateConnectorDto,
   CreateOperatorDto,
   CreatePointDto,
-  CreateStationDto,
   CreateStationWithConnectorsDto,
   OperatorListQueryDto,
   UpdateConnectorDto,
@@ -31,7 +34,10 @@ import type {
   UpdateStationDto,
 } from '../dto/admin.dto';
 import { StationCommunityService } from './station-community.service';
-import { type DuplicateCandidateView, StationDuplicatesService } from './station-duplicates.service';
+import {
+  type DuplicateCandidateView,
+  StationDuplicatesService,
+} from './station-duplicates.service';
 
 const ADMIN_INCLUDE = {
   operator: { select: { id: true, name: true, nameAr: true } },
@@ -235,7 +241,10 @@ export class StationAdminService {
   }
 
   private async load(id: string, includeDeleted = false): Promise<AdminStation> {
-    const s = await this.prisma.chargingStation.findUnique({ where: { id }, include: ADMIN_INCLUDE });
+    const s = await this.prisma.chargingStation.findUnique({
+      where: { id },
+      include: ADMIN_INCLUDE,
+    });
     if (!s || (!includeDeleted && s.deletedAt)) throw StationErrors.notFound();
     return s;
   }
@@ -276,7 +285,11 @@ export class StationAdminService {
         },
       });
     }
-    if (next.isAlwaysOpen === true && next.openingHours !== null && next.openingHours !== undefined) {
+    if (
+      next.isAlwaysOpen === true &&
+      next.openingHours !== null &&
+      next.openingHours !== undefined
+    ) {
       problems.push({
         field: 'openingHours',
         rule: 'alwaysOpen',
@@ -288,15 +301,29 @@ export class StationAdminService {
     }
     if (problems.length > 0) throw fieldErrors(problems);
     if (next.marketCode) {
-      const m = await this.prisma.market.findUnique({ where: { code: next.marketCode }, select: { code: true } });
-      if (!m) throw fieldError('marketCode', 'exists', { ar: 'السوق غير موجود.', en: 'Unknown market.' });
+      const m = await this.prisma.market.findUnique({
+        where: { code: next.marketCode },
+        select: { code: true },
+      });
+      if (!m)
+        throw fieldError('marketCode', 'exists', { ar: 'السوق غير موجود.', en: 'Unknown market.' });
     }
     if (next.operatorId) {
-      const o = await this.prisma.chargingOperator.findUnique({ where: { id: next.operatorId }, select: { id: true } });
-      if (!o) throw fieldError('operatorId', 'exists', { ar: 'المشغّل غير موجود.', en: 'Unknown operator.' });
+      const o = await this.prisma.chargingOperator.findUnique({
+        where: { id: next.operatorId },
+        select: { id: true },
+      });
+      if (!o)
+        throw fieldError('operatorId', 'exists', {
+          ar: 'المشغّل غير موجود.',
+          en: 'Unknown operator.',
+        });
     }
     if (next.slug) {
-      const s = await this.prisma.chargingStation.findUnique({ where: { slug: next.slug }, select: { id: true } });
+      const s = await this.prisma.chargingStation.findUnique({
+        where: { slug: next.slug },
+        select: { id: true },
+      });
       if (s && s.id !== selfId) throw StationErrors.slugTaken(next.slug);
     }
   }
@@ -317,8 +344,14 @@ export class StationAdminService {
   ): Promise<{ marketCode: string | null; timezone: string | null }> {
     const code = marketCode === undefined ? countryCode : marketCode;
     if (!code) return { marketCode: null, timezone: null };
-    const m = await this.prisma.market.findUnique({ where: { code }, select: { code: true, timezone: true } });
-    return { marketCode: m?.code ?? (marketCode ? marketCode : null), timezone: m?.timezone ?? null };
+    const m = await this.prisma.market.findUnique({
+      where: { code },
+      select: { code: true, timezone: true },
+    });
+    return {
+      marketCode: m?.code ?? (marketCode ? marketCode : null),
+      timezone: m?.timezone ?? null,
+    };
   }
 
   // --- stations ----------------------------------------------------------------------------
@@ -367,7 +400,7 @@ export class StationAdminService {
         countryCode: dto.countryCode,
         marketCode: defaults.marketCode,
         accessEntranceNote: dto.accessEntranceNote ?? null,
-        accessType: (dto.accessType ?? 'unknown') as StationAccessType,
+        accessType: dto.accessType ?? 'unknown',
         accessRestrictions: dto.accessRestrictions ?? null,
         openingHours: this.json(dto.openingHours) ?? Prisma.DbNull,
         isAlwaysOpen: dto.isAlwaysOpen ?? null,
@@ -379,7 +412,7 @@ export class StationAdminService {
         paymentMethods: dto.paymentMethods ?? [],
         startMethods: dto.startMethods ?? [],
         amenities: dto.amenities ?? [],
-        operationalStatus: (dto.operationalStatus ?? 'unknown') as StationOperationalStatus,
+        operationalStatus: dto.operationalStatus ?? 'unknown',
         publicationStatus: 'draft',
         dataSource: 'manual',
         dataLicense: dto.dataLicense ?? null,
@@ -399,7 +432,7 @@ export class StationAdminService {
             phases: c.phases ?? null,
             format: c.format ?? null,
             quantity: c.quantity ?? 1,
-            operationalStatus: (c.operationalStatus ?? 'unknown') as StationOperationalStatus,
+            operationalStatus: c.operationalStatus ?? 'unknown',
           })),
         },
       },
@@ -443,7 +476,7 @@ export class StationAdminService {
         countryCode: dto.countryCode,
         marketCode: dto.marketCode,
         accessEntranceNote: dto.accessEntranceNote,
-        accessType: dto.accessType as StationAccessType | undefined,
+        accessType: dto.accessType,
         accessRestrictions: dto.accessRestrictions,
         openingHours: this.json(dto.openingHours),
         isAlwaysOpen: dto.isAlwaysOpen,
@@ -455,7 +488,7 @@ export class StationAdminService {
         paymentMethods: dto.paymentMethods,
         startMethods: dto.startMethods,
         amenities: dto.amenities,
-        operationalStatus: dto.operationalStatus as StationOperationalStatus | undefined,
+        operationalStatus: dto.operationalStatus,
         dataLicense: dto.dataLicense,
         attribution: dto.attribution,
         publishedPointCount: dto.publishedPointCount,
@@ -527,7 +560,7 @@ export class StationAdminService {
         physicalReference: dto.physicalReference ?? null,
         floorLevel: dto.floorLevel ?? null,
         parkingRestrictions: dto.parkingRestrictions ?? null,
-        operationalStatus: (dto.operationalStatus ?? 'unknown') as StationOperationalStatus,
+        operationalStatus: dto.operationalStatus ?? 'unknown',
         notes: dto.notes ?? null,
       },
     });
@@ -552,7 +585,7 @@ export class StationAdminService {
         physicalReference: dto.physicalReference,
         floorLevel: dto.floorLevel,
         parkingRestrictions: dto.parkingRestrictions,
-        operationalStatus: dto.operationalStatus as StationOperationalStatus | undefined,
+        operationalStatus: dto.operationalStatus,
         notes: dto.notes,
       },
     });
@@ -599,7 +632,7 @@ export class StationAdminService {
         phases: dto.phases ?? null,
         format: dto.format ?? null,
         quantity: dto.quantity ?? 1,
-        operationalStatus: (dto.operationalStatus ?? 'unknown') as StationOperationalStatus,
+        operationalStatus: dto.operationalStatus ?? 'unknown',
       },
     });
     await this.touch(stationId);
@@ -632,7 +665,7 @@ export class StationAdminService {
         phases: dto.phases,
         format: dto.format,
         quantity: dto.quantity,
-        operationalStatus: dto.operationalStatus as StationOperationalStatus | undefined,
+        operationalStatus: dto.operationalStatus,
       },
     });
     await this.touch(stationId);
@@ -661,7 +694,10 @@ export class StationAdminService {
   }
 
   private async touch(stationId: string) {
-    await this.prisma.chargingStation.update({ where: { id: stationId }, data: { updatedAt: this.clock.now() } });
+    await this.prisma.chargingStation.update({
+      where: { id: stationId },
+      data: { updatedAt: this.clock.now() },
+    });
   }
 
   // --- photos ------------------------------------------------------------------------------
@@ -789,7 +825,8 @@ export class StationAdminService {
 
   async deleteOperator(id: string) {
     const o = await this.getOperator(id);
-    if (o.stationCount > 0) throw StationErrors.inUse('charging_operator', { stations: o.stationCount });
+    if (o.stationCount > 0)
+      throw StationErrors.inUse('charging_operator', { stations: o.stationCount });
     await this.prisma.$transaction([
       this.prisma.providerRecord.deleteMany({ where: { operatorId: id, entityType: 'operator' } }),
       this.prisma.chargingOperator.delete({ where: { id } }),

@@ -4,11 +4,7 @@ import { toPageRequest } from '../../../common/http/pagination';
 import { Prisma } from '../../../generated/prisma/client';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { AuditService } from '../../audit';
-import {
-  DEDUPE_SEARCH_RADIUS_M,
-  dedupeVerdict,
-  orderedPair,
-} from '../common/dedupe';
+import { DEDUPE_SEARCH_RADIUS_M, dedupeVerdict, orderedPair } from '../common/dedupe';
 import { StationErrors } from '../common/station-errors';
 import { num } from '../common/values';
 import type {
@@ -157,7 +153,8 @@ export class StationDuplicatesService {
     }
     const pairs = new Set<string>();
     for (const id of ids) {
-      for (const other of await this.findCandidates(id)) pairs.add(orderedPair(id, other).join('|'));
+      for (const other of await this.findCandidates(id))
+        pairs.add(orderedPair(id, other).join('|'));
     }
     return { scanned: ids.length, flaggedPairs: pairs.size };
   }
@@ -278,7 +275,11 @@ export class StationDuplicatesService {
       if (keep.duplicateOfId || loser.duplicateOfId) throw StationErrors.alreadyMerged();
       await tx.chargingStation.update({
         where: { id: loserId },
-        data: { duplicateOfId: keepStationId, publicationStatus: 'hidden', updatedById: reviewerId },
+        data: {
+          duplicateOfId: keepStationId,
+          publicationStatus: 'hidden',
+          updatedById: reviewerId,
+        },
       });
       // Anything merged into the loser earlier now points at the kept station.
       await tx.chargingStation.updateMany({
@@ -293,7 +294,10 @@ export class StationDuplicatesService {
       this.audit.annotate({
         entityType: 'station_duplicate',
         entityId: id,
-        before: { candidate: c, loser: { id: loser.id, publicationStatus: loser.publicationStatus } },
+        before: {
+          candidate: c,
+          loser: { id: loser.id, publicationStatus: loser.publicationStatus },
+        },
         after: { keepStationId, mergedStationId: loserId },
       });
     });
@@ -318,7 +322,11 @@ export class StationDuplicatesService {
       await this.get(id); // 404 when missing
       throw StationErrors.duplicateNotPending();
     }
-    this.audit.annotate({ entityType: 'station_duplicate', entityId: id, after: { status: 'not_duplicate' } });
+    this.audit.annotate({
+      entityType: 'station_duplicate',
+      entityId: id,
+      after: { status: 'not_duplicate' },
+    });
     return this.get(id);
   }
 

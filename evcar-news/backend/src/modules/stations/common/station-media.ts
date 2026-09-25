@@ -81,7 +81,12 @@ export class StationMediaService {
       credit: asset.creditText ?? asset.license?.attributionText ?? null,
       licenseType: asset.license?.licenseType ?? null,
       sizes: asset.variants
-        .map((v) => ({ label: v.label, width: v.width, height: v.height, url: this.urlOf(v.storageKey) }))
+        .map((v) => ({
+          label: v.label,
+          width: v.width,
+          height: v.height,
+          url: this.urlOf(v.storageKey),
+        }))
         .filter((v): v is StationImageView['sizes'][number] => Boolean(v.url)),
       isDemo: asset.isDemo,
     };

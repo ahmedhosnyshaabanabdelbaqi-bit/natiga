@@ -952,6 +952,11 @@ do_backup() {
   BACKUP_KIND=$kind
   root=$(backup_root)
   ts=$(date -u +%Y%m%dT%H%M%SZ)
+  # Two sets in the same second: `mv` would nest the new one inside the old one.
+  while [[ -e $root/$kind/$ts || -e $root/.tmp-$kind-$ts ]]; do
+    sleep 1
+    ts=$(date -u +%Y%m%dT%H%M%SZ)
+  done
   dir="$root/$kind/$ts"
   tmp="$root/.tmp-$kind-$ts"
   install -d -m 700 "$root" "$root/$kind"
@@ -2188,7 +2193,7 @@ cmd_harden_ssh() {
     ok "removed $conf; password logins follow the rest of the configuration again"
     return 0
   fi
-  grep -qE '^[[:space:]]*Include[[:space:]]+(/etc/ssh/)?sshd_config\.d/\*\.conf' "$SSHD_DIR/sshd_config" ||
+  grep -qE '^[[:space:]]*Include[[:space:]]+([^[:space:]]*/)?sshd_config\.d/\*\.conf' "$SSHD_DIR/sshd_config" ||
     die "$SSHD_DIR/sshd_config has no 'Include /etc/ssh/sshd_config.d/*.conf': set PasswordAuthentication no at its TOP by hand"
   user=${SUDO_USER:-root}
   home=$(getent passwd "$user" | cut -d: -f6)

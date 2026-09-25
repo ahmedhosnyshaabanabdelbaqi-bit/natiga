@@ -297,7 +297,10 @@ export class StationSearchService {
     compat: Map<string, { compatibleConnectors: number; maxUsablePowerKw: number | null }>;
   }> {
     const availability = new Map<string, ListAvailabilityDto>();
-    const compat = new Map<string, { compatibleConnectors: number; maxUsablePowerKw: number | null }>();
+    const compat = new Map<
+      string,
+      { compatibleConnectors: number; maxUsablePowerKw: number | null }
+    >();
     if (ids.length === 0) return { availability, compat };
     const connectors = await this.prisma.connector.findMany({
       where: { stationId: { in: ids } },
@@ -319,7 +322,8 @@ export class StationSearchService {
       const summary = this.availability.summarize(v, 'en');
       availability.set(id, {
         status: summary.status,
-        availableConnectors: live.length > 0 ? live.filter((x) => x.status === 'available').length : null,
+        availableConnectors:
+          live.length > 0 ? live.filter((x) => x.status === 'available').length : null,
         liveConnectors: live.length,
       });
       if (vehicle) {
@@ -353,7 +357,10 @@ export class StationSearchService {
     lang: SupportedLanguage,
     market: string,
     userId: string | undefined,
-  ): Promise<{ data: StationClusterDto[]; meta: { cellSizeDeg: number; total: number; zoom: number } }> {
+  ): Promise<{
+    data: StationClusterDto[];
+    meta: { cellSizeDeg: number; total: number; zoom: number };
+  }> {
     const geo = this.parseGeo(q);
     const vehicle = await this.compat.resolve(q, market, userId, lang);
     const where = this.whereSql(q, geo, vehicle);

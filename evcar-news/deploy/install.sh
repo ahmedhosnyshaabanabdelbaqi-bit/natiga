@@ -429,7 +429,7 @@ gather_config() {
   fi
   if { ((OCM_PROMPT == 1)) || ((existing == 0 && OCM_GIVEN == 0)); } && tty_available; then
     ask_env_value OCM_API_KEY "Open Charge Map API key (optional, Enter to skip)" "" secret
-    [[ -n $OCM_API_KEY ]] && OCM_GIVEN=1
+    if [[ -n $OCM_API_KEY ]]; then OCM_GIVEN=1; fi
   elif ((OCM_PROMPT == 1)); then
     die "--ocm-key needs a terminal to ask for the key (or export EVCAR_OCM_API_KEY in a root shell)"
   fi

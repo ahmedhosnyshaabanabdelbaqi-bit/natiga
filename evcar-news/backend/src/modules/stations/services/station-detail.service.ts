@@ -42,7 +42,11 @@ const DETAIL_INCLUDE = {
   points: { orderBy: [{ label: 'asc' }, { createdAt: 'asc' }] },
   connectors: {
     include: { connectorType: { select: { code: true, nameAr: true, nameEn: true } } },
-    orderBy: [{ currentType: 'desc' }, { maxPowerKw: { sort: 'desc', nulls: 'last' } }, { createdAt: 'asc' }],
+    orderBy: [
+      { currentType: 'desc' },
+      { maxPowerKw: { sort: 'desc', nulls: 'last' } },
+      { createdAt: 'asc' },
+    ],
   },
   tariffs: {
     include: {
@@ -277,7 +281,12 @@ export class StationDetailService {
       reliability: t.reliability,
       verifiedAt: iso(t.verifiedAt),
       source: t.source
-        ? { id: t.source.id, title: t.source.title, publisher: t.source.publisher, url: t.source.url }
+        ? {
+            id: t.source.id,
+            title: t.source.title,
+            publisher: t.source.publisher,
+            url: t.source.url,
+          }
         : null,
       isDemo: t.isDemo,
       elements: t.elements.map((e) => ({
@@ -409,7 +418,10 @@ export class StationDetailService {
         successRate30d:
           counted >= SUCCESS_RATE_MIN ? Math.round((success / counted) * 100) / 100 : null,
         recent: recent.map((c) => {
-          const v = c.variant && c.variant.status === 'published' && !c.variant.deletedAt ? c.variant : null;
+          const v =
+            c.variant && c.variant.status === 'published' && !c.variant.deletedAt
+              ? c.variant
+              : null;
           const model = v?.modelYear.generation.model;
           return {
             id: c.id,
@@ -419,8 +431,11 @@ export class StationDetailService {
               ? {
                   code: c.connector.connectorTypeCode,
                   name:
-                    pick(lang, c.connector.connectorType.nameAr, c.connector.connectorType.nameEn) ??
-                    c.connector.connectorTypeCode,
+                    pick(
+                      lang,
+                      c.connector.connectorType.nameAr,
+                      c.connector.connectorType.nameEn,
+                    ) ?? c.connector.connectorTypeCode,
                 }
               : null,
             currentType: c.connector?.currentType ?? null,
@@ -468,7 +483,10 @@ export class StationDetailService {
     return new Map(rows.map((r) => [r.code, { ar: r.labelAr, en: r.labelEn }]));
   }
 
-  async availabilityOf(idOrSlug: string, lang: SupportedLanguage): Promise<StationAvailabilityResponseDto> {
+  async availabilityOf(
+    idOrSlug: string,
+    lang: SupportedLanguage,
+  ): Promise<StationAvailabilityResponseDto> {
     const { id } = await this.findPublic(idOrSlug);
     const connectors = await this.prisma.connector.findMany({
       where: { stationId: id },

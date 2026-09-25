@@ -19,7 +19,13 @@ import { CODE_RE } from '../common/labels';
 
 /** Query-string integer. */
 export const QueryInt = (min: number, max: number) =>
-  applyDecorators(IsOptional(), Type(() => Number), IsInt(), Min(min), Max(max));
+  applyDecorators(
+    IsOptional(),
+    Type(() => Number),
+    IsInt(),
+    Min(min),
+    Max(max),
+  );
 
 /** Query-string number (decimal). */
 export const QueryNumber = (min: number, max: number) =>
@@ -109,7 +115,11 @@ export const CodeArray = (max = 30) =>
   );
 
 /** Optional field whose column is nullable: undefined = keep, null = clear. */
-export const Nullable = () => applyDecorators(IsOptional(), ValidateIf((_o, v) => v !== null));
+export const Nullable = () =>
+  applyDecorators(
+    IsOptional(),
+    ValidateIf((_o, v) => v !== null),
+  );
 
 /** Decimal amount as string (a JSON number is accepted). */
 export const DecimalString = (maxIntDigits = 8, maxDecimals = 4) =>

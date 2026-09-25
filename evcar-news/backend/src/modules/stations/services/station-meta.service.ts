@@ -82,7 +82,9 @@ export class StationMetaService {
   }
 
   /** Report reason of a type (null when the table has none, e.g. an old database). */
-  async reportReason(code: string): Promise<{ requiresDetails: boolean; isActive: boolean } | null> {
+  async reportReason(
+    code: string,
+  ): Promise<{ requiresDetails: boolean; isActive: boolean } | null> {
     return this.prisma.reportReason.findUnique({
       where: { scope_code: { scope: 'station', code } },
       select: { requiresDetails: true, isActive: true },

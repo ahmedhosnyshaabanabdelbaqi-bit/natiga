@@ -208,7 +208,9 @@ export class StationCommunityService {
       if (last) {
         const elapsed = now.getTime() - last.createdAt.getTime();
         if (elapsed < COMMUNITY_LIMITS.checkinMinIntervalMs) {
-          throw StationErrors.checkinTooSoon((COMMUNITY_LIMITS.checkinMinIntervalMs - elapsed) / 1000);
+          throw StationErrors.checkinTooSoon(
+            (COMMUNITY_LIMITS.checkinMinIntervalMs - elapsed) / 1000,
+          );
         }
       }
       const today = await tx.stationCheckin.count({

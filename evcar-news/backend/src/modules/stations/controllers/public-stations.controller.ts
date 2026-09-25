@@ -95,7 +95,10 @@ export class PublicStationsController {
               nullable: true,
               properties: { lat: { type: 'number' }, lng: { type: 'number' } },
             },
-            compatibility: { allOf: [{ $ref: getSchemaPath(VehicleCompatibilityDto) }], nullable: true },
+            compatibility: {
+              allOf: [{ $ref: getSchemaPath(VehicleCompatibilityDto) }],
+              nullable: true,
+            },
             liveAvailability: {
               type: 'object',
               properties: {

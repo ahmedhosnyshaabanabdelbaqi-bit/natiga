@@ -117,8 +117,10 @@ export class AdminStationListQueryDto extends PaginationQueryDto {
 
 export class CreateStationDto {
   @ApiProperty({ maxLength: 300 }) @CleanText() @IsString() @Length(2, 300) name!: string;
-  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(300) nameAr?: string | null;
-  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(300) nameEn?: string | null;
+  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(300) nameAr?:
+    string | null;
+  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(300) nameEn?:
+    string | null;
 
   @ApiPropertyOptional({ description: 'Stable URL slug (lower-case, dashes).' })
   @Nullable()
@@ -133,35 +135,53 @@ export class CreateStationDto {
   @Matches(UUID_RE, { context: UUID_MESSAGE })
   operatorId?: string | null;
 
-  @ApiProperty() @IsNumber({ allowNaN: false, allowInfinity: false }) @Min(-90) @Max(90) latitude!: number;
-  @ApiProperty() @IsNumber({ allowNaN: false, allowInfinity: false }) @Min(-180) @Max(180) longitude!: number;
+  @ApiProperty()
+  @IsNumber({ allowNaN: false, allowInfinity: false })
+  @Min(-90)
+  @Max(90)
+  latitude!: number;
+  @ApiProperty()
+  @IsNumber({ allowNaN: false, allowInfinity: false })
+  @Min(-180)
+  @Max(180)
+  longitude!: number;
 
-  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(500) addressLine?: string | null;
-  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(500) addressAr?: string | null;
-  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(500) addressEn?: string | null;
+  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(500) addressLine?:
+    string | null;
+  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(500) addressAr?:
+    string | null;
+  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(500) addressEn?:
+    string | null;
   @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(120) city?: string | null;
-  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(120) region?: string | null;
-  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(20) postalCode?: string | null;
+  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(120) region?:
+    string | null;
+  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(20) postalCode?:
+    string | null;
 
   @ApiProperty({ example: 'EG' })
   @IsString()
   @Matches(/^[A-Z]{2}$/, { context: COUNTRY_MESSAGE })
   countryCode!: string;
 
-  @ApiPropertyOptional({ example: 'EG', description: 'Defaults to the market with the country code.' })
+  @ApiPropertyOptional({
+    example: 'EG',
+    description: 'Defaults to the market with the country code.',
+  })
   @Nullable()
   @IsString()
   @Matches(/^[A-Z]{2,8}$/)
   marketCode?: string | null;
 
-  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(1000) accessEntranceNote?: string | null;
+  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(1000) accessEntranceNote?:
+    string | null;
 
   @ApiPropertyOptional({ enum: ACCESS_TYPE_VALUES })
   @OptionalNotNull()
   @IsIn(ACCESS_TYPE_VALUES)
   accessType?: (typeof ACCESS_TYPE_VALUES)[number];
 
-  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(2000) accessRestrictions?: string | null;
+  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(2000) accessRestrictions?:
+    string | null;
 
   @ApiPropertyOptional({
     description:
@@ -179,9 +199,13 @@ export class CreateStationDto {
   @IsBoolean()
   isAlwaysOpen?: boolean | null;
 
-  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(500) openingHoursText?: string | null;
+  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(500) openingHoursText?:
+    string | null;
 
-  @ApiPropertyOptional({ example: 'Africa/Cairo', description: 'IANA; default = market time zone.' })
+  @ApiPropertyOptional({
+    example: 'Africa/Cairo',
+    description: 'IANA; default = market time zone.',
+  })
   @OptionalNotNull()
   @IsString()
   @MaxLength(64)
@@ -217,8 +241,10 @@ export class CreateStationDto {
   @IsIn(OPERATIONAL_STATUS_VALUES)
   operationalStatus?: (typeof OPERATIONAL_STATUS_VALUES)[number];
 
-  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(200) dataLicense?: string | null;
-  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(1000) attribution?: string | null;
+  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(200) dataLicense?:
+    string | null;
+  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(1000) attribution?:
+    string | null;
 
   @ApiPropertyOptional({ nullable: true, type: Number })
   @Nullable()
@@ -227,7 +253,8 @@ export class CreateStationDto {
   @Max(1000)
   publishedPointCount?: number | null;
 
-  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(1000) usageCostText?: string | null;
+  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(1000) usageCostText?:
+    string | null;
 
   @ApiPropertyOptional({ format: 'date-time', description: 'Default: now (verified by staff).' })
   @Nullable()
@@ -259,14 +286,22 @@ export class CreatePointDto {
   @MaxLength(64)
   @Matches(/^[A-Za-z0-9*\-_.]+$/)
   evseId?: string | null;
-  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(64) physicalReference?: string | null;
-  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(16) floorLevel?: string | null;
-  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(1000) parkingRestrictions?: string | null;
+  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(64) physicalReference?:
+    string | null;
+  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(16) floorLevel?:
+    string | null;
+  @ApiPropertyOptional()
+  @Nullable()
+  @CleanText()
+  @IsString()
+  @MaxLength(1000)
+  parkingRestrictions?: string | null;
   @ApiPropertyOptional({ enum: OPERATIONAL_STATUS_VALUES })
   @OptionalNotNull()
   @IsIn(OPERATIONAL_STATUS_VALUES)
   operationalStatus?: (typeof OPERATIONAL_STATUS_VALUES)[number];
-  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(1000) notes?: string | null;
+  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(1000) notes?:
+    string | null;
 }
 
 export class UpdatePointDto extends PartialType(CreatePointDto) {}
@@ -295,7 +330,10 @@ export class CreateConnectorDto {
   @ApiPropertyOptional() @Nullable() @IsInt() @Min(1) @Max(2000) maxVoltage?: number | null;
   @ApiPropertyOptional() @Nullable() @IsInt() @Min(1) @Max(2000) maxAmperage?: number | null;
   @ApiPropertyOptional({ enum: [1, 3] }) @Nullable() @IsIn([1, 3]) phases?: number | null;
-  @ApiPropertyOptional({ enum: ['socket', 'cable'] }) @Nullable() @IsIn(['socket', 'cable']) format?: 'socket' | 'cable' | null;
+  @ApiPropertyOptional({ enum: ['socket', 'cable'] })
+  @Nullable()
+  @IsIn(['socket', 'cable'])
+  format?: 'socket' | 'cable' | null;
 
   @ApiPropertyOptional({ default: 1, description: 'Identical plugs (not "cars at once").' })
   @OptionalNotNull()
@@ -323,18 +361,38 @@ export class TariffElementInputDto {
 
   @ApiProperty({
     enum: PRICE_UNIT_VALUES,
-    description: 'energy → per_kwh; flat → per_session; time/parking_time/idle → per_minute|per_hour',
+    description:
+      'energy → per_kwh; flat → per_session; time/parking_time/idle → per_minute|per_hour',
   })
   @IsIn(PRICE_UNIT_VALUES)
   priceUnit!: (typeof PRICE_UNIT_VALUES)[number];
 
   @ApiPropertyOptional() @Nullable() @IsInt() @Min(1) @Max(86_400) stepSize?: number | null;
   @ApiPropertyOptional() @Nullable() @IsInt() @Min(0) @Max(1440) graceMinutes?: number | null;
-  @ApiPropertyOptional() @Nullable() @IsNumber({ allowNaN: false, allowInfinity: false }) @Min(0) @Max(2000) minPowerKw?: number | null;
-  @ApiPropertyOptional() @Nullable() @IsNumber({ allowNaN: false, allowInfinity: false }) @Min(0.1) @Max(2000) maxPowerKw?: number | null;
-  @ApiPropertyOptional({ enum: CURRENT_TYPES }) @Nullable() @IsIn(CURRENT_TYPES) currentType?: 'AC' | 'DC' | null;
-  @ApiPropertyOptional({ example: '08:00' }) @Nullable() @IsString() @Matches(HHMM_RE, { context: HHMM_MESSAGE }) startTime?: string | null;
-  @ApiPropertyOptional({ example: '22:00' }) @Nullable() @IsString() @Matches(HHMM_END_RE, { context: HHMM_MESSAGE }) endTime?: string | null;
+  @ApiPropertyOptional()
+  @Nullable()
+  @IsNumber({ allowNaN: false, allowInfinity: false })
+  @Min(0)
+  @Max(2000)
+  minPowerKw?: number | null;
+  @ApiPropertyOptional()
+  @Nullable()
+  @IsNumber({ allowNaN: false, allowInfinity: false })
+  @Min(0.1)
+  @Max(2000)
+  maxPowerKw?: number | null;
+  @ApiPropertyOptional({ enum: CURRENT_TYPES }) @Nullable() @IsIn(CURRENT_TYPES) currentType?:
+    'AC' | 'DC' | null;
+  @ApiPropertyOptional({ example: '08:00' })
+  @Nullable()
+  @IsString()
+  @Matches(HHMM_RE, { context: HHMM_MESSAGE })
+  startTime?: string | null;
+  @ApiPropertyOptional({ example: '22:00' })
+  @Nullable()
+  @IsString()
+  @Matches(HHMM_END_RE, { context: HHMM_MESSAGE })
+  endTime?: string | null;
 
   @ApiPropertyOptional({ type: [Number], description: 'ISO weekdays 1..7; empty = every day.' })
   @OptionalNotNull()
@@ -363,22 +421,38 @@ export class CreateTariffDto {
 
   @ApiProperty({ example: 'EGP' }) @IsString() @Matches(/^[A-Z]{3}$/) currencyCode!: string;
 
-  @ApiPropertyOptional({ format: 'date-time' }) @Nullable() @IsISO8601({ strict: true }) validFrom?: string | null;
-  @ApiPropertyOptional({ format: 'date-time' }) @Nullable() @IsISO8601({ strict: true }) validTo?: string | null;
+  @ApiPropertyOptional({ format: 'date-time' })
+  @Nullable()
+  @IsISO8601({ strict: true })
+  validFrom?: string | null;
+  @ApiPropertyOptional({ format: 'date-time' }) @Nullable() @IsISO8601({ strict: true }) validTo?:
+    string | null;
   @ApiPropertyOptional({ nullable: true, type: Boolean, description: 'null = unknown' })
   @Nullable()
   @IsBoolean()
   taxIncluded?: boolean | null;
-  @ApiPropertyOptional() @Nullable() @IsNumber({ allowNaN: false, allowInfinity: false, maxDecimalPlaces: 2 }) @Min(0) @Max(100) taxPercent?: number | null;
-  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(2000) notes?: string | null;
+  @ApiPropertyOptional()
+  @Nullable()
+  @IsNumber({ allowNaN: false, allowInfinity: false, maxDecimalPlaces: 2 })
+  @Min(0)
+  @Max(100)
+  taxPercent?: number | null;
+  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(2000) notes?:
+    string | null;
 
-  @ApiPropertyOptional({ format: 'uuid', description: 'specification_sources id (tariff sheet, operator page…).' })
+  @ApiPropertyOptional({
+    format: 'uuid',
+    description: 'specification_sources id (tariff sheet, operator page…).',
+  })
   @Nullable()
   @IsString()
   @Matches(UUID_RE, { context: UUID_MESSAGE })
   sourceId?: string | null;
 
-  @ApiPropertyOptional({ format: 'date-time' }) @Nullable() @IsISO8601({ strict: true }) verifiedAt?: string | null;
+  @ApiPropertyOptional({ format: 'date-time' })
+  @Nullable()
+  @IsISO8601({ strict: true })
+  verifiedAt?: string | null;
 
   @ApiPropertyOptional({ enum: RELIABILITY_VALUES, default: 'unverified' })
   @OptionalNotNull()
@@ -415,7 +489,8 @@ export class AddStationPhotoDto {
   @IsString()
   @Matches(UUID_RE, { context: UUID_MESSAGE })
   assetId!: string;
-  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(500) caption?: string | null;
+  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(500) caption?:
+    string | null;
   @ApiPropertyOptional() @IsOptional() @IsInt() @Min(0) @Max(10_000) sortOrder?: number;
 }
 
@@ -427,8 +502,10 @@ export class OperatorListQueryDto extends PaginationQueryDto {
 
 export class CreateOperatorDto {
   @ApiProperty() @CleanText() @IsString() @Length(2, 200) name!: string;
-  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(200) nameAr?: string | null;
-  @ApiPropertyOptional() @Nullable() @IsString() @MaxLength(2048) @IsUrl(URL_OPTS) websiteUrl?: string | null;
+  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(200) nameAr?:
+    string | null;
+  @ApiPropertyOptional() @Nullable() @IsString() @MaxLength(2048) @IsUrl(URL_OPTS) websiteUrl?:
+    string | null;
   @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(50) phone?: string | null;
   @ApiPropertyOptional() @Nullable() @IsString() @MaxLength(320) email?: string | null;
 }
@@ -452,8 +529,11 @@ export class AdminReportListQueryDto extends PaginationQueryDto {
 }
 
 export class UpdateReportDto {
-  @ApiProperty({ enum: REPORT_STATUS_VALUES }) @IsIn(REPORT_STATUS_VALUES) status!: (typeof REPORT_STATUS_VALUES)[number];
-  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(2000) resolutionNote?: string | null;
+  @ApiProperty({ enum: REPORT_STATUS_VALUES })
+  @IsIn(REPORT_STATUS_VALUES)
+  status!: (typeof REPORT_STATUS_VALUES)[number];
+  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(2000) resolutionNote?:
+    string | null;
 }
 
 export class AdminCheckinListQueryDto extends PaginationQueryDto {
@@ -500,7 +580,8 @@ export class ApproveSuggestionDto extends PartialType(CreateStationDto) {
 }
 
 export class RejectSuggestionDto {
-  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(2000) reviewNote?: string | null;
+  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(2000) reviewNote?:
+    string | null;
 }
 
 export class DuplicateSuggestionDto {
@@ -508,7 +589,8 @@ export class DuplicateSuggestionDto {
   @IsString()
   @Matches(UUID_RE, { context: UUID_MESSAGE })
   stationId!: string;
-  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(2000) reviewNote?: string | null;
+  @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(2000) reviewNote?:
+    string | null;
 }
 
 // --- duplicates ---------------------------------------------------------------------------
@@ -525,8 +607,14 @@ export class DuplicateListQueryDto extends PaginationQueryDto {
 }
 
 export class CreateDuplicateDto {
-  @ApiProperty({ format: 'uuid' }) @IsString() @Matches(UUID_RE, { context: UUID_MESSAGE }) stationId!: string;
-  @ApiProperty({ format: 'uuid' }) @IsString() @Matches(UUID_RE, { context: UUID_MESSAGE }) otherStationId!: string;
+  @ApiProperty({ format: 'uuid' })
+  @IsString()
+  @Matches(UUID_RE, { context: UUID_MESSAGE })
+  stationId!: string;
+  @ApiProperty({ format: 'uuid' })
+  @IsString()
+  @Matches(UUID_RE, { context: UUID_MESSAGE })
+  otherStationId!: string;
   @ApiPropertyOptional() @Nullable() @CleanText() @IsString() @MaxLength(1000) note?: string | null;
 }
 
@@ -552,7 +640,10 @@ export class ScanDuplicatesDto {
 }
 
 export class MergeDuplicateDto {
-  @ApiProperty({ format: 'uuid', description: 'The station that stays (the other one is merged into it).' })
+  @ApiProperty({
+    format: 'uuid',
+    description: 'The station that stays (the other one is merged into it).',
+  })
   @IsString()
   @Matches(UUID_RE, { context: UUID_MESSAGE })
   keepStationId!: string;
@@ -698,7 +789,10 @@ export class ObservationInputDto {
 
   @ApiProperty({ format: 'date-time' }) @IsISO8601({ strict: true }) observedAt!: string;
 
-  @ApiPropertyOptional({ format: 'date-time', description: 'Default observedAt + 10 min, max 24 h.' })
+  @ApiPropertyOptional({
+    format: 'date-time',
+    description: 'Default observedAt + 10 min, max 24 h.',
+  })
   @IsOptional()
   @IsISO8601({ strict: true })
   expiresAt?: string;
@@ -735,4 +829,3 @@ export class RefreshAvailabilityDto {
   @Matches(UUID_RE, { each: true, context: UUID_MESSAGE })
   stationIds!: string[];
 }
-

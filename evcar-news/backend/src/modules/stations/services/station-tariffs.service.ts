@@ -1,11 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
 import type { SupportedLanguage } from '../../../config/app-config';
 import { Prisma } from '../../../generated/prisma/client';
-import type { Reliability } from '../../../generated/prisma/enums';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { AuditService } from '../../audit';
 import { STATIONS_CLOCK, type StationsClock } from '../common/clock';
-import { type FieldProblem, fieldError, fieldErrors, StationErrors } from '../common/station-errors';
+import {
+  type FieldProblem,
+  fieldError,
+  fieldErrors,
+  StationErrors,
+} from '../common/station-errors';
 import type { TariffDto } from '../dto/public.dto';
 import type { CreateTariffDto, TariffElementInputDto, UpdateTariffDto } from '../dto/admin.dto';
 import { StationDetailService } from './station-detail.service';
@@ -123,7 +127,10 @@ export class StationTariffsService {
       select: { code: true },
     });
     if (!currency) {
-      throw fieldError('currencyCode', 'exists', { ar: 'العملة غير مسجلة.', en: 'Unknown currency.' });
+      throw fieldError('currencyCode', 'exists', {
+        ar: 'العملة غير مسجلة.',
+        en: 'Unknown currency.',
+      });
     }
     if (next.chargingPointId) {
       const p = await this.prisma.chargingPoint.findFirst({
@@ -157,7 +164,8 @@ export class StationTariffsService {
         where: { id: next.sourceId },
         select: { id: true },
       });
-      if (!s) throw fieldError('sourceId', 'exists', { ar: 'المصدر غير موجود.', en: 'Unknown source.' });
+      if (!s)
+        throw fieldError('sourceId', 'exists', { ar: 'المصدر غير موجود.', en: 'Unknown source.' });
     }
   }
 
@@ -203,7 +211,7 @@ export class StationTariffsService {
         notes: dto.notes ?? null,
         sourceId: dto.sourceId ?? null,
         verifiedAt: dto.verifiedAt ? new Date(dto.verifiedAt) : null,
-        reliability: (dto.reliability ?? 'unverified') as Reliability,
+        reliability: dto.reliability ?? 'unverified',
         createdById: userId,
         elements: { create: this.elementsData(dto.elements) },
       },
@@ -232,7 +240,8 @@ export class StationTariffsService {
     const iso = (d: Date | null) => (d ? d.toISOString() : null);
     await this.validate(stationId, {
       currencyCode: dto.currencyCode ?? before.currencyCode,
-      chargingPointId: dto.chargingPointId !== undefined ? dto.chargingPointId : before.chargingPointId,
+      chargingPointId:
+        dto.chargingPointId !== undefined ? dto.chargingPointId : before.chargingPointId,
       connectorId: dto.connectorId !== undefined ? dto.connectorId : before.connectorId,
       sourceId: dto.sourceId !== undefined ? dto.sourceId : before.sourceId,
       validFrom: dto.validFrom !== undefined ? dto.validFrom : iso(before.validFrom),
@@ -259,7 +268,7 @@ export class StationTariffsService {
           notes: dto.notes,
           sourceId: dto.sourceId,
           verifiedAt: date(dto.verifiedAt),
-          reliability: dto.reliability as Reliability | undefined,
+          reliability: dto.reliability,
           ...(dto.elements ? { elements: { create: this.elementsData(dto.elements) } } : {}),
         },
         include: { elements: true },

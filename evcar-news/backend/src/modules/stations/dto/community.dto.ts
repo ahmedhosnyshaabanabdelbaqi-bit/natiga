@@ -214,7 +214,10 @@ export class CreateStationSuggestionDto {
   @ApiProperty({ example: 'EG' })
   @IsString()
   @Matches(/^[A-Z]{2}$/, {
-    context: localizedMessage({ ar: 'رمز الدولة من حرفين (EG).', en: 'Two-letter country code (EG).' }),
+    context: localizedMessage({
+      ar: 'رمز الدولة من حرفين (EG).',
+      en: 'Two-letter country code (EG).',
+    }),
   })
   countryCode!: string;
 

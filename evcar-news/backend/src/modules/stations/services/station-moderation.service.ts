@@ -1,14 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import type { SupportedLanguage } from '../../../config/app-config';
-import { paginated, type PaginatedResponse } from '../../../common/http/responses';
+import { paginated } from '../../../common/http/responses';
 import { toPageRequest } from '../../../common/http/pagination';
 import type { Prisma } from '../../../generated/prisma/client';
 import type {
   CheckinOutcome,
   ModerationStatus,
   ReportStatus,
-  StationAccessType,
-  StationOperationalStatus,
   StationReportType,
   StationSuggestionStatus,
 } from '../../../generated/prisma/enums';
@@ -116,12 +114,20 @@ export class StationModerationService {
   }
 
   async getReport(id: string, lang: SupportedLanguage) {
-    const r = await this.prisma.stationReport.findUnique({ where: { id }, include: REPORT_INCLUDE });
+    const r = await this.prisma.stationReport.findUnique({
+      where: { id },
+      include: REPORT_INCLUDE,
+    });
     if (!r) throw StationErrors.notFound('station_report');
     return this.reportView(r, lang, await this.detail.reportLabels());
   }
 
-  async updateReport(id: string, dto: UpdateReportDto, moderatorId: string, lang: SupportedLanguage) {
+  async updateReport(
+    id: string,
+    dto: UpdateReportDto,
+    moderatorId: string,
+    lang: SupportedLanguage,
+  ) {
     const before = await this.prisma.stationReport.findUnique({ where: { id } });
     if (!before) throw StationErrors.notFound('station_report');
     const closing = dto.status === 'resolved' || dto.status === 'rejected';
@@ -304,9 +310,16 @@ export class StationModerationService {
   }
 
   /** Creates a station from the suggestion (+ reviewer edits) and closes it. */
-  async approveSuggestion(id: string, dto: ApproveSuggestionDto, user: AuthUser, lang: SupportedLanguage) {
+  async approveSuggestion(
+    id: string,
+    dto: ApproveSuggestionDto,
+    user: AuthUser,
+    lang: SupportedLanguage,
+  ) {
     const s = await this.pending(id);
-    const suggested = (Array.isArray(s.connectors) ? s.connectors : []) as unknown as SuggestedConnector[];
+    const suggested = (Array.isArray(s.connectors)
+      ? s.connectors
+      : []) as unknown as SuggestedConnector[];
     const connectors: CreateConnectorDto[] =
       dto.createConnectors === false
         ? []
@@ -330,13 +343,16 @@ export class StationModerationService {
         marketCode: overrides.marketCode !== undefined ? overrides.marketCode : s.marketCode,
         addressLine: overrides.addressLine !== undefined ? overrides.addressLine : s.addressText,
         city: overrides.city !== undefined ? overrides.city : s.city,
-        accessType: (overrides.accessType ?? s.accessType) as StationAccessType,
+        accessType: overrides.accessType ?? s.accessType,
         openingHoursText:
-          overrides.openingHoursText !== undefined ? overrides.openingHoursText : s.openingHoursText,
+          overrides.openingHoursText !== undefined
+            ? overrides.openingHoursText
+            : s.openingHoursText,
         ...overrides,
         lastVerifiedAt: overrides.lastVerifiedAt ?? null,
-        attribution: overrides.attribution ?? 'Suggested by an app user; reviewed by EV Car News staff',
-        operationalStatus: (overrides.operationalStatus ?? 'unknown') as StationOperationalStatus,
+        attribution:
+          overrides.attribution ?? 'Suggested by an app user; reviewed by EV Car News staff',
+        operationalStatus: overrides.operationalStatus ?? 'unknown',
         connectors,
       },
       user,
@@ -363,10 +379,18 @@ export class StationModerationService {
       before: { status: 'pending' },
       after: { status: 'approved', createdStationId: station.id },
     });
-    return { suggestion: await this.getSuggestion(id, lang), station: await this.admin.get(station.id) };
+    return {
+      suggestion: await this.getSuggestion(id, lang),
+      station: await this.admin.get(station.id),
+    };
   }
 
-  async rejectSuggestion(id: string, dto: RejectSuggestionDto, reviewerId: string, lang: SupportedLanguage) {
+  async rejectSuggestion(
+    id: string,
+    dto: RejectSuggestionDto,
+    reviewerId: string,
+    lang: SupportedLanguage,
+  ) {
     await this.pending(id);
     await this.prisma.stationSuggestion.update({
       where: { id },

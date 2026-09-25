@@ -142,7 +142,7 @@ export class VehicleCompatService {
       connectorTypeCode: i.connectorTypeCode,
       currentType: i.currentType,
       maxPowerKw: num(i.maxPowerKw),
-      reliability: i.reliability as string,
+      reliability: i.reliability,
       name: pick(lang, i.connectorType.nameAr, i.connectorType.nameEn) ?? i.connectorTypeCode,
     }));
     const usable = all.filter(isUsableInlet);

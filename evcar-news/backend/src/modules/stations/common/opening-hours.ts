@@ -45,7 +45,12 @@ export function validateOpeningHours(value: unknown): HoursProblem[] {
     }
     windows.forEach((w: unknown, i) => {
       const path = `${base}[${i}]`;
-      if (!Array.isArray(w) || w.length !== 2 || typeof w[0] !== 'string' || typeof w[1] !== 'string') {
+      if (
+        !Array.isArray(w) ||
+        w.length !== 2 ||
+        typeof w[0] !== 'string' ||
+        typeof w[1] !== 'string'
+      ) {
         problems.push({ path, rule: 'window' });
       } else if (!START_RE.test(w[0]) || !END_RE.test(w[1])) {
         problems.push({ path, rule: 'time' });
@@ -90,7 +95,12 @@ function minutesOf(hhmm: string): number {
 /** Wall time `minutes` after local midnight of `day` (DST-safe via luxon). */
 function at(day: DateTime, minutes: number): DateTime {
   if (minutes >= 24 * 60) return day.plus({ days: 1 }).startOf('day');
-  return day.set({ hour: Math.floor(minutes / 60), minute: minutes % 60, second: 0, millisecond: 0 });
+  return day.set({
+    hour: Math.floor(minutes / 60),
+    minute: minutes % 60,
+    second: 0,
+    millisecond: 0,
+  });
 }
 
 function dayKey(day: DateTime): WeekDay {
@@ -164,7 +174,7 @@ export function evaluateOpenNow(
   if (current) {
     // Merge contiguous / overlapping windows (e.g. "20:00-24:00" + next "00:00-02:00").
     let end = current.end;
-    for (let changed = true; changed; ) {
+    for (let changed = true; changed;) {
       changed = false;
       for (const i of open) {
         if (i.start <= end && i.end > end) {

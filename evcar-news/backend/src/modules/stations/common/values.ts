@@ -46,21 +46,6 @@ export function setNoStore(res: Response): void {
   res.setHeader('Cache-Control', 'no-store');
 }
 
-/** Comma list query param → trimmed unique non-empty values. */
-export function csv(value: unknown): string[] | undefined {
-  if (value === undefined || value === null || value === '') return undefined;
-  const raw = Array.isArray(value) ? value.join(',') : String(value);
-  const items = [
-    ...new Set(
-      raw
-        .split(',')
-        .map((s) => s.trim())
-        .filter(Boolean),
-    ),
-  ];
-  return items.length > 0 ? items : undefined;
-}
-
 export const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export function isUuid(value: unknown): value is string {

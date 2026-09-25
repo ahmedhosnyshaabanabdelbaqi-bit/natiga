@@ -6,14 +6,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsIn, IsOptional, IsString, Matches, MaxLength } from 'class-validator';
 import { CleanText } from '../../../common/validation/decorators';
 import { localizedMessage } from '../../../common/validation/messages';
-import {
-  QueryBool,
-  QueryCodes,
-  QueryInt,
-  QueryList,
-  QueryNumber,
-  QueryUuids,
-} from './validators';
+import { QueryBool, QueryCodes, QueryInt, QueryList, QueryNumber, QueryUuids } from './validators';
 
 export const ACCESS_TYPE_VALUES = [
   'public',
@@ -77,7 +70,9 @@ export class StationFilterQueryDto {
   @QueryNumber(0.1, 300)
   radiusKm?: number;
 
-  @ApiPropertyOptional({ description: 'Text in name / address / city / operator (Arabic-normalized).' })
+  @ApiPropertyOptional({
+    description: 'Text in name / address / city / operator (Arabic-normalized).',
+  })
   @IsOptional()
   @CleanText()
   @IsString()
@@ -280,7 +275,15 @@ export class ConnectorAvailabilityDto {
   @ApiProperty({
     nullable: true,
     type: String,
-    enum: ['available', 'charging', 'reserved', 'blocked', 'out_of_order', 'inoperative', 'unknown'],
+    enum: [
+      'available',
+      'charging',
+      'reserved',
+      'blocked',
+      'out_of_order',
+      'inoperative',
+      'unknown',
+    ],
   })
   providerStatus!: string | null;
   @ApiProperty({ enum: ['live', 'expired', 'none'] }) freshness!: string;
@@ -415,7 +418,8 @@ export class StationAvailabilityDto {
   @ApiProperty({ description: 'At least one non-expired live observation.' }) isLive!: boolean;
   @ApiProperty({ enum: ['available', 'occupied', 'out_of_order', 'unknown'] }) status!: string;
   @ApiProperty({ type: AvailabilityCountsDto }) counts!: AvailabilityCountsDto;
-  @ApiProperty({ nullable: true, type: String, format: 'date-time' }) lastObservedAt!: string | null;
+  @ApiProperty({ nullable: true, type: String, format: 'date-time' }) lastObservedAt!:
+    string | null;
   @ApiProperty() disclaimer!: string;
 }
 
@@ -477,8 +481,10 @@ export class StationSourceInfoDto {
   @ApiProperty({ enum: DATA_SOURCE_VALUES }) dataSource!: string;
   @ApiProperty({ nullable: true, type: String }) license!: string | null;
   @ApiProperty({ nullable: true, type: String }) attribution!: string | null;
-  @ApiProperty({ nullable: true, type: String, format: 'date-time' }) lastVerifiedAt!: string | null;
-  @ApiProperty({ nullable: true, type: String, format: 'date-time' }) sourceUpdatedAt!: string | null;
+  @ApiProperty({ nullable: true, type: String, format: 'date-time' }) lastVerifiedAt!:
+    string | null;
+  @ApiProperty({ nullable: true, type: String, format: 'date-time' }) sourceUpdatedAt!:
+    string | null;
   @ApiProperty({ format: 'date-time' }) lastUpdated!: string;
   @ApiProperty({ type: [ProviderSourceDto] }) providers!: ProviderSourceDto[];
 }
@@ -507,7 +513,11 @@ export class CommunityCheckinsDto {
   @ApiProperty() total!: number;
   @ApiProperty() last30Days!: number;
   @ApiProperty({ nullable: true, type: String, format: 'date-time' }) lastAt!: string | null;
-  @ApiProperty({ nullable: true, type: Number, description: '0..1, needs ≥ 3 check-ins in 30 days' })
+  @ApiProperty({
+    nullable: true,
+    type: Number,
+    description: '0..1, needs ≥ 3 check-ins in 30 days',
+  })
   successRate30d!: number | null;
   @ApiProperty({ type: [CommunityCheckinDto] }) recent!: CommunityCheckinDto[];
 }
@@ -578,7 +588,11 @@ export class StationDetailDto {
   @ApiProperty({ nullable: true, type: Number }) pointCount!: number | null;
   @ApiProperty() connectorCount!: number;
   @ApiProperty({ type: [TariffDto] }) tariffs!: TariffDto[];
-  @ApiProperty({ nullable: true, type: String, description: 'Free text as published by the source.' })
+  @ApiProperty({
+    nullable: true,
+    type: String,
+    description: 'Free text as published by the source.',
+  })
   usageCostText!: string | null;
   @ApiProperty({ type: StationAvailabilityDto }) availability!: StationAvailabilityDto;
   @ApiProperty({ type: StationSourceInfoDto }) source!: StationSourceInfoDto;

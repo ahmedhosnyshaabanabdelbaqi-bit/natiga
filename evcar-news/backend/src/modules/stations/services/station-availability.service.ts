@@ -115,7 +115,7 @@ export class StationAvailabilityService {
     for (const r of rows) {
       const obs: ObservationLike = {
         provider: r.provider,
-        status: r.status as LiveAvailabilityStatus,
+        status: r.status,
         observedAt: r.observed_at,
         expiresAt: r.expires_at,
       };
@@ -129,7 +129,9 @@ export class StationAvailabilityService {
    * Public availability view of every connector: the connector's own newest
    * observation, else its charge point's; expired → unknown.
    */
-  async connectorViews(connectors: ConnectorRef[]): Promise<Map<string, ConnectorAvailabilityView>> {
+  async connectorViews(
+    connectors: ConnectorRef[],
+  ): Promise<Map<string, ConnectorAvailabilityView>> {
     const now = this.clock.now();
     const stationIds = [...new Set(connectors.map((c) => c.stationId))];
     const { byConnector, byPoint } = await this.newestObservations(stationIds);
@@ -254,7 +256,11 @@ export class StationAvailabilityService {
         select: { stationId: true, chargingPointId: true },
       });
       if (!c || (input.stationId && input.stationId !== c.stationId)) throw fail();
-      return { stationId: c.stationId, chargingPointId: c.chargingPointId, connectorId: input.connectorId };
+      return {
+        stationId: c.stationId,
+        chargingPointId: c.chargingPointId,
+        connectorId: input.connectorId,
+      };
     }
     if (input.chargingPointId || input.evseId) {
       const p = await this.prisma.chargingPoint.findFirst({
