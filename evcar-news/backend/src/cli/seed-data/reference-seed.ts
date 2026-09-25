@@ -4,6 +4,7 @@ import {
   APP_SETTINGS,
   CONNECTOR_TYPES,
   CURRENCIES,
+  DEFAULT_CATEGORIES,
   MARKETS,
   RETIRED_SPEC_KEYS,
   SEARCH_ALIASES,
@@ -19,6 +20,8 @@ export interface ReferenceSeedSummary {
   rolePermissionsAdded: number;
   appSettingsAdded: number;
   specDefinitions: number;
+  categoriesAdded: number;
+  categoryTranslationsAdded: number;
   searchAliasesAdded: number;
 }
 
@@ -28,7 +31,10 @@ export interface ReferenceSeedSummary {
  * - reference tables owned by code (connector types, permissions, spec
  *   definitions) are upserted;
  * - admin-managed data is only created when missing and never overwritten:
- *   currencies and markets (editable in /admin), app settings, aliases;
+ *   currencies and markets (editable in /admin), app settings, default news
+ *   categories (found by system key, or adopted by slug; only missing
+ *   translations are added) and search aliases (flagged `isSystem`; admins
+ *   deactivate them instead of deleting — a deleted one comes back);
  * - role permission sets: a role created by this run gets its code
  *   permissions; an existing role only gets permissions that are NEW in code
  *   (tracked in seeded_role_permissions), each audited as
@@ -188,9 +194,69 @@ export async function runReferenceSeed(prisma: PrismaClient): Promise<ReferenceS
         if (used === 0) await tx.specDefinition.deleteMany({ where: { key } });
       }
 
+      let categoriesAdded = 0;
+      let categoryTranslationsAdded = 0;
+      for (const def of DEFAULT_CATEGORIES) {
+        let category = await tx.category.findUnique({
+          where: { systemKey: def.systemKey },
+          select: { id: true },
+        });
+        if (!category) {
+          // Adopt an admin-created category with the same slug (never
+          // renamed); otherwise create it.
+          const bySlug = await tx.category.findUnique({
+            where: { slug: def.slug },
+            select: { id: true, systemKey: true },
+          });
+          if (bySlug && bySlug.systemKey === null) {
+            category = await tx.category.update({
+              where: { id: bySlug.id },
+              data: { systemKey: def.systemKey },
+              select: { id: true },
+            });
+          } else if (!bySlug) {
+            category = await tx.category.create({
+              data: {
+                systemKey: def.systemKey,
+                slug: def.slug,
+                defaultArticleType: def.defaultArticleType,
+                sortOrder: def.sortOrder,
+              },
+              select: { id: true },
+            });
+            categoriesAdded += 1;
+          } else {
+            // The slug belongs to another system category: leave both alone.
+            continue;
+          }
+        }
+        categoryTranslationsAdded += (
+          await tx.categoryTranslation.createMany({
+            data: (['ar', 'en'] as const).map((locale) => ({
+              categoryId: category.id,
+              locale,
+              name: def.translations[locale].name,
+              description: def.translations[locale].description,
+            })),
+            skipDuplicates: true,
+          })
+        ).count;
+      }
+
       const searchAliasesAdded = (
-        await tx.searchAlias.createMany({ data: SEARCH_ALIASES, skipDuplicates: true })
+        await tx.searchAlias.createMany({
+          data: SEARCH_ALIASES.map((a) => ({ ...a, isSystem: true })),
+          skipDuplicates: true,
+        })
       ).count;
+      // Rows seeded before the flag existed (or typed in by an admin) are adopted.
+      await tx.searchAlias.updateMany({
+        where: {
+          isSystem: false,
+          OR: SEARCH_ALIASES.map((a) => ({ term: a.term, canonical: a.canonical })),
+        },
+        data: { isSystem: true },
+      });
 
       return {
         currencies: CURRENCIES.length,
@@ -201,6 +267,8 @@ export async function runReferenceSeed(prisma: PrismaClient): Promise<ReferenceS
         rolePermissionsAdded,
         appSettingsAdded,
         specDefinitions: SPEC_DEFINITIONS.length,
+        categoriesAdded,
+        categoryTranslationsAdded,
         searchAliasesAdded,
       };
     },

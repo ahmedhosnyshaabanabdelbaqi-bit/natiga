@@ -144,6 +144,16 @@ enum ConsumptionMode {
   @@map("consumption_mode")
 }
 
+/// What a gallery image shows.
+enum VehicleMediaKind {
+  gallery
+  exterior
+  interior
+  detail
+
+  @@map("vehicle_media_kind")
+}
+
 model Brand {
   id            String        @id @default(uuid(7)) @db.Uuid
   slug          String        @unique @db.VarChar(120)
@@ -226,8 +236,9 @@ model Generation {
   updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
   deletedAt DateTime? @map("deleted_at") @db.Timestamptz(3)
 
-  model      CarModel    @relation(fields: [modelId], references: [id], onDelete: Cascade)
+  model      CarModel       @relation(fields: [modelId], references: [id], onDelete: Cascade)
   modelYears ModelYear[]
+  media      VehicleMedia[]
 
   @@unique([modelId, slug])
   @@map("generations")
@@ -262,6 +273,8 @@ model VehicleVariant {
   driveType      DriveType?     @map("drive_type")
   seats          Int?           @db.SmallInt
   doors          Int?           @db.SmallInt
+  /// Display order of trims inside a model year (ascending).
+  sortOrder      Int            @default(0) @map("sort_order")
   status         ContentStatus  @default(draft)
   publishedAt    DateTime?      @map("published_at") @db.Timestamptz(3)
   isDemo         Boolean        @default(false) @map("is_demo")
@@ -294,6 +307,7 @@ model VehicleVariant {
 
   /// Same trim name may exist for BEV and PHEV of one model year, but never twice per powertrain.
   @@unique([modelYearId, powertrainType, nameEn])
+  @@index([modelYearId, sortOrder])
   @@index([powertrainType, status])
   @@index([status, publishedAt(sort: Desc)])
   @@map("vehicle_variants")
@@ -316,10 +330,12 @@ model VariantMarket {
   createdAt      DateTime           @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt      DateTime           @updatedAt @map("updated_at") @db.Timestamptz(3)
 
-  variant VehicleVariant       @relation(fields: [variantId], references: [id], onDelete: Cascade)
-  market  Market               @relation(fields: [marketCode], references: [code], onDelete: Restrict)
-  source  SpecificationSource? @relation(fields: [sourceId], references: [id], onDelete: Restrict)
-  inlets  VariantMarketInlet[]
+  variant         VehicleVariant       @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  market          Market               @relation(fields: [marketCode], references: [code], onDelete: Restrict)
+  source          SpecificationSource? @relation(fields: [sourceId], references: [id], onDelete: Restrict)
+  inlets          VariantMarketInlet[]
+  /// Comparison items pin a variant IN a market where it has a row here.
+  comparisonItems ComparisonItem[]
 
   @@unique([variantId, marketCode])
   @@index([marketCode, availability])
@@ -618,25 +634,29 @@ model PriceHistory {
   @@map("price_history")
 }
 
-/// Gallery images attached to a model or a specific variant (exactly one; CHECK).
+/// Gallery images attached to exactly one of: a model (generic), a
+/// generation (most press photos) or a specific variant (CHECK). The image's
+/// rights live on the media asset (license). Never used for 360° tours.
 model VehicleMedia {
-  id        String   @id @default(uuid(7)) @db.Uuid
-  modelId   String?  @map("model_id") @db.Uuid
-  variantId String?  @map("variant_id") @db.Uuid
-  assetId   String   @map("asset_id") @db.Uuid
-  /// gallery | exterior | interior | detail
-  kind      String   @default("gallery") @db.VarChar(32)
-  captionEn String?  @map("caption_en") @db.VarChar(500)
-  captionAr String?  @map("caption_ar") @db.VarChar(500)
-  isCover   Boolean  @default(false) @map("is_cover")
-  sortOrder Int      @default(0) @map("sort_order")
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  id           String           @id @default(uuid(7)) @db.Uuid
+  modelId      String?          @map("model_id") @db.Uuid
+  generationId String?          @map("generation_id") @db.Uuid
+  variantId    String?          @map("variant_id") @db.Uuid
+  assetId      String           @map("asset_id") @db.Uuid
+  kind         VehicleMediaKind @default(gallery)
+  captionEn    String?          @map("caption_en") @db.VarChar(500)
+  captionAr    String?          @map("caption_ar") @db.VarChar(500)
+  isCover      Boolean          @default(false) @map("is_cover")
+  sortOrder    Int              @default(0) @map("sort_order")
+  createdAt    DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
 
-  model   CarModel?       @relation(fields: [modelId], references: [id], onDelete: Cascade)
-  variant VehicleVariant? @relation(fields: [variantId], references: [id], onDelete: Cascade)
-  asset   MediaAsset      @relation(fields: [assetId], references: [id], onDelete: Restrict)
+  model      CarModel?       @relation(fields: [modelId], references: [id], onDelete: Cascade)
+  generation Generation?     @relation(fields: [generationId], references: [id], onDelete: Cascade)
+  variant    VehicleVariant? @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  asset      MediaAsset      @relation(fields: [assetId], references: [id], onDelete: Restrict)
 
   @@index([modelId, sortOrder])
+  @@index([generationId, sortOrder])
   @@index([variantId, sortOrder])
   @@index([assetId])
   @@map("vehicle_media")

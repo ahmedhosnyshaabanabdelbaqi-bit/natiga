@@ -35,6 +35,9 @@ enum RssItemStatus {
 }
 
 /// What the licence of a feed allows us to show. Default is the most restrictive.
+/// `summary_with_link` is the "summary only" mode. Anything above
+/// `headline_link_only` requires a recorded permission (CHECK: confirmed at +
+/// reference); a feed never implies the right to republish full articles.
 enum RssUsagePolicy {
   headline_link_only
   summary_with_link
@@ -43,14 +46,36 @@ enum RssUsagePolicy {
   @@map("rss_usage_policy")
 }
 
+/// Kind of a published correction note on an article.
+enum ArticleCorrectionKind {
+  /// A factual error was fixed.
+  correction
+  /// Wording made clearer, facts unchanged.
+  clarification
+  /// New information added after publication.
+  update
+
+  @@map("article_correction_kind")
+}
+
+/// News categories (+ translations). Rows seeded by the reference seed carry
+/// a stable `systemKey` (e.g. "batteries_charging") that code can rely on even
+/// after an admin renames the slug; they are created only when missing and
+/// should be deactivated (isActive = false), not deleted — a deleted system
+/// category is re-created by the next deploy.
 model Category {
-  id        String   @id @default(uuid(7)) @db.Uuid
-  slug      String   @unique @db.VarChar(120)
-  parentId  String?  @map("parent_id") @db.Uuid
-  sortOrder Int      @default(0) @map("sort_order")
-  isActive  Boolean  @default(true) @map("is_active")
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+  id                 String       @id @default(uuid(7)) @db.Uuid
+  slug               String       @unique @db.VarChar(120)
+  /// Stable key of seeded categories (NULL = created by an admin).
+  systemKey          String?      @unique @map("system_key") @db.VarChar(64)
+  parentId           String?      @map("parent_id") @db.Uuid
+  /// Article type suggested when an editor picks this category (e.g. reviews → review).
+  defaultArticleType ArticleType? @map("default_article_type")
+  sortOrder          Int          @default(0) @map("sort_order")
+  isActive           Boolean      @default(true) @map("is_active")
+  isDemo             Boolean      @default(false) @map("is_demo")
+  createdAt          DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt          DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
 
   parent                    Category?                  @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
   children                  Category[]                 @relation("CategoryTree")
@@ -60,6 +85,7 @@ model Category {
   notificationSubscriptions NotificationSubscription[]
 
   @@index([parentId])
+  @@index([isActive, sortOrder])
   @@map("categories")
 }
 
@@ -81,6 +107,7 @@ model CategoryTranslation {
 model Tag {
   id        String   @id @default(uuid(7)) @db.Uuid
   slug      String   @unique @db.VarChar(120)
+  isDemo    Boolean  @default(false) @map("is_demo")
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
 
@@ -106,7 +133,19 @@ model TagTranslation {
 
 /// News, reviews, test drives, guides... Language-specific text lives in
 /// article_translations; markets in article_markets (none = all markets).
-/// `eventDate` (when the event happened) is separate from `publishedAt`.
+/// `eventDate` (when the event happened) is separate from `publishedAt`, and
+/// `contentUpdatedAt` ("last edited", shown to readers) is separate from the
+/// technical `updatedAt`.
+///
+/// Enforced in SQL at COMMIT (deferred constraint trigger, so nested creates
+/// of article + translations work):
+/// - in_review / scheduled / published need a translation in
+///   `originalLanguage`;
+/// - scheduled / published additionally need that translation to be human
+///   written or human reviewed (never an unreviewed machine translation), and
+///   a cover asset, when set, must be a `ready` image with a licence.
+/// Other unreviewed machine translations may exist on a published article but
+/// must not be served publicly (service rule).
 model Article {
   id               String        @id @default(uuid(7)) @db.Uuid
   slug             String        @unique @db.VarChar(200)
@@ -122,8 +161,13 @@ model Article {
   submittedAt      DateTime?     @map("submitted_at") @db.Timestamptz(3)
   reviewedById     String?       @map("reviewed_by_id") @db.Uuid
   reviewedAt       DateTime?     @map("reviewed_at") @db.Timestamptz(3)
+  /// Last reviewer comment (e.g. why an article was sent back to draft).
+  reviewNote       String?       @map("review_note") @db.VarChar(2000)
   scheduledAt      DateTime?     @map("scheduled_at") @db.Timestamptz(3)
   publishedAt      DateTime?     @map("published_at") @db.Timestamptz(3)
+  /// Last editorial change after first publication ("تاريخ التعديل"); set by
+  /// the service, NULL = never edited after publishing.
+  contentUpdatedAt DateTime?     @map("content_updated_at") @db.Timestamptz(3)
   archivedAt       DateTime?     @map("archived_at") @db.Timestamptz(3)
   /// Attribution of the original source (RSS / external).
   sourceName       String?       @map("source_name") @db.VarChar(200)
@@ -150,12 +194,14 @@ model Article {
   markets      ArticleMarket[]
   translations ArticleTranslation[]
   revisions    ArticleRevision[]
+  corrections  ArticleCorrection[]
   tags         ArticleTag[]
   vehicleLinks ArticleVehicleLink[]
   comments     Comment[]
   favorites    Favorite[]
 
   @@index([status, publishedAt(sort: Desc)])
+  @@index([status, isFeatured, publishedAt(sort: Desc)])
   @@index([categoryId, status])
   @@index([authorId])
   @@index([type, status])
@@ -201,23 +247,50 @@ model ArticleTranslation {
   @@map("article_translations")
 }
 
-/// Full snapshot of an article (incl. translations) per saved version; used
-/// for history and "restore previous version".
+/// Full snapshot of an article (incl. translations, tags, markets, vehicle
+/// links) per saved version; used for history and "restore previous version".
+/// Restoring never rewrites history: it creates a NEW version whose
+/// `restoredFromVersion` names the version that was restored.
 model ArticleRevision {
-  id          String        @id @default(uuid(7)) @db.Uuid
-  articleId   String        @map("article_id") @db.Uuid
-  version     Int
-  status      ContentStatus
-  snapshot    Json
-  note        String?       @db.VarChar(500)
-  createdById String?       @map("created_by_id") @db.Uuid
-  createdAt   DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  id                  String        @id @default(uuid(7)) @db.Uuid
+  articleId           String        @map("article_id") @db.Uuid
+  version             Int
+  status              ContentStatus
+  snapshot            Json
+  note                String?       @db.VarChar(500)
+  restoredFromVersion Int?          @map("restored_from_version")
+  createdById         String?       @map("created_by_id") @db.Uuid
+  createdAt           DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
 
   article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
   createdBy User?   @relation(fields: [createdById], references: [id], onDelete: SetNull)
 
   @@unique([articleId, version])
   @@map("article_revisions")
+}
+
+/// Public corrections log of an article ("تصحيح" / "توضيح" / "تحديث"),
+/// shown under the article with its date. At least one of note_ar / note_en
+/// (CHECK). `revisionVersion` points to the article version with the fix.
+model ArticleCorrection {
+  id              String                @id @default(uuid(7)) @db.Uuid
+  articleId       String                @map("article_id") @db.Uuid
+  kind            ArticleCorrectionKind @default(correction)
+  noteAr          String?               @map("note_ar")
+  noteEn          String?               @map("note_en")
+  revisionVersion Int?                  @map("revision_version")
+  correctedAt     DateTime              @default(now()) @map("corrected_at") @db.Timestamptz(3)
+  /// false = internal note only (not shown to readers).
+  isPublic        Boolean               @default(true) @map("is_public")
+  createdById     String?               @map("created_by_id") @db.Uuid
+  createdAt       DateTime              @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt       DateTime              @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  createdBy User?   @relation("ArticleCorrectionAuthor", fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@index([articleId, correctedAt(sort: Desc)])
+  @@map("article_corrections")
 }
 
 model ArticleTag {
@@ -257,61 +330,97 @@ model ArticleVehicleLink {
 
 /// RSS/Atom sources fetched server-side through the SSRF-safe fetcher.
 model RssFeed {
-  id                   String         @id @default(uuid(7)) @db.Uuid
-  name                 String         @db.VarChar(200)
-  url                  String         @unique @db.VarChar(2048)
-  siteUrl              String?        @map("site_url") @db.VarChar(2048)
-  language             String?        @db.VarChar(10)
-  marketCode           String?        @map("market_code") @db.VarChar(8)
-  defaultCategoryId    String?        @map("default_category_id") @db.Uuid
-  isActive             Boolean        @default(true) @map("is_active")
-  fetchIntervalMinutes Int            @default(60) @map("fetch_interval_minutes")
-  usagePolicy          RssUsagePolicy @default(headline_link_only) @map("usage_policy")
-  licenseNotes         String?        @map("license_notes")
-  etag                 String?        @db.VarChar(512)
-  lastModified         String?        @map("last_modified") @db.VarChar(128)
-  lastFetchedAt        DateTime?      @map("last_fetched_at") @db.Timestamptz(3)
-  lastSuccessAt        DateTime?      @map("last_success_at") @db.Timestamptz(3)
-  lastError            String?        @map("last_error")
-  consecutiveFailures  Int            @default(0) @map("consecutive_failures")
-  createdById          String?        @map("created_by_id") @db.Uuid
-  createdAt            DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt            DateTime       @updatedAt @map("updated_at") @db.Timestamptz(3)
+  id                      String         @id @default(uuid(7)) @db.Uuid
+  name                    String         @db.VarChar(200)
+  url                     String         @unique @db.VarChar(2048)
+  siteUrl                 String?        @map("site_url") @db.VarChar(2048)
+  language                String?        @db.VarChar(10)
+  marketCode              String?        @map("market_code") @db.VarChar(8)
+  defaultCategoryId       String?        @map("default_category_id") @db.Uuid
+  isActive                Boolean        @default(true) @map("is_active")
+  fetchIntervalMinutes    Int            @default(60) @map("fetch_interval_minutes")
+  /// When the scheduler should fetch next (NULL = as soon as possible).
+  nextFetchAt             DateTime?      @map("next_fetch_at") @db.Timestamptz(3)
+  usagePolicy             RssUsagePolicy @default(headline_link_only) @map("usage_policy")
+  licenseNotes            String?        @map("license_notes")
+  /// Publisher's terms / licence page.
+  licenseUrl              String?        @map("license_url") @db.VarChar(2048)
+  /// Recorded permission (required for any policy above headline_link_only
+  /// and for allowImages — CHECK): when and by whom it was confirmed, and a
+  /// reference (contract no., e-mail subject/date, URL of the terms clause).
+  permissionConfirmedAt   DateTime?      @map("permission_confirmed_at") @db.Timestamptz(3)
+  permissionConfirmedById String?        @map("permission_confirmed_by_id") @db.Uuid
+  permissionReference     String?        @map("permission_reference") @db.VarChar(1000)
+  /// May feed images (item.imageUrl) be displayed? Off by default (media rights).
+  allowImages             Boolean        @default(false) @map("allow_images")
+  /// Attribution line to show with every item/article from this feed.
+  attributionText         String?        @map("attribution_text") @db.VarChar(500)
+  etag                    String?        @db.VarChar(512)
+  lastModified            String?        @map("last_modified") @db.VarChar(128)
+  lastFetchedAt           DateTime?      @map("last_fetched_at") @db.Timestamptz(3)
+  lastSuccessAt           DateTime?      @map("last_success_at") @db.Timestamptz(3)
+  lastError               String?        @map("last_error")
+  consecutiveFailures     Int            @default(0) @map("consecutive_failures")
+  createdById             String?        @map("created_by_id") @db.Uuid
+  createdAt               DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt               DateTime       @updatedAt @map("updated_at") @db.Timestamptz(3)
 
   market          Market?   @relation(fields: [marketCode], references: [code], onDelete: SetNull)
   defaultCategory Category? @relation(fields: [defaultCategoryId], references: [id], onDelete: SetNull)
   items           RssItem[]
 
   @@index([isActive, lastFetchedAt])
+  @@index([isActive, nextFetchAt])
   @@map("rss_feeds")
 }
 
-/// Imported feed entries, de-duplicated by guid hash (per feed) and by
-/// canonical URL hash (globally).
+/// Imported feed entries (excerpts only — never full articles). De-duplicated
+/// by guid hash (unique per feed), canonical URL hash (unique globally) and
+/// content hash (same title+summary from another feed/URL: indexed, the later
+/// item gets status `duplicate` + `duplicateOfId`). Converting an item creates
+/// an article DRAFT (status `drafted`); nothing is auto-published.
 model RssItem {
-  id          String        @id @default(uuid(7)) @db.Uuid
-  feedId      String        @map("feed_id") @db.Uuid
-  guid        String?       @db.VarChar(2048)
+  id             String        @id @default(uuid(7)) @db.Uuid
+  feedId         String        @map("feed_id") @db.Uuid
+  guid           String?       @db.VarChar(2048)
   /// sha256(guid) hex
-  guidHash    String?       @map("guid_hash") @db.Char(64)
-  url         String        @db.VarChar(2048)
+  guidHash       String?       @map("guid_hash") @db.Char(64)
+  /// URL as published in the feed.
+  url            String        @db.VarChar(2048)
+  /// Canonicalized URL (scheme/host lower-case, tracking params removed...) whose hash is urlHash.
+  canonicalUrl   String?       @map("canonical_url") @db.VarChar(2048)
   /// sha256(canonicalized url) hex
-  urlHash     String        @unique @map("url_hash") @db.Char(64)
-  title       String        @db.VarChar(500)
-  summary     String?
-  author      String?       @db.VarChar(200)
-  imageUrl    String?       @map("image_url") @db.VarChar(2048)
-  publishedAt DateTime?     @map("published_at") @db.Timestamptz(3)
-  fetchedAt   DateTime      @default(now()) @map("fetched_at") @db.Timestamptz(3)
-  status      RssItemStatus @default(new)
-  createdAt   DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt   DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
+  urlHash        String        @unique @map("url_hash") @db.Char(64)
+  /// sha256(normalized title + "\n" + normalized summary) hex.
+  contentHash    String?       @map("content_hash") @db.Char(64)
+  duplicateOfId  String?       @map("duplicate_of_id") @db.Uuid
+  title          String        @db.VarChar(500)
+  summary        String?
+  author         String?       @db.VarChar(200)
+  /// Only displayed when the feed has allowImages.
+  imageUrl       String?       @map("image_url") @db.VarChar(2048)
+  language       String?       @db.VarChar(10)
+  /// Category labels given by the feed (hints for the editor, not our categories).
+  feedCategories String[]      @default([]) @map("feed_categories") @db.VarChar(200)
+  publishedAt    DateTime?     @map("published_at") @db.Timestamptz(3)
+  fetchedAt      DateTime      @default(now()) @map("fetched_at") @db.Timestamptz(3)
+  status         RssItemStatus @default(new)
+  /// Why the item failed / was ignored (no secrets, no stack traces).
+  statusReason   String?       @map("status_reason") @db.VarChar(1000)
+  processedAt    DateTime?     @map("processed_at") @db.Timestamptz(3)
+  processedById  String?       @map("processed_by_id") @db.Uuid
+  createdAt      DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt      DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
 
-  feed    RssFeed  @relation(fields: [feedId], references: [id], onDelete: Cascade)
-  article Article?
+  feed        RssFeed   @relation(fields: [feedId], references: [id], onDelete: Cascade)
+  duplicateOf RssItem?  @relation("RssItemDuplicate", fields: [duplicateOfId], references: [id], onDelete: SetNull)
+  duplicates  RssItem[] @relation("RssItemDuplicate")
+  article     Article?
 
   @@unique([feedId, guidHash])
   @@index([feedId, publishedAt(sort: Desc)])
-  @@index([status])
+  @@index([status, fetchedAt(sort: Desc)])
+  @@index([contentHash])
+  @@index([duplicateOfId])
   @@map("rss_items")
 }

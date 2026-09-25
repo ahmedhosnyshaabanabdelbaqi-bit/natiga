@@ -1,6 +1,7 @@
 /**
  * Reference data (NOT sample content): currencies, markets, connector types,
- * default app settings, spec definitions and search aliases.
+ * default app settings, spec definitions, default news categories and
+ * search aliases.
  * Values here are generic reference facts or product defaults — no news,
  * prices, stations or vehicle data.
  */
@@ -772,6 +773,181 @@ export const SEARCH_ALIASES: { term: string; canonical: string }[] = [
   { term: 'شاحن', canonical: 'charger' },
   { term: 'محطة شحن', canonical: 'charging station' },
   { term: 'سيارة كهربائية', canonical: 'electric car' },
+  // --- phase 2: more brand spellings (Arabic ↔ Latin). Spellings only: the
+  // presence of a name here says nothing about a brand's models or markets.
+  { term: 'فوكس فاجن', canonical: 'Volkswagen' },
+  { term: 'فولكس', canonical: 'Volkswagen' },
+  { term: 'اكس بنج', canonical: 'XPeng' },
+  { term: 'مرسيدس بنز', canonical: 'Mercedes-Benz' },
+  { term: 'مارسيدس', canonical: 'Mercedes-Benz' },
+  { term: 'دينزا', canonical: 'Denza' },
+  { term: 'يانغ وانغ', canonical: 'Yangwang' },
+  { term: 'لوسيد', canonical: 'Lucid' },
+  { term: 'ريفيان', canonical: 'Rivian' },
+  { term: 'بولستار', canonical: 'Polestar' },
+  { term: 'لوتس', canonical: 'Lotus' },
+  { term: 'شانجان', canonical: 'Changan' },
+  { term: 'تشانجان', canonical: 'Changan' },
+  { term: 'أفاتر', canonical: 'Avatr' },
+  { term: 'ديبال', canonical: 'Deepal' },
+  { term: 'ليب موتور', canonical: 'Leapmotor' },
+  { term: 'جي ايه سي', canonical: 'GAC' },
+  { term: 'أيون', canonical: 'Aion' },
+  { term: 'دونغ فنغ', canonical: 'Dongfeng' },
+  { term: 'دونج فينج', canonical: 'Dongfeng' },
+  { term: 'فوياه', canonical: 'Voyah' },
+  { term: 'جريت وول', canonical: 'Great Wall' },
+  { term: 'أورا', canonical: 'ORA' },
+  { term: 'نيتا', canonical: 'Neta' },
+  { term: 'لي أوتو', canonical: 'Li Auto' },
+  { term: 'سمارت', canonical: 'smart' },
+  { term: 'فين فاست', canonical: 'VinFast' },
+  { term: 'فينفاست', canonical: 'VinFast' },
+  { term: 'رينو', canonical: 'Renault' },
+  { term: 'بيجو', canonical: 'Peugeot' },
+  { term: 'ستروين', canonical: 'Citroën' },
+  { term: 'سيتروين', canonical: 'Citroën' },
+  { term: 'أوبل', canonical: 'Opel' },
+  { term: 'سكودا', canonical: 'Škoda' },
+  { term: 'كوبرا', canonical: 'Cupra' },
+  { term: 'فورد', canonical: 'Ford' },
+  { term: 'شيفروليه', canonical: 'Chevrolet' },
+  { term: 'كاديلاك', canonical: 'Cadillac' },
+  { term: 'لكزس', canonical: 'Lexus' },
+  { term: 'هوندا', canonical: 'Honda' },
+  { term: 'مازدا', canonical: 'Mazda' },
+  { term: 'سوبارو', canonical: 'Subaru' },
+  { term: 'ميتسوبيشي', canonical: 'Mitsubishi' },
+  { term: 'جينيسيس', canonical: 'Genesis' },
+  { term: 'جاكوار', canonical: 'Jaguar' },
+  { term: 'ميني', canonical: 'MINI' },
+  { term: 'جيتور', canonical: 'Jetour' },
+  { term: 'إكسيد', canonical: 'Exeed' },
+  { term: 'أومودا', canonical: 'Omoda' },
+  { term: 'جايكو', canonical: 'Jaecoo' },
+  { term: 'بايك', canonical: 'BAIC' },
+  // --- powertrain, charging and data vocabulary (translations of terms)
+  { term: 'كهربائية بالكامل', canonical: 'BEV' },
+  { term: 'هجينة قابلة للشحن', canonical: 'PHEV' },
+  { term: 'بلج ان هايبرد', canonical: 'PHEV' },
+  { term: 'ممدد المدى', canonical: 'EREV' },
+  { term: 'هايبرد', canonical: 'hybrid' },
+  { term: 'هجين', canonical: 'hybrid' },
+  { term: 'شحن سريع', canonical: 'fast charging' },
+  { term: 'شاحن منزلي', canonical: 'home charger' },
+  { term: 'وول بوكس', canonical: 'wallbox' },
+  { term: 'تايب 2', canonical: 'Type 2' },
+  { term: 'سي سي اس', canonical: 'CCS' },
+  { term: 'تشاديمو', canonical: 'CHAdeMO' },
+  { term: 'جي بي تي', canonical: 'GB/T' },
+  { term: 'بطارية', canonical: 'battery' },
+  { term: 'مدى القيادة', canonical: 'range' },
+  { term: 'تحديث عن بعد', canonical: 'OTA update' },
+];
+
+/**
+ * Default news categories (REQUIREMENTS §5: news, reviews, test drives,
+ * batteries & charging, software & car updates, safety technology, buying
+ * guides). Created by the reference seed only when missing (looked up by
+ * `systemKey`, or adopted by slug); admins may rename or deactivate them.
+ * `systemKey` is stable and may be used by code (e.g. the home "charging
+ * guides" section uses `batteries_charging`).
+ */
+export interface DefaultCategory {
+  systemKey: string;
+  slug: string;
+  defaultArticleType:
+    'news' | 'review' | 'test_drive' | 'buying_guide' | 'explainer' | 'opinion' | null;
+  sortOrder: number;
+  translations: {
+    ar: { name: string; description: string };
+    en: { name: string; description: string };
+  };
+}
+
+export const DEFAULT_CATEGORIES: DefaultCategory[] = [
+  {
+    systemKey: 'news',
+    slug: 'news',
+    defaultArticleType: 'news',
+    sortOrder: 10,
+    translations: {
+      ar: { name: 'أخبار', description: 'أخبار السيارات الكهربائية والهجينة.' },
+      en: { name: 'News', description: 'Electric and hybrid car news.' },
+    },
+  },
+  {
+    systemKey: 'reviews',
+    slug: 'reviews',
+    defaultArticleType: 'review',
+    sortOrder: 20,
+    translations: {
+      ar: { name: 'مراجعات', description: 'مراجعات السيارات وتقييمها.' },
+      en: { name: 'Reviews', description: 'Car reviews and evaluations.' },
+    },
+  },
+  {
+    systemKey: 'test_drives',
+    slug: 'test-drives',
+    defaultArticleType: 'test_drive',
+    sortOrder: 30,
+    translations: {
+      ar: { name: 'تجارب القيادة', description: 'انطباعات من تجارب قيادة فعلية.' },
+      en: { name: 'Test drives', description: 'Impressions from real test drives.' },
+    },
+  },
+  {
+    systemKey: 'batteries_charging',
+    slug: 'batteries-charging',
+    defaultArticleType: null,
+    sortOrder: 40,
+    translations: {
+      ar: {
+        name: 'البطاريات والشحن',
+        description: 'أخبار وأدلة البطاريات والشحن المنزلي والسريع.',
+      },
+      en: {
+        name: 'Batteries & charging',
+        description: 'Battery, home charging and fast charging news and guides.',
+      },
+    },
+  },
+  {
+    systemKey: 'software_ota',
+    slug: 'software-ota',
+    defaultArticleType: null,
+    sortOrder: 50,
+    translations: {
+      ar: {
+        name: 'البرمجيات وتحديثات السيارات',
+        description: 'البرمجيات والأنظمة والتحديثات عن بُعد.',
+      },
+      en: {
+        name: 'Software & OTA updates',
+        description: 'Car software, systems and over-the-air updates.',
+      },
+    },
+  },
+  {
+    systemKey: 'safety',
+    slug: 'safety',
+    defaultArticleType: null,
+    sortOrder: 60,
+    translations: {
+      ar: { name: 'تقنيات الأمان', description: 'أنظمة الأمان والمساعدة على القيادة.' },
+      en: { name: 'Safety technology', description: 'Safety and driver-assistance systems.' },
+    },
+  },
+  {
+    systemKey: 'buying_guides',
+    slug: 'buying-guides',
+    defaultArticleType: 'buying_guide',
+    sortOrder: 70,
+    translations: {
+      ar: { name: 'أدلة الشراء', description: 'إرشادات لاختيار السيارة المناسبة.' },
+      en: { name: 'Buying guides', description: 'Guidance for choosing the right car.' },
+    },
+  },
 ];
 
 /**

@@ -63,18 +63,34 @@ model Favorite {
   @@map("favorites")
 }
 
-/// Saved / shared comparison of 2–4 variants in a market. `shareId` is the
-/// public short id used in https://evcar.news/compare/:shareId. Curated
-/// comparisons ("مقارنات مختارة") have isCurated = true and no owner.
+/// Saved / shared comparison of 2–4 variants. `shareId` is the public short
+/// id used in https://evcar.news/compare/:shareId.
+/// - saved by a user: userId set (deleted with the user);
+/// - anonymous share: userId NULL, isCurated false; `signature` (sha256 of the
+///   ordered "variantId@market" list) lets the service reuse an identical
+///   share instead of creating duplicates;
+/// - curated ("مقارنات مختارة"): isCurated, no owner (CHECK), workflow status
+///   in curatedStatus; published curated comparisons need titleAr + titleEn.
+/// `marketCode` is the display context (currency); each item pins its own
+/// market. Between 2 and 4 items at COMMIT (deferred constraint trigger).
+/// `viewCount` is an anonymous counter (no per-user history).
 model Comparison {
   id            String         @id @default(uuid(7)) @db.Uuid
   userId        String?        @map("user_id") @db.Uuid
   shareId       String         @unique @map("share_id") @db.VarChar(24)
+  /// User's own label.
   title         String?        @db.VarChar(200)
+  /// Display titles of curated comparisons.
+  titleAr       String?        @map("title_ar") @db.VarChar(200)
+  titleEn       String?        @map("title_en") @db.VarChar(200)
   marketCode    String         @map("market_code") @db.VarChar(8)
+  signature     String?        @db.Char(64)
   isCurated     Boolean        @default(false) @map("is_curated")
   curatedStatus ContentStatus? @map("curated_status")
   curatedOrder  Int?           @map("curated_order")
+  viewCount     Int            @default(0) @map("view_count")
+  lastViewedAt  DateTime?      @map("last_viewed_at") @db.Timestamptz(3)
+  isDemo        Boolean        @default(false) @map("is_demo")
   createdAt     DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt     DateTime       @updatedAt @map("updated_at") @db.Timestamptz(3)
 
@@ -85,10 +101,14 @@ model Comparison {
 
   @@index([userId, createdAt(sort: Desc)])
   @@index([isCurated, curatedStatus, curatedOrder])
+  @@index([signature])
   @@map("comparisons")
 }
 
 /// Each item pins variant (→ model year) + market; position 1..4 (CHECK).
+/// (variant_id, market_code) must exist in variant_markets (composite FK):
+/// a variant is never compared in a market it has no record for.
+/// To reorder, replace the items in one transaction (position is unique).
 model ComparisonItem {
   id           String   @id @default(uuid(7)) @db.Uuid
   comparisonId String   @map("comparison_id") @db.Uuid
@@ -97,13 +117,14 @@ model ComparisonItem {
   position     Int      @db.SmallInt
   createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
 
-  comparison Comparison     @relation(fields: [comparisonId], references: [id], onDelete: Cascade)
-  variant    VehicleVariant @relation(fields: [variantId], references: [id], onDelete: Restrict)
-  market     Market         @relation(fields: [marketCode], references: [code], onDelete: Restrict)
+  comparison    Comparison     @relation(fields: [comparisonId], references: [id], onDelete: Cascade)
+  variant       VehicleVariant @relation(fields: [variantId], references: [id], onDelete: Restrict)
+  market        Market         @relation(fields: [marketCode], references: [code], onDelete: Restrict)
+  variantMarket VariantMarket  @relation(fields: [variantId, marketCode], references: [variantId, marketCode], onDelete: Restrict)
 
   @@unique([comparisonId, position])
   @@unique([comparisonId, variantId, marketCode])
-  @@index([variantId])
+  @@index([variantId, marketCode])
   @@map("comparison_items")
 }
 

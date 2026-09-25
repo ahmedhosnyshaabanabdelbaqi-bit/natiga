@@ -76,6 +76,7 @@ model User {
   authoredArticles          Article[]                  @relation("ArticleAuthor")
   reviewedArticles          Article[]                  @relation("ArticleReviewer")
   articleRevisions          ArticleRevision[]
+  articleCorrections        ArticleCorrection[]        @relation("ArticleCorrectionAuthor")
   mediaUploads              MediaAsset[]               @relation("MediaUploader")
   uploadSessions            UploadSession[]
   approvedTours             InteriorTour[]             @relation("TourApprover")

@@ -81,6 +81,12 @@ export const PERMISSIONS: PermissionDef[] = [
   p('prices.write', 'Edit prices and price history', 'تعديل الأسعار وتاريخها'),
   p('sources.write', 'Manage data sources', 'إدارة مصادر البيانات'),
   p('comparisons.curate', 'Curate featured comparisons', 'إدارة المقارنات المختارة'),
+  // search
+  p(
+    'search.manage',
+    'Manage search aliases and rebuild the search index',
+    'إدارة مرادفات البحث وإعادة بناء فهرس البحث',
+  ),
   // media & tours
   p('media.read', 'Browse the media library', 'تصفح مكتبة الوسائط'),
   p('media.upload', 'Upload media', 'رفع الوسائط'),
@@ -189,6 +195,7 @@ export const ROLES: RoleDef[] = [
       'articles.restore_revision',
       'categories.write',
       'rss.manage',
+      'search.manage',
       'encyclopedia.review',
       'encyclopedia.publish',
       'tours.publish',
@@ -209,6 +216,7 @@ export const ROLES: RoleDef[] = [
       'prices.write',
       'sources.write',
       'comparisons.curate',
+      'search.manage',
       'media.read',
       'media.upload',
       'media.manage',

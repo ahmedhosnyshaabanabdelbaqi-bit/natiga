@@ -17,6 +17,8 @@ export const DEMO_IDS = {
   curve: 'd0000000-0000-4000-8000-000000000016',
   category: 'd0000000-0000-4000-8000-000000000020',
   article: 'd0000000-0000-4000-8000-000000000021',
+  tag: 'd0000000-0000-4000-8000-000000000022',
+  comparison: 'd0000000-0000-4000-8000-000000000040',
   operator: 'd0000000-0000-4000-8000-000000000030',
   station: 'd0000000-0000-4000-8000-000000000031',
   point: 'd0000000-0000-4000-8000-000000000032',
@@ -36,6 +38,7 @@ export const DEMO_STATION_LOCATION = { latitude: 32.5, longitude: 30.5 } as cons
 export interface DemoSeedSummary {
   variants: number;
   articles: number;
+  comparisons: number;
   stations: number;
 }
 
@@ -331,6 +334,7 @@ export async function runDemoSeed(prisma: PrismaClient): Promise<DemoSeedSummary
           id: I.category,
           slug: 'demo',
           sortOrder: 999,
+          isDemo: true,
           translations: {
             create: [
               { locale: 'ar', name: 'تجريبي' },
@@ -338,7 +342,23 @@ export async function runDemoSeed(prisma: PrismaClient): Promise<DemoSeedSummary
             ],
           },
         },
-        update: {},
+        // Databases seeded before the flag existed.
+        update: { isDemo: true },
+      });
+      await tx.tag.upsert({
+        where: { id: I.tag },
+        create: {
+          id: I.tag,
+          slug: 'demo-tag',
+          isDemo: true,
+          translations: {
+            create: [
+              { locale: 'ar', name: 'وسم تجريبي' },
+              { locale: 'en', name: 'Demo tag' },
+            ],
+          },
+        },
+        update: { isDemo: true },
       });
       await tx.article.upsert({
         where: { id: I.article },
@@ -375,6 +395,32 @@ export async function runDemoSeed(prisma: PrismaClient): Promise<DemoSeedSummary
             ],
           },
           vehicleLinks: { create: [{ variantId: I.variantBev }] },
+          tags: { create: [{ tagId: I.tag }] },
+        },
+        update: {},
+      });
+
+      // --- comparisons -------------------------------------------------------------
+      // A curated comparison of the two fictional variants (same trim name,
+      // different powertrains): exercises electric vs total range handling.
+      await tx.comparison.upsert({
+        where: { id: I.comparison },
+        create: {
+          id: I.comparison,
+          shareId: 'demo-cmp-0001',
+          titleAr: '[تجريبي] مقارنة تجريبية: كهربائية بالكامل أم هجينة قابلة للشحن',
+          titleEn: '[DEMO] Demo comparison: BEV vs PHEV (fictional)',
+          marketCode: 'EG',
+          isCurated: true,
+          curatedStatus: 'published',
+          curatedOrder: 999,
+          isDemo: true,
+          items: {
+            create: [
+              { variantId: I.variantBev, marketCode: 'EG', position: 1 },
+              { variantId: I.variantPhev, marketCode: 'EG', position: 2 },
+            ],
+          },
         },
         update: {},
       });
@@ -487,6 +533,7 @@ export async function runDemoSeed(prisma: PrismaClient): Promise<DemoSeedSummary
   return {
     variants: await prisma.vehicleVariant.count({ where: { isDemo: true } }),
     articles: await prisma.article.count({ where: { isDemo: true } }),
+    comparisons: await prisma.comparison.count({ where: { isDemo: true } }),
     stations: await prisma.chargingStation.count({ where: { isDemo: true } }),
   };
 }

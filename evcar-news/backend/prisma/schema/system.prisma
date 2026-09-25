@@ -121,16 +121,20 @@ model ImportJobRow {
 }
 
 /// Unified search index across entity types, one row per entity × locale.
-/// Owning modules upsert rows when content is published/changed. The
-/// normalized_* columns and search_vector are maintained by a trigger using
+/// Owning modules upsert rows when content is published/changed (and delete
+/// or unpublish them when it is unpublished/deleted). The normalized_*
+/// columns and search_vector are maintained by a trigger using
 /// app_normalize_text() (same rules as src/common/i18n/arabic-normalize.ts).
+/// `marketCodes` = markets where the entity is visible (article_markets,
+/// variant_markets...); EMPTY = all markets. Filter with
+/// `cardinality(market_codes) = 0 OR $market = ANY(market_codes)` (GIN index).
 model SearchDocument {
   id              String                   @id @default(uuid(7)) @db.Uuid
   entityType      SearchEntityType         @map("entity_type")
   entityId        String                   @map("entity_id") @db.Uuid
   locale          String                   @db.VarChar(10)
-  /// NULL = all markets.
-  marketCode      String?                  @map("market_code") @db.VarChar(8)
+  /// Empty = all markets.
+  marketCodes     String[]                 @default([]) @map("market_codes") @db.VarChar(8)
   title           String                   @db.VarChar(500)
   subtitle        String?                  @db.VarChar(500)
   body            String?
@@ -151,12 +155,17 @@ model SearchDocument {
   @@index([normalizedTitle(ops: raw("gin_trgm_ops"))], type: Gin, map: "search_documents_normalized_title_trgm")
   @@index([searchVector], type: Gin, map: "search_documents_search_vector_gin")
   @@index([entityType, isPublished])
-  @@index([marketCode])
+  @@index([marketCodes], type: Gin, map: "search_documents_market_codes_gin")
   @@map("search_documents")
 }
 
-/// Alternative spellings / transliterations, e.g. "بي واي دي" ↔ "BYD".
-/// term_normalized / canonical_normalized are maintained by trigger.
+/// Alternative spellings / transliterations, e.g. "بي واي دي" ↔ "BYD" (they
+/// are spellings, not facts). term_normalized / canonical_normalized are
+/// maintained by trigger. Optional binding to one entity (entityType +
+/// entityId, both or neither — CHECK; no FK because the target table varies).
+/// `isSystem` rows come from the reference seed, which re-creates missing
+/// ones on every deploy: admins deactivate them (isActive = false) instead of
+/// deleting or renaming them. Only active aliases are used for search.
 model SearchAlias {
   id                  String            @id @default(uuid(7)) @db.Uuid
   term                String            @db.VarChar(200)
@@ -166,20 +175,28 @@ model SearchAlias {
   locale              String?           @db.VarChar(10)
   entityType          SearchEntityType? @map("entity_type")
   entityId            String?           @map("entity_id") @db.Uuid
+  isActive            Boolean           @default(true) @map("is_active")
+  isSystem            Boolean           @default(false) @map("is_system")
   createdAt           DateTime          @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt           DateTime          @updatedAt @map("updated_at") @db.Timestamptz(3)
 
   @@unique([term, canonical])
   @@index([termNormalized(ops: raw("gin_trgm_ops"))], type: Gin, map: "search_aliases_term_trgm")
   @@index([canonicalNormalized])
+  @@index([entityType, entityId])
   @@map("search_aliases")
 }
 
-/// Daily aggregated counters for reports ("most read", "most compared").
-/// No per-user tracking.
+/// Daily aggregated counters for reports ("most read", "most compared") and
+/// anonymous analytics. No per-user tracking and no browsing history: only
+/// (entity, day) totals, incremented with
+/// INSERT ... ON CONFLICT (entity_type, entity_id, day) DO UPDATE SET x = x + n.
+/// Conventions: article → views/shares/favorites; variant → views and
+/// `comparisons` (+1 per comparison created or opened that contains it);
+/// comparison → views/shares.
 model ContentDailyStat {
   id          String   @id @default(uuid(7)) @db.Uuid
-  /// article | variant | model | tour | station | comparison
+  /// article | brand | model | variant | comparison | tour | station | encyclopedia (CHECK)
   entityType  String   @map("entity_type") @db.VarChar(32)
   entityId    String   @map("entity_id") @db.Uuid
   day         DateTime @db.Date
@@ -190,5 +207,6 @@ model ContentDailyStat {
 
   @@unique([entityType, entityId, day])
   @@index([day, entityType])
+  @@index([entityType, day])
   @@map("content_daily_stats")
 }
