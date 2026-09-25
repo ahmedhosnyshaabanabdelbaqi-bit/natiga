@@ -1,4 +1,5 @@
 {
   "@@locale": "en",
-  "servicesDirectoryTitle": "Services directory"
+  "servicesDirectoryTitle": "Services directory",
+  "servicesDirectoryProviderTitle": "Service provider"
 }

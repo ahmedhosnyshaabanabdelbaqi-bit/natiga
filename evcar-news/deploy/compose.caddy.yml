@@ -1,0 +1,62 @@
+# EV Car News — "caddy" proxy mode (ports 80/443 are free on this server).
+# Caddy terminates TLS with automatic Let's Encrypt certificates for
+# API_DOMAIN (and ADMIN_DOMAIN when the admin panel is enabled), serves
+# /media/* straight from the storage volume and proxies everything else.
+# Used together with docker-compose.prod.yml by deploy/evcar.sh.
+services:
+  caddy:
+    image: ${CADDY_IMAGE:-caddy:2.11.4-alpine}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp" # HTTP/3
+    environment:
+      API_DOMAIN: ${API_DOMAIN:?API_DOMAIN is not set}
+      ADMIN_DOMAIN: ${ADMIN_DOMAIN:-}
+      ACME_EMAIL: ${ACME_EMAIL:?ACME_EMAIL is not set}
+      # Largest accepted request body (resumable 360° upload chunks are at most
+      # UPLOAD_CHUNK_MAX_BYTES = 16 MiB by default).
+      PROXY_MAX_BODY: ${PROXY_MAX_BODY:-32MB}
+      # "admin" when the admin panel is deployed, "none" otherwise (evcar.sh).
+      EVCAR_ADMIN_SITE: ${EVCAR_ADMIN_SITE:-none}
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./caddy/sites:/etc/caddy/sites:ro
+      - caddy-data:/data
+      - caddy-config:/config
+      # Public media are served by Caddy directly (read-only).
+      - storage:/srv/storage:ro
+    # Certificates and config live in the caddy-data / caddy-config volumes.
+    read_only: ${EVCAR_READ_ONLY_ROOT:-true}
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    depends_on:
+      api:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:2019/config/ || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    networks: [edge]
+    restart: unless-stopped
+    cap_drop: [ALL]
+    # NET_BIND_SERVICE: ports 80/443. DAC_OVERRIDE: media files are written
+    # by the API with mode 0640 (owner uid 1000) and must be readable here.
+    cap_add: [NET_BIND_SERVICE, DAC_OVERRIDE]
+    security_opt: ["no-new-privileges:true"]
+    deploy:
+      resources:
+        limits:
+          memory: ${CADDY_MEM_LIMIT:-256M}
+          pids: 256
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+volumes:
+  # Certificates and ACME account: keep this volume (Let's Encrypt rate limits).
+  caddy-data:
+  caddy-config:

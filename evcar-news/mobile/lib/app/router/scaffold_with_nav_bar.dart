@@ -6,6 +6,7 @@ import '../../core/app_config/app_config_controller.dart';
 import '../../core/app_config/features.dart';
 import '../../core/connectivity/connectivity_service.dart';
 import '../../core/l10n/l10n.dart';
+import '../../shared/widgets/app_scaffold.dart';
 import '../../shared/widgets/cached_data_notice.dart';
 
 /// Bottom navigation shell: Home, Cars, Compare, Charging, Account (tabs of
@@ -66,7 +67,10 @@ class ScaffoldWithNavBar extends ConsumerWidget {
         children: [
           if (!online) SafeArea(bottom: false, child: const OfflineBanner()),
           Expanded(
-            child: MediaQuery.removePadding(context: context, removeTop: !online, child: navigationShell),
+            // Screens inside the tabs must not show a second offline banner.
+            child: OfflineBannerScope(
+              child: MediaQuery.removePadding(context: context, removeTop: !online, child: navigationShell),
+            ),
           ),
         ],
       ),

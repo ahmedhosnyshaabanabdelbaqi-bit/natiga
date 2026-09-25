@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../app/theme/app_palette.dart';
 import '../../core/l10n/l10n.dart';
+import 'app_scaffold.dart';
+import 'async_state_view.dart';
 
 /// Honest placeholder for a screen that is not implemented yet.
 ///
@@ -27,8 +30,8 @@ class UnderConstructionView extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.construction_outlined, size: 56, color: theme.colorScheme.primary),
-                const SizedBox(height: 16),
+                const AppIllustration(icon: Icons.construction_outlined, tone: AppTone.info),
+                const SizedBox(height: 24),
                 Semantics(
                   header: true,
                   child: Text(
@@ -74,8 +77,9 @@ class UnderConstructionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(title), actions: actions),
+    return AppScaffold(
+      title: title,
+      actions: actions,
       body: UnderConstructionView(requestedPath: requestedPath),
     );
   }

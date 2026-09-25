@@ -255,10 +255,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authVerifyTokenLabel => 'رمز التأكيد';
 
   @override
+  String get calculatorsCalculatorTitle => 'الحاسبة';
+
+  @override
   String get calculatorsTitle => 'حاسبات الشحن والتشغيل';
 
   @override
   String get carsBrandTitle => 'الماركة';
+
+  @override
+  String get carsBrandsTitle => 'الماركات';
 
   @override
   String get carsCatalogTitle => 'دليل السيارات';
@@ -267,10 +273,40 @@ class AppLocalizationsAr extends AppLocalizations {
   String get carsDetailTitle => 'تفاصيل السيارة';
 
   @override
+  String get carsGalleryTitle => 'الصور';
+
+  @override
+  String get carsVariantTitle => 'تفاصيل الفئة';
+
+  @override
+  String get chargingCheckInTitle => 'تسجيل زيارة';
+
+  @override
+  String get chargingFiltersTitle => 'فلاتر المحطات';
+
+  @override
+  String get chargingLocationTitle => 'اختر مكانًا';
+
+  @override
+  String get chargingLogsEditTitle => 'تعديل جلسة الشحن';
+
+  @override
+  String get chargingLogsNewTitle => 'جلسة شحن جديدة';
+
+  @override
+  String get chargingLogsReportsTitle => 'الإنفاق والاستهلاك';
+
+  @override
   String get chargingLogsTitle => 'سجل الشحن';
 
   @override
+  String get chargingReportTitle => 'الإبلاغ عن مشكلة';
+
+  @override
   String get chargingStationTitle => 'تفاصيل المحطة';
+
+  @override
+  String get chargingSuggestTitle => 'اقترح محطة';
 
   @override
   String get chargingTitle => 'محطات الشحن';
@@ -323,7 +359,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String commonCompareTrayCount(int count, int max) {
-    return '$count من $max سيارات محددة';
+    return 'تم اختيار $count من $max';
   }
 
   @override
@@ -690,6 +726,27 @@ class AppLocalizationsAr extends AppLocalizations {
   String get commonWebPreviewBanner => 'معاينة ويب';
 
   @override
+  String get communityAskTitle => 'اطرح سؤالًا';
+
+  @override
+  String get communityCarReviewsTitle => 'تقييمات الملاك';
+
+  @override
+  String get communityCommentsTitle => 'التعليقات';
+
+  @override
+  String get communityQuestionTitle => 'سؤال';
+
+  @override
+  String get communityQuestionsTitle => 'أسئلة وأجوبة';
+
+  @override
+  String get communityWriteReviewTitle => 'اكتب تقييمًا';
+
+  @override
+  String get comparePickerTitle => 'اختر سيارة';
+
+  @override
   String get compareRecommendationsTitle => 'ترشيح سيارة مناسبة';
 
   @override
@@ -711,7 +768,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get favoritesTitle => 'المفضلة';
 
   @override
+  String get garageAddTitle => 'إضافة سيارة';
+
+  @override
+  String get garageEditTitle => 'تعديل السيارة';
+
+  @override
   String get garageTitle => 'جراجي';
+
+  @override
+  String get garageVehicleTitle => 'سيارتي';
 
   @override
   String get homeTitle => 'الرئيسية';
@@ -720,16 +786,34 @@ class AppLocalizationsAr extends AppLocalizations {
   String get newsArticleTitle => 'الخبر';
 
   @override
+  String get newsCategoryTitle => 'التصنيف';
+
+  @override
   String get newsListTitle => 'الأخبار';
 
   @override
+  String get newsTagTitle => 'الموضوع';
+
+  @override
+  String get notificationsPreferencesTitle => 'تفضيلات الإشعارات';
+
+  @override
   String get notificationsTitle => 'الإشعارات';
+
+  @override
+  String get remindersEditTitle => 'تعديل التذكير';
+
+  @override
+  String get remindersNewTitle => 'تذكير جديد';
 
   @override
   String get remindersTitle => 'التذكيرات';
 
   @override
   String get searchTitle => 'بحث';
+
+  @override
+  String get servicesDirectoryProviderTitle => 'مقدم الخدمة';
 
   @override
   String get servicesDirectoryTitle => 'دليل الخدمات';
@@ -891,6 +975,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get shellSessionExpired => 'انتهت جلستك. سجّل الدخول مرة أخرى.';
+
+  @override
+  String get toursListTitle => 'الجولات الداخلية 360°';
 
   @override
   String get toursViewerTitle => 'جولة داخلية 360°';

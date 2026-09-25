@@ -1,0 +1,17 @@
+
+# Port 80 of @ADMIN_DOMAIN@: Let's Encrypt HTTP-01 challenges, everything else → HTTPS.
+@VHOST_80@
+    ServerName @ADMIN_DOMAIN@
+    # One-time tokens (owner setup, password reset, e-mail verification) travel in
+    # the query string of these pages: such requests are not written to the log.
+    SetEnvIf Request_URI "^/(setup-password|reset-password|verify-email)" evcar_nolog
+    CustomLog ${APACHE_LOG_DIR}/evcar-news_access.log combined env=!evcar_nolog
+
+    Alias /.well-known/acme-challenge/ @ACME_ROOT@/.well-known/acme-challenge/
+    <Directory "@ACME_ROOT@/.well-known/acme-challenge/">
+        Options None
+        AllowOverride None
+        Require all granted
+    </Directory>
+    RedirectMatch 301 "^/(?!\.well-known/acme-challenge/)(.*)$" "https://@ADMIN_DOMAIN@/$1"
+</VirtualHost>

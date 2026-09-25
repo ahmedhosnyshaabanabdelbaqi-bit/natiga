@@ -1,4 +1,5 @@
 {
   "@@locale": "ar",
-  "servicesDirectoryTitle": "دليل الخدمات"
+  "servicesDirectoryTitle": "دليل الخدمات",
+  "servicesDirectoryProviderTitle": "مقدم الخدمة"
 }

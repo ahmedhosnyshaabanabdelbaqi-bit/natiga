@@ -103,7 +103,7 @@
   "commonCompareAdd": "أضف للمقارنة",
   "commonCompareInTray": "ضمن المقارنة",
   "commonCompareRemove": "إزالة من المقارنة",
-  "commonCompareTrayCount": "{count} من {max} سيارات محددة",
+  "commonCompareTrayCount": "تم اختيار {count} من {max}",
   "commonCompareNow": "قارن",
   "commonCompareClear": "مسح",
   "commonCompareFull": "يمكن مقارنة {max} سيارات كحد أقصى. أزل سيارة أولًا.",

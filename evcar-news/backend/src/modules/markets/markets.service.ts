@@ -45,6 +45,7 @@ export const MARKET_RELATIONS = [
   'notificationSubscriptions',
   'serviceProviders',
   'energyPrices',
+  'stationSuggestions',
 ] as const;
 
 export const CURRENCY_RELATIONS = [

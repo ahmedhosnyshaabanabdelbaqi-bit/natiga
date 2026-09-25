@@ -227,7 +227,7 @@
   "commonCompareAdd": "Add to compare",
   "commonCompareInTray": "In comparison",
   "commonCompareRemove": "Remove from comparison",
-  "commonCompareTrayCount": "{count} of {max} cars selected",
+  "commonCompareTrayCount": "{count} of {max} selected",
   "@commonCompareTrayCount": {
     "placeholders": {
       "count": {

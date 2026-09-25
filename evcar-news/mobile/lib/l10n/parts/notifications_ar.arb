@@ -1,4 +1,5 @@
 {
   "@@locale": "ar",
-  "notificationsTitle": "الإشعارات"
+  "notificationsTitle": "الإشعارات",
+  "notificationsPreferencesTitle": "تفضيلات الإشعارات"
 }

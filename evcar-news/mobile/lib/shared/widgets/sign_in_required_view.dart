@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../app/router/app_routes.dart';
 import '../../core/l10n/l10n.dart';
+import 'async_state_view.dart';
 
 /// Shown by personal features (garage, charging log, reminders, …) to guests.
 ///
@@ -28,8 +29,8 @@ class SignInRequiredView extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.account_circle_outlined, size: 56, color: theme.colorScheme.primary),
-              const SizedBox(height: 16),
+              const AppIllustration(icon: Icons.person_outline),
+              const SizedBox(height: 24),
               Semantics(
                 header: true,
                 child: Text(

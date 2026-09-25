@@ -1,0 +1,28 @@
+
+# https://@ADMIN_DOMAIN@ → admin panel (127.0.0.1:@ADMIN_PORT@); /api/ → API (same origin).
+<IfModule mod_ssl.c>
+@VHOST_443@
+    ServerName @ADMIN_DOMAIN@
+    SSLEngine on
+    SSLCertificateFile /etc/letsencrypt/live/@CERT_NAME@/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/@CERT_NAME@/privkey.pem
+    SSLProtocol -all +TLSv1.2 +TLSv1.3
+
+    # One-time tokens (owner setup, password reset, e-mail verification) travel in
+    # the query string of these pages: such requests are not written to the log.
+    SetEnvIf Request_URI "^/(setup-password|reset-password|verify-email)" evcar_nolog
+    CustomLog ${APACHE_LOG_DIR}/evcar-news_access.log combined env=!evcar_nolog
+
+    LimitRequestBody @MAX_BODY_MB@000000
+    ProxyRequests Off
+    ProxyPreserveHost On
+    ProxyTimeout 300
+    RequestHeader set X-Forwarded-Proto "https"
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+
+    ProxyPass /api/ http://127.0.0.1:@API_PORT@/api/
+    ProxyPassReverse /api/ http://127.0.0.1:@API_PORT@/api/
+    ProxyPass / http://127.0.0.1:@ADMIN_PORT@/
+    ProxyPassReverse / http://127.0.0.1:@ADMIN_PORT@/
+</VirtualHost>
+</IfModule>

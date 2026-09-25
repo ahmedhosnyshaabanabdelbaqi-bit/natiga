@@ -1,0 +1,13 @@
+# EV Car News — weekly restore test (installed by `sudo evcar timers install`).
+[Unit]
+Description=EV Car News weekly restore test (latest backup into a temporary database)
+Wants=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/evcar restore-test --scheduled
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+TimeoutStartSec=6h

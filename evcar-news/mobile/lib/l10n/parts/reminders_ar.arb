@@ -1,4 +1,6 @@
 {
   "@@locale": "ar",
-  "remindersTitle": "التذكيرات"
+  "remindersTitle": "التذكيرات",
+  "remindersNewTitle": "تذكير جديد",
+  "remindersEditTitle": "تعديل التذكير"
 }

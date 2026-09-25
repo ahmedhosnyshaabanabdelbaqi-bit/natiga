@@ -1,0 +1,26 @@
+# Managed by the EV Car News deploy kit (sudo evcar proxy-setup). Regenerate, do not edit.
+# Serves ONLY: @SERVER_NAMES@
+# No other site of this server (e.g. evcar.news) is modified by this file.
+
+# Port 80: Let's Encrypt HTTP-01 challenges, everything else → HTTPS.
+server {
+@LISTEN_80@
+    server_name @SERVER_NAMES@;
+    server_tokens off;
+
+    location ^~ /.well-known/acme-challenge/ {
+        root @ACME_ROOT@;
+        default_type "text/plain";
+        try_files $uri =404;
+    }
+
+    # One-time tokens in the query string: redirected without being logged.
+    location ~ ^/(setup-password|reset-password|verify-email) {
+        access_log off;
+        return 301 https://$host$request_uri;
+    }
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}

@@ -1,0 +1,13 @@
+# https://ADMIN_DOMAIN — admin panel. /api/* goes straight to the API so the
+# httpOnly refresh cookie stays first-party (same origin as the panel).
+{$ADMIN_DOMAIN} {
+	import common
+
+	handle /api/* {
+		import api_upstream
+	}
+
+	handle {
+		reverse_proxy admin:8080
+	}
+}

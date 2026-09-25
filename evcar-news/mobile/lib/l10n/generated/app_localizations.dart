@@ -548,6 +548,12 @@ abstract class AppLocalizations {
   /// **'Verification code'**
   String get authVerifyTokenLabel;
 
+  /// No description provided for @calculatorsCalculatorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculator'**
+  String get calculatorsCalculatorTitle;
+
   /// No description provided for @calculatorsTitle.
   ///
   /// In en, this message translates to:
@@ -559,6 +565,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Brand'**
   String get carsBrandTitle;
+
+  /// No description provided for @carsBrandsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Brands'**
+  String get carsBrandsTitle;
 
   /// No description provided for @carsCatalogTitle.
   ///
@@ -572,17 +584,77 @@ abstract class AppLocalizations {
   /// **'Car details'**
   String get carsDetailTitle;
 
+  /// No description provided for @carsGalleryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get carsGalleryTitle;
+
+  /// No description provided for @carsVariantTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Trim details'**
+  String get carsVariantTitle;
+
+  /// No description provided for @chargingCheckInTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Check in'**
+  String get chargingCheckInTitle;
+
+  /// No description provided for @chargingFiltersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Station filters'**
+  String get chargingFiltersTitle;
+
+  /// No description provided for @chargingLocationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a place'**
+  String get chargingLocationTitle;
+
+  /// No description provided for @chargingLogsEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit charging session'**
+  String get chargingLogsEditTitle;
+
+  /// No description provided for @chargingLogsNewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New charging session'**
+  String get chargingLogsNewTitle;
+
+  /// No description provided for @chargingLogsReportsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Spending & consumption'**
+  String get chargingLogsReportsTitle;
+
   /// No description provided for @chargingLogsTitle.
   ///
   /// In en, this message translates to:
   /// **'Charging log'**
   String get chargingLogsTitle;
 
+  /// No description provided for @chargingReportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Report a problem'**
+  String get chargingReportTitle;
+
   /// No description provided for @chargingStationTitle.
   ///
   /// In en, this message translates to:
   /// **'Station details'**
   String get chargingStationTitle;
+
+  /// No description provided for @chargingSuggestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggest a station'**
+  String get chargingSuggestTitle;
 
   /// No description provided for @chargingTitle.
   ///
@@ -677,7 +749,7 @@ abstract class AppLocalizations {
   /// No description provided for @commonCompareTrayCount.
   ///
   /// In en, this message translates to:
-  /// **'{count} of {max} cars selected'**
+  /// **'{count} of {max} selected'**
   String commonCompareTrayCount(int count, int max);
 
   /// No description provided for @commonConfirm.
@@ -1280,6 +1352,48 @@ abstract class AppLocalizations {
   /// **'Web preview'**
   String get commonWebPreviewBanner;
 
+  /// No description provided for @communityAskTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask a question'**
+  String get communityAskTitle;
+
+  /// No description provided for @communityCarReviewsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner reviews'**
+  String get communityCarReviewsTitle;
+
+  /// No description provided for @communityCommentsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Comments'**
+  String get communityCommentsTitle;
+
+  /// No description provided for @communityQuestionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Question'**
+  String get communityQuestionTitle;
+
+  /// No description provided for @communityQuestionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Questions & answers'**
+  String get communityQuestionsTitle;
+
+  /// No description provided for @communityWriteReviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a review'**
+  String get communityWriteReviewTitle;
+
+  /// No description provided for @comparePickerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a car'**
+  String get comparePickerTitle;
+
   /// No description provided for @compareRecommendationsTitle.
   ///
   /// In en, this message translates to:
@@ -1322,11 +1436,29 @@ abstract class AppLocalizations {
   /// **'Favorites'**
   String get favoritesTitle;
 
+  /// No description provided for @garageAddTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a car'**
+  String get garageAddTitle;
+
+  /// No description provided for @garageEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit car'**
+  String get garageEditTitle;
+
   /// No description provided for @garageTitle.
   ///
   /// In en, this message translates to:
   /// **'My garage'**
   String get garageTitle;
+
+  /// No description provided for @garageVehicleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'My car'**
+  String get garageVehicleTitle;
 
   /// No description provided for @homeTitle.
   ///
@@ -1340,17 +1472,47 @@ abstract class AppLocalizations {
   /// **'Article'**
   String get newsArticleTitle;
 
+  /// No description provided for @newsCategoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get newsCategoryTitle;
+
   /// No description provided for @newsListTitle.
   ///
   /// In en, this message translates to:
   /// **'News'**
   String get newsListTitle;
 
+  /// No description provided for @newsTagTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Topic'**
+  String get newsTagTitle;
+
+  /// No description provided for @notificationsPreferencesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification preferences'**
+  String get notificationsPreferencesTitle;
+
   /// No description provided for @notificationsTitle.
   ///
   /// In en, this message translates to:
   /// **'Notifications'**
   String get notificationsTitle;
+
+  /// No description provided for @remindersEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit reminder'**
+  String get remindersEditTitle;
+
+  /// No description provided for @remindersNewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New reminder'**
+  String get remindersNewTitle;
 
   /// No description provided for @remindersTitle.
   ///
@@ -1363,6 +1525,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Search'**
   String get searchTitle;
+
+  /// No description provided for @servicesDirectoryProviderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Service provider'**
+  String get servicesDirectoryProviderTitle;
 
   /// No description provided for @servicesDirectoryTitle.
   ///
@@ -1663,6 +1831,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your session has ended. Please sign in again.'**
   String get shellSessionExpired;
+
+  /// No description provided for @toursListTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'360° interior tours'**
+  String get toursListTitle;
 
   /// No description provided for @toursViewerTitle.
   ///

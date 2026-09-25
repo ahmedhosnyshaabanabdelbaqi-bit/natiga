@@ -116,7 +116,7 @@ class PluginLocalNotificationService implements LocalNotificationService {
       try {
         final info = await FlutterTimezone.getLocalTimezone();
         TimeZones.setLocal(info.identifier);
-      } on PlatformException {
+      } on Exception {
         // Keep UTC; scheduled times are absolute instants anyway.
       }
       final ok = await _plugin.initialize(
@@ -136,7 +136,9 @@ class PluginLocalNotificationService implements LocalNotificationService {
       return ok ?? false;
     } on MissingPluginException {
       return false;
-    } on PlatformException catch (e) {
+    } catch (e) {
+      // PlatformException, or the plugin not registered (widget tests,
+      // unsupported OS): reminders are then shown as unavailable.
       debugPrint('EV Car News: local notifications unavailable: $e');
       return false;
     }

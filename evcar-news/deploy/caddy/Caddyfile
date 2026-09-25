@@ -1,0 +1,49 @@
+# EV Car News — Caddy (caddy proxy mode). Environment variables are set by
+# deploy/compose.caddy.yml from /opt/evcar/.env.production.
+{
+	email {$ACME_EMAIL}
+	# Runtime logs only (JSON to stdout, rotated by Docker). No access logs:
+	# the API logs requests itself with secrets and tokens masked.
+	log {
+		output stdout
+		format json
+		level INFO
+	}
+	servers {
+		timeouts {
+			read_header 15s
+			# Large upload chunks on slow mobile links.
+			read_body 10m
+			write 10m
+			idle 2m
+		}
+	}
+}
+
+# Shared by every site.
+(common) {
+	encode zstd gzip
+	request_body {
+		max_size {$PROXY_MAX_BODY:32MB}
+	}
+	header {
+		# The API also sends HSTS; `defer` replaces instead of duplicating.
+		defer
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		-Server
+		-X-Powered-By
+	}
+}
+
+# While the API container restarts (update / crash), wait for it instead of
+# failing immediately: requests are retried for up to 30 s on dial errors.
+(api_upstream) {
+	reverse_proxy api:3000 {
+		lb_try_duration 30s
+		lb_try_interval 500ms
+	}
+}
+
+import sites/api.caddy
+import sites/{$EVCAR_ADMIN_SITE:none}.caddy

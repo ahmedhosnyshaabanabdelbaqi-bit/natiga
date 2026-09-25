@@ -202,7 +202,360 @@ export const CONNECTOR_TYPES = [
     iconKey: 'gbt_dc',
     sortOrder: 35,
   },
+  {
+    code: 'chaoji',
+    nameEn: 'ChaoJi (CHAdeMO 3.0)',
+    nameAr: 'تشاوجي (CHAdeMO 3.0)',
+    supportsAc: false,
+    supportsDc: true,
+    typicalMaxAcKw: null,
+    typicalMaxDcKw: null,
+    standard: 'CHAdeMO 3.0 / GB/T 20234.4 (ChaoJi)',
+    aliases: ['ChaoJi', 'CHAdeMO 3.0'],
+    iconKey: 'chaoji',
+    sortOrder: 45,
+  },
+  // Domestic / industrial sockets: slow AC charging with the car's portable
+  // charger (EVSE cable). Listed because providers report them; the
+  // compatibility filter must still rely on the variant's verified inlets
+  // and never recommend an unverified adapter (REQUIREMENTS §11).
+  {
+    code: 'schuko',
+    nameEn: 'Schuko (CEE 7/4, Type F)',
+    nameAr: 'مقبس منزلي شوكو (CEE 7/4)',
+    supportsAc: true,
+    supportsDc: false,
+    typicalMaxAcKw: '3.7',
+    typicalMaxDcKw: null,
+    standard: 'CEE 7/3 socket, CEE 7/4 plug (Type F)',
+    aliases: ['CEE 7/4 - Schuko - Type F', 'Schuko', 'CEE 7/4'],
+    iconKey: 'schuko',
+    sortOrder: 80,
+  },
+  {
+    code: 'bs1363',
+    nameEn: 'BS 1363 (Type G, 13 A)',
+    nameAr: 'مقبس منزلي BS 1363 (النوع G)',
+    supportsAc: true,
+    supportsDc: false,
+    typicalMaxAcKw: '3',
+    typicalMaxDcKw: null,
+    standard: 'BS 1363 (Type G)',
+    aliases: ['BS1363 3 Pin 13 Amp', 'BS 1363', 'Type G'],
+    iconKey: 'bs1363',
+    sortOrder: 85,
+  },
+  {
+    code: 'iec60309',
+    nameEn: 'IEC 60309 (industrial / CEE)',
+    nameAr: 'مقبس صناعي IEC 60309 (CEE)',
+    supportsAc: true,
+    supportsDc: false,
+    typicalMaxAcKw: '22',
+    typicalMaxDcKw: null,
+    standard: 'IEC 60309-2 (blue 1-phase / red 3-phase)',
+    aliases: ['IEC 60309 3-pin', 'IEC 60309 5-pin', 'CEE 16A', 'CEE 32A', 'Commando'],
+    iconKey: 'iec60309',
+    sortOrder: 90,
+  },
 ] as const;
+
+/**
+ * Encyclopedia categories (REQUIREMENTS §15: vehicle types, connectors,
+ * batteries, range standards, home and fast charging, warranty, used-EV
+ * inspection). Created when missing, never overwritten (admins edit names /
+ * order / deactivate); `isSystem` rows come back if deleted.
+ */
+export const ENCYCLOPEDIA_CATEGORIES: {
+  key: string;
+  nameAr: string;
+  nameEn: string;
+  descriptionAr: string;
+  descriptionEn: string;
+  iconKey: string;
+  sortOrder: number;
+}[] = [
+  {
+    key: 'vehicle_types',
+    nameAr: 'أنواع السيارات الكهربائية',
+    nameEn: 'Types of electrified cars',
+    descriptionAr: 'الفرق بين الكهربائية بالكامل والهجينة القابلة للشحن وممددة المدى والهجينة.',
+    descriptionEn: 'BEV, PHEV, EREV and HEV explained.',
+    iconKey: 'car',
+    sortOrder: 10,
+  },
+  {
+    key: 'connectors',
+    nameAr: 'منافذ وموصلات الشحن',
+    nameEn: 'Charging connectors',
+    descriptionAr: 'أنواع الموصلات والفرق بين الشحن المتردد والمستمر.',
+    descriptionEn: 'Plug standards and AC vs DC charging.',
+    iconKey: 'plug',
+    sortOrder: 20,
+  },
+  {
+    key: 'batteries',
+    nameAr: 'البطاريات',
+    nameEn: 'Batteries',
+    descriptionAr: 'السعة الإجمالية والقابلة للاستخدام والكيمياء والعناية بالبطارية.',
+    descriptionEn: 'Gross vs usable capacity, chemistry and battery care.',
+    iconKey: 'battery',
+    sortOrder: 30,
+  },
+  {
+    key: 'range_cycles',
+    nameAr: 'معايير قياس المدى',
+    nameEn: 'Range test cycles',
+    descriptionAr: 'WLTP وEPA وCLTC وNEDC ولماذا لا تُقارن أرقامها مباشرة.',
+    descriptionEn: 'WLTP, EPA, CLTC and NEDC and why their numbers are not comparable.',
+    iconKey: 'route',
+    sortOrder: 40,
+  },
+  {
+    key: 'home_charging',
+    nameAr: 'الشحن المنزلي',
+    nameEn: 'Home charging',
+    descriptionAr: 'الشواحن المنزلية والتركيب الآمن بواسطة فني مختص.',
+    descriptionEn: 'Home chargers and safe installation by a qualified electrician.',
+    iconKey: 'home',
+    sortOrder: 50,
+  },
+  {
+    key: 'fast_charging',
+    nameAr: 'الشحن السريع',
+    nameEn: 'Fast charging',
+    descriptionAr: 'منحنيات الشحن والقدرة القصوى مقابل المتوسطة وأزمنة الشحن.',
+    descriptionEn: 'Charging curves, peak vs average power and charging times.',
+    iconKey: 'bolt',
+    sortOrder: 60,
+  },
+  {
+    key: 'warranty',
+    nameAr: 'الضمان',
+    nameEn: 'Warranty',
+    descriptionAr: 'ضمان السيارة والبطارية وما يجب التحقق منه.',
+    descriptionEn: 'Vehicle and battery warranty and what to check.',
+    iconKey: 'shield',
+    sortOrder: 70,
+  },
+  {
+    key: 'used_ev_inspection',
+    nameAr: 'فحص السيارة الكهربائية المستعملة',
+    nameEn: 'Inspecting a used EV',
+    descriptionAr: 'ما يجب فحصه قبل شراء سيارة كهربائية مستعملة.',
+    descriptionEn: 'What to check before buying a used electric car.',
+    iconKey: 'search',
+    sortOrder: 80,
+  },
+  {
+    key: 'other',
+    nameAr: 'موضوعات أخرى',
+    nameEn: 'Other topics',
+    descriptionAr: 'موضوعات عامة للمبتدئين.',
+    descriptionEn: 'General beginner topics.',
+    iconKey: 'info',
+    sortOrder: 999,
+  },
+];
+
+export interface ReportReasonDef {
+  scope: 'station' | 'content';
+  code: string;
+  labelAr: string;
+  labelEn: string;
+  descriptionAr: string;
+  descriptionEn: string;
+  requiresDetails: boolean;
+  sortOrder: number;
+}
+
+/**
+ * Labels of the report vocabularies (station_report_type and
+ * content_report_reason enums). Created when missing, never overwritten.
+ */
+export const REPORT_REASONS: ReportReasonDef[] = [
+  {
+    scope: 'station',
+    code: 'not_working',
+    labelAr: 'لا يعمل',
+    labelEn: 'Not working',
+    descriptionAr: 'الشاحن أو أحد المنافذ لا يعمل.',
+    descriptionEn: 'The charger or one of its connectors does not work.',
+    requiresDetails: false,
+    sortOrder: 10,
+  },
+  {
+    scope: 'station',
+    code: 'wrong_location',
+    labelAr: 'الموقع غير صحيح',
+    labelEn: 'Wrong location',
+    descriptionAr: 'مكان المحطة على الخريطة أو عنوانها غير صحيح.',
+    descriptionEn: 'The map position or the address is wrong.',
+    requiresDetails: false,
+    sortOrder: 20,
+  },
+  {
+    scope: 'station',
+    code: 'different_connector',
+    labelAr: 'الموصل مختلف',
+    labelEn: 'Different connector',
+    descriptionAr: 'الموصل الموجود فعليًا يختلف عن المذكور.',
+    descriptionEn: 'The connector on site differs from the listed one.',
+    requiresDetails: false,
+    sortOrder: 30,
+  },
+  {
+    scope: 'station',
+    code: 'price_changed',
+    labelAr: 'السعر تغيّر',
+    labelEn: 'Price changed',
+    descriptionAr: 'التعرفة المعروضة لم تعد صحيحة.',
+    descriptionEn: 'The listed tariff is no longer correct.',
+    requiresDetails: false,
+    sortOrder: 40,
+  },
+  {
+    scope: 'station',
+    code: 'access_restricted',
+    labelAr: 'الدخول مقيّد',
+    labelEn: 'Access restricted',
+    descriptionAr: 'المحطة غير متاحة للعامة أو تحتاج تصريحًا أو عضوية.',
+    descriptionEn: 'Not open to the public, or needs a permit or membership.',
+    requiresDetails: false,
+    sortOrder: 50,
+  },
+  {
+    scope: 'station',
+    code: 'other',
+    labelAr: 'مشكلة أخرى',
+    labelEn: 'Other problem',
+    descriptionAr: 'اكتب وصفًا للمشكلة.',
+    descriptionEn: 'Describe the problem.',
+    requiresDetails: true,
+    sortOrder: 99,
+  },
+  {
+    scope: 'content',
+    code: 'spam',
+    labelAr: 'رسائل مزعجة أو إعلان',
+    labelEn: 'Spam or advertising',
+    descriptionAr: 'محتوى دعائي أو متكرر.',
+    descriptionEn: 'Promotional or repeated content.',
+    requiresDetails: false,
+    sortOrder: 10,
+  },
+  {
+    scope: 'content',
+    code: 'abuse',
+    labelAr: 'إساءة أو كراهية',
+    labelEn: 'Abuse or hate',
+    descriptionAr: 'إهانة أو تحرش أو خطاب كراهية.',
+    descriptionEn: 'Insults, harassment or hate speech.',
+    requiresDetails: false,
+    sortOrder: 20,
+  },
+  {
+    scope: 'content',
+    code: 'off_topic',
+    labelAr: 'خارج الموضوع',
+    labelEn: 'Off topic',
+    descriptionAr: 'لا علاقة له بالموضوع.',
+    descriptionEn: 'Not related to the topic.',
+    requiresDetails: false,
+    sortOrder: 30,
+  },
+  {
+    scope: 'content',
+    code: 'misinformation',
+    labelAr: 'معلومات مضللة',
+    labelEn: 'Misinformation',
+    descriptionAr: 'معلومات خاطئة أو مضللة.',
+    descriptionEn: 'False or misleading information.',
+    requiresDetails: false,
+    sortOrder: 40,
+  },
+  {
+    scope: 'content',
+    code: 'personal_data',
+    labelAr: 'بيانات شخصية',
+    labelEn: 'Personal data',
+    descriptionAr: 'ينشر بيانات شخصية لشخص آخر.',
+    descriptionEn: "Publishes someone's personal data.",
+    requiresDetails: false,
+    sortOrder: 50,
+  },
+  {
+    scope: 'content',
+    code: 'copyright',
+    labelAr: 'حقوق ملكية',
+    labelEn: 'Copyright',
+    descriptionAr: 'يستخدم محتوى محميًا دون إذن.',
+    descriptionEn: 'Uses protected content without permission.',
+    requiresDetails: false,
+    sortOrder: 60,
+  },
+  {
+    scope: 'content',
+    code: 'other',
+    labelAr: 'سبب آخر',
+    labelEn: 'Other reason',
+    descriptionAr: 'اكتب سبب البلاغ.',
+    descriptionEn: 'Describe the reason.',
+    requiresDetails: true,
+    sortOrder: 99,
+  },
+];
+
+/**
+ * Ad placements known to the apps. All DISABLED by default (ads are off
+ * until an admin enables a placement with a labelled campaign). Map and
+ * 360° views are never ad surfaces (enum ad_surface has no such value).
+ */
+export const AD_PLACEMENTS: {
+  key: string;
+  nameEn: string;
+  nameAr: string;
+  surface:
+    | 'home'
+    | 'article_list'
+    | 'article_detail'
+    | 'car_list'
+    | 'car_detail'
+    | 'station_list'
+    | 'directory_list'
+    | 'encyclopedia';
+}[] = [
+  {
+    key: 'home.after_latest_news',
+    nameEn: 'Home — after latest news',
+    nameAr: 'الرئيسية — بعد آخر الأخبار',
+    surface: 'home',
+  },
+  {
+    key: 'articles.list_inline',
+    nameEn: 'News list — inline',
+    nameAr: 'قائمة الأخبار — ضمن القائمة',
+    surface: 'article_list',
+  },
+  {
+    key: 'article.after_body',
+    nameEn: 'Article — after the text',
+    nameAr: 'المقال — بعد النص',
+    surface: 'article_detail',
+  },
+  {
+    key: 'cars.list_inline',
+    nameEn: 'Car list — inline',
+    nameAr: 'قائمة السيارات — ضمن القائمة',
+    surface: 'car_list',
+  },
+  {
+    key: 'directory.list_inline',
+    nameEn: 'Services directory — inline',
+    nameAr: 'دليل الخدمات — ضمن القائمة',
+    surface: 'directory_list',
+  },
+];
 
 /**
  * Default app settings. Seeded only when the key does not exist yet, so

@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 import '../../l10n/generated/app_localizations.dart';
+import '../formatting/formatters.dart';
 
 export '../../l10n/generated/app_localizations.dart';
 
@@ -21,4 +22,20 @@ String relativeTime(AppLocalizations l10n, DateTime time, {DateTime? now}) {
   if (diff.inHours < 1) return l10n.commonMinutesAgo(diff.inMinutes);
   if (diff.inDays < 1) return l10n.commonHoursAgo(diff.inHours);
   return l10n.commonDaysAgo(diff.inDays);
+}
+
+/// Publication-style time: "3 hours ago" for the last [relativeFor], then a
+/// date ("Sep 25, 2026"). `null` in → `null` out (caller shows nothing or
+/// "Not available").
+String? friendlyTime(
+  BuildContext context,
+  DateTime? time, {
+  DateTime? now,
+  Duration relativeFor = const Duration(days: 7),
+}) {
+  if (time == null) return null;
+  final current = now ?? DateTime.now();
+  final diff = current.toUtc().difference(time.toUtc());
+  if (!diff.isNegative && diff < relativeFor) return relativeTime(context.l10n, time, now: current);
+  return AppFormatters.of(context).date(time);
 }

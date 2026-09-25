@@ -9,6 +9,12 @@
 
     <!-- Motion sensors for the optional 360° gyroscope mode are normal
          sensors on Android (no permission); declared optional for stores. -->
+    <!-- Local reminders (flutter_local_notifications): POST_NOTIFICATIONS is
+         declared by the plugin and requested at runtime only when the user
+         turns a reminder on; boot-completed re-schedules reminders after a
+         restart. Inexact scheduling → no exact-alarm permission. -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <uses-feature android:name="android.hardware.sensor.gyroscope" android:required="false" />
     <uses-feature android:name="android.hardware.location.gps" android:required="false" />
 
@@ -53,6 +59,17 @@
                 <data android:path="/reset-password" />
             </intent-filter>
         </activity>
+
+        <!-- Scheduled local notifications (reminders). -->
+        <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
+        <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
+            </intent-filter>
+        </receiver>
 
         <!-- go_router handles incoming links (lib/app/router/deep_links.dart). -->
         <meta-data android:name="flutter_deeplinking_enabled" android:value="true" />

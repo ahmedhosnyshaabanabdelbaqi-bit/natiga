@@ -1,5 +1,10 @@
 {
   "@@locale": "en",
   "chargingTitle": "Charging stations",
-  "chargingStationTitle": "Station details"
+  "chargingStationTitle": "Station details",
+  "chargingReportTitle": "Report a problem",
+  "chargingCheckInTitle": "Check in",
+  "chargingFiltersTitle": "Station filters",
+  "chargingLocationTitle": "Choose a place",
+  "chargingSuggestTitle": "Suggest a station"
 }

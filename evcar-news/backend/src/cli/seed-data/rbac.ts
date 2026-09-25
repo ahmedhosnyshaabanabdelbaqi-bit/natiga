@@ -116,6 +116,11 @@ export const PERMISSIONS: PermissionDef[] = [
     'Moderate reviews, comments and Q&A',
     'الإشراف على التقييمات والتعليقات والأسئلة',
   ),
+  p(
+    'community.verify_owners',
+    'Review car ownership verifications (verified owner badge)',
+    'مراجعة طلبات توثيق ملكية السيارات (شارة المالك الموثّق)',
+  ),
   // other modules
   p('notifications.read', 'View notification campaigns', 'عرض حملات الإشعارات'),
   p(
@@ -259,6 +264,7 @@ export const ROLES: RoleDef[] = [
     permissions: [
       'community.read',
       'community.moderate',
+      'community.verify_owners',
       'users.read',
       'users.block',
       'reports.read',

@@ -358,7 +358,7 @@ describe('Database integrity rules (e2e)', () => {
       expect(
         await refused(
           db.stationReport.create({
-            data: { stationId: I.station, connectorId: s2Connector, type: 'connector_mismatch' },
+            data: { stationId: I.station, connectorId: s2Connector, type: 'different_connector' },
           }),
         ),
       ).toMatch(/station_reports_station_refs_chk/);
@@ -418,7 +418,7 @@ describe('Database integrity rules (e2e)', () => {
     }
 
     async function scene(tourId: string, assetId: string, key = 'driver') {
-      return db.tourScene.create({ data: { tourId, key, assetId, position: 'driver_seat' } });
+      return db.tourScene.create({ data: { tourId, key, assetId, position: 'driver' } });
     }
 
     beforeAll(async () => {
@@ -466,7 +466,7 @@ describe('Database integrity rules (e2e)', () => {
             data: {
               tourId: a.id,
               sceneId: sa.id,
-              type: 'scene',
+              type: 'scene_link',
               yaw: 0,
               pitch: 0,
               targetSceneId: sb.id,
@@ -485,7 +485,7 @@ describe('Database integrity rules (e2e)', () => {
         data: {
           tourId: a.id,
           sceneId: sa.id,
-          type: 'scene',
+          type: 'scene_link',
           yaw: 10,
           pitch: 0,
           targetSceneId: sa2.id,

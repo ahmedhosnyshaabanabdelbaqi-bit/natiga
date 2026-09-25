@@ -1,0 +1,14 @@
+# EV Car News — daily backup (installed by `sudo evcar timers install`).
+[Unit]
+Description=EV Car News daily backup (PostgreSQL dump + media archive)
+Documentation=file:///opt/evcar/app/evcar-news/docs/DEPLOYMENT.md
+Wants=docker.service
+After=docker.service network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/evcar backup --scheduled
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+TimeoutStartSec=6h

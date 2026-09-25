@@ -1,0 +1,2 @@
+# Intentionally empty: imported instead of admin.caddy when the admin panel
+# is not deployed (ADMIN_DOMAIN empty → EVCAR_ADMIN_SITE=none).

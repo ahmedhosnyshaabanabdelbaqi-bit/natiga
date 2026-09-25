@@ -1,4 +1,7 @@
 {
   "@@locale": "en",
-  "chargingLogsTitle": "Charging log"
+  "chargingLogsTitle": "Charging log",
+  "chargingLogsNewTitle": "New charging session",
+  "chargingLogsEditTitle": "Edit charging session",
+  "chargingLogsReportsTitle": "Spending & consumption"
 }

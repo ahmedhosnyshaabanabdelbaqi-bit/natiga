@@ -1,0 +1,12 @@
+# EV Car News — monitoring checks (installed by `sudo evcar timers install`).
+[Unit]
+Description=EV Car News monitoring (health, containers, disk, backups, TLS)
+Wants=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/evcar monitor
+TimeoutStartSec=4min
+# A run that finds problems exits 1: that is reported in the journal, not a unit error worth retrying.
+SuccessExitStatus=1

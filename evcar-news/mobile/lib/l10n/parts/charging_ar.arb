@@ -1,5 +1,10 @@
 {
   "@@locale": "ar",
   "chargingTitle": "محطات الشحن",
-  "chargingStationTitle": "تفاصيل المحطة"
+  "chargingStationTitle": "تفاصيل المحطة",
+  "chargingReportTitle": "الإبلاغ عن مشكلة",
+  "chargingCheckInTitle": "تسجيل زيارة",
+  "chargingFiltersTitle": "فلاتر المحطات",
+  "chargingLocationTitle": "اختر مكانًا",
+  "chargingSuggestTitle": "اقترح محطة"
 }

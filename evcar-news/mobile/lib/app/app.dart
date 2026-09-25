@@ -1,14 +1,19 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/app_config/app_config_controller.dart';
 import '../core/formatting/formatters.dart';
 import '../core/l10n/l10n.dart';
+import '../core/notifications/local_notifications.dart';
+import '../core/platform/platform_capabilities.dart';
 import '../core/settings/settings_controller.dart';
 import '../features/auth/domain/auth_state.dart';
 import '../features/auth/presentation/auth_controller.dart';
 import 'di/providers.dart';
 import 'router/app_router.dart';
+import 'router/app_routes.dart';
 import 'theme/app_colors.dart';
 import 'theme/app_theme.dart';
 import 'theme/text_scaling.dart';
@@ -24,15 +29,36 @@ class EvCarApp extends ConsumerStatefulWidget {
 
 class _EvCarAppState extends ConsumerState<EvCarApp> with WidgetsBindingObserver {
   final _messengerKey = GlobalKey<ScaffoldMessengerState>();
+  StreamSubscription<String>? _notificationTaps;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    // After the first frame: open the screen of a tapped local notification
+    // (reminders). Initializing never asks for permission.
+    WidgetsBinding.instance.addPostFrameCallback((_) => _listenToNotificationTaps());
+  }
+
+  Future<void> _listenToNotificationTaps() async {
+    if (!mounted) return;
+    final notifications = ref.read(localNotificationsProvider);
+    if (!notifications.isSupported) return;
+    _notificationTaps = notifications.taps.listen(_openNotificationRoute);
+    final launch = await notifications.launchRoute();
+    if (launch != null) _openNotificationRoute(launch);
+  }
+
+  void _openNotificationRoute(String route) {
+    // Payloads are app paths we scheduled ourselves; still validated.
+    final safe = AppRoutes.safeReturnPath(route);
+    if (safe == null || !mounted) return;
+    ref.read(routerProvider).push(safe);
   }
 
   @override
   void dispose() {
+    _notificationTaps?.cancel();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -61,6 +87,7 @@ class _EvCarAppState extends ConsumerState<EvCarApp> with WidgetsBindingObserver
     });
 
     final formatters = AppFormatters(languageCode: language, arabicIndicDigits: settings.arabicIndicDigits);
+    final webPreview = ref.watch(platformCapabilitiesProvider).isWebPreview;
 
     return MaterialApp.router(
       routerConfig: router,
@@ -75,11 +102,21 @@ class _EvCarAppState extends ConsumerState<EvCarApp> with WidgetsBindingObserver
       themeMode: settings.themeMode,
       builder: (context, child) {
         final mq = MediaQuery.of(context);
-        return MediaQuery(
+        Widget app = MediaQuery(
           // User text size multiplies (never replaces) the system font scale.
           data: mq.copyWith(textScaler: MultipliedTextScaler(mq.textScaler, settings.textScale)),
           child: FormattingScope(formatters: formatters, child: child ?? const SizedBox.shrink()),
         );
+        if (webPreview) {
+          // The web build is a design preview only (production: Android/iOS).
+          app = Banner(
+            message: lookupAppLocalizations(Locale(language)).commonWebPreviewBanner,
+            location: BannerLocation.topEnd,
+            color: AppColors.electricBlue,
+            child: app,
+          );
+        }
+        return app;
       },
     );
   }

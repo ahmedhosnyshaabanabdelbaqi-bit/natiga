@@ -34,22 +34,27 @@ abstract final class Features {
 /// The feature a location belongs to, or null when it is always available
 /// (home, account, settings, sign-in, offline items).
 String? featureForLocation(String path) {
-  if (path == '/news' || path.startsWith('/news/')) return Features.news;
-  if (RegExp(r'^/cars/[^/]+/tour/').hasMatch(path)) return Features.interiorTours;
-  if (path == '/cars' || path.startsWith('/cars/') || path.startsWith('/brands/')) return Features.cars;
-  if (path == '/compare' || path.startsWith('/compare/') || path == '/recommendations') {
-    return Features.comparisons;
-  }
-  if (path == '/charging' || path.startsWith('/charging/')) return Features.stations;
-  if (path == '/trips') return Features.tripPlanner;
-  if (path == '/calculators') return Features.calculators;
-  if (path == '/encyclopedia' || path.startsWith('/encyclopedia/')) return Features.encyclopedia;
-  if (path == '/services') return Features.servicesDirectory;
-  if (path == '/garage') return Features.garage;
-  if (path == '/charging-logs') return Features.chargingLogs;
-  if (path == '/reminders') return Features.reminders;
-  if (path == '/notifications') return Features.notifications;
-  if (path == '/favorites') return Features.favorites;
+  bool under(String root) => path == root || path.startsWith('$root/');
+
+  // Community content nested in other features' paths (checked first).
+  if (RegExp(r'^/cars/[^/]+/reviews(/|$)').hasMatch(path)) return Features.community;
+  if (RegExp(r'^/news/[^/]+/comments$').hasMatch(path)) return Features.community;
+  if (under('/questions')) return Features.community;
+
+  if (under('/news')) return Features.news;
+  if (RegExp(r'^/cars/[^/]+/tour/').hasMatch(path) || under('/tours')) return Features.interiorTours;
+  if (under('/cars') || under('/brands') || under('/variants')) return Features.cars;
+  if (under('/compare') || path == '/recommendations') return Features.comparisons;
+  if (under('/charging')) return Features.stations;
+  if (under('/trips')) return Features.tripPlanner;
+  if (under('/calculators')) return Features.calculators;
+  if (under('/encyclopedia')) return Features.encyclopedia;
+  if (under('/services')) return Features.servicesDirectory;
+  if (under('/garage')) return Features.garage;
+  if (under('/charging-logs')) return Features.chargingLogs;
+  if (under('/reminders')) return Features.reminders;
+  if (under('/notifications')) return Features.notifications;
+  if (under('/favorites')) return Features.favorites;
   return null;
 }
 

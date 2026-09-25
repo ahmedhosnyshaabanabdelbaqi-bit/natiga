@@ -1,4 +1,6 @@
 {
   "@@locale": "en",
-  "remindersTitle": "Reminders"
+  "remindersTitle": "Reminders",
+  "remindersNewTitle": "New reminder",
+  "remindersEditTitle": "Edit reminder"
 }

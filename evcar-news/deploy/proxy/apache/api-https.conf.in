@@ -1,0 +1,34 @@
+
+# https://@API_DOMAIN@ → EV Car News API container (127.0.0.1:@API_PORT@).
+<IfModule mod_ssl.c>
+@VHOST_443@
+    ServerName @API_DOMAIN@
+    SSLEngine on
+    SSLCertificateFile /etc/letsencrypt/live/@CERT_NAME@/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/@CERT_NAME@/privkey.pem
+    SSLProtocol -all +TLSv1.2 +TLSv1.3
+
+    # One-time tokens (owner setup, password reset, e-mail verification) travel in
+    # the query string of these pages: such requests are not written to the log.
+    SetEnvIf Request_URI "^/(setup-password|reset-password|verify-email)" evcar_nolog
+    CustomLog ${APACHE_LOG_DIR}/evcar-news_access.log combined env=!evcar_nolog
+
+    # Resumable 360° upload chunks are at most 16 MiB (UPLOAD_CHUNK_MAX_BYTES).
+    LimitRequestBody @MAX_BODY_MB@000000
+    ProxyRequests Off
+    ProxyPreserveHost On
+    ProxyTimeout 300
+    # mod_proxy appends the client address to X-Forwarded-For; the API trusts
+    # exactly one hop (TRUST_PROXY=1) and reads the right-most value.
+    RequestHeader set X-Forwarded-Proto "https"
+
+    # Public media: any origin may load them (the app's 360° viewer).
+    <Location "/media/">
+        Header unset Access-Control-Allow-Origin
+        Header always set Access-Control-Allow-Origin "*"
+    </Location>
+
+    ProxyPass / http://127.0.0.1:@API_PORT@/
+    ProxyPassReverse / http://127.0.0.1:@API_PORT@/
+</VirtualHost>
+</IfModule>

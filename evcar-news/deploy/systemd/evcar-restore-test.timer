@@ -1,0 +1,11 @@
+[Unit]
+Description=EV Car News weekly restore test
+
+[Timer]
+# Sunday, after the daily backup.
+OnCalendar=Sun *-*-* 05:15:00
+RandomizedDelaySec=10m
+Persistent=true
+
+[Install]
+WantedBy=timers.target

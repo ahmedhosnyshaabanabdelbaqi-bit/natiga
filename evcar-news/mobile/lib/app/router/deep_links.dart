@@ -24,7 +24,8 @@ String? deepLinkRedirect(Uri uri) {
   if (segments.length == 2 && segments[0] == 'n') {
     return '${AppRoutes.article(segments[1])}$query';
   }
-  if (segments.length == 2 && segments[0] == 'compare' && segments[1] != 's') {
+  // `/compare/pick` is an app screen (share ids are 6–24 characters).
+  if (segments.length == 2 && segments[0] == 'compare' && segments[1] != 's' && segments[1] != 'pick') {
     return '${AppRoutes.sharedComparison(segments[1])}$query';
   }
   if (segments.length == 1 && segments[0] == 'verify-email') {

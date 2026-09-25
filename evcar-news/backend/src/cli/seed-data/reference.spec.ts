@@ -1,5 +1,14 @@
 import { normalizeSearchText } from '../../common/i18n/arabic-normalize';
-import { DEFAULT_CATEGORIES, SEARCH_ALIASES } from './reference';
+import { AdSurface, ContentReportReason, StationReportType } from '../../generated/prisma/enums';
+import { normalizeConnectorName } from '../../providers/stations/connector-type-index';
+import {
+  AD_PLACEMENTS,
+  CONNECTOR_TYPES,
+  DEFAULT_CATEGORIES,
+  ENCYCLOPEDIA_CATEGORIES,
+  REPORT_REASONS,
+  SEARCH_ALIASES,
+} from './reference';
 
 describe('reference data: default news categories', () => {
   it('covers the categories required by REQUIREMENTS §5', () => {
@@ -74,5 +83,94 @@ describe('reference data: search aliases', () => {
       'هيونداى → Hyundai',
       'إم جي → MG',
     ]);
+  });
+});
+
+describe('reference data: connector types', () => {
+  it('covers the standards of REQUIREMENTS §10 plus domestic sockets', () => {
+    expect(CONNECTOR_TYPES.map((c) => c.code)).toEqual(
+      expect.arrayContaining([
+        'type2',
+        'ccs2',
+        'ccs1',
+        'chademo',
+        'nacs',
+        'gbt_ac',
+        'gbt_dc',
+        'type1',
+        'chaoji',
+        'schuko',
+        'bs1363',
+        'iec60309',
+      ]),
+    );
+  });
+
+  it('has consistent AC/DC flags and typical powers (same rules as the SQL CHECKs)', () => {
+    for (const c of CONNECTOR_TYPES) {
+      expect(c.supportsAc || c.supportsDc).toBe(true);
+      if (c.typicalMaxAcKw !== null) expect(c.supportsAc).toBe(true);
+      if (c.typicalMaxDcKw !== null) expect(c.supportsDc).toBe(true);
+      expect(c.code).toMatch(/^[a-z0-9_]{2,32}$/);
+    }
+  });
+
+  it('never maps one provider name to two connector types', () => {
+    const seen = new Map<string, string>();
+    for (const c of CONNECTOR_TYPES) {
+      for (const name of [c.code, c.nameEn, ...c.aliases]) {
+        const key = normalizeConnectorName(name);
+        expect(seen.get(key) ?? c.code).toBe(c.code);
+        seen.set(key, c.code);
+      }
+    }
+  });
+});
+
+describe('reference data: encyclopedia categories', () => {
+  it('covers the beginner topics of REQUIREMENTS §15 with ar/en names', () => {
+    expect(ENCYCLOPEDIA_CATEGORIES.map((c) => c.key)).toEqual(
+      expect.arrayContaining([
+        'vehicle_types',
+        'connectors',
+        'batteries',
+        'range_cycles',
+        'home_charging',
+        'fast_charging',
+        'warranty',
+        'used_ev_inspection',
+      ]),
+    );
+    const keys = ENCYCLOPEDIA_CATEGORIES.map((c) => c.key);
+    expect(new Set(keys).size).toBe(keys.length);
+    for (const c of ENCYCLOPEDIA_CATEGORIES) {
+      expect(c.key).toMatch(/^[a-z][a-z0-9_]{1,63}$/);
+      expect(c.nameAr).toMatch(/[؀-ۿ]/);
+      expect(c.nameEn.trim().length).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe('reference data: report reasons and ad placements', () => {
+  it('labels every station report type and content report reason exactly once', () => {
+    const codes = (scope: 'station' | 'content') =>
+      REPORT_REASONS.filter((r) => r.scope === scope)
+        .map((r) => r.code)
+        .sort();
+    expect(codes('station')).toEqual(Object.values(StationReportType).sort());
+    expect(codes('content')).toEqual(Object.values(ContentReportReason).sort());
+    for (const r of REPORT_REASONS) {
+      expect(r.labelAr).toMatch(/[؀-ۿ]/);
+      expect(r.requiresDetails).toBe(r.code === 'other');
+    }
+  });
+
+  it('places ads only on allowed surfaces (never the map or a 360° view)', () => {
+    const surfaces = Object.values(AdSurface) as string[];
+    expect(surfaces).not.toContain('map');
+    expect(surfaces).not.toContain('panorama');
+    for (const a of AD_PLACEMENTS) expect(surfaces).toContain(a.surface);
+    const keys = AD_PLACEMENTS.map((a) => a.key);
+    expect(new Set(keys).size).toBe(keys.length);
   });
 });

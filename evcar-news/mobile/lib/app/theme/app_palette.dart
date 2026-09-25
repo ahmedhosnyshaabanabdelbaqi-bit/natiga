@@ -71,8 +71,8 @@ class AppPalette extends ThemeExtension<AppPalette> {
     imageScrim: const LinearGradient(
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
-      colors: [Color(0x00000000), Color(0x33000000), Color(0xCC000000)],
-      stops: [0.35, 0.6, 1],
+      colors: [Color(0x00000000), Color(0x66000000), Color(0xE6000000)],
+      stops: [0.15, 0.5, 1],
     ),
     skeletonBase: const Color(0xFFE6EBF3),
     skeletonHighlight: const Color(0xFFF6F8FC),
@@ -86,7 +86,11 @@ class AppPalette extends ThemeExtension<AppPalette> {
         onContainer: Color(0xFF3D4656),
         border: Color(0xFFD5DBE6),
       ),
-      AppTone.brand: ToneColors(container: Color(0xFFE3ECFF), onContainer: Color(0xFF0A3FB0), border: Color(0xFFB9CCFF)),
+      AppTone.brand: ToneColors(
+        container: Color(0xFFE3ECFF),
+        onContainer: Color(0xFF0A3FB0),
+        border: Color(0xFFB9CCFF),
+      ),
       AppTone.info: ToneColors(container: Color(0xFFDDF6FA), onContainer: Color(0xFF005766), border: Color(0xFFA6E4EF)),
       AppTone.success: ToneColors(
         container: Color(0xFFE3F4E8),
@@ -122,8 +126,8 @@ class AppPalette extends ThemeExtension<AppPalette> {
     imageScrim: const LinearGradient(
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
-      colors: [Color(0x00000000), Color(0x40000000), Color(0xD9000000)],
-      stops: [0.3, 0.6, 1],
+      colors: [Color(0x00000000), Color(0x73000000), Color(0xEB000000)],
+      stops: [0.15, 0.5, 1],
     ),
     skeletonBase: const Color(0xFF1B2438),
     skeletonHighlight: const Color(0xFF26314A),
@@ -134,7 +138,11 @@ class AppPalette extends ThemeExtension<AppPalette> {
         onContainer: Color(0xFFC9D1E0),
         border: Color(0xFF394358),
       ),
-      AppTone.brand: ToneColors(container: Color(0xFF16295A), onContainer: Color(0xFFB9CCFF), border: Color(0xFF2D4A94)),
+      AppTone.brand: ToneColors(
+        container: Color(0xFF16295A),
+        onContainer: Color(0xFFB9CCFF),
+        border: Color(0xFF2D4A94),
+      ),
       AppTone.info: ToneColors(container: Color(0xFF0E3440), onContainer: Color(0xFF8FE3F2), border: Color(0xFF1C5666)),
       AppTone.success: ToneColors(
         container: Color(0xFF143321),

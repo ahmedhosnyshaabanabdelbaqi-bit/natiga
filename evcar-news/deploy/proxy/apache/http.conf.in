@@ -1,0 +1,22 @@
+# Managed by the EV Car News deploy kit (sudo evcar proxy-setup). Regenerate, do not edit.
+# Serves ONLY: @SERVER_NAMES@
+# No other site of this server (e.g. evcar.news) is modified by this file.
+# Needs: a2enmod proxy proxy_http headers ssl (done by `evcar proxy-setup --install`),
+# mod_setenvif and mod_log_config (enabled by default on Ubuntu).
+
+# Port 80: Let's Encrypt HTTP-01 challenges, everything else → HTTPS.
+@VHOST_80@
+    ServerName @API_DOMAIN@
+    # One-time tokens (owner setup, password reset, e-mail verification) travel in
+    # the query string of these pages: such requests are not written to the log.
+    SetEnvIf Request_URI "^/(setup-password|reset-password|verify-email)" evcar_nolog
+    CustomLog ${APACHE_LOG_DIR}/evcar-news_access.log combined env=!evcar_nolog
+
+    Alias /.well-known/acme-challenge/ @ACME_ROOT@/.well-known/acme-challenge/
+    <Directory "@ACME_ROOT@/.well-known/acme-challenge/">
+        Options None
+        AllowOverride None
+        Require all granted
+    </Directory>
+    RedirectMatch 301 "^/(?!\.well-known/acme-challenge/)(.*)$" "https://@API_DOMAIN@/$1"
+</VirtualHost>

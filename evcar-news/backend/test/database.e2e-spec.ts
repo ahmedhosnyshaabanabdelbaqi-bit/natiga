@@ -38,12 +38,16 @@ describe('Database schema, seeds and helpers (e2e)', () => {
     ]);
     const connectorCodes = (await t.prisma.connectorType.findMany()).map((c) => c.code).sort();
     expect(connectorCodes).toEqual([
+      'bs1363',
       'ccs1',
       'ccs2',
       'chademo',
+      'chaoji',
       'gbt_ac',
       'gbt_dc',
+      'iec60309',
       'nacs',
+      'schuko',
       'type1',
       'type2',
     ]);

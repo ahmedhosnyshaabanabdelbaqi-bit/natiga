@@ -1,5 +1,7 @@
 {
   "@@locale": "ar",
   "newsListTitle": "الأخبار",
-  "newsArticleTitle": "الخبر"
+  "newsArticleTitle": "الخبر",
+  "newsCategoryTitle": "التصنيف",
+  "newsTagTitle": "الموضوع"
 }

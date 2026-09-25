@@ -1,0 +1,34 @@
+# https://API_DOMAIN — REST API (/api/v1), share pages (/n, /cars, /compare,
+# /.well-known) and public media (/media).
+{$API_DOMAIN} {
+	import common
+
+	header {
+		defer
+		Referrer-Policy "no-referrer"
+		X-Frame-Options "DENY"
+	}
+
+	# Public media straight from the storage volume (STORAGE_DRIVER=local,
+	# STORAGE_PUBLIC_BASE_URL empty → URLs are https://API_DOMAIN/media/...).
+	handle_path /media/* {
+		@hidden path */.*
+		respond @hidden 404
+
+		root * /srv/storage/public
+		header {
+			Cache-Control "public, max-age=604800, immutable"
+			# Public files: the 360° viewer (WebGL textures, crossOrigin
+			# "anonymous") in the app WebView needs CORS on every origin.
+			Access-Control-Allow-Origin "*"
+			Cross-Origin-Resource-Policy "cross-origin"
+			# Anything opened as a document here is inert.
+			Content-Security-Policy "default-src 'none'; img-src 'self' data:; media-src 'self'; style-src 'unsafe-inline'; sandbox"
+		}
+		file_server
+	}
+
+	handle {
+		import api_upstream
+	}
+}

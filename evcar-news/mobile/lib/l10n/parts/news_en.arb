@@ -1,5 +1,7 @@
 {
   "@@locale": "en",
   "newsListTitle": "News",
-  "newsArticleTitle": "Article"
+  "newsArticleTitle": "Article",
+  "newsCategoryTitle": "Category",
+  "newsTagTitle": "Topic"
 }

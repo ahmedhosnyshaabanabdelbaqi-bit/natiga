@@ -256,10 +256,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authVerifyTokenLabel => 'Verification code';
 
   @override
+  String get calculatorsCalculatorTitle => 'Calculator';
+
+  @override
   String get calculatorsTitle => 'Charging & running-cost calculators';
 
   @override
   String get carsBrandTitle => 'Brand';
+
+  @override
+  String get carsBrandsTitle => 'Brands';
 
   @override
   String get carsCatalogTitle => 'Car catalog';
@@ -268,10 +274,40 @@ class AppLocalizationsEn extends AppLocalizations {
   String get carsDetailTitle => 'Car details';
 
   @override
+  String get carsGalleryTitle => 'Photos';
+
+  @override
+  String get carsVariantTitle => 'Trim details';
+
+  @override
+  String get chargingCheckInTitle => 'Check in';
+
+  @override
+  String get chargingFiltersTitle => 'Station filters';
+
+  @override
+  String get chargingLocationTitle => 'Choose a place';
+
+  @override
+  String get chargingLogsEditTitle => 'Edit charging session';
+
+  @override
+  String get chargingLogsNewTitle => 'New charging session';
+
+  @override
+  String get chargingLogsReportsTitle => 'Spending & consumption';
+
+  @override
   String get chargingLogsTitle => 'Charging log';
 
   @override
+  String get chargingReportTitle => 'Report a problem';
+
+  @override
   String get chargingStationTitle => 'Station details';
+
+  @override
+  String get chargingSuggestTitle => 'Suggest a station';
 
   @override
   String get chargingTitle => 'Charging stations';
@@ -324,7 +360,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String commonCompareTrayCount(int count, int max) {
-    return '$count of $max cars selected';
+    return '$count of $max selected';
   }
 
   @override
@@ -666,6 +702,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonWebPreviewBanner => 'Web preview';
 
   @override
+  String get communityAskTitle => 'Ask a question';
+
+  @override
+  String get communityCarReviewsTitle => 'Owner reviews';
+
+  @override
+  String get communityCommentsTitle => 'Comments';
+
+  @override
+  String get communityQuestionTitle => 'Question';
+
+  @override
+  String get communityQuestionsTitle => 'Questions & answers';
+
+  @override
+  String get communityWriteReviewTitle => 'Write a review';
+
+  @override
+  String get comparePickerTitle => 'Choose a car';
+
+  @override
   String get compareRecommendationsTitle => 'Find the right car';
 
   @override
@@ -687,7 +744,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get favoritesTitle => 'Favorites';
 
   @override
+  String get garageAddTitle => 'Add a car';
+
+  @override
+  String get garageEditTitle => 'Edit car';
+
+  @override
   String get garageTitle => 'My garage';
+
+  @override
+  String get garageVehicleTitle => 'My car';
 
   @override
   String get homeTitle => 'Home';
@@ -696,16 +762,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String get newsArticleTitle => 'Article';
 
   @override
+  String get newsCategoryTitle => 'Category';
+
+  @override
   String get newsListTitle => 'News';
 
   @override
+  String get newsTagTitle => 'Topic';
+
+  @override
+  String get notificationsPreferencesTitle => 'Notification preferences';
+
+  @override
   String get notificationsTitle => 'Notifications';
+
+  @override
+  String get remindersEditTitle => 'Edit reminder';
+
+  @override
+  String get remindersNewTitle => 'New reminder';
 
   @override
   String get remindersTitle => 'Reminders';
 
   @override
   String get searchTitle => 'Search';
+
+  @override
+  String get servicesDirectoryProviderTitle => 'Service provider';
 
   @override
   String get servicesDirectoryTitle => 'Services directory';
@@ -869,6 +953,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shellSessionExpired => 'Your session has ended. Please sign in again.';
+
+  @override
+  String get toursListTitle => '360° interior tours';
 
   @override
   String get toursViewerTitle => '360° interior tour';

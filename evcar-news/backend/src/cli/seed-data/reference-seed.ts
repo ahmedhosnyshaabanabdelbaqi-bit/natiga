@@ -1,11 +1,14 @@
 import { Prisma, type PrismaClient } from '../../generated/prisma/client';
 import { PERMISSIONS, ROLES } from './rbac';
 import {
+  AD_PLACEMENTS,
   APP_SETTINGS,
   CONNECTOR_TYPES,
   CURRENCIES,
   DEFAULT_CATEGORIES,
+  ENCYCLOPEDIA_CATEGORIES,
   MARKETS,
+  REPORT_REASONS,
   RETIRED_SPEC_KEYS,
   SEARCH_ALIASES,
   SPEC_DEFINITIONS,
@@ -23,6 +26,9 @@ export interface ReferenceSeedSummary {
   categoriesAdded: number;
   categoryTranslationsAdded: number;
   searchAliasesAdded: number;
+  encyclopediaCategoriesAdded: number;
+  reportReasonsAdded: number;
+  adPlacementsAdded: number;
 }
 
 /**
@@ -40,7 +46,11 @@ export interface ReferenceSeedSummary {
  *   (tracked in seeded_role_permissions), each audited as
  *   `roles.permissions.seed_grant`. A permission an owner removed is never
  *   re-granted. The first run on a database seeded before tracking existed
- *   adopts the current state (records the code pairs, grants nothing).
+ *   adopts the current state (records the code pairs, grants nothing);
+ * - encyclopedia categories, report reason labels and (disabled) ad
+ *   placements are created when missing and never overwritten; an
+ *   encyclopedia category created by the migration as a placeholder (name =
+ *   key) for an existing entry is adopted and named.
  */
 export async function runReferenceSeed(prisma: PrismaClient): Promise<ReferenceSeedSummary> {
   return prisma.$transaction(
@@ -258,6 +268,37 @@ export async function runReferenceSeed(prisma: PrismaClient): Promise<ReferenceS
         data: { isSystem: true },
       });
 
+      let encyclopediaCategoriesAdded = 0;
+      for (const c of ENCYCLOPEDIA_CATEGORIES) {
+        const existing = await tx.encyclopediaCategory.findUnique({
+          where: { key: c.key },
+          select: { isSystem: true, nameAr: true, nameEn: true },
+        });
+        if (!existing) {
+          await tx.encyclopediaCategory.create({ data: { ...c, isSystem: true } });
+          encyclopediaCategoriesAdded += 1;
+        } else if (!existing.isSystem) {
+          // Placeholder from the topic → category migration (name = key) or
+          // an admin row with a system key: adopt it, name it only if unnamed.
+          const unnamed = existing.nameAr === c.key && existing.nameEn === c.key;
+          await tx.encyclopediaCategory.update({
+            where: { key: c.key },
+            data: unnamed ? { ...c, isSystem: true } : { isSystem: true },
+          });
+        }
+      }
+
+      const reportReasonsAdded = (
+        await tx.reportReason.createMany({ data: REPORT_REASONS, skipDuplicates: true })
+      ).count;
+
+      const adPlacementsAdded = (
+        await tx.adPlacement.createMany({
+          data: AD_PLACEMENTS.map((a) => ({ ...a, isEnabled: false })),
+          skipDuplicates: true,
+        })
+      ).count;
+
       return {
         currencies: CURRENCIES.length,
         markets: MARKETS.length,
@@ -270,6 +311,9 @@ export async function runReferenceSeed(prisma: PrismaClient): Promise<ReferenceS
         categoriesAdded,
         categoryTranslationsAdded,
         searchAliasesAdded,
+        encyclopediaCategoriesAdded,
+        reportReasonsAdded,
+        adPlacementsAdded,
       };
     },
     { timeout: 120_000, maxWait: 30_000 },

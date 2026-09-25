@@ -1,4 +1,7 @@
 {
   "@@locale": "ar",
-  "garageTitle": "جراجي"
+  "garageTitle": "جراجي",
+  "garageVehicleTitle": "سيارتي",
+  "garageAddTitle": "إضافة سيارة",
+  "garageEditTitle": "تعديل السيارة"
 }

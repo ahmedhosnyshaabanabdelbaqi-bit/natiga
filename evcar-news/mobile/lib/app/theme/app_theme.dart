@@ -82,7 +82,9 @@ abstract final class AppTheme {
         surfaceTintColor: Colors.transparent,
         backgroundColor: background,
         foregroundColor: scheme.onSurface,
-        titleTextStyle: text.titleLarge?.copyWith(fontWeight: FontWeight.w700, color: scheme.onSurface),
+        // No titleTextStyle: it would also shrink the expanded title of
+        // SliverAppBar.large. The default (textTheme.titleLarge) is already
+        // bold in this theme.
       ),
       cardTheme: CardThemeData(
         elevation: 0,

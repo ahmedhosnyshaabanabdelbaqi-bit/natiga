@@ -1,0 +1,6 @@
+# ShellCheck settings for the deploy kit (shellcheck -x evcar.sh install.sh monitor.sh ...).
+# SC2016: many commands are run INSIDE containers with `sh -c '...'` and must be
+# expanded there (container environment), not by the host shell.
+disable=SC2016
+external-sources=true
+source-path=SCRIPTDIR

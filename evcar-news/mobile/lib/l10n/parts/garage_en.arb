@@ -1,4 +1,7 @@
 {
   "@@locale": "en",
-  "garageTitle": "My garage"
+  "garageTitle": "My garage",
+  "garageVehicleTitle": "My car",
+  "garageAddTitle": "Add a car",
+  "garageEditTitle": "Edit car"
 }

@@ -26,6 +26,7 @@ void main() {
       expect(deepLinkRedirect(Uri.parse('https://evcar.news/compare/Ab12Cd')), '/compare/s/Ab12Cd');
       expect(deepLinkRedirect(Uri.parse('/compare/s/Ab12Cd')), isNull);
       expect(deepLinkRedirect(Uri.parse('/compare')), isNull);
+      expect(deepLinkRedirect(Uri.parse('/compare/pick')), isNull, reason: 'app screen, not a share id');
     });
 
     test('email link aliases keep their token', () {

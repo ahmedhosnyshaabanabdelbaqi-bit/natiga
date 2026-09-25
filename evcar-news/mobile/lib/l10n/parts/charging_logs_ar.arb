@@ -1,4 +1,7 @@
 {
   "@@locale": "ar",
-  "chargingLogsTitle": "سجل الشحن"
+  "chargingLogsTitle": "سجل الشحن",
+  "chargingLogsNewTitle": "جلسة شحن جديدة",
+  "chargingLogsEditTitle": "تعديل جلسة الشحن",
+  "chargingLogsReportsTitle": "الإنفاق والاستهلاك"
 }

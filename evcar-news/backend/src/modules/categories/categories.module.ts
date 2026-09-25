@@ -1,11 +1,16 @@
 import { Module } from '@nestjs/common';
+import { AdminCategoriesController, CategoriesController } from './categories.controller';
+import { CategoriesService } from './categories.service';
 
 /**
- * Article categories (+translations).
- *
- * Skeleton created by the backend foundation and registered in AppModule.
- * NOT IMPLEMENTED YET: controllers/providers are added by the owning team
- * inside src/modules/categories/ only.
+ * News categories (+ ar/en translations):
+ *   GET /api/v1/categories[/:slug]            public (active only, ETag)
+ *   /api/v1/admin/categories[/:id]             read: categories.write | articles.read; write: categories.write
+ * See docs/decisions/backend-articles.md.
  */
-@Module({})
+@Module({
+  controllers: [CategoriesController, AdminCategoriesController],
+  providers: [CategoriesService],
+  exports: [CategoriesService],
+})
 export class CategoriesModule {}

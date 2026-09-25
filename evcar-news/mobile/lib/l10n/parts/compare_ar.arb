@@ -2,5 +2,6 @@
   "@@locale": "ar",
   "compareTitle": "المقارنات",
   "compareSharedTitle": "مقارنة مشتركة",
-  "compareRecommendationsTitle": "ترشيح سيارة مناسبة"
+  "compareRecommendationsTitle": "ترشيح سيارة مناسبة",
+  "comparePickerTitle": "اختر سيارة"
 }

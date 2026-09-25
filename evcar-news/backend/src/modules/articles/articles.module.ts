@@ -1,11 +1,48 @@
 import { Module } from '@nestjs/common';
+import { jobsEnabledProviders } from '../../jobs/queues';
+import { AdminArticlesController } from './controllers/admin-articles.controller';
+import { PublicArticlesController } from './controllers/public-articles.controller';
+import { ArticleCorrectionsService } from './services/article-corrections.service';
+import { ArticleMediaService } from './services/article-media.service';
+import { ArticlePresenter } from './services/article-presenter.service';
+import { ArticleRevisionsService } from './services/article-revisions.service';
+import {
+  ArticleSchedulerService,
+  ArticleSchedulerTrigger,
+} from './services/article-scheduler.service';
+import { ArticleSearchIndexService } from './services/article-search-index.service';
+import { ArticlesAdminService } from './services/articles-admin.service';
+import { ArticlesPublicService } from './services/articles-public.service';
 
 /**
- * News/reviews/guides: workflow draft→in_review→scheduled→published→archived, revisions, vehicle links.
- *
- * Skeleton created by the backend foundation and registered in AppModule.
- * NOT IMPLEMENTED YET: controllers/providers are added by the owning team
- * inside src/modules/articles/ only.
+ * News, reviews, test drives, guides (REQUIREMENTS §5):
+ *   GET  /api/v1/articles, /articles/:slug, /articles/preview/:token, POST /articles/:slug/view
+ *   /api/v1/admin/articles/...  CRUD, workflow, revisions, corrections, images, preview links
+ * Scheduled articles are published by ArticleSchedulerTrigger (JOBS_ENABLED
+ * instances only; ArticleSchedulerService.publishDue() is idempotent).
+ * Events: `article.published` / `article.unpublished` ({articleId, slug, from, to}).
+ * See docs/decisions/backend-articles.md.
  */
-@Module({})
+@Module({
+  controllers: [PublicArticlesController, AdminArticlesController],
+  providers: [
+    ArticleMediaService,
+    ArticlePresenter,
+    ArticleSearchIndexService,
+    ArticlesAdminService,
+    ArticlesPublicService,
+    ArticleRevisionsService,
+    ArticleCorrectionsService,
+    ArticleSchedulerService,
+    ...jobsEnabledProviders([ArticleSchedulerTrigger]),
+  ],
+  exports: [
+    ArticlesAdminService,
+    ArticlesPublicService,
+    ArticleMediaService,
+    ArticlePresenter,
+    ArticleSearchIndexService,
+    ArticleSchedulerService,
+  ],
+})
 export class ArticlesModule {}

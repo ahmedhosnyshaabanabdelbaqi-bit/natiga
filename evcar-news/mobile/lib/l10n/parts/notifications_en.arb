@@ -1,4 +1,5 @@
 {
   "@@locale": "en",
-  "notificationsTitle": "Notifications"
+  "notificationsTitle": "Notifications",
+  "notificationsPreferencesTitle": "Notification preferences"
 }
