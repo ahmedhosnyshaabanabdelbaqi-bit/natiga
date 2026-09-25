@@ -29,8 +29,10 @@ import { createTestApp, type TestApp } from './utils/test-app';
 interface Problem {
   code: string;
 }
-const codes = (body: { error: { details: { problems: Problem[] } } }) =>
-  body.error.details.problems.map((p) => p.code);
+const codes = (body: unknown): string[] =>
+  (body as { error: { details: { problems: Problem[] } } }).error.details.problems.map(
+    (p) => p.code,
+  );
 
 describe('360° tours: admin workflow and public API (e2e)', () => {
   let t: TestApp;
@@ -54,7 +56,8 @@ describe('360° tours: admin workflow and public API (e2e)', () => {
         titleAr: 'مقصورة اختبار',
         ...body,
       });
-    if (res.status !== 201) throw new Error(`create tour ${res.status} ${JSON.stringify(res.body)}`);
+    if (res.status !== 201)
+      throw new Error(`create tour ${res.status} ${JSON.stringify(res.body)}`);
     return res.body.data as { id: string; slug: string; [k: string]: unknown };
   };
   const addScene = (tourId: string, body: Record<string, unknown>) =>
@@ -88,7 +91,10 @@ describe('360° tours: admin workflow and public API (e2e)', () => {
 
   describe('creating tours', () => {
     it('creates a draft bound to trim + market + drive side + colour', async () => {
-      const tour = await createTour({ interiorColorNameEn: 'Grey / Red', interiorColorNameAr: 'رمادي' });
+      const tour = await createTour({
+        interiorColorNameEn: 'Grey / Red',
+        interiorColorNameAr: 'رمادي',
+      });
       expect(tour).toMatchObject({
         status: 'draft',
         matchType: 'exact',
@@ -114,7 +120,10 @@ describe('360° tours: admin workflow and public API (e2e)', () => {
       };
       const post = (who: typeof staff.manager, body: Record<string, unknown>) =>
         t.http().post('/api/v1/admin/tours').set(auth(who)).send(body);
-      expect((await post(staff.manager, { ...base, variantId: '01900000-0000-7000-8000-000000000000' })).status).toBe(422);
+      expect(
+        (await post(staff.manager, { ...base, variantId: '01900000-0000-7000-8000-000000000000' }))
+          .status,
+      ).toBe(422);
       expect((await post(staff.manager, { ...base, marketCode: 'ZZ' })).status).toBe(422);
       expect((await post(staff.manager, { ...base, driveSide: 'center' })).status).toBe(422);
       const noNotes = await post(staff.manager, {
@@ -147,8 +156,10 @@ describe('360° tours: admin workflow and public API (e2e)', () => {
       const raw = await uploadAsset(t, staff.manager, await syntheticPanorama(2048), {
         kind: 'panorama',
       });
-      const withScene = await addScene(tour.id, { assetId: raw.id, position: 'driver' }).expect(201);
-      const scene = withScene.body.data.scenes[0];
+      const withScene = await addScene(tour.id, { assetId: raw.id, position: 'driver' }).expect(
+        201,
+      );
+      const scene = withScene.body.data.scenes[0] as { id: string };
       expect(scene).toMatchObject({ key: 'driver', isInitial: true, position: 'driver' });
       expect(withScene.body.data.initialSceneId).toBe(scene.id);
       await addHotspot(tour.id, scene.id, {
@@ -190,11 +201,14 @@ describe('360° tours: admin workflow and public API (e2e)', () => {
       await confirmVisual(t, staff.manager, raw.id);
 
       // tours.write alone cannot publish.
-      await t.http().post(`/api/v1/admin/tours/${tour.id}/publish`).set(auth(staff.manager)).expect(403);
+      await t
+        .http()
+        .post(`/api/v1/admin/tours/${tour.id}/publish`)
+        .set(auth(staff.manager))
+        .expect(403);
       const ok = await publish(tour.id).expect(200);
-      expect(ok.body.data).toMatchObject({ status: 'published', readiness: { publishable: false } });
+      expect(ok.body.data).toMatchObject({ status: 'published', readiness: { publishable: true } });
       expect(ok.body.data.publishedAt).not.toBeNull();
-      // (readiness now reports the tour itself as the published one? no: it excludes itself)
       const audit = await t.prisma.auditLog.findFirst({
         where: { entityId: tour.id, action: 'tours.status.published' },
       });
@@ -209,7 +223,10 @@ describe('360° tours: admin workflow and public API (e2e)', () => {
       expect(unlicense.status).toBe(422);
       expect(unlicense.body.error.details.constraint).toBe('media_assets_in_use_chk');
       // …and cannot be deleted while used.
-      const del = await t.http().delete(`/api/v1/admin/media/assets/${raw.id}`).set(auth(staff.manager));
+      const del = await t
+        .http()
+        .delete(`/api/v1/admin/media/assets/${raw.id}`)
+        .set(auth(staff.manager));
       expect(del.status).toBe(409);
 
       const pub = await t.http().get(`/api/v1/tours?variantId=${trim.variantId}`).expect(200);
@@ -219,9 +236,17 @@ describe('360° tours: admin workflow and public API (e2e)', () => {
       await t.http().get(`/api/v1/tours/${tour.slug}`).expect(200);
 
       // Unpublish hides it again.
-      await t.http().post(`/api/v1/admin/tours/${tour.id}/unpublish`).set(auth(staff.reviewer)).expect(200);
+      await t
+        .http()
+        .post(`/api/v1/admin/tours/${tour.id}/unpublish`)
+        .set(auth(staff.reviewer))
+        .expect(200);
       await t.http().get(`/api/v1/tours/${tour.id}`).expect(404);
-      await t.http().post(`/api/v1/admin/tours/${tour.id}/archive`).set(auth(staff.reviewer)).expect(200);
+      await t
+        .http()
+        .post(`/api/v1/admin/tours/${tour.id}/archive`)
+        .set(auth(staff.reviewer))
+        .expect(200);
       await t.http().delete(`/api/v1/admin/tours/${tour.id}`).set(auth(staff.manager)).expect(204);
       await t.http().get(`/api/v1/admin/tours/${tour.id}`).set(auth(staff.manager)).expect(404);
     });
@@ -232,7 +257,11 @@ describe('360° tours: admin workflow and public API (e2e)', () => {
         assetId: await readyPanorama(t, staff.manager, { licenseId }),
         position: 'driver',
       }).expect(201);
-      await t.http().post(`/api/v1/admin/tours/${tour.id}/submit`).set(auth(staff.manager)).expect(200);
+      await t
+        .http()
+        .post(`/api/v1/admin/tours/${tour.id}/submit`)
+        .set(auth(staff.manager))
+        .expect(200);
       const returned = await t
         .http()
         .post(`/api/v1/admin/tours/${tour.id}/return`)
@@ -250,7 +279,11 @@ describe('360° tours: admin workflow and public API (e2e)', () => {
         .set(auth(staff.reviewer));
       expect(bad.status).toBe(409);
       expect(bad.body.error.code).toBe('TOUR_INVALID_TRANSITION');
-      await t.http().post(`/api/v1/admin/tours/${tour.id}/submit`).set(auth(staff.manager)).expect(200);
+      await t
+        .http()
+        .post(`/api/v1/admin/tours/${tour.id}/submit`)
+        .set(auth(staff.manager))
+        .expect(200);
       const pub = await publish(tour.id).expect(200);
       expect(pub.body.data.reviewNote).toBeNull();
 
@@ -294,7 +327,9 @@ describe('360° tours: admin workflow and public API (e2e)', () => {
         .http()
         .patch(`/api/v1/admin/tours/${tour.id}`)
         .set(auth(staff.manager))
-        .send({ differenceNoteEn: 'Photographed in the Long Range trim (cloth seats in Standard).' })
+        .send({
+          differenceNoteEn: 'Photographed in the Long Range trim (cloth seats in Standard).',
+        })
         .expect(200);
       expect(edited.body.data.approvedAt).toBeNull();
       await t
@@ -371,9 +406,7 @@ describe('360° tours: admin workflow and public API (e2e)', () => {
           ar: { title: '<i>الشاشة</i>', body: '&lt;b&gt;ليس وسمًا' },
         },
       }).expect(201);
-      const h = res.body.data.scenes
-        .find((s: { id: string }) => s.id === driverId)
-        .hotspots.at(-1);
+      const h = res.body.data.scenes.find((s: { id: string }) => s.id === driverId).hotspots.at(-1);
       expect(h.texts.en).toEqual({ title: 'Screen', body: 'Line 1\nLine 2 & more' });
       expect(h.texts.ar).toEqual({ title: 'الشاشة', body: '< b>ليس وسمًا' });
       const onlyTags = await addHotspot(tourId, driverId, {
@@ -383,7 +416,12 @@ describe('360° tours: admin workflow and public API (e2e)', () => {
         texts: { en: { title: '<b></b>' } },
       });
       expect(onlyTags.status).toBe(422);
-      const none = await addHotspot(tourId, driverId, { type: 'info', yaw: 0, pitch: 0, texts: {} });
+      const none = await addHotspot(tourId, driverId, {
+        type: 'info',
+        yaw: 0,
+        pitch: 0,
+        texts: {},
+      });
       expect(none.status).toBe(422);
     });
 
@@ -482,7 +520,12 @@ describe('360° tours: admin workflow and public API (e2e)', () => {
       });
       await processInline(t, img.mediaAssetId!);
       await t.prisma.vehicleSpecification.create({
-        data: { variantId: trim.variantId, specKey: 'battery.usable_kwh', valueNum: '64.5', unit: 'kWh' },
+        data: {
+          variantId: trim.variantId,
+          specKey: 'battery.usable_kwh',
+          valueNum: '64.5',
+          unit: 'kWh',
+        },
       });
       await publish(tourId).expect(200);
 
@@ -553,23 +596,30 @@ describe('360° tours: admin workflow and public API (e2e)', () => {
       });
       expect(byType('info').title).toBe('Screen');
       expect(d.attributions).toEqual([
-        expect.objectContaining({ text: '360° test grid © Test studio', licenseType: 'commissioned' }),
+        expect.objectContaining({
+          text: '360° test grid © Test studio',
+          licenseType: 'commissioned',
+        }),
       ]);
 
       // Arabic, by slug, other market, device limits, caching.
       const ar = await t.http().get(`/api/v1/tours/${d.slug}?lang=ar&market=SA`).expect(200);
       expect(ar.body.data).toMatchObject({ title: 'مقصورة اختبار', marketMatch: false });
       expect(ar.body.data.scenes[0].positionLabel).toBe('مقعد السائق');
-      expect(ar.body.data.scenes[0].hotspots.find((h: { type: string }) => h.type === 'scene_link').title).toBe(
-        'إلى المقاعد الخلفية',
-      );
+      expect(
+        ar.body.data.scenes[0].hotspots.find((h: { type: string }) => h.type === 'scene_link')
+          .title,
+      ).toBe('إلى المقاعد الخلفية');
       expect(ar.body.data.scenes[0].panorama.recommendedRendition.width).toBe(2048);
       const tiny = await t.http().get(`/api/v1/tours/${tourId}?maxWidth=512`).expect(200);
       expect(tiny.body.data.scenes[0].panorama.renditions).toHaveLength(1);
       await t.http().get(`/api/v1/tours/${tourId}?maxWidth=99999`).expect(422);
-      const sa = await t.http().get(`/api/v1/tours?variantId=${trim.variantId}&market=SA`).expect(200);
+      const sa = await t
+        .http()
+        .get(`/api/v1/tours?variantId=${trim.variantId}&market=SA`)
+        .expect(200);
       expect(sa.body.data).toEqual([]);
-      const etag = en.headers['etag'] as string;
+      const etag = en.headers['etag'];
       expect(en.headers['cache-control']).toMatch(/public/);
       await t
         .http()
@@ -577,7 +627,10 @@ describe('360° tours: admin workflow and public API (e2e)', () => {
         .set('If-None-Match', etag)
         .expect(304);
       // Lists by model year.
-      const byYear = await t.http().get(`/api/v1/tours?modelYearId=${trim.modelYearId}`).expect(200);
+      const byYear = await t
+        .http()
+        .get(`/api/v1/tours?modelYearId=${trim.modelYearId}`)
+        .expect(200);
       expect((byYear.body.data as { id: string }[]).map((x) => x.id)).toContain(tourId);
     });
 
@@ -606,10 +659,22 @@ describe('360° tours: admin workflow and public API (e2e)', () => {
         .set(auth(staff.manager))
         .send({ variantId: trim.otherVariantId });
       expect(locked.status).toBe(409);
+      // Hotspots of a published tour need both languages.
+      const oneLanguage = await addHotspot(tourId, rearId, {
+        type: 'info',
+        yaw: 20,
+        pitch: 0,
+        texts: { en: { title: 'Only English' } },
+      });
+      expect(oneLanguage.status).toBe(422);
+      expect(oneLanguage.body.error.details[0].field).toBe('texts');
 
       // The licence expires: the tour disappears from the apps and publishing is refused.
       const yesterday = new Date(Date.now() - 86_400_000);
-      await t.prisma.assetLicense.update({ where: { id: licenseId }, data: { validUntil: yesterday } });
+      await t.prisma.assetLicense.update({
+        where: { id: licenseId },
+        data: { validUntil: yesterday },
+      });
       await t.http().get(`/api/v1/tours/${tourId}`).expect(404);
       const list = await t.http().get(`/api/v1/tours?variantId=${trim.variantId}`).expect(200);
       expect((list.body.data as { id: string }[]).some((x) => x.id === tourId)).toBe(false);
@@ -641,14 +706,16 @@ describe('360° tours: admin workflow and public API (e2e)', () => {
 
       const before = await t.http().get(`/api/v1/tours/${DEMO_IDS.tour}?lang=ar`).expect(200);
       expect(before.body.data.scenes[0].panorama.multires).toBeNull();
-      expect(before.body.data.scenes[0].panorama.renditions.map((r: { width: number }) => r.width)).toEqual([2048]);
+      expect(
+        before.body.data.scenes[0].panorama.renditions.map((r: { width: number }) => r.width),
+      ).toEqual([2048]);
       // Processing the demo panorama (in use by a published tour) keeps it ready and adds tiles.
       await processInline(t, DEMO_IDS.panoramaDriver);
       const after = await t.http().get(`/api/v1/tours/${DEMO_IDS.tour}`).expect(200);
       expect(after.body.data.scenes[0].panorama.multires).not.toBeNull();
-      expect(after.body.data.scenes[0].panorama.renditions.map((r: { width: number }) => r.width)).toEqual([
-        2048, 4096,
-      ]);
+      expect(
+        after.body.data.scenes[0].panorama.renditions.map((r: { width: number }) => r.width),
+      ).toEqual([2048, 4096]);
     });
   });
 });

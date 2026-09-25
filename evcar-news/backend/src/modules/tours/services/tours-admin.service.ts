@@ -1191,6 +1191,9 @@ export class ToursAdminService {
         en: 'Add a title in Arabic or English at least (both are required to publish).',
       });
     }
+    if (t.status === ContentStatus.published && (!texts.ar || !texts.en)) {
+      throw bothLanguagesRequired();
+    }
     const fields = {
       type: dto.type,
       targetSceneId: dto.targetSceneId ?? null,
@@ -1279,6 +1282,9 @@ export class ToursAdminService {
           en: 'At least one title must remain.',
         });
       }
+      if (t.status === ContentStatus.published && remaining.size < 2) {
+        throw bothLanguagesRequired();
+      }
     }
     await this.prisma.$transaction(async (tx) => {
       await tx.sceneHotspot.update({
@@ -1356,4 +1362,12 @@ export class ToursAdminService {
     ]);
     return this.detail(tourId);
   }
+}
+
+/** A hotspot of a published tour always has its texts in Arabic and English. */
+function bothLanguagesRequired() {
+  return tourFieldError('texts', 'bothLanguages', {
+    ar: 'الجولة منشورة: نص النقطة التفاعلية مطلوب بالعربية والإنجليزية.',
+    en: 'The tour is published: the hotspot text is required in Arabic and English.',
+  });
 }

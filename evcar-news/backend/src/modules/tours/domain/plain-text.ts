@@ -12,7 +12,8 @@
 const BLOCKS =
   /<(script|style|template|iframe|object|embed|noscript|svg|math)\b[^>]*>[\s\S]*?<\/\1\s*>/gi;
 const COMMENTS = /<!--[\s\S]*?(-->|$)/g;
-const BREAKS = /<\s*(br|\/p|\/div|\/li|\/h[1-6]|\/tr|hr)\b[^>]*>/gi;
+const BREAKS =
+  /<\s*(br|p|div|li|h[1-6]|tr|hr)\b[^>]*>|<\s*\/\s*(p|div|h[1-6]|tr|ul|ol|table|blockquote)\s*>/gi;
 const TAGS = /<\/?[A-Za-z][^>]*>|<![^>]*>|<\?[^>]*>/g;
 const NAMED: Record<string, string> = {
   amp: '&',

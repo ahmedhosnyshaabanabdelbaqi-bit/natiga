@@ -1,11 +1,19 @@
 import { Module } from '@nestjs/common';
+import { VehiclesModule } from '../vehicles/vehicles.module';
+import { RecommendationsController } from './recommendations.controller';
+import { RecommendationsService } from './recommendations.service';
 
 /**
- * Explainable recommendations by usage/budget/home charging (no paid influence).
- *
- * Skeleton created by the backend foundation and registered in AppModule.
- * NOT IMPLEMENTED YET: controllers/providers are added by the owning team
- * inside src/modules/recommendations/ only.
+ * Explainable recommendations by usage / budget / home charging
+ * (REQUIREMENTS §7): POST /api/v1/recommendations. Stateless; visible
+ * weights, per-factor contributions, reasons, missing data and "no decisive
+ * recommendation" when data is not comparable. No paid influence: the engine
+ * never reads ads or sponsorship data. See docs/decisions/backend-comparisons.md.
  */
-@Module({})
+@Module({
+  imports: [VehiclesModule],
+  controllers: [RecommendationsController],
+  providers: [RecommendationsService],
+  exports: [RecommendationsService],
+})
 export class RecommendationsModule {}
