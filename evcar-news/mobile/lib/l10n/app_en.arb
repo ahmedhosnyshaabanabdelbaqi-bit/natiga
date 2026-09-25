@@ -1,0 +1,362 @@
+{
+  "@@locale": "en",
+  "accountDeleteAccount": "Delete account",
+  "accountDeleteAcknowledge": "I understand this is permanent and cannot be undone.",
+  "accountDeleteButton": "Delete account permanently",
+  "accountDeletePasswordLabel": "Enter your password to confirm",
+  "accountDeleteTitle": "Delete account",
+  "accountDeleteWarning": "Your account and personal data will be permanently deleted, such as your garage, favorites, charging log, reminders and synced settings. Public contributions such as reviews and comments will be anonymized. This cannot be undone.",
+  "accountDeleted": "Your account has been deleted.",
+  "accountEmailNotVerified": "Your email is not verified yet.",
+  "accountEmailVerified": "Email verified",
+  "accountExploreSection": "Explore",
+  "accountGuestMessage": "All public content is available without signing in. Create an account to save your cars and favorites and sync them across devices.",
+  "accountGuestTitle": "You're browsing as a guest",
+  "accountLoggedOut": "Signed out.",
+  "accountLogout": "Sign out",
+  "accountLogoutConfirm": "Sign out of this device?",
+  "accountMyToolsSection": "My tools",
+  "accountOfflineUser": "Showing saved account details because you're offline.",
+  "accountPreferredLanguageLabel": "Language for emails and notifications",
+  "accountProfile": "Profile",
+  "accountProfileSaved": "Changes saved.",
+  "accountProfileTitle": "Profile",
+  "accountRestoring": "Restoring your session…",
+  "accountSessionCreated": "Started: {time}",
+  "@accountSessionCreated": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "accountSessionIp": "IP address: {ip}",
+  "@accountSessionIp": {
+    "placeholders": {
+      "ip": {
+        "type": "String"
+      }
+    }
+  },
+  "accountSessionLastUsed": "Last used: {time}",
+  "@accountSessionLastUsed": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "accountSessionRevoke": "End session",
+  "accountSessionRevokeConfirm": "End this session? That device will need to sign in again.",
+  "accountSessionRevoked": "Session ended.",
+  "accountSessionThisDevice": "This device",
+  "accountSessionUnknownDevice": "Unknown device",
+  "accountSessions": "Devices & sessions",
+  "accountSessionsEmpty": "No active sessions.",
+  "accountSessionsTitle": "Devices & sessions",
+  "accountSettingsSection": "Settings & privacy",
+  "accountTitle": "My account",
+  "accountVerifyNow": "Verify now",
+  "authBackToLogin": "Back to sign in",
+  "authConfirmPasswordLabel": "Confirm password",
+  "authContinueAsGuest": "Continue as guest",
+  "authDisplayNameLabel": "Display name",
+  "authDisplayNameTooLong": "Name is too long (max {max} characters).",
+  "@authDisplayNameTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "authEmailInvalid": "Enter a valid email address.",
+  "authEmailLabel": "Email",
+  "authForgotButton": "Send link",
+  "authForgotDone": "If an account exists for this email, you'll receive reset instructions.",
+  "authForgotIntro": "Enter your email and we'll send you a link to reset your password.",
+  "authForgotPasswordLink": "Forgot password?",
+  "authForgotTitle": "Reset your password",
+  "authGuestNote": "You can browse news, cars and stations without an account. An account is only needed for sync and personal features.",
+  "authHaveAccount": "Already have an account?",
+  "authHaveResetCode": "I have a reset code",
+  "authLoginButton": "Sign in",
+  "authLoginTitle": "Sign in",
+  "authNewPasswordLabel": "New password",
+  "authNoAccount": "No account yet?",
+  "authPasswordLabel": "Password",
+  "authPasswordTooLong": "Password is too long (max {max} characters).",
+  "@authPasswordTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "authPasswordTooShort": "Password must be at least {min} characters.",
+  "@authPasswordTooShort": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "authPasswordsDoNotMatch": "Passwords do not match.",
+  "authRegisterButton": "Create account",
+  "authRegisterSuccessMessage": "We sent a confirmation link to {email}. Open it from your inbox to verify your account, then sign in.",
+  "@authRegisterSuccessMessage": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "authRegisterSuccessTitle": "Account created",
+  "authRegisterTitle": "Create account",
+  "authRequired": "This field is required.",
+  "authResendVerification": "Resend verification link",
+  "authResendVerificationDone": "If the account exists and is not verified yet, a new link is on its way.",
+  "authResetButton": "Save password",
+  "authResetDone": "Your password has been changed. Sign in with your new password.",
+  "authResetTitle": "Set a new password",
+  "authResetTokenLabel": "Reset code",
+  "authVerifyButton": "Verify",
+  "authVerifyEmailAction": "Verify my email",
+  "@authVerifyEmailAction": {
+    "description": "Button shown when sign-in is refused because the e-mail address is not verified yet."
+  },
+  "authVerifyIntro": "Open the verification link we emailed you on this device, or paste the verification code here.",
+  "authVerifySuccess": "Your email has been verified.",
+  "authVerifyTitle": "Verify email",
+  "authVerifyTokenLabel": "Verification code",
+  "calculatorsTitle": "Charging & running-cost calculators",
+  "carsBrandTitle": "Brand",
+  "carsCatalogTitle": "Car catalog",
+  "carsDetailTitle": "Car details",
+  "chargingLogsTitle": "Charging log",
+  "chargingStationTitle": "Station details",
+  "chargingTitle": "Charging stations",
+  "commonCachedDataNotice": "Saved copy from {time}; it may not be up to date.",
+  "@commonCachedDataNotice": {
+    "description": "Shown whenever cached data is displayed instead of live data.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "commonCancel": "Cancel",
+  "commonClose": "Close",
+  "commonConfirm": "Confirm",
+  "commonCreateAccount": "Create account",
+  "commonDaysAgo": "{count, plural, =1{1 day ago} other{{count} days ago}}",
+  "@commonDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commonDemoLabel": "Demo data",
+  "@commonDemoLabel": {
+    "description": "Label for isDemo=true records."
+  },
+  "commonEmptyMessage": "There are no items to show right now.",
+  "commonEmptyTitle": "Nothing here yet",
+  "commonErrorGeneric": "The request could not be completed. Please try again.",
+  "commonErrorTitle": "Something went wrong",
+  "commonExternalVideo": "Watch the video at its source",
+  "@commonExternalVideo": {
+    "description": "Replaces embedded videos in article HTML."
+  },
+  "commonForbiddenMessage": "You don't have access to this content.",
+  "commonHidePassword": "Hide password",
+  "commonHoursAgo": "{count, plural, =1{1 hour ago} other{{count} hours ago}}",
+  "@commonHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commonJustNow": "just now",
+  "commonLinkOpenFailed": "Couldn't open the link.",
+  "commonLoading": "Loading…",
+  "commonMinutesAgo": "{count, plural, =1{1 minute ago} other{{count} minutes ago}}",
+  "@commonMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commonNotAvailable": "Not available",
+  "@commonNotAvailable": {
+    "description": "Shown instead of a missing value (never 0)."
+  },
+  "commonNotConfiguredMessage": "This service has not been set up by the administrators yet.",
+  "commonNotConfiguredTitle": "Service not configured",
+  "commonNotFoundMessage": "The requested content does not exist or is no longer available.",
+  "commonOfflineBanner": "You are offline",
+  "commonOfflineMessage": "Check your connection and try again. Content you saved is still available offline.",
+  "commonOfflineTitle": "You're offline",
+  "commonOpenSettings": "Open device settings",
+  "commonPermissionDeniedMessage": "This feature needs a permission that has not been granted. You can allow it in the device settings.",
+  "commonPermissionDeniedTitle": "Permission not granted",
+  "commonRateLimitedMessage": "Too many requests. Please wait a moment and try again.",
+  "commonReliabilityDisputed": "Disputed",
+  "commonReliabilityEstimated": "Estimated",
+  "commonReliabilityLabel": "Reliability: {level}",
+  "@commonReliabilityLabel": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "commonReliabilityManufacturerClaim": "Manufacturer claim",
+  "commonReliabilityUnverified": "Unverified",
+  "commonReliabilityVerified": "Verified",
+  "commonRetry": "Try again",
+  "commonSave": "Save",
+  "commonSeeAll": "See all",
+  "commonServerErrorMessage": "The server is currently unavailable. Please try again later.",
+  "commonShowPassword": "Show password",
+  "commonSignIn": "Sign in",
+  "commonSignInRequiredMessage": "This feature stores your personal data, so it needs an account. You can keep browsing the rest of the app without one.",
+  "commonSignInRequiredTitle": "Sign in to continue",
+  "commonSource": "Source: {source}",
+  "@commonSource": {
+    "placeholders": {
+      "source": {
+        "type": "String"
+      }
+    }
+  },
+  "commonSourceUnknown": "Source not specified",
+  "commonTimeoutMessage": "The server took too long to respond. Please try again.",
+  "commonUnderConstructionMessage": "This screen is not built yet and shows no data until it is connected to the server.",
+  "commonUnderConstructionRequested": "Requested route: {path}",
+  "@commonUnderConstructionRequested": {
+    "placeholders": {
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "commonUnderConstructionTitle": "Under construction",
+  "@commonUnderConstructionTitle": {
+    "description": "Honest placeholder for screens not built yet."
+  },
+  "commonVerifiedOn": "Verified on {date}",
+  "@commonVerifiedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecommendationsTitle": "Find the right car",
+  "compareSharedTitle": "Shared comparison",
+  "compareTitle": "Comparisons",
+  "encyclopediaEntryTitle": "Encyclopedia entry",
+  "encyclopediaTitle": "EV encyclopedia",
+  "favoritesSavedOfflineTitle": "Saved for offline reading",
+  "favoritesTitle": "Favorites",
+  "garageTitle": "My garage",
+  "homeTitle": "Home",
+  "newsArticleTitle": "Article",
+  "newsListTitle": "News",
+  "notificationsTitle": "Notifications",
+  "remindersTitle": "Reminders",
+  "searchTitle": "Search",
+  "servicesDirectoryTitle": "Services directory",
+  "settingsAboutSection": "About",
+  "settingsClearCache": "Clear cached data",
+  "settingsClearCacheConfirm": "Clear cached data?",
+  "settingsClearCacheDone": "Cached data cleared.",
+  "settingsClearCacheSubtitle": "Removes temporary copies of content. Items you saved for offline reading are kept.",
+  "settingsConfigCache": "Using saved server settings from {time}",
+  "@settingsConfigCache": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsConfigFallback": "The server could not be reached; the built-in default settings are in use.",
+  "settingsConfigNetwork": "Server settings up to date ({time})",
+  "@settingsConfigNetwork": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsConfigRefresh": "Refresh server settings",
+  "settingsDataSection": "Data",
+  "settingsDigitsSubtitle": "Used only when the app language is Arabic.",
+  "settingsDigitsTitle": "Arabic-Indic digits (٠١٢٣)",
+  "settingsFontPreviewNumbers": "Numbers and date example: {number} — {date}",
+  "@settingsFontPreviewNumbers": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsFontPreviewSample": "Sample text: news, car catalog, comparisons and charging stations.",
+  "settingsFontPreviewTitle": "Preview",
+  "settingsLanguageArabic": "العربية (Arabic)",
+  "settingsLanguageEnglish": "English",
+  "settingsLanguageHint": "The app language is independent of the market; you can read any market in either language.",
+  "settingsLanguageSection": "Language",
+  "settingsLanguageSystem": "Device language",
+  "settingsLicenses": "Software and font licences",
+  "settingsMarketCurrency": "Currency: {currency}",
+  "@settingsMarketCurrency": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsMarketHint": "The market sets prices, availability and currency. Choosing a market does not mean charging station data is available there.",
+  "settingsMarketSection": "Market (country)",
+  "settingsMarketsUnavailable": "No markets are enabled in the server settings.",
+  "settingsPrivacy": "Privacy policy",
+  "settingsTerms": "Terms of use",
+  "settingsTextSizeDecrease": "Smaller text",
+  "settingsTextSizeHint": "Applied on top of the text size chosen in your device settings.",
+  "settingsTextSizeIncrease": "Larger text",
+  "settingsTextSizeSection": "Text size",
+  "settingsThemeDark": "Dark",
+  "settingsThemeLight": "Light",
+  "settingsThemeSection": "Appearance",
+  "settingsThemeSystem": "Follow device",
+  "settingsTitle": "Settings",
+  "settingsVersion": "Version {version}",
+  "@settingsVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsVersionUnknown": "Version unknown",
+  "shellGoHome": "Back to home",
+  "shellNavAccount": "Account",
+  "shellNavCars": "Cars",
+  "shellNavCharging": "Charging",
+  "shellNavCompare": "Compare",
+  "shellNavHome": "Home",
+  "shellNotificationsTooltip": "Notifications",
+  "shellRouteNotFoundMessage": "There is no screen at this address in the app.",
+  "shellRouteNotFoundTitle": "Page not found",
+  "shellSearchTooltip": "Search",
+  "shellSessionExpired": "Your session has ended. Please sign in again.",
+  "toursViewerTitle": "360° interior tour",
+  "tripsTitle": "Trip planner"
+}

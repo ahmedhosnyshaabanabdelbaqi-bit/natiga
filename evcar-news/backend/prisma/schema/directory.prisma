@@ -1,0 +1,201 @@
+// Services directory, encyclopedia, ads/sponsorship
+// (modules: services-directory, encyclopedia, ads).
+
+enum ServiceProviderType {
+  service_center
+  dealer
+  charger_installer
+  roadside_assistance
+  battery_service
+  other
+
+  @@map("service_provider_type")
+}
+
+enum AdCampaignStatus {
+  draft
+  active
+  paused
+  ended
+
+  @@map("ad_campaign_status")
+}
+
+/// Surfaces where ads may appear. Map and panorama views are deliberately
+/// NOT surfaces (no forced ads while using the map or a 360° tour).
+enum AdSurface {
+  home
+  article_list
+  article_detail
+  car_list
+  car_detail
+  station_list
+  other
+
+  @@map("ad_surface")
+}
+
+/// Managed directory of service centres, dealers, installers, emergency
+/// services. Contact data carries its verification date. Sponsored entries
+/// must be labelled (CHECK).
+model ServiceProvider {
+  id                  String                                @id @default(uuid(7)) @db.Uuid
+  slug                String                                @unique @db.VarChar(200)
+  type                ServiceProviderType
+  nameEn              String                                @map("name_en") @db.VarChar(200)
+  nameAr              String                                @map("name_ar") @db.VarChar(200)
+  descriptionEn       String?                               @map("description_en")
+  descriptionAr       String?                               @map("description_ar")
+  marketCode          String                                @map("market_code") @db.VarChar(8)
+  city                String?                               @db.VarChar(120)
+  addressEn           String?                               @map("address_en") @db.VarChar(500)
+  addressAr           String?                               @map("address_ar") @db.VarChar(500)
+  latitude            Float?
+  longitude           Float?
+  /// Maintained by trigger when latitude/longitude are set.
+  location            Unsupported("geography(Point,4326)")?
+  phone               String?                               @db.VarChar(50)
+  whatsapp            String?                               @db.VarChar(50)
+  email               String?                               @db.VarChar(320)
+  websiteUrl          String?                               @map("website_url") @db.VarChar(2048)
+  openingHours        Json?                                 @map("opening_hours")
+  contactVerifiedAt   DateTime?                             @map("contact_verified_at") @db.Timestamptz(3)
+  contactVerifiedById String?                               @map("contact_verified_by_id") @db.Uuid
+  status              ContentStatus                         @default(draft)
+  isSponsored         Boolean                               @default(false) @map("is_sponsored")
+  sponsorLabel        String?                               @map("sponsor_label") @db.VarChar(100)
+  isDemo              Boolean                               @default(false) @map("is_demo")
+  createdById         String?                               @map("created_by_id") @db.Uuid
+  createdAt           DateTime                              @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt           DateTime                              @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt           DateTime?                             @map("deleted_at") @db.Timestamptz(3)
+
+  market Market                 @relation(fields: [marketCode], references: [code], onDelete: Restrict)
+  brands ServiceProviderBrand[]
+
+  @@index([location], type: Gist, map: "service_providers_location_gist")
+  @@index([marketCode, type, status])
+  @@map("service_providers")
+}
+
+model ServiceProviderBrand {
+  providerId String @map("provider_id") @db.Uuid
+  brandId    String @map("brand_id") @db.Uuid
+
+  provider ServiceProvider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  brand    Brand           @relation(fields: [brandId], references: [id], onDelete: Cascade)
+
+  @@id([providerId, brandId])
+  @@index([brandId])
+  @@map("service_provider_brands")
+}
+
+/// Beginner encyclopedia. Technical entries can only be published after a
+/// technical review (CHECK).
+model EncyclopediaEntry {
+  id                    String        @id @default(uuid(7)) @db.Uuid
+  slug                  String        @unique @db.VarChar(200)
+  /// vehicle_types | connectors | batteries | range_cycles | home_charging |
+  /// fast_charging | warranty | used_ev_inspection | other
+  topic                 String        @db.VarChar(64)
+  status                ContentStatus @default(draft)
+  technicalReviewedById String?       @map("technical_reviewed_by_id") @db.Uuid
+  technicalReviewedAt   DateTime?     @map("technical_reviewed_at") @db.Timestamptz(3)
+  coverAssetId          String?       @map("cover_asset_id") @db.Uuid
+  sortOrder             Int           @default(0) @map("sort_order")
+  publishedAt           DateTime?     @map("published_at") @db.Timestamptz(3)
+  isDemo                Boolean       @default(false) @map("is_demo")
+  createdById           String?       @map("created_by_id") @db.Uuid
+  createdAt             DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt             DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt             DateTime?     @map("deleted_at") @db.Timestamptz(3)
+
+  technicalReviewedBy User?                          @relation("EncyclopediaReviewer", fields: [technicalReviewedById], references: [id], onDelete: SetNull)
+  coverAsset          MediaAsset?                    @relation(fields: [coverAssetId], references: [id], onDelete: SetNull)
+  translations        EncyclopediaEntryTranslation[]
+
+  @@index([topic, status, sortOrder])
+  @@map("encyclopedia_entries")
+}
+
+model EncyclopediaEntryTranslation {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  entryId   String   @map("entry_id") @db.Uuid
+  locale    String   @db.VarChar(10)
+  title     String   @db.VarChar(300)
+  summary   String?
+  bodyHtml  String   @default("") @map("body_html")
+  bodyText  String?  @map("body_text")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  entry EncyclopediaEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+
+  @@unique([entryId, locale])
+  @@map("encyclopedia_entry_translations")
+}
+
+model AdPlacement {
+  id           String    @id @default(uuid(7)) @db.Uuid
+  /// Stable key used by clients, e.g. "home.after_latest_news".
+  key          String    @unique @db.VarChar(64)
+  nameEn       String    @map("name_en") @db.VarChar(200)
+  nameAr       String    @map("name_ar") @db.VarChar(200)
+  surface      AdSurface
+  isEnabled    Boolean   @default(false) @map("is_enabled")
+  maxCreatives Int       @default(1) @map("max_creatives")
+  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt    DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  creatives AdCreative[]
+
+  @@map("ad_placements")
+}
+
+/// Ads are always shown with a disclosure label and never affect comparison
+/// or recommendation results.
+model AdCampaign {
+  id                String           @id @default(uuid(7)) @db.Uuid
+  name              String           @db.VarChar(200)
+  advertiserName    String           @map("advertiser_name") @db.VarChar(200)
+  status            AdCampaignStatus @default(draft)
+  startsAt          DateTime?        @map("starts_at") @db.Timestamptz(3)
+  endsAt            DateTime?        @map("ends_at") @db.Timestamptz(3)
+  disclosureLabelEn String           @default("Sponsored") @map("disclosure_label_en") @db.VarChar(50)
+  disclosureLabelAr String           @default("إعلان") @map("disclosure_label_ar") @db.VarChar(50)
+  /// Market codes; empty = all markets.
+  targetMarkets     String[]         @default([]) @map("target_markets")
+  notes             String?
+  isDemo            Boolean          @default(false) @map("is_demo")
+  createdById       String?          @map("created_by_id") @db.Uuid
+  createdAt         DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  creatives AdCreative[]
+
+  @@index([status, startsAt, endsAt])
+  @@map("ad_campaigns")
+}
+
+model AdCreative {
+  id          String   @id @default(uuid(7)) @db.Uuid
+  campaignId  String   @map("campaign_id") @db.Uuid
+  placementId String   @map("placement_id") @db.Uuid
+  assetId     String?  @map("asset_id") @db.Uuid
+  headline    String?  @db.VarChar(200)
+  body        String?  @db.VarChar(500)
+  targetUrl   String   @map("target_url") @db.VarChar(2048)
+  locale      String?  @db.VarChar(10)
+  weight      Int      @default(1)
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  campaign  AdCampaign  @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  placement AdPlacement @relation(fields: [placementId], references: [id], onDelete: Restrict)
+  asset     MediaAsset? @relation(fields: [assetId], references: [id], onDelete: SetNull)
+
+  @@index([placementId, isActive])
+  @@index([campaignId])
+  @@map("ad_creatives")
+}

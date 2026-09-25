@@ -1,0 +1,20 @@
+/* Global tweaks on top of Mantine. Keep minimal. */
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+/* Numbers, emails, URLs and codes stay LTR inside RTL layouts. */
+[dir='rtl'] input[type='email'],
+[dir='rtl'] input[type='url'],
+[dir='rtl'] code {
+  unicode-bidi: plaintext;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

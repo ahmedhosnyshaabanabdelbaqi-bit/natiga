@@ -1,0 +1,317 @@
+// Editorial content: articles, categories, tags, RSS import
+// (modules: articles, categories, tags, rss-import).
+
+/// Content workflow: draft → in_review → scheduled → published → archived.
+enum ContentStatus {
+  draft
+  in_review
+  scheduled
+  published
+  archived
+
+  @@map("content_status")
+}
+
+enum ArticleType {
+  news
+  review
+  test_drive
+  buying_guide
+  explainer
+  opinion
+
+  @@map("article_type")
+}
+
+enum RssItemStatus {
+  new
+  /// Converted into an article draft (never auto-published).
+  drafted
+  ignored
+  duplicate
+  failed
+
+  @@map("rss_item_status")
+}
+
+/// What the licence of a feed allows us to show. Default is the most restrictive.
+enum RssUsagePolicy {
+  headline_link_only
+  summary_with_link
+  full_content_licensed
+
+  @@map("rss_usage_policy")
+}
+
+model Category {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  slug      String   @unique @db.VarChar(120)
+  parentId  String?  @map("parent_id") @db.Uuid
+  sortOrder Int      @default(0) @map("sort_order")
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  parent                    Category?                  @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children                  Category[]                 @relation("CategoryTree")
+  translations              CategoryTranslation[]
+  articles                  Article[]
+  rssFeeds                  RssFeed[]
+  notificationSubscriptions NotificationSubscription[]
+
+  @@index([parentId])
+  @@map("categories")
+}
+
+model CategoryTranslation {
+  id          String   @id @default(uuid(7)) @db.Uuid
+  categoryId  String   @map("category_id") @db.Uuid
+  locale      String   @db.VarChar(10)
+  name        String   @db.VarChar(200)
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([categoryId, locale])
+  @@map("category_translations")
+}
+
+model Tag {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  slug      String   @unique @db.VarChar(120)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  translations TagTranslation[]
+  articles     ArticleTag[]
+
+  @@map("tags")
+}
+
+model TagTranslation {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  tagId     String   @map("tag_id") @db.Uuid
+  locale    String   @db.VarChar(10)
+  name      String   @db.VarChar(200)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  tag Tag @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([tagId, locale])
+  @@map("tag_translations")
+}
+
+/// News, reviews, test drives, guides... Language-specific text lives in
+/// article_translations; markets in article_markets (none = all markets).
+/// `eventDate` (when the event happened) is separate from `publishedAt`.
+model Article {
+  id               String        @id @default(uuid(7)) @db.Uuid
+  slug             String        @unique @db.VarChar(200)
+  type             ArticleType   @default(news)
+  status           ContentStatus @default(draft)
+  categoryId       String?       @map("category_id") @db.Uuid
+  authorId         String?       @map("author_id") @db.Uuid
+  /// Byline override (e.g. guest writer); NULL = author's display name.
+  authorName       String?       @map("author_name") @db.VarChar(200)
+  coverAssetId     String?       @map("cover_asset_id") @db.Uuid
+  originalLanguage String        @default("ar") @map("original_language") @db.VarChar(10)
+  eventDate        DateTime?     @map("event_date") @db.Date
+  submittedAt      DateTime?     @map("submitted_at") @db.Timestamptz(3)
+  reviewedById     String?       @map("reviewed_by_id") @db.Uuid
+  reviewedAt       DateTime?     @map("reviewed_at") @db.Timestamptz(3)
+  scheduledAt      DateTime?     @map("scheduled_at") @db.Timestamptz(3)
+  publishedAt      DateTime?     @map("published_at") @db.Timestamptz(3)
+  archivedAt       DateTime?     @map("archived_at") @db.Timestamptz(3)
+  /// Attribution of the original source (RSS / external).
+  sourceName       String?       @map("source_name") @db.VarChar(200)
+  sourceUrl        String?       @map("source_url") @db.VarChar(2048)
+  rssItemId        String?       @unique @map("rss_item_id") @db.Uuid
+  isFeatured       Boolean       @default(false) @map("is_featured")
+  /// Sponsored content must always be labelled (CHECK requires sponsor_name).
+  isSponsored      Boolean       @default(false) @map("is_sponsored")
+  sponsorName      String?       @map("sponsor_name") @db.VarChar(200)
+  allowComments    Boolean       @default(true) @map("allow_comments")
+  currentVersion   Int           @default(1) @map("current_version")
+  isDemo           Boolean       @default(false) @map("is_demo")
+  createdById      String?       @map("created_by_id") @db.Uuid
+  updatedById      String?       @map("updated_by_id") @db.Uuid
+  createdAt        DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt        DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt        DateTime?     @map("deleted_at") @db.Timestamptz(3)
+
+  category     Category?            @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  author       User?                @relation("ArticleAuthor", fields: [authorId], references: [id], onDelete: SetNull)
+  reviewedBy   User?                @relation("ArticleReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+  coverAsset   MediaAsset?          @relation("ArticleCover", fields: [coverAssetId], references: [id], onDelete: SetNull)
+  rssItem      RssItem?             @relation(fields: [rssItemId], references: [id], onDelete: SetNull)
+  markets      ArticleMarket[]
+  translations ArticleTranslation[]
+  revisions    ArticleRevision[]
+  tags         ArticleTag[]
+  vehicleLinks ArticleVehicleLink[]
+  comments     Comment[]
+  favorites    Favorite[]
+
+  @@index([status, publishedAt(sort: Desc)])
+  @@index([categoryId, status])
+  @@index([authorId])
+  @@index([type, status])
+  @@index([scheduledAt])
+  @@map("articles")
+}
+
+model ArticleMarket {
+  articleId  String @map("article_id") @db.Uuid
+  marketCode String @map("market_code") @db.VarChar(8)
+
+  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  market  Market  @relation(fields: [marketCode], references: [code], onDelete: Restrict)
+
+  @@id([articleId, marketCode])
+  @@index([marketCode])
+  @@map("article_markets")
+}
+
+/// Per-language article text. `bodyHtml` is sanitized server-side before
+/// storage; `bodyText` is its plain-text projection for search/snippets.
+/// Machine translations stay drafts until a human reviews them.
+model ArticleTranslation {
+  id                  String    @id @default(uuid(7)) @db.Uuid
+  articleId           String    @map("article_id") @db.Uuid
+  locale              String    @db.VarChar(10)
+  title               String    @db.VarChar(300)
+  summary             String?
+  bodyHtml            String    @default("") @map("body_html")
+  bodyText            String?   @map("body_text")
+  seoTitle            String?   @map("seo_title") @db.VarChar(300)
+  seoDescription      String?   @map("seo_description") @db.VarChar(500)
+  isMachineTranslated Boolean   @default(false) @map("is_machine_translated")
+  humanReviewedAt     DateTime? @map("human_reviewed_at") @db.Timestamptz(3)
+  humanReviewedById   String?   @map("human_reviewed_by_id") @db.Uuid
+  createdAt           DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt           DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@unique([articleId, locale])
+  @@index([locale])
+  @@map("article_translations")
+}
+
+/// Full snapshot of an article (incl. translations) per saved version; used
+/// for history and "restore previous version".
+model ArticleRevision {
+  id          String        @id @default(uuid(7)) @db.Uuid
+  articleId   String        @map("article_id") @db.Uuid
+  version     Int
+  status      ContentStatus
+  snapshot    Json
+  note        String?       @db.VarChar(500)
+  createdById String?       @map("created_by_id") @db.Uuid
+  createdAt   DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  createdBy User?   @relation(fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@unique([articleId, version])
+  @@map("article_revisions")
+}
+
+model ArticleTag {
+  articleId String @map("article_id") @db.Uuid
+  tagId     String @map("tag_id") @db.Uuid
+
+  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  tag     Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([articleId, tagId])
+  @@index([tagId])
+  @@map("article_tags")
+}
+
+/// Links an article to exactly one of brand / model / variant (CHECK).
+model ArticleVehicleLink {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  articleId String   @map("article_id") @db.Uuid
+  brandId   String?  @map("brand_id") @db.Uuid
+  modelId   String?  @map("model_id") @db.Uuid
+  variantId String?  @map("variant_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  article Article         @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  brand   Brand?          @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  model   CarModel?       @relation(fields: [modelId], references: [id], onDelete: Cascade)
+  variant VehicleVariant? @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  @@unique([articleId, brandId])
+  @@unique([articleId, modelId])
+  @@unique([articleId, variantId])
+  @@index([brandId])
+  @@index([modelId])
+  @@index([variantId])
+  @@map("article_vehicle_links")
+}
+
+/// RSS/Atom sources fetched server-side through the SSRF-safe fetcher.
+model RssFeed {
+  id                   String         @id @default(uuid(7)) @db.Uuid
+  name                 String         @db.VarChar(200)
+  url                  String         @unique @db.VarChar(2048)
+  siteUrl              String?        @map("site_url") @db.VarChar(2048)
+  language             String?        @db.VarChar(10)
+  marketCode           String?        @map("market_code") @db.VarChar(8)
+  defaultCategoryId    String?        @map("default_category_id") @db.Uuid
+  isActive             Boolean        @default(true) @map("is_active")
+  fetchIntervalMinutes Int            @default(60) @map("fetch_interval_minutes")
+  usagePolicy          RssUsagePolicy @default(headline_link_only) @map("usage_policy")
+  licenseNotes         String?        @map("license_notes")
+  etag                 String?        @db.VarChar(512)
+  lastModified         String?        @map("last_modified") @db.VarChar(128)
+  lastFetchedAt        DateTime?      @map("last_fetched_at") @db.Timestamptz(3)
+  lastSuccessAt        DateTime?      @map("last_success_at") @db.Timestamptz(3)
+  lastError            String?        @map("last_error")
+  consecutiveFailures  Int            @default(0) @map("consecutive_failures")
+  createdById          String?        @map("created_by_id") @db.Uuid
+  createdAt            DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt            DateTime       @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  market          Market?   @relation(fields: [marketCode], references: [code], onDelete: SetNull)
+  defaultCategory Category? @relation(fields: [defaultCategoryId], references: [id], onDelete: SetNull)
+  items           RssItem[]
+
+  @@index([isActive, lastFetchedAt])
+  @@map("rss_feeds")
+}
+
+/// Imported feed entries, de-duplicated by guid hash (per feed) and by
+/// canonical URL hash (globally).
+model RssItem {
+  id          String        @id @default(uuid(7)) @db.Uuid
+  feedId      String        @map("feed_id") @db.Uuid
+  guid        String?       @db.VarChar(2048)
+  /// sha256(guid) hex
+  guidHash    String?       @map("guid_hash") @db.Char(64)
+  url         String        @db.VarChar(2048)
+  /// sha256(canonicalized url) hex
+  urlHash     String        @unique @map("url_hash") @db.Char(64)
+  title       String        @db.VarChar(500)
+  summary     String?
+  author      String?       @db.VarChar(200)
+  imageUrl    String?       @map("image_url") @db.VarChar(2048)
+  publishedAt DateTime?     @map("published_at") @db.Timestamptz(3)
+  fetchedAt   DateTime      @default(now()) @map("fetched_at") @db.Timestamptz(3)
+  status      RssItemStatus @default(new)
+  createdAt   DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  feed    RssFeed  @relation(fields: [feedId], references: [id], onDelete: Cascade)
+  article Article?
+
+  @@unique([feedId, guidHash])
+  @@index([feedId, publishedAt(sort: Desc)])
+  @@index([status])
+  @@map("rss_items")
+}

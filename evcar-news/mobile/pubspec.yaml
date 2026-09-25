@@ -1,0 +1,78 @@
+name: evcar_news
+description: "EV Car News — electric vehicle news, car catalog, comparisons, 360° interior tours and charging stations."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.0
+  flutter: ">=3.47.0"
+
+# Versions are pinned exactly (no caret) on purpose; pubspec.lock is committed.
+# See docs/decisions/mobile.md for the reason behind each choice.
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # State management & navigation (no code generation — see ARCHITECTURE §6)
+  flutter_riverpod: 3.4.3
+  go_router: 17.5.0
+
+  # Networking, storage, cache
+  dio: 5.11.1
+  flutter_secure_storage: 11.2.0
+  sqflite: 2.4.4
+  path: 1.9.1
+  shared_preferences: 2.5.5
+  connectivity_plus: 7.3.1
+
+  # i18n & formatting
+  intl: 0.20.3
+
+  # Media, sharing, links
+  cached_network_image: 3.4.1
+  share_plus: 13.3.0
+  url_launcher: 6.3.2
+  flutter_widget_from_html_core: 0.17.4
+  html: 0.15.7
+
+  # Location & maps
+  geolocator: 14.0.3
+  flutter_map: 8.3.2
+  flutter_map_marker_cluster: 8.2.2
+  latlong2: 0.9.1
+
+  # 360° viewer (isolated WebView) & sensors
+  webview_flutter: 4.14.1
+  sensors_plus: 7.1.0
+
+  package_info_plus: 10.2.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: 6.0.0
+  sqflite_common_ffi: 2.4.3
+
+flutter:
+  uses-material-design: true
+  generate: true
+
+  assets:
+    - assets/fonts/OFL.txt
+    - assets/panorama/
+    - assets/panorama/pannellum/
+
+  fonts:
+    - family: IBMPlexSansArabic
+      fonts:
+        - asset: assets/fonts/IBMPlexSansArabic-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/IBMPlexSansArabic-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/IBMPlexSansArabic-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/IBMPlexSansArabic-Bold.ttf
+          weight: 700

@@ -1,0 +1,79 @@
+{
+  "title": "Markets",
+  "description": "Countries the apps serve, each with its currency, time zone and defaults. Language is independent of market.",
+  "add": "Add market",
+  "created": "Market created",
+  "updated": "Market updated",
+  "coverageNote": "Enabling a market does not guarantee that station, price or car data exists for it; coverage depends on imported and verified data.",
+  "emptyTitle": "No markets yet",
+  "emptyBody": "Add the launch market (e.g. EG) to get started.",
+  "enabled": "Enabled",
+  "disabled": "Disabled",
+  "toggleLabel": "Enable market {{code}}",
+  "enable": "Enable",
+  "disable": "Disable",
+  "enableTitle": "Enable {{code}}?",
+  "enableBody": "The market becomes selectable in the apps.",
+  "disableTitle": "Disable {{code}}?",
+  "disableBody": "The market is hidden from the apps. Its content is kept and can be re-enabled later.",
+  "fields": {
+    "code": "Code",
+    "name": "Name",
+    "currency": "Currency",
+    "timezone": "Time zone",
+    "defaultLanguage": "Default language",
+    "unitSystem": "Units",
+    "driveSide": "Drive side",
+    "enabled": "Enabled",
+    "sortOrder": "Sort order",
+    "details": "Defaults"
+  },
+  "form": {
+    "createTitle": "Add market",
+    "editTitle": "Edit market {{code}}",
+    "create": "Create market",
+    "codeHint": "ISO 3166-1 alpha-2, e.g. EG, SA, AE",
+    "currencyHint": "Only currencies registered below can be used.",
+    "noCurrency": "Register the currency in the Currencies section first."
+  },
+  "validation": {
+    "code": "Two capital letters (ISO 3166-1 alpha-2)",
+    "currency": "Three-letter ISO 4217 code",
+    "timezone": "Choose a valid IANA time zone"
+  },
+  "unitSystems": {
+    "metric": "Metric",
+    "imperial": "Imperial"
+  },
+  "driveSides": {
+    "lhd": "Left-hand drive",
+    "rhd": "Right-hand drive"
+  },
+  "default": "Default",
+  "defaultLocked": "Default market — choose another default in Settings first.",
+  "currencies": {
+    "title": "Currencies",
+    "description": "Currencies used by markets and prices. A market can only use a registered currency.",
+    "add": "Add currency",
+    "createTitle": "Add currency",
+    "editTitle": "Edit currency {{code}}",
+    "code": "Code",
+    "codeHint": "ISO 4217, e.g. EGP, SAR, AED",
+    "name": "Name",
+    "nameAr": "Arabic name",
+    "nameEn": "English name",
+    "symbol": "Symbol",
+    "symbolAr": "Arabic symbol",
+    "symbolEn": "English symbol",
+    "decimals": "Decimals",
+    "decimalsHint": "Digits after the decimal point (0–4).",
+    "invalidDecimals": "Whole number between 0 and 4",
+    "empty": "No currencies",
+    "saved": "Currency saved",
+    "deleted": "Currency deleted",
+    "delete": "Delete currency",
+    "deleteLabel": "Delete currency {{code}}",
+    "deleteTitle": "Delete {{code}}?",
+    "deleteBody": "Only a currency that no market, price or tariff uses can be deleted; otherwise the server refuses and nothing changes."
+  }
+}

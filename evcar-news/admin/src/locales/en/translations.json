@@ -1,0 +1,28 @@
+{
+  "title": "Translations",
+  "description": "Override user-interface texts of the apps without a new release.",
+  "note": "Overrides replace texts shipped in the apps for the given namespace and key. A key that the app does not use has no effect. Deleting an override restores the built-in text.",
+  "add": "Add override",
+  "saved": "Translation saved",
+  "deleted": "Override deleted",
+  "delete": "Delete override",
+  "deleteTitle": "Delete this override?",
+  "deleteBody": "{{key}} ({{locale}}) will fall back to the text built into the app.",
+  "editTitle": "Edit {{key}} ({{locale}})",
+  "searchPlaceholder": "Search keys and texts",
+  "anyLocale": "Any language",
+  "fields": {
+    "namespace": "Namespace",
+    "namespaceHint": "Feature namespace, e.g. home, stations",
+    "key": "Key",
+    "keyHint": "Letters, digits, dot, dash or underscore, e.g. hero.title",
+    "locale": "Language",
+    "value": "Text",
+    "updatedAt": "Updated"
+  },
+  "validation": {
+    "namespace": "Lower-case letters, digits, - or _ (max 64)",
+    "key": "Letters, digits, . - _ (max 191)",
+    "oneValue": "Enter the text in at least one language"
+  }
+}

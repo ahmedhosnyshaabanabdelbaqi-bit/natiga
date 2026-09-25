@@ -1,0 +1,79 @@
+{
+  "@@locale": "en",
+  "settingsTitle": "Settings",
+  "settingsLanguageSection": "Language",
+  "settingsLanguageSystem": "Device language",
+  "settingsLanguageArabic": "العربية (Arabic)",
+  "settingsLanguageEnglish": "English",
+  "settingsLanguageHint": "The app language is independent of the market; you can read any market in either language.",
+  "settingsMarketSection": "Market (country)",
+  "settingsMarketHint": "The market sets prices, availability and currency. Choosing a market does not mean charging station data is available there.",
+  "settingsMarketCurrency": "Currency: {currency}",
+  "@settingsMarketCurrency": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsMarketsUnavailable": "No markets are enabled in the server settings.",
+  "settingsThemeSection": "Appearance",
+  "settingsThemeLight": "Light",
+  "settingsThemeDark": "Dark",
+  "settingsThemeSystem": "Follow device",
+  "settingsTextSizeSection": "Text size",
+  "settingsTextSizeHint": "Applied on top of the text size chosen in your device settings.",
+  "settingsTextSizeDecrease": "Smaller text",
+  "settingsTextSizeIncrease": "Larger text",
+  "settingsFontPreviewTitle": "Preview",
+  "settingsFontPreviewSample": "Sample text: news, car catalog, comparisons and charging stations.",
+  "settingsFontPreviewNumbers": "Numbers and date example: {number} — {date}",
+  "@settingsFontPreviewNumbers": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsDigitsTitle": "Arabic-Indic digits (٠١٢٣)",
+  "settingsDigitsSubtitle": "Used only when the app language is Arabic.",
+  "settingsDataSection": "Data",
+  "settingsClearCache": "Clear cached data",
+  "settingsClearCacheSubtitle": "Removes temporary copies of content. Items you saved for offline reading are kept.",
+  "settingsClearCacheConfirm": "Clear cached data?",
+  "settingsClearCacheDone": "Cached data cleared.",
+  "settingsAboutSection": "About",
+  "settingsVersion": "Version {version}",
+  "@settingsVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsVersionUnknown": "Version unknown",
+  "settingsPrivacy": "Privacy policy",
+  "settingsTerms": "Terms of use",
+  "settingsLicenses": "Software and font licences",
+  "settingsConfigNetwork": "Server settings up to date ({time})",
+  "@settingsConfigNetwork": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsConfigCache": "Using saved server settings from {time}",
+  "@settingsConfigCache": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsConfigFallback": "The server could not be reached; the built-in default settings are in use.",
+  "settingsConfigRefresh": "Refresh server settings"
+}

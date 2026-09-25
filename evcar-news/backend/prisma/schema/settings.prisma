@@ -1,0 +1,193 @@
+// Settings, markets, currencies, UI translations, integrations and reference
+// prices (modules: settings, markets, i18n, system, calculators).
+
+enum DriveSide {
+  lhd
+  rhd
+
+  @@map("drive_side")
+}
+
+enum EnergyType {
+  electricity_residential
+  electricity_commercial
+  electricity_public_ac
+  electricity_public_dc
+  gasoline_80
+  gasoline_92
+  gasoline_95
+  diesel
+
+  @@map("energy_type")
+}
+
+enum EnergyPriceUnit {
+  per_kwh
+  per_liter
+
+  @@map("energy_price_unit")
+}
+
+/// ISO-4217 currencies used by markets, prices and tariffs.
+model Currency {
+  code      String   @id @db.Char(3)
+  nameAr    String   @map("name_ar") @db.VarChar(100)
+  nameEn    String   @map("name_en") @db.VarChar(100)
+  symbolAr  String?  @map("symbol_ar") @db.VarChar(16)
+  symbolEn  String?  @map("symbol_en") @db.VarChar(16)
+  /// Minor unit digits (EGP/SAR/AED = 2).
+  decimals  Int      @default(2) @db.SmallInt
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  markets      Market[]
+  prices       PriceHistory[]
+  tariffs      Tariff[]
+  ratesAsBase  ExchangeRate[] @relation("ExchangeRateBase")
+  ratesAsQuote ExchangeRate[] @relation("ExchangeRateQuote")
+  energyPrices EnergyPrice[]
+  chargingLogs ChargingLog[]
+
+  @@map("currencies")
+}
+
+/// Markets (countries). Language is independent of market. `code` is ISO-3166 alpha-2.
+model Market {
+  code            String     @id @db.VarChar(8)
+  nameAr          String     @map("name_ar") @db.VarChar(100)
+  nameEn          String     @map("name_en") @db.VarChar(100)
+  currencyCode    String     @map("currency_code") @db.Char(3)
+  /// IANA time zone, e.g. Africa/Cairo.
+  timezone        String     @db.VarChar(64)
+  defaultLanguage String     @default("ar") @map("default_language") @db.VarChar(10)
+  unitSystem      UnitSystem @default(metric) @map("unit_system")
+  driveSide       DriveSide  @default(lhd) @map("drive_side")
+  enabled         Boolean    @default(true)
+  sortOrder       Int        @default(0) @map("sort_order")
+  createdAt       DateTime   @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt       DateTime   @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  currency                  Currency                   @relation(fields: [currencyCode], references: [code], onDelete: Restrict)
+  userPreferences           UserPreference[]
+  variantMarkets            VariantMarket[]
+  rangeMeasurements         RangeMeasurement[]
+  vehicleSpecifications     VehicleSpecification[]
+  consumptionMeasurements   ConsumptionMeasurement[]
+  prices                    PriceHistory[]
+  specificationSources      SpecificationSource[]
+  articleMarkets            ArticleMarket[]
+  rssFeeds                  RssFeed[]
+  interiorTours             InteriorTour[]
+  exteriorSpins             ExteriorSpin[]
+  chargingStations          ChargingStation[]
+  reviews                   Review[]
+  questions                 Question[]
+  comparisons               Comparison[]
+  comparisonItems           ComparisonItem[]
+  userVehicles              UserVehicle[]
+  notificationSubscriptions NotificationSubscription[]
+  serviceProviders          ServiceProvider[]
+  energyPrices              EnergyPrice[]
+
+  @@index([enabled, sortOrder])
+  @@map("markets")
+}
+
+/// Key/value application settings (JSON values). Keys used by the foundation
+/// seed: branding, theme.colors, home.sections, features, share, legal, map,
+/// defaults. `isPublic` values may be exposed by GET /api/v1/app-config.
+model AppSetting {
+  key         String   @id @db.VarChar(100)
+  value       Json
+  description String?
+  isPublic    Boolean  @default(false) @map("is_public")
+  updatedById String?  @map("updated_by_id") @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@map("app_settings")
+}
+
+/// Admin-editable overrides of UI strings (namespace = feature, e.g. "home").
+model Translation {
+  id          String   @id @default(uuid(7)) @db.Uuid
+  namespace   String   @db.VarChar(64)
+  key         String   @db.VarChar(191)
+  locale      String   @db.VarChar(10)
+  value       String
+  updatedById String?  @map("updated_by_id") @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@unique([namespace, key, locale])
+  @@index([locale, namespace])
+  @@map("translations")
+}
+
+/// Non-secret integration configuration + health. Secrets (API keys,
+/// passwords) are NEVER stored here; they come from environment variables.
+model IntegrationSetting {
+  id            String    @id @default(uuid(7)) @db.Uuid
+  /// e.g. "stations.ocm", "routing.osrm", "push.fcm", "mail.smtp".
+  provider      String    @unique @db.VarChar(64)
+  category      String    @db.VarChar(32)
+  enabled       Boolean   @default(false)
+  config        Json      @default("{}")
+  lastCheckedAt DateTime? @map("last_checked_at") @db.Timestamptz(3)
+  lastSuccessAt DateTime? @map("last_success_at") @db.Timestamptz(3)
+  lastErrorAt   DateTime? @map("last_error_at") @db.Timestamptz(3)
+  lastError     String?   @map("last_error")
+  updatedById   String?   @map("updated_by_id") @db.Uuid
+  createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt     DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([category])
+  @@map("integration_settings")
+}
+
+/// Exchange rates used ONLY for clearly-labelled converted estimates
+/// ("تقديري بعد التحويل"); never presented as an official local price.
+model ExchangeRate {
+  id            String   @id @default(uuid(7)) @db.Uuid
+  baseCurrency  String   @map("base_currency") @db.Char(3)
+  quoteCurrency String   @map("quote_currency") @db.Char(3)
+  rate          Decimal  @db.Decimal(18, 8)
+  effectiveAt   DateTime @map("effective_at") @db.Timestamptz(3)
+  sourceName    String?  @map("source_name") @db.VarChar(200)
+  sourceUrl     String?  @map("source_url") @db.VarChar(2048)
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  base  Currency @relation("ExchangeRateBase", fields: [baseCurrency], references: [code], onDelete: Restrict)
+  quote Currency @relation("ExchangeRateQuote", fields: [quoteCurrency], references: [code], onDelete: Restrict)
+
+  @@unique([baseCurrency, quoteCurrency, effectiveAt])
+  @@map("exchange_rates")
+}
+
+/// Reference electricity / fuel prices per market with effective date and
+/// source, used as editable defaults by calculators (never shown as "current"
+/// without their date).
+model EnergyPrice {
+  id            String          @id @default(uuid(7)) @db.Uuid
+  marketCode    String          @map("market_code") @db.VarChar(8)
+  energyType    EnergyType      @map("energy_type")
+  price         Decimal         @db.Decimal(12, 4)
+  unit          EnergyPriceUnit
+  currencyCode  String          @map("currency_code") @db.Char(3)
+  effectiveFrom DateTime        @map("effective_from") @db.Date
+  effectiveTo   DateTime?       @map("effective_to") @db.Date
+  sourceId      String?         @map("source_id") @db.Uuid
+  verifiedAt    DateTime?       @map("verified_at") @db.Timestamptz(3)
+  notes         String?
+  isDemo        Boolean         @default(false) @map("is_demo")
+  createdById   String?         @map("created_by_id") @db.Uuid
+  createdAt     DateTime        @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt     DateTime        @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  market   Market               @relation(fields: [marketCode], references: [code], onDelete: Restrict)
+  currency Currency             @relation(fields: [currencyCode], references: [code], onDelete: Restrict)
+  source   SpecificationSource? @relation(fields: [sourceId], references: [id], onDelete: Restrict)
+
+  @@index([marketCode, energyType, effectiveFrom(sort: Desc)])
+  @@map("energy_prices")
+}

@@ -1,0 +1,195 @@
+{
+  "app": {
+    "adminSuffix": "لوحة الإدارة"
+  },
+  "actions": {
+    "actions": "إجراءات",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "confirm": "تأكيد",
+    "discard": "تجاهل التغييرات",
+    "edit": "تعديل",
+    "retry": "إعادة المحاولة",
+    "reload": "إعادة تحميل الصفحة",
+    "search": "بحث",
+    "clear": "مسح",
+    "resetFilters": "إعادة ضبط الفلاتر",
+    "backHome": "العودة للوحة الرئيسية"
+  },
+  "states": {
+    "loading": "جارٍ التحميل…",
+    "emptyTitle": "لا توجد بيانات بعد",
+    "emptyDescription": "لا توجد سجلات مطابقة للفلاتر الحالية.",
+    "notAvailable": "غير متوفر"
+  },
+  "errors": {
+    "requestId": "معرّف الطلب",
+    "unexpectedTitle": "حدث خطأ",
+    "unexpected": "حدث خطأ غير متوقع.",
+    "networkTitle": "تعذّر الوصول إلى الخادم",
+    "network": "تحقق من الاتصال أو من تشغيل خادم الـ API ثم أعد المحاولة.",
+    "sessionExpiredTitle": "انتهت الجلسة",
+    "sessionExpired": "يرجى تسجيل الدخول مرة أخرى.",
+    "forbiddenTitle": "لا تملك الصلاحية",
+    "forbidden": "حسابك غير مسموح له بتنفيذ هذا الإجراء.",
+    "notFoundTitle": "غير موجود",
+    "notFound": "المورد المطلوب غير موجود (أو أن نقطة الـ API هذه غير متاحة بعد).",
+    "notConfiguredTitle": "التكامل غير مُهيأ",
+    "validationTitle": "يرجى مراجعة النموذج",
+    "rateLimitedTitle": "طلبات كثيرة",
+    "rateLimited": "يرجى الانتظار قليلًا ثم إعادة المحاولة.",
+    "serverTitle": "خطأ في الخادم",
+    "server": "تعذّر على الخادم معالجة الطلب."
+  },
+  "validation": {
+    "required": "هذا الحقل مطلوب",
+    "maxLength": "بحد أقصى {{max}} حرفًا",
+    "httpsUrl": "أدخل رابطًا صحيحًا يبدأ بـ https://",
+    "hexColor": "أدخل لونًا بصيغة hex مثل #0A5CFF",
+    "decimal": "أدخل رقمًا بحد أقصى {{scale}} خانات عشرية",
+    "url": "أدخل رابط http:// أو https:// صالحًا"
+  },
+  "languages": {
+    "ar": "العربية",
+    "en": "English"
+  },
+  "navGroups": {
+    "overview": "نظرة عامة",
+    "content": "المحتوى",
+    "vehicles": "السيارات",
+    "media": "الوسائط و360°",
+    "stations": "الشحن",
+    "community": "المجتمع",
+    "engagement": "التفاعل",
+    "administration": "الإدارة"
+  },
+  "nav": {
+    "main": "التنقل الرئيسي",
+    "open": "فتح القائمة",
+    "close": "إغلاق القائمة",
+    "skipToContent": "تخطَّ إلى المحتوى"
+  },
+  "header": {
+    "language": "لغة الواجهة",
+    "darkMode": "التبديل إلى الوضع الداكن",
+    "lightMode": "التبديل إلى الوضع الفاتح",
+    "accountMenu": "قائمة الحساب",
+    "logout": "تسجيل الخروج"
+  },
+  "roles": {
+    "owner": "مالك",
+    "admin": "مدير",
+    "editor": "محرر",
+    "content_reviewer": "مراجع محتوى",
+    "vehicle_data_manager": "مسؤول بيانات السيارات",
+    "station_manager": "مسؤول المحطات",
+    "community_moderator": "مشرف المجتمع",
+    "user": "مستخدم"
+  },
+  "notImplemented": {
+    "badge": "قيد التنفيذ",
+    "short": "قريبًا",
+    "title": "هذا القسم قيد التنفيذ",
+    "body": "لم يُبنَ هذا القسم بعد. لا يُحفظ أو يُنشر أي شيء هنا، ولا تُعرض أي بيانات تجريبية.",
+    "plannedScope": "النطاق المخطط"
+  },
+  "status": {
+    "draft": "مسودة",
+    "in_review": "قيد المراجعة",
+    "scheduled": "مجدول",
+    "published": "منشور",
+    "archived": "مؤرشف"
+  },
+  "reliability": {
+    "verified": "موثّق",
+    "manufacturer_claim": "ادعاء المصنّع",
+    "estimated": "تقديري",
+    "unverified": "غير موثّق",
+    "disputed": "متنازع عليه",
+    "source": "المصدر",
+    "verifiedAt": "تاريخ التحقق"
+  },
+  "table": {
+    "range": "{{from}}–{{to}} من {{total}}",
+    "pageSize": "عدد الصفوف في الصفحة",
+    "sortable": "قابل للترتيب",
+    "sorted": {
+      "asc": "مرتب تصاعديًا",
+      "desc": "مرتب تنازليًا"
+    },
+    "pagination": {
+      "first": "الصفحة الأولى",
+      "previous": "الصفحة السابقة",
+      "next": "الصفحة التالية",
+      "last": "الصفحة الأخيرة",
+      "page": "الصفحة {{page}}"
+    }
+  },
+  "confirm": {
+    "typeToConfirm": "اكتب {{text}} للتأكيد"
+  },
+  "form": {
+    "unsavedChanges": "لديك تغييرات غير محفوظة. هل تريد مغادرة الصفحة؟"
+  },
+  "money": {
+    "currency": "العملة"
+  },
+  "units": {
+    "inputUnit": "وحدة الإدخال",
+    "storedAs": "تُحفظ كـ {{value}} {{unit}}"
+  },
+  "demo": "تجريبي",
+  "disabled": "معطّل",
+  "forbidden": {
+    "title": "لا تملك صلاحية الوصول إلى هذا القسم",
+    "body": "دورك لا يتضمن الصلاحية المطلوبة هنا. تواصل مع المالك أو المدير إذا كنت تحتاجها."
+  },
+  "notFound": {
+    "title": "الصفحة غير موجودة",
+    "body": "الصفحة التي تبحث عنها غير موجودة."
+  },
+  "noAccess": {
+    "title": "لا توجد صلاحية إدارة",
+    "body": "الحساب {{email}} لا يملك أي دور إداري. سجّل الخروج واستخدم حسابًا يملك صلاحيات إدارية."
+  },
+  "routeError": {
+    "title": "تعذّر تحميل هذه الصفحة",
+    "body": "إذا تم تحديث لوحة الإدارة للتو فإن إعادة التحميل تحل المشكلة عادةً."
+  },
+  "editor": {
+    "bold": "عريض",
+    "italic": "مائل",
+    "underline": "تسطير",
+    "strike": "يتوسطه خط",
+    "clearFormatting": "مسح التنسيق",
+    "bulletList": "قائمة نقطية",
+    "orderedList": "قائمة مرقّمة",
+    "blockquote": "اقتباس",
+    "hr": "خط فاصل",
+    "link": "رابط",
+    "unlink": "إزالة الرابط",
+    "linkNewTab": "فتح في تبويب جديد",
+    "linkSameTab": "فتح في نفس التبويب",
+    "undo": "تراجع",
+    "redo": "إعادة",
+    "tableInsert": "إدراج جدول",
+    "tableSize": "جدول {{columns}} × {{rows}}",
+    "tableDelete": "حذف الجدول",
+    "tableRowAfter": "إضافة صف",
+    "tableRowDelete": "حذف الصف",
+    "tableColumnAfter": "إضافة عمود",
+    "tableColumnDelete": "حذف العمود",
+    "tableHeaderRow": "تبديل صف العناوين",
+    "insertImage": "إدراج صورة",
+    "insertVideo": "تضمين فيديو",
+    "insert": "إدراج",
+    "url": "الرابط",
+    "altText": "النص البديل",
+    "altHint": "يصف الصورة لقارئات الشاشة.",
+    "altRequired": "النص البديل مطلوب",
+    "imageHttpsOnly": "استخدم رابط صورة يبدأ بـ https://",
+    "videoNotAllowed": "مصدر الفيديو هذا غير مسموح. استخدم رابط فيديو من YouTube.",
+    "allowedHosts": "مصادر الفيديو المسموحة: {{hosts}}",
+    "licenceReminder": "أدرج فقط الصور التي تملك حق نشرها، وسجّل الترخيص في مكتبة الوسائط."
+  }
+}

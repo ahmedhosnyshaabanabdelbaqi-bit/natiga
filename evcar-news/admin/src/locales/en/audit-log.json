@@ -1,0 +1,38 @@
+{
+  "title": "Audit log",
+  "description": "Every change made through the admin API: who did what, when, from where, with a before/after diff.",
+  "system": "System",
+  "columns": {
+    "time": "Time",
+    "actor": "Actor",
+    "action": "Action",
+    "entity": "Entity",
+    "entityId": "Entity ID",
+    "ip": "IP",
+    "userAgent": "User agent",
+    "requestId": "Request ID"
+  },
+  "filters": {
+    "search": "Search",
+    "entity": "Entity (e.g. article)",
+    "action": "Action (e.g. update)",
+    "dateRange": "Date range",
+    "entityIdActive": "Entity:",
+    "actorIdActive": "Actor:"
+  },
+  "drawer": { "title": "Audit entry" },
+  "diff": {
+    "title": "Changes",
+    "changes_one": "{{count}} change",
+    "changes_other": "{{count}} changes",
+    "raw": "Raw JSON",
+    "before": "Before",
+    "after": "After",
+    "field": "Field",
+    "kind": "Change",
+    "none": "(none)",
+    "noChanges": "No field differences between before and after.",
+    "noData": "This entry has no before/after data.",
+    "kinds": { "added": "Added", "removed": "Removed", "changed": "Changed" }
+  }
+}

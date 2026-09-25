@@ -1,0 +1,93 @@
+{
+  "title": "النظام والتكاملات",
+  "description": "الخدمات الخارجية المُهيأة وسبب عدم تهيئة غيرها وحالة المهام الخلفية. لا تُعرض أي أسرار.",
+  "refresh": "تحديث",
+  "health": {
+    "ok": "مُهيأ",
+    "error": "متعطل",
+    "not_configured": "غير مُهيأ",
+    "disabled": "معطّل"
+  },
+  "categories": {
+    "storage": "التخزين",
+    "mail": "البريد الإلكتروني",
+    "stations": "محطات الشحن",
+    "availability": "التوافر اللحظي",
+    "routing": "المسارات",
+    "geocoding": "تحديد المواقع",
+    "news": "الأخبار / RSS",
+    "push": "الإشعارات الفورية",
+    "oauth": "الدخول الاجتماعي",
+    "assistant": "المساعد",
+    "maps": "الخرائط"
+  },
+  "integrations": {
+    "title": "التكاملات",
+    "description": "الميزات التي تعتمد على خدمة غير مُهيأة تبقى مخفية أو تُظهر حالة «غير مُهيأ» واضحة في التطبيقات.",
+    "lastError": "آخر خطأ",
+    "lastSuccess": "آخر نجاح",
+    "never": "أبدًا",
+    "emptyTitle": "لا توجد تكاملات",
+    "emptyBody": "لم يُبلغ الخادم عن حالة أي مزوّد.",
+    "attribution": "الإسناد",
+    "runCheck": "تشغيل الفحص",
+    "checkOk": "نجح الفحص ({{ms}} ملّي ثانية)",
+    "checkFailed": "فشل الفحص: {{error}}",
+    "checkSkipped": "لا شيء للفحص: المزوّد غير مُهيأ.",
+    "perInstanceNote": "«آخر نجاح» و«آخر خطأ» يُتتبَّعان لكل نسخة من الـ API منذ تشغيلها."
+  },
+  "jobs": {
+    "title": "المهام الخلفية",
+    "description": "الطوابير التي تعالجها العمليات الخلفية (الاستيراد، معالجة الصور، الإشعارات…). تتحدث كل 30 ثانية.",
+    "queue": "الطابور",
+    "paused": "متوقف مؤقتًا",
+    "counts": {
+      "waiting": "بالانتظار",
+      "active": "قيد التنفيذ",
+      "delayed": "مؤجلة",
+      "completed": "مكتملة",
+      "failed": "فاشلة"
+    },
+    "recentFailures": "إخفاقات حديثة",
+    "attempts_zero": "بدون محاولات",
+    "attempts_one": "محاولة واحدة",
+    "attempts_two": "محاولتان",
+    "attempts_few": "{{count}} محاولات",
+    "attempts_many": "{{count}} محاولة",
+    "attempts_other": "{{count}} محاولة",
+    "emptyTitle": "لا توجد طوابير",
+    "emptyBody": "لم يُبلغ الخادم عن أي طوابير مهام.",
+    "workers": "العمّال",
+    "redisDown": "تعذّر الوصول إلى Redis: المهام الخلفية متوقفة وأعداد الطوابير غير معروفة.",
+    "workersDisabledHere": "العمّال معطّلون في نسخة الـ API هذه (JOBS_ENABLED=false)؛ يجب أن تعالج نسخة أخرى الطوابير."
+  },
+  "capabilities": {
+    "title": "ما يمكن للتطبيقات استخدامه الآن",
+    "routing": "مسارات مخطط الرحلات",
+    "geocoding": "البحث عن العناوين",
+    "assistant": "المساعد",
+    "push": "الإشعارات الفورية",
+    "liveAvailability": "التوافر اللحظي للشواحن",
+    "stationsSync": "مزامنة المحطات (Open Charge Map)",
+    "on": "متاح",
+    "off": "غير متاح"
+  },
+  "providers": {
+    "local": "القرص المحلي",
+    "s3": "تخزين متوافق مع S3",
+    "console": "الطرفية (للتطوير)",
+    "smtp": "SMTP",
+    "open_charge_map": "Open Charge Map",
+    "manual": "يدوي (الإدارة)",
+    "none": "لا يوجد",
+    "rss": "RSS / Atom",
+    "fcm": "Firebase Cloud Messaging",
+    "apns": "إشعارات Apple ‏(APNs)",
+    "in_app": "مركز الإشعارات داخل التطبيق",
+    "google": "Google",
+    "apple": "Apple",
+    "osrm": "OSRM",
+    "openrouteservice": "OpenRouteService",
+    "nominatim": "Nominatim"
+  }
+}

@@ -1,2 +1,4 @@
 node_modules/
 natiga.db
+# Redis snapshot written by the local dev Redis (started with this directory as cwd)
+/dump.rdb

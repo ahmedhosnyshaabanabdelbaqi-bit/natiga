@@ -1,0 +1,204 @@
+// Notification center, preferences, device tokens and deliveries
+// (module: notifications). The in-app notification center always works; push
+// (FCM/APNs) and e-mail deliveries are attempted only when configured.
+
+enum NotificationChannel {
+  in_app
+  push
+  email
+
+  @@map("notification_channel")
+}
+
+enum DeliveryStatus {
+  pending
+  sent
+  failed
+  /// Not attempted (channel not configured, quiet hours, opted out...).
+  skipped
+
+  @@map("delivery_status")
+}
+
+enum DevicePlatform {
+  android
+  ios
+  web
+
+  @@map("device_platform")
+}
+
+enum PushProvider {
+  fcm
+  apns
+
+  @@map("push_provider")
+}
+
+enum NotificationTopicType {
+  brand
+  model
+  variant
+  market
+  category
+  station
+  /// Price changes of a variant in a market.
+  price_alert
+
+  @@map("notification_topic_type")
+}
+
+enum CampaignStatus {
+  draft
+  scheduled
+  sending
+  sent
+  cancelled
+
+  @@map("campaign_status")
+}
+
+model NotificationPreference {
+  userId             String   @id @map("user_id") @db.Uuid
+  inAppEnabled       Boolean  @default(true) @map("in_app_enabled")
+  pushEnabled        Boolean  @default(true) @map("push_enabled")
+  emailEnabled       Boolean  @default(false) @map("email_enabled")
+  newsEnabled        Boolean  @default(true) @map("news_enabled")
+  priceAlertsEnabled Boolean  @default(true) @map("price_alerts_enabled")
+  remindersEnabled   Boolean  @default(true) @map("reminders_enabled")
+  communityEnabled   Boolean  @default(true) @map("community_enabled")
+  /// Local "HH:MM" quiet-hours window in `timezone`; NULL = none.
+  quietHoursStart    String?  @map("quiet_hours_start") @db.VarChar(5)
+  quietHoursEnd      String?  @map("quiet_hours_end") @db.VarChar(5)
+  timezone           String?  @db.VarChar(64)
+  createdAt          DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt          DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notification_preferences")
+}
+
+/// Topic subscriptions (brand/model/variant/market/category/station/price).
+model NotificationSubscription {
+  id         String                @id @default(uuid(7)) @db.Uuid
+  userId     String                @map("user_id") @db.Uuid
+  topicType  NotificationTopicType @map("topic_type")
+  brandId    String?               @map("brand_id") @db.Uuid
+  modelId    String?               @map("model_id") @db.Uuid
+  variantId  String?               @map("variant_id") @db.Uuid
+  marketCode String?               @map("market_code") @db.VarChar(8)
+  categoryId String?               @map("category_id") @db.Uuid
+  stationId  String?               @map("station_id") @db.Uuid
+  createdAt  DateTime              @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  user     User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  brand    Brand?           @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  model    CarModel?        @relation(fields: [modelId], references: [id], onDelete: Cascade)
+  variant  VehicleVariant?  @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  market   Market?          @relation(fields: [marketCode], references: [code], onDelete: Cascade)
+  category Category?        @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  station  ChargingStation? @relation(fields: [stationId], references: [id], onDelete: Cascade)
+
+  @@index([userId, topicType])
+  @@index([brandId])
+  @@index([modelId])
+  @@index([variantId])
+  @@index([categoryId])
+  @@index([stationId])
+  @@map("notification_subscriptions")
+}
+
+/// In-app notification (already localized for the recipient). `dedupeKey`
+/// prevents duplicates per user (unique).
+model Notification {
+  id         String    @id @default(uuid(7)) @db.Uuid
+  userId     String    @map("user_id") @db.Uuid
+  /// e.g. "article.published", "price.changed", "reminder.due".
+  type       String    @db.VarChar(64)
+  title      String    @db.VarChar(300)
+  body       String?
+  locale     String    @db.VarChar(10)
+  /// App route or https://evcar.news/... URL opened on tap.
+  deepLink   String?   @map("deep_link") @db.VarChar(1024)
+  data       Json      @default("{}")
+  dedupeKey  String?   @map("dedupe_key") @db.VarChar(200)
+  campaignId String?   @map("campaign_id") @db.Uuid
+  readAt     DateTime? @map("read_at") @db.Timestamptz(3)
+  expiresAt  DateTime? @map("expires_at") @db.Timestamptz(3)
+  createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  user       User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  campaign   NotificationCampaign?  @relation(fields: [campaignId], references: [id], onDelete: SetNull)
+  deliveries NotificationDelivery[]
+
+  @@unique([userId, dedupeKey])
+  @@index([userId, readAt, createdAt(sort: Desc)])
+  @@index([campaignId])
+  @@map("notifications")
+}
+
+model DeviceToken {
+  id         String         @id @default(uuid(7)) @db.Uuid
+  userId     String?        @map("user_id") @db.Uuid
+  token      String         @unique @db.VarChar(1024)
+  platform   DevicePlatform
+  provider   PushProvider
+  appVersion String?        @map("app_version") @db.VarChar(32)
+  locale     String?        @db.VarChar(10)
+  lastSeenAt DateTime       @default(now()) @map("last_seen_at") @db.Timestamptz(3)
+  revokedAt  DateTime?      @map("revoked_at") @db.Timestamptz(3)
+  createdAt  DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt  DateTime       @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  user       User?                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  deliveries NotificationDelivery[]
+
+  @@index([userId])
+  @@map("device_tokens")
+}
+
+model NotificationDelivery {
+  id                String              @id @default(uuid(7)) @db.Uuid
+  notificationId    String              @map("notification_id") @db.Uuid
+  channel           NotificationChannel
+  deviceTokenId     String?             @map("device_token_id") @db.Uuid
+  status            DeliveryStatus      @default(pending)
+  attempts          Int                 @default(0)
+  lastError         String?             @map("last_error")
+  providerMessageId String?             @map("provider_message_id") @db.VarChar(255)
+  sentAt            DateTime?           @map("sent_at") @db.Timestamptz(3)
+  createdAt         DateTime            @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime            @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  notification Notification @relation(fields: [notificationId], references: [id], onDelete: Cascade)
+  deviceToken  DeviceToken? @relation(fields: [deviceTokenId], references: [id], onDelete: SetNull)
+
+  @@index([notificationId])
+  @@index([status, createdAt])
+  @@map("notification_deliveries")
+}
+
+/// Admin-authored broadcast / segment notifications.
+model NotificationCampaign {
+  id          String         @id @default(uuid(7)) @db.Uuid
+  name        String         @db.VarChar(200)
+  titleEn     String?        @map("title_en") @db.VarChar(300)
+  titleAr     String?        @map("title_ar") @db.VarChar(300)
+  bodyEn      String?        @map("body_en")
+  bodyAr      String?        @map("body_ar")
+  deepLink    String?        @map("deep_link") @db.VarChar(1024)
+  /// Audience filter, e.g. {"markets":["EG"],"topics":[...]}.
+  audience    Json           @default("{}")
+  status      CampaignStatus @default(draft)
+  scheduledAt DateTime?      @map("scheduled_at") @db.Timestamptz(3)
+  sentAt      DateTime?      @map("sent_at") @db.Timestamptz(3)
+  createdById String?        @map("created_by_id") @db.Uuid
+  createdAt   DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime       @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  notifications Notification[]
+
+  @@index([status, scheduledAt])
+  @@map("notification_campaigns")
+}

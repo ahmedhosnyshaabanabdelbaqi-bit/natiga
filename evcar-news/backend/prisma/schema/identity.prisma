@@ -1,0 +1,292 @@
+// Identity, authentication and RBAC (modules: auth, users, rbac).
+
+enum UserStatus {
+  active
+  suspended
+
+  @@map("user_status")
+}
+
+enum EmailTokenPurpose {
+  verify_email
+  reset_password
+  /// One-time password setup link (e.g. printed by `npm run create-owner`).
+  setup_password
+  change_email
+
+  @@map("email_token_purpose")
+}
+
+enum OAuthProvider {
+  google
+  apple
+
+  @@map("oauth_provider")
+}
+
+enum ClientType {
+  web
+  mobile
+  cli
+
+  @@map("client_type")
+}
+
+enum ThemePreference {
+  system
+  light
+  dark
+
+  @@map("theme_preference")
+}
+
+enum UnitSystem {
+  metric
+  imperial
+
+  @@map("unit_system")
+}
+
+/// Accounts. `email` is stored normalized (trimmed, lower-case; CHECK in SQL).
+/// Deleting a user hard-deletes personal data (cascades) and anonymizes public
+/// contributions (their user_id becomes NULL).
+model User {
+  id                String     @id @default(uuid(7)) @db.Uuid
+  email             String     @unique @db.VarChar(320)
+  /// argon2id hash; NULL for accounts that only use OAuth or have not set a password yet.
+  passwordHash      String?    @map("password_hash")
+  displayName       String     @map("display_name") @db.VarChar(100)
+  locale            String     @default("ar") @db.VarChar(10)
+  status            UserStatus @default(active)
+  emailVerifiedAt   DateTime?  @map("email_verified_at") @db.Timestamptz(3)
+  passwordChangedAt DateTime?  @map("password_changed_at") @db.Timestamptz(3)
+  lastLoginAt       DateTime?  @map("last_login_at") @db.Timestamptz(3)
+  failedLoginCount  Int        @default(0) @map("failed_login_count")
+  lockedUntil       DateTime?  @map("locked_until") @db.Timestamptz(3)
+  isDemo            Boolean    @default(false) @map("is_demo")
+  createdAt         DateTime   @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime   @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  roles                     UserRole[]                 @relation("UserRoles")
+  grantedRoles              UserRole[]                 @relation("UserRoleGrantedBy")
+  sessions                  UserSession[]
+  preferences               UserPreference?
+  emailTokens               EmailToken[]
+  oauthAccounts             UserOAuthAccount[]
+  authoredArticles          Article[]                  @relation("ArticleAuthor")
+  reviewedArticles          Article[]                  @relation("ArticleReviewer")
+  articleRevisions          ArticleRevision[]
+  mediaUploads              MediaAsset[]               @relation("MediaUploader")
+  uploadSessions            UploadSession[]
+  approvedTours             InteriorTour[]             @relation("TourApprover")
+  stationReports            StationReport[]            @relation("StationReportReporter")
+  resolvedStationReports    StationReport[]            @relation("StationReportResolver")
+  stationCheckins           StationCheckin[]
+  reviews                   Review[]
+  comments                  Comment[]
+  questions                 Question[]
+  answers                   Answer[]
+  contentReports            ContentReport[]            @relation("ContentReportReporter")
+  handledContentReports     ContentReport[]            @relation("ContentReportHandler")
+  moderationActions         ModerationAction[]
+  blocks                    UserBlock[]                @relation("UserBlockTarget")
+  blocksIssued              UserBlock[]                @relation("UserBlockIssuer")
+  favorites                 Favorite[]
+  comparisons               Comparison[]
+  vehicles                  UserVehicle[]
+  chargingLogs              ChargingLog[]
+  reminders                 Reminder[]
+  tripPlans                 TripPlan[]
+  notificationPreference    NotificationPreference?
+  notificationSubscriptions NotificationSubscription[]
+  notifications             Notification[]
+  deviceTokens              DeviceToken[]
+  auditLogs                 AuditLog[]
+  importJobs                ImportJob[]
+  reviewedEncyclopedia      EncyclopediaEntry[]        @relation("EncyclopediaReviewer")
+
+  @@index([status])
+  @@map("users")
+}
+
+/// Roles: owner, admin, editor, content_reviewer, vehicle_data_manager,
+/// station_manager, community_moderator, user (seeded; see src/cli/seed-data/rbac.ts).
+model Role {
+  id          String   @id @default(uuid(7)) @db.Uuid
+  key         String   @unique @db.VarChar(64)
+  nameAr      String   @map("name_ar") @db.VarChar(100)
+  nameEn      String   @map("name_en") @db.VarChar(100)
+  description String?
+  /// System roles are seeded and cannot be deleted from the admin UI.
+  isSystem    Boolean  @default(false) @map("is_system")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  permissions RolePermission[]
+  users       UserRole[]
+
+  @@map("roles")
+}
+
+/// Permission strings such as `articles.publish`, `vehicles.write`.
+model Permission {
+  id            String   @id @default(uuid(7)) @db.Uuid
+  key           String   @unique @db.VarChar(100)
+  group         String   @db.VarChar(64)
+  descriptionAr String?  @map("description_ar")
+  descriptionEn String?  @map("description_en")
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt     DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  roles RolePermission[]
+
+  @@map("permissions")
+}
+
+model RolePermission {
+  roleId       String   @map("role_id") @db.Uuid
+  permissionId String   @map("permission_id") @db.Uuid
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+  @@index([permissionId])
+  @@map("role_permissions")
+}
+
+/// Every (role, permission) pair the reference seed has granted (or adopted
+/// as already decided). The seed only grants pairs that are NEW in code, so a
+/// permission an owner removed from a role is never silently re-granted by
+/// `npm run db:seed` (which runs on every container start).
+model SeededRolePermission {
+  roleKey       String   @map("role_key") @db.VarChar(64)
+  permissionKey String   @map("permission_key") @db.VarChar(100)
+  seededAt      DateTime @default(now()) @map("seeded_at") @db.Timestamptz(3)
+
+  @@id([roleKey, permissionKey])
+  @@map("seeded_role_permissions")
+}
+
+model UserRole {
+  userId      String   @map("user_id") @db.Uuid
+  roleId      String   @map("role_id") @db.Uuid
+  grantedById String?  @map("granted_by_id") @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  user      User  @relation("UserRoles", fields: [userId], references: [id], onDelete: Cascade)
+  role      Role  @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  grantedBy User? @relation("UserRoleGrantedBy", fields: [grantedById], references: [id], onDelete: SetNull)
+
+  @@id([userId, roleId])
+  @@index([roleId])
+  @@map("user_roles")
+}
+
+/// One row per logged-in device. The refresh token itself is never stored,
+/// only its SHA-256 hash; rotation replaces the hash, keeps the previous one
+/// (short grace window for lost responses / concurrent refreshes) and records
+/// every rotated hash in refresh_token_history to detect reuse of ANY older
+/// token of the family (which revokes the whole session). A session never
+/// lives longer than JWT_SESSION_MAX_AGE_DAYS after created_at.
+model UserSession {
+  id                       String     @id @default(uuid(7)) @db.Uuid
+  userId                   String     @map("user_id") @db.Uuid
+  refreshTokenHash         String     @unique @map("refresh_token_hash") @db.Char(64)
+  previousRefreshTokenHash String?    @map("previous_refresh_token_hash") @db.Char(64)
+  clientType               ClientType @default(mobile) @map("client_type")
+  deviceName               String?    @map("device_name") @db.VarChar(200)
+  userAgent                String?    @map("user_agent") @db.VarChar(512)
+  ip                       String?    @db.Inet
+  createdAt                DateTime   @default(now()) @map("created_at") @db.Timestamptz(3)
+  lastUsedAt               DateTime   @default(now()) @map("last_used_at") @db.Timestamptz(3)
+  lastRotatedAt            DateTime?  @map("last_rotated_at") @db.Timestamptz(3)
+  expiresAt                DateTime   @map("expires_at") @db.Timestamptz(3)
+  revokedAt                DateTime?  @map("revoked_at") @db.Timestamptz(3)
+  revokedReason            String?    @map("revoked_reason") @db.VarChar(100)
+
+  user         User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHistory RefreshTokenHistory[]
+
+  @@index([userId, revokedAt])
+  @@index([previousRefreshTokenHash])
+  @@index([expiresAt])
+  @@map("user_sessions")
+}
+
+/// Every refresh-token hash that was rotated away (the token family of a
+/// session). Presenting any of them again (outside the grace window of the
+/// immediately previous token) is reuse: the session is revoked and audited.
+/// Rows live as long as their session (cascade; ended sessions are purged
+/// 30 days after they end).
+model RefreshTokenHistory {
+  tokenHash String   @id @map("token_hash") @db.Char(64)
+  sessionId String   @map("session_id") @db.Uuid
+  rotatedAt DateTime @default(now()) @map("rotated_at") @db.Timestamptz(3)
+
+  session UserSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+  @@map("refresh_token_history")
+}
+
+model UserPreference {
+  userId              String          @id @map("user_id") @db.Uuid
+  preferredLanguage   String?         @map("preferred_language") @db.VarChar(10)
+  preferredMarketCode String?         @map("preferred_market_code") @db.VarChar(8)
+  theme               ThemePreference @default(system)
+  unitSystem          UnitSystem      @default(metric) @map("unit_system")
+  /// Reading font scale for articles (1.0 = default). CHECK 0.5..3.
+  fontScale           Decimal?        @map("font_scale") @db.Decimal(3, 2)
+  /// Interests for home personalization, e.g. {"brandIds":[],"categoryIds":[]}.
+  interests           Json            @default("{}")
+  /// When the user consented to location use for "nearby" features (NULL = never).
+  locationConsentAt   DateTime?       @map("location_consent_at") @db.Timestamptz(3)
+  analyticsConsent    Boolean         @default(false) @map("analytics_consent")
+  createdAt           DateTime        @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt           DateTime        @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  preferredMarket Market? @relation(fields: [preferredMarketCode], references: [code], onDelete: SetNull)
+
+  @@map("user_preferences")
+}
+
+/// Single-use tokens sent by e-mail (verification, reset, setup). Only the
+/// SHA-256 hash is stored (see src/common/security/tokens.ts).
+model EmailToken {
+  id          String            @id @default(uuid(7)) @db.Uuid
+  userId      String            @map("user_id") @db.Uuid
+  purpose     EmailTokenPurpose
+  tokenHash   String            @unique @map("token_hash") @db.Char(64)
+  /// Target address for change_email; otherwise the address the token was sent to.
+  email       String?           @db.VarChar(320)
+  expiresAt   DateTime          @map("expires_at") @db.Timestamptz(3)
+  usedAt      DateTime?         @map("used_at") @db.Timestamptz(3)
+  requestedIp String?           @map("requested_ip") @db.Inet
+  createdAt   DateTime          @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, purpose])
+  @@index([expiresAt])
+  @@map("email_tokens")
+}
+
+/// Linked Google / Apple identities (verified ID token subject).
+model UserOAuthAccount {
+  id             String        @id @default(uuid(7)) @db.Uuid
+  userId         String        @map("user_id") @db.Uuid
+  provider       OAuthProvider
+  providerUserId String        @map("provider_user_id") @db.VarChar(255)
+  email          String?       @db.VarChar(320)
+  createdAt      DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  lastUsedAt     DateTime?     @map("last_used_at") @db.Timestamptz(3)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerUserId])
+  @@index([userId])
+  @@map("user_oauth_accounts")
+}

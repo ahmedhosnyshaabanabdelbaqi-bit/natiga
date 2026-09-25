@@ -1,0 +1,78 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+#panorama {
+  position: absolute;
+  inset: 0;
+}
+
+#status {
+  position: absolute;
+  inset-inline: 16px;
+  bottom: 16px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  font: 14px/1.4 system-ui, sans-serif;
+  text-align: center;
+}
+
+/* Pannellum's "About" context-menu entry links to an external site, which the
+   app's navigation policy blocks anyway; hide it. The MIT licence is shown on
+   the app's licences page. */
+.pnlm-about-msg {
+  display: none !important;
+}
+
+/* Fullscreen is handled natively by the app (landscape + immersive mode). */
+.pnlm-fullscreen-toggle-button {
+  display: none !important;
+}
+
+/* Custom hotspot built by viewer.js (text via textContent only). */
+.evcar-hotspot {
+  width: 44px;
+  height: 44px;
+  margin: -22px 0 0 -22px;
+  border-radius: 50%;
+  background: rgba(10, 92, 255, 0.85);
+  border: 3px solid #fff;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.evcar-hotspot.scene {
+  background: rgba(0, 194, 224, 0.9);
+}
+
+.evcar-hotspot .evcar-tooltip {
+  visibility: hidden;
+  position: absolute;
+  bottom: 52px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 220px;
+  width: max-content;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  font: 14px/1.4 system-ui, sans-serif;
+  text-align: center;
+  white-space: normal;
+}
+
+.evcar-hotspot:hover .evcar-tooltip,
+.evcar-hotspot:focus .evcar-tooltip {
+  visibility: visible;
+}

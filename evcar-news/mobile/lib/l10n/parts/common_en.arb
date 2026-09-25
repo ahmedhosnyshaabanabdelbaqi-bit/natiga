@@ -1,0 +1,123 @@
+{
+  "@@locale": "en",
+  "commonNotAvailable": "Not available",
+  "@commonNotAvailable": {
+    "description": "Shown instead of a missing value (never 0)."
+  },
+  "commonRetry": "Try again",
+  "commonLoading": "Loading…",
+  "commonCancel": "Cancel",
+  "commonConfirm": "Confirm",
+  "commonSave": "Save",
+  "commonClose": "Close",
+  "commonSeeAll": "See all",
+  "commonEmptyTitle": "Nothing here yet",
+  "commonEmptyMessage": "There are no items to show right now.",
+  "commonErrorTitle": "Something went wrong",
+  "commonErrorGeneric": "The request could not be completed. Please try again.",
+  "commonOfflineTitle": "You're offline",
+  "commonOfflineMessage": "Check your connection and try again. Content you saved is still available offline.",
+  "commonOfflineBanner": "You are offline",
+  "commonTimeoutMessage": "The server took too long to respond. Please try again.",
+  "commonPermissionDeniedTitle": "Permission not granted",
+  "commonPermissionDeniedMessage": "This feature needs a permission that has not been granted. You can allow it in the device settings.",
+  "commonOpenSettings": "Open device settings",
+  "commonForbiddenMessage": "You don't have access to this content.",
+  "commonNotFoundMessage": "The requested content does not exist or is no longer available.",
+  "commonRateLimitedMessage": "Too many requests. Please wait a moment and try again.",
+  "commonNotConfiguredTitle": "Service not configured",
+  "commonNotConfiguredMessage": "This service has not been set up by the administrators yet.",
+  "commonServerErrorMessage": "The server is currently unavailable. Please try again later.",
+  "commonUnderConstructionTitle": "Under construction",
+  "@commonUnderConstructionTitle": {
+    "description": "Honest placeholder for screens not built yet."
+  },
+  "commonUnderConstructionMessage": "This screen is not built yet and shows no data until it is connected to the server.",
+  "commonUnderConstructionRequested": "Requested route: {path}",
+  "@commonUnderConstructionRequested": {
+    "placeholders": {
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "commonCachedDataNotice": "Saved copy from {time}; it may not be up to date.",
+  "@commonCachedDataNotice": {
+    "description": "Shown whenever cached data is displayed instead of live data.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "commonSource": "Source: {source}",
+  "@commonSource": {
+    "placeholders": {
+      "source": {
+        "type": "String"
+      }
+    }
+  },
+  "commonSourceUnknown": "Source not specified",
+  "commonVerifiedOn": "Verified on {date}",
+  "@commonVerifiedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "commonReliabilityVerified": "Verified",
+  "commonReliabilityManufacturerClaim": "Manufacturer claim",
+  "commonReliabilityEstimated": "Estimated",
+  "commonReliabilityUnverified": "Unverified",
+  "commonReliabilityDisputed": "Disputed",
+  "commonReliabilityLabel": "Reliability: {level}",
+  "@commonReliabilityLabel": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "commonDemoLabel": "Demo data",
+  "@commonDemoLabel": {
+    "description": "Label for isDemo=true records."
+  },
+  "commonSignInRequiredTitle": "Sign in to continue",
+  "commonSignInRequiredMessage": "This feature stores your personal data, so it needs an account. You can keep browsing the rest of the app without one.",
+  "commonSignIn": "Sign in",
+  "commonCreateAccount": "Create account",
+  "commonJustNow": "just now",
+  "commonMinutesAgo": "{count, plural, =1{1 minute ago} other{{count} minutes ago}}",
+  "@commonMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commonHoursAgo": "{count, plural, =1{1 hour ago} other{{count} hours ago}}",
+  "@commonHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commonDaysAgo": "{count, plural, =1{1 day ago} other{{count} days ago}}",
+  "@commonDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commonShowPassword": "Show password",
+  "commonHidePassword": "Hide password",
+  "commonLinkOpenFailed": "Couldn't open the link.",
+  "commonExternalVideo": "Watch the video at its source",
+  "@commonExternalVideo": {
+    "description": "Replaces embedded videos in article HTML."
+  }
+}

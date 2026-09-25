@@ -1,0 +1,166 @@
+{
+  "title": "Settings",
+  "description": "Branding, home page sections, feature flags, map tiles, sharing and legal links used by the apps (published through /app-config).",
+  "readOnly": "Read-only: changing settings requires the settings.write permission.",
+  "saved": "Settings saved",
+  "publicBadge": "Public (sent to apps)",
+  "privateBadge": "Admin only",
+  "lastUpdated": "Last updated {{date}}",
+  "tabs": {
+    "general": "General",
+    "branding": "Branding",
+    "home": "Home sections",
+    "features": "Feature flags",
+    "map": "Map",
+    "share": "Sharing",
+    "legal": "Legal",
+    "appLinks": "App links"
+  },
+  "general": {
+    "title": "Defaults",
+    "description": "Language and market used when a visitor has not chosen one. Language and market are independent.",
+    "defaultLanguage": "Default language",
+    "defaultMarket": "Default market",
+    "defaultMarketHint": "Only enabled markets can be the default. Manage markets in Administration → Markets."
+  },
+  "branding": {
+    "title": "Branding",
+    "description": "App name, logo and colours shown in the mobile app and this admin.",
+    "appName": "App name",
+    "logoUrl": "Logo URL",
+    "logoHint": "Upload a licensed logo (PNG, JPEG or WebP, max 1 MB — stored and re-encoded by the server) or enter the URL of an image you are allowed to use. HTTPS is required in production.",
+    "logoAlt": "Logo preview",
+    "primaryColor": "Primary colour",
+    "accentColor": "Accent colour",
+    "preview": "Preview",
+    "sampleButton": "Sample button",
+    "sampleBadge": "Badge",
+    "contrastOk": "Contrast with white text {{ratio}}:1 (AA)",
+    "contrastLow": "Low contrast with white text {{ratio}}:1 — below WCAG AA (4.5:1)",
+    "uploadLogo": "Upload logo",
+    "removeLogo": "Remove logo",
+    "logoRules": "PNG, JPEG or WebP, at least 64 px, max 1 MB. SVG is not accepted.",
+    "logoBlocked": "Save or discard your changes first.",
+    "logoType": "Only PNG, JPEG or WebP images can be uploaded.",
+    "logoTooLarge": "The file is larger than 1 MB.",
+    "logoUploaded": "Logo uploaded",
+    "logoRemoved": "Logo removed"
+  },
+  "homeSections": {
+    "title": "Home page sections",
+    "description": "Drag or use the arrows to reorder; switch off to hide a section. Sections are defined by the apps; hidden sections stay browsable elsewhere.",
+    "visible": "Visible",
+    "hidden": "Hidden",
+    "dragHandle": "Drag to reorder {{name}}",
+    "moveUp": "Move {{name}} up",
+    "moveDown": "Move {{name}} down",
+    "emptyTitle": "No home sections defined",
+    "emptyBody": "The server has not provided any home sections (setting key home.sections).",
+    "keys": {
+      "top_story": "Top story",
+      "latest_news": "Latest news",
+      "interior_tours": "360° interior tours",
+      "new_cars": "Newly added cars",
+      "featured_comparisons": "Featured comparisons",
+      "reviews": "Reviews",
+      "nearby_stations": "Nearby stations (after location permission)",
+      "charging_guides": "Charging & maintenance guides"
+    }
+  },
+  "features": {
+    "title": "Feature flags",
+    "description": "Turn app features on or off.",
+    "integrationNote": "A flag cannot make an unconfigured integration work: features that need an external service (routing, push, assistant…) stay unavailable until the service is configured — see System → Integrations.",
+    "emptyTitle": "No feature flags",
+    "emptyBody": "The server has not provided any feature flags (setting key features).",
+    "flags": {
+      "news": "News",
+      "cars": "Car catalog",
+      "comparisons": "Comparisons",
+      "interiorTours": "360° interior tours",
+      "stations": "Charging stations",
+      "calculators": "Calculators",
+      "garage": "My garage",
+      "favorites": "Favorites",
+      "chargingLogs": "Charging log",
+      "reminders": "Reminders",
+      "encyclopedia": "Encyclopedia",
+      "notifications": "Notification center",
+      "community": "Community (reviews, comments, Q&A)",
+      "tripPlanner": "Trip planner (needs a routing provider)",
+      "servicesDirectory": "Services directory",
+      "assistant": "Assistant (needs an LLM provider)",
+      "ads": "Ads & sponsorship",
+      "exteriorSpin": "Exterior 360° spin"
+    }
+  },
+  "map": {
+    "title": "Map tiles",
+    "description": "Tile server and attribution used by the station map in the apps.",
+    "tileUrlTemplate": "Tile URL template",
+    "tileUrlHint": "Must contain {z}, {x} and {y} ({s} and {r} are allowed). HTTPS is required in production.",
+    "attribution": "Attribution",
+    "attributionHint": "Shown on the map as required by the tile provider's licence (e.g. © OpenStreetMap contributors).",
+    "maxZoom": "Max zoom",
+    "invalidTemplate": "Use an http(s):// URL containing {z}, {x} and {y}",
+    "attributionRequired": "Attribution is required when a tile server is set",
+    "invalidZoom": "Whole number between 1 and 22",
+    "licenceNote": "Respect the tile provider's usage policy and attribution requirements. The public OpenStreetMap tile servers are not meant for heavy production traffic; use a commercial or self-hosted tile server for production.",
+    "osmPolicyLink": "OpenStreetMap tile usage policy",
+    "notConfigured": "No tile server configured: the apps report the map as not configured.",
+    "testTile": "Load a test tile",
+    "tileAlt": "Test map tile (zoom 3)",
+    "tileFailed": "The tile could not be loaded. Check the template, the provider's access rules or API key."
+  },
+  "share": {
+    "title": "Sharing",
+    "description": "Base URL of public share links (news, cars, comparisons) and app links.",
+    "fields": {
+      "baseUrl": "Share base URL"
+    }
+  },
+  "legal": {
+    "title": "Legal",
+    "description": "Links shown in the apps.",
+    "fields": {
+      "privacyUrl": "Privacy policy URL",
+      "termsUrl": "Terms of use URL"
+    }
+  },
+  "resetDone": "Default restored",
+  "restoreDefault": "Restore default",
+  "restoreDefaultTitle": "Restore the default for “{{title}}”?",
+  "restoreDefaultBody": "The stored value is replaced by the built-in default. The change is written to the audit log.",
+  "warnings": {
+    "title": "Needs attention",
+    "codes": {
+      "osm_public_tile_usage_policy": "The public OpenStreetMap tile server is configured. Its usage policy forbids heavy production traffic: use a commercial or self-hosted tile server before launch.",
+      "privacy_url_missing": "No privacy policy URL yet: the apps cannot link to one.",
+      "terms_url_missing": "No terms of use URL yet: the apps cannot link to them.",
+      "android_fingerprints_missing": "No Android signing certificate fingerprint: App Links cannot be verified (assetlinks.json stays empty).",
+      "ios_team_id_missing": "No Apple team id: Universal Links cannot be verified (apple-app-site-association stays empty).",
+      "stored_value_invalid_default_used": "The stored value is invalid; the apps currently receive the built-in default. Save a valid value or restore the default.",
+      "features_not_implemented_hidden": "Some features enabled here are not built yet, so they stay hidden from the apps until they ship.",
+      "trip_planner_hidden_routing_not_configured": "The trip planner stays hidden from the apps: no routing provider is configured.",
+      "assistant_hidden_not_configured": "The assistant stays hidden from the apps: no LLM provider is configured.",
+      "map_not_configured": "The map is not configured (tile URL template or attribution missing).",
+      "share_base_url_not_https": "The share base URL does not use https in production."
+    }
+  },
+  "appLinks": {
+    "title": "App links",
+    "description": "Android App Links and iOS Universal Links for evcar.news share links (/n/…, /cars/…, /compare/…). The server publishes /.well-known/assetlinks.json and apple-app-site-association from these values; this setting is not sent to the apps.",
+    "androidPackage": "Android package name",
+    "iosBundleId": "iOS bundle id",
+    "iosTeamId": "Apple team id",
+    "iosTeamIdHint": "10 characters from the Apple Developer account (empty until the account exists).",
+    "fingerprints": "Android signing certificate SHA-256 fingerprints",
+    "fingerprintsHint": "One per line (upper-case hex pairs separated by colons). Use the release/Play App Signing certificate, not the debug key.",
+    "paths": "Link paths",
+    "pathsHint": "One path pattern per line, e.g. /n/*",
+    "invalidId": "Use a reverse-domain id such as news.evcar.app",
+    "invalidTeamId": "10 upper-case letters or digits",
+    "invalidFingerprint": "Each line must be a SHA-256 fingerprint: 32 hex pairs separated by colons",
+    "invalidPath": "Each line must start with / and contain only letters, digits, / _ * . -"
+  }
+}

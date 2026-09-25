@@ -1,0 +1,14 @@
+{
+  "@@locale": "en",
+  "shellNavHome": "Home",
+  "shellNavCars": "Cars",
+  "shellNavCompare": "Compare",
+  "shellNavCharging": "Charging",
+  "shellNavAccount": "Account",
+  "shellRouteNotFoundTitle": "Page not found",
+  "shellRouteNotFoundMessage": "There is no screen at this address in the app.",
+  "shellGoHome": "Back to home",
+  "shellSessionExpired": "Your session has ended. Please sign in again.",
+  "shellSearchTooltip": "Search",
+  "shellNotificationsTooltip": "Notifications"
+}

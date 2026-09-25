@@ -1,0 +1,89 @@
+{
+  "title": "System & integrations",
+  "description": "Which external services are configured, why others are not, and the state of background jobs. Secrets are never shown.",
+  "refresh": "Refresh",
+  "health": {
+    "ok": "Configured",
+    "error": "Failing",
+    "not_configured": "Not configured",
+    "disabled": "Disabled"
+  },
+  "categories": {
+    "storage": "Storage",
+    "mail": "Email",
+    "stations": "Charging stations",
+    "availability": "Live availability",
+    "routing": "Routing",
+    "geocoding": "Geocoding",
+    "news": "News / RSS",
+    "push": "Push notifications",
+    "oauth": "Social sign-in",
+    "assistant": "Assistant",
+    "maps": "Maps"
+  },
+  "integrations": {
+    "title": "Integrations",
+    "description": "Features that depend on a service that is not configured stay hidden or show a clear “not configured” state in the apps.",
+    "lastError": "Last error",
+    "lastSuccess": "Last success",
+    "never": "never",
+    "emptyTitle": "No integrations reported",
+    "emptyBody": "The server did not report any provider status.",
+    "attribution": "Attribution",
+    "runCheck": "Run check",
+    "checkOk": "Check passed ({{ms}} ms)",
+    "checkFailed": "Check failed: {{error}}",
+    "checkSkipped": "Nothing to check: the provider is not configured.",
+    "perInstanceNote": "“Last success” and “last error” are tracked per API instance since it started."
+  },
+  "jobs": {
+    "title": "Background jobs",
+    "description": "Queues processed by workers (imports, image processing, notifications…). Refreshes every 30 seconds.",
+    "queue": "Queue",
+    "paused": "Paused",
+    "counts": {
+      "waiting": "Waiting",
+      "active": "Active",
+      "delayed": "Delayed",
+      "completed": "Completed",
+      "failed": "Failed"
+    },
+    "recentFailures": "Recent failures",
+    "attempts_one": "{{count}} attempt",
+    "attempts_other": "{{count}} attempts",
+    "emptyTitle": "No queues reported",
+    "emptyBody": "The server did not report any job queues.",
+    "workers": "Workers",
+    "redisDown": "Redis is unreachable: background jobs are paused and queue counts are unknown.",
+    "workersDisabledHere": "Workers are disabled on this API instance (JOBS_ENABLED=false); another instance must process the queues."
+  },
+  "capabilities": {
+    "title": "What the apps can use now",
+    "routing": "Trip planner routing",
+    "geocoding": "Address search",
+    "assistant": "Assistant",
+    "push": "Push notifications",
+    "liveAvailability": "Live charger availability",
+    "stationsSync": "Station sync (Open Charge Map)",
+    "on": "available",
+    "off": "not available"
+  },
+  "providers": {
+    "local": "Local disk",
+    "s3": "S3-compatible storage",
+    "console": "Console (development)",
+    "smtp": "SMTP",
+    "open_charge_map": "Open Charge Map",
+    "manual": "Manual (admin)",
+    "none": "None",
+    "rss": "RSS / Atom",
+    "fcm": "Firebase Cloud Messaging",
+    "apns": "Apple Push (APNs)",
+    "in_app": "In-app notification center",
+    "google": "Google",
+    "apple": "Apple",
+    "osrm": "OSRM",
+    "openrouteservice": "OpenRouteService",
+    "nominatim": "Nominatim"
+  }
+}

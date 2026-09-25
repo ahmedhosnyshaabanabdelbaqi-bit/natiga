@@ -1,0 +1,163 @@
+[
+  {
+    "_comment": "SYNTHETIC TEST FIXTURE written by hand for unit tests. Not real Open Charge Map data: names, addresses, operators and coordinates are invented.",
+    "ID": 900001,
+    "UUID": "00000000-0000-4000-8000-000000900001",
+    "DataProviderID": 1,
+    "DataProvider": {
+      "ID": 1,
+      "Title": "Open Charge Map Contributors",
+      "WebsiteURL": "https://openchargemap.org",
+      "License": "Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0)",
+      "IsOpenDataLicensed": true,
+      "IsRestrictedEdit": false,
+      "IsApprovedImport": true
+    },
+    "OperatorID": 990001,
+    "OperatorInfo": {
+      "ID": 990001,
+      "Title": "Synthetic Operator Ltd (fixture)",
+      "WebsiteURL": "www.example.invalid",
+      "PhonePrimaryContact": "+00 0000 0000",
+      "ContactEmail": "ops@example.invalid"
+    },
+    "UsageTypeID": 4,
+    "UsageType": {
+      "ID": 4,
+      "Title": "Public - Membership Required",
+      "IsPayAtLocation": false,
+      "IsMembershipRequired": true,
+      "IsAccessKeyRequired": true
+    },
+    "UsageCost": "FIXTURE: cost text is free text, never a tariff",
+    "AddressInfo": {
+      "ID": 900001,
+      "Title": "Synthetic Fixture Station A (not a real place)",
+      "AddressLine1": "1 Example Street",
+      "AddressLine2": "Fixture Mall, level -1",
+      "Town": "Fixture City",
+      "StateOrProvince": "Fixture Governorate",
+      "Postcode": "00000",
+      "CountryID": 67,
+      "Country": { "ID": 67, "ISOCode": "EG", "Title": "Egypt" },
+      "Latitude": 29.5,
+      "Longitude": 30.5,
+      "ContactTelephone1": "+00 1111 1111",
+      "AccessComments": "Fixture: entrance from the north gate",
+      "RelatedURL": "https://example.invalid/station-a"
+    },
+    "Connections": [
+      {
+        "ID": 800001,
+        "ConnectionTypeID": 33,
+        "ConnectionType": {
+          "ID": 33,
+          "Title": "CCS (Type 2)",
+          "FormalName": "IEC 62196-3 Configuration FF"
+        },
+        "StatusTypeID": 50,
+        "StatusType": { "ID": 50, "Title": "Operational", "IsOperational": true },
+        "Amps": 200,
+        "Voltage": 500,
+        "PowerKW": 60,
+        "CurrentTypeID": 30,
+        "CurrentType": { "ID": 30, "Title": "DC" },
+        "Quantity": 2
+      },
+      {
+        "ID": 800002,
+        "ConnectionTypeID": 25,
+        "ConnectionType": {
+          "ID": 25,
+          "Title": "Type 2 (Socket Only)",
+          "FormalName": "IEC 62196-2 Type 2"
+        },
+        "StatusTypeID": 100,
+        "StatusType": { "ID": 100, "Title": "Not Operational", "IsOperational": false },
+        "Amps": 32,
+        "Voltage": 400,
+        "PowerKW": 22,
+        "CurrentTypeID": 20,
+        "CurrentType": { "ID": 20, "Title": "AC (Three-Phase)" },
+        "Quantity": 1
+      },
+      {
+        "ID": 800003,
+        "ConnectionTypeID": 99999,
+        "ConnectionType": { "ID": 99999, "Title": "Fixture Unknown Plug" },
+        "StatusTypeID": 0,
+        "PowerKW": 0,
+        "Quantity": 1
+      }
+    ],
+    "NumberOfPoints": 2,
+    "StatusTypeID": 10,
+    "StatusType": { "ID": 10, "Title": "Available (Currently Available)", "IsOperational": true },
+    "DateLastVerified": "2026-01-15T10:00:00Z",
+    "DateLastStatusUpdate": "2026-02-01T08:30:00Z",
+    "DateCreated": "2025-06-01T00:00:00Z",
+    "SubmissionStatusTypeID": 200
+  },
+  {
+    "_comment": "SYNTHETIC: third-party provider WITHOUT an open-data licence -> must be skipped by default.",
+    "ID": 900002,
+    "DataProviderID": 990002,
+    "DataProvider": {
+      "ID": 990002,
+      "Title": "Synthetic Closed Data Provider (fixture)",
+      "License": "All rights reserved (fixture)",
+      "IsOpenDataLicensed": false
+    },
+    "AddressInfo": {
+      "Title": "Synthetic Fixture Station B",
+      "Latitude": 29.6,
+      "Longitude": 30.6,
+      "Country": { "ISOCode": "EG" }
+    },
+    "Connections": [],
+    "StatusTypeID": 50
+  },
+  {
+    "_comment": "SYNTHETIC: open third-party provider, decommissioned, private usage, no operator.",
+    "ID": 900003,
+    "DataProviderID": 990003,
+    "DataProvider": {
+      "ID": 990003,
+      "Title": "Synthetic Open Registry (fixture)",
+      "WebsiteURL": "https://registry.example.invalid",
+      "License": "CC BY 4.0 (fixture)",
+      "IsOpenDataLicensed": true
+    },
+    "OperatorID": 1,
+    "OperatorInfo": { "ID": 1, "Title": "(Unknown Operator)" },
+    "UsageTypeID": 6,
+    "UsageType": { "ID": 6, "Title": "Private - For Staff, Visitors or Customers" },
+    "AddressInfo": {
+      "Title": "Synthetic Fixture Station C",
+      "Latitude": 29.7,
+      "Longitude": 30.7,
+      "Country": { "ISOCode": "SA" }
+    },
+    "Connections": [
+      {
+        "ID": 800010,
+        "ConnectionType": { "ID": 2, "Title": "CHAdeMO" },
+        "PowerKW": 50,
+        "Quantity": 1
+      }
+    ],
+    "StatusTypeID": 200,
+    "StatusType": { "ID": 200, "Title": "Removed (Decommissioned)", "IsOperational": false }
+  },
+  {
+    "_comment": "SYNTHETIC: invalid coordinates -> skipped.",
+    "ID": 900004,
+    "DataProvider": {
+      "ID": 1,
+      "Title": "Open Charge Map Contributors",
+      "IsOpenDataLicensed": true
+    },
+    "AddressInfo": { "Title": "Synthetic Fixture Station D", "Latitude": 0, "Longitude": 0 },
+    "Connections": []
+  }
+]

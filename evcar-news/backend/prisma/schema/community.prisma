@@ -1,0 +1,227 @@
+// Community: owner reviews, comments, Q&A, reports and moderation
+// (module: community). When a user deletes their account, their public
+// contributions stay but user_id becomes NULL (anonymized).
+
+enum ModerationStatus {
+  pending
+  approved
+  rejected
+  hidden
+
+  @@map("moderation_status")
+}
+
+enum CommunityTargetType {
+  article
+  review
+  comment
+  question
+  answer
+  station_report
+  station_checkin
+  user
+
+  @@map("community_target_type")
+}
+
+enum ContentReportReason {
+  spam
+  abuse
+  off_topic
+  misinformation
+  personal_data
+  copyright
+  other
+
+  @@map("content_report_reason")
+}
+
+enum ModerationActionType {
+  approve
+  reject
+  hide
+  restore
+  delete
+  warn_user
+  block_user
+  unblock_user
+
+  @@map("moderation_action_type")
+}
+
+/// Owner review of a variant or a station (exactly one; CHECK). The
+/// "verified owner" badge requires a real verification (CHECK).
+model Review {
+  id                      String           @id @default(uuid(7)) @db.Uuid
+  userId                  String?          @map("user_id") @db.Uuid
+  variantId               String?          @map("variant_id") @db.Uuid
+  stationId               String?          @map("station_id") @db.Uuid
+  /// 1..5 (CHECK)
+  rating                  Int              @db.SmallInt
+  title                   String?          @db.VarChar(200)
+  body                    String
+  pros                    String?
+  cons                    String?
+  ownershipMonths         Int?             @map("ownership_months")
+  locale                  String           @db.VarChar(10)
+  marketCode              String?          @map("market_code") @db.VarChar(8)
+  isVerifiedOwner         Boolean          @default(false) @map("is_verified_owner")
+  ownerVerifiedAt         DateTime?        @map("owner_verified_at") @db.Timestamptz(3)
+  ownerVerificationMethod String?          @map("owner_verification_method") @db.VarChar(64)
+  status                  ModerationStatus @default(pending)
+  isDemo                  Boolean          @default(false) @map("is_demo")
+  createdAt               DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt               DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt               DateTime?        @map("deleted_at") @db.Timestamptz(3)
+
+  user     User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
+  variant  VehicleVariant?  @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  station  ChargingStation? @relation(fields: [stationId], references: [id], onDelete: Cascade)
+  market   Market?          @relation(fields: [marketCode], references: [code], onDelete: SetNull)
+  comments Comment[]
+
+  @@index([variantId, status, createdAt(sort: Desc)])
+  @@index([stationId, status, createdAt(sort: Desc)])
+  @@index([userId])
+  @@index([status, createdAt])
+  @@map("reviews")
+}
+
+/// Comment on an article or a review (exactly one; CHECK), optionally threaded.
+model Comment {
+  id        String           @id @default(uuid(7)) @db.Uuid
+  userId    String?          @map("user_id") @db.Uuid
+  articleId String?          @map("article_id") @db.Uuid
+  reviewId  String?          @map("review_id") @db.Uuid
+  parentId  String?          @map("parent_id") @db.Uuid
+  body      String
+  locale    String?          @db.VarChar(10)
+  status    ModerationStatus @default(pending)
+  editedAt  DateTime?        @map("edited_at") @db.Timestamptz(3)
+  createdAt DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt DateTime?        @map("deleted_at") @db.Timestamptz(3)
+
+  user    User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  article Article?  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  review  Review?   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  parent  Comment?  @relation("CommentThread", fields: [parentId], references: [id], onDelete: Cascade)
+  replies Comment[] @relation("CommentThread")
+
+  @@index([articleId, status, createdAt])
+  @@index([reviewId, status, createdAt])
+  @@index([parentId])
+  @@index([userId])
+  @@map("comments")
+}
+
+model Question {
+  id               String           @id @default(uuid(7)) @db.Uuid
+  userId           String?          @map("user_id") @db.Uuid
+  modelId          String?          @map("model_id") @db.Uuid
+  variantId        String?          @map("variant_id") @db.Uuid
+  stationId        String?          @map("station_id") @db.Uuid
+  title            String           @db.VarChar(300)
+  body             String?
+  locale           String           @db.VarChar(10)
+  marketCode       String?          @map("market_code") @db.VarChar(8)
+  status           ModerationStatus @default(pending)
+  acceptedAnswerId String?          @unique @map("accepted_answer_id") @db.Uuid
+  createdAt        DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt        DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt        DateTime?        @map("deleted_at") @db.Timestamptz(3)
+
+  user           User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
+  model          CarModel?        @relation(fields: [modelId], references: [id], onDelete: Cascade)
+  variant        VehicleVariant?  @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  station        ChargingStation? @relation(fields: [stationId], references: [id], onDelete: Cascade)
+  market         Market?          @relation(fields: [marketCode], references: [code], onDelete: SetNull)
+  acceptedAnswer Answer?          @relation("AcceptedAnswer", fields: [acceptedAnswerId], references: [id], onDelete: SetNull)
+  answers        Answer[]         @relation("QuestionAnswers")
+
+  @@index([modelId, status, createdAt(sort: Desc)])
+  @@index([variantId, status, createdAt(sort: Desc)])
+  @@index([stationId, status])
+  @@index([status, createdAt])
+  @@index([userId])
+  @@map("questions")
+}
+
+model Answer {
+  id         String           @id @default(uuid(7)) @db.Uuid
+  questionId String           @map("question_id") @db.Uuid
+  userId     String?          @map("user_id") @db.Uuid
+  body       String
+  status     ModerationStatus @default(pending)
+  createdAt  DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt  DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt  DateTime?        @map("deleted_at") @db.Timestamptz(3)
+
+  question    Question  @relation("QuestionAnswers", fields: [questionId], references: [id], onDelete: Cascade)
+  user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  acceptedFor Question? @relation("AcceptedAnswer")
+
+  @@index([questionId, status, createdAt])
+  @@index([userId])
+  @@map("answers")
+}
+
+/// "Report this" flags raised by users on community content.
+model ContentReport {
+  id          String              @id @default(uuid(7)) @db.Uuid
+  reporterId  String?             @map("reporter_id") @db.Uuid
+  targetType  CommunityTargetType @map("target_type")
+  targetId    String              @map("target_id") @db.Uuid
+  reason      ContentReportReason
+  details     String?
+  status      ReportStatus        @default(open)
+  handledById String?             @map("handled_by_id") @db.Uuid
+  handledAt   DateTime?           @map("handled_at") @db.Timestamptz(3)
+  createdAt   DateTime            @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  reporter  User?              @relation("ContentReportReporter", fields: [reporterId], references: [id], onDelete: SetNull)
+  handledBy User?              @relation("ContentReportHandler", fields: [handledById], references: [id], onDelete: SetNull)
+  actions   ModerationAction[]
+
+  @@index([targetType, targetId])
+  @@index([status, createdAt])
+  @@index([reporterId])
+  @@map("content_reports")
+}
+
+model ModerationAction {
+  id          String               @id @default(uuid(7)) @db.Uuid
+  moderatorId String?              @map("moderator_id") @db.Uuid
+  targetType  CommunityTargetType  @map("target_type")
+  targetId    String               @map("target_id") @db.Uuid
+  action      ModerationActionType
+  reason      String?
+  reportId    String?              @map("report_id") @db.Uuid
+  createdAt   DateTime             @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  moderator User?          @relation(fields: [moderatorId], references: [id], onDelete: SetNull)
+  report    ContentReport? @relation(fields: [reportId], references: [id], onDelete: SetNull)
+
+  @@index([targetType, targetId])
+  @@index([moderatorId, createdAt])
+  @@map("moderation_actions")
+}
+
+/// Moderator-imposed restriction of a user (e.g. no community posting).
+model UserBlock {
+  id          String    @id @default(uuid(7)) @db.Uuid
+  userId      String    @map("user_id") @db.Uuid
+  blockedById String?   @map("blocked_by_id") @db.Uuid
+  /// community | all
+  scope       String    @default("community") @db.VarChar(32)
+  reason      String?
+  expiresAt   DateTime? @map("expires_at") @db.Timestamptz(3)
+  revokedAt   DateTime? @map("revoked_at") @db.Timestamptz(3)
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  user      User  @relation("UserBlockTarget", fields: [userId], references: [id], onDelete: Cascade)
+  blockedBy User? @relation("UserBlockIssuer", fields: [blockedById], references: [id], onDelete: SetNull)
+
+  @@index([userId, revokedAt])
+  @@map("user_blocks")
+}

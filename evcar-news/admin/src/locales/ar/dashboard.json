@@ -1,0 +1,121 @@
+{
+  "title": "اللوحة الرئيسية",
+  "description": "نظرة عامة على النظام",
+  "greeting": "مرحبًا {{name}}.",
+  "noSystemAccess": "حالة النظام متاحة للأدوار التي تملك system.read (النظرة العامة) أو settings.read / integrations.read (التكاملات).",
+  "sections": "أقسامك",
+  "placeholdersNote_zero": "لا توجد أقسام قيد التنفيذ.",
+  "placeholdersNote_one": "قسم واحد قيد التنفيذ ولا يعرض أي بيانات.",
+  "placeholdersNote_two": "قسمان قيد التنفيذ ولا يعرضان أي بيانات.",
+  "placeholdersNote_few": "{{count}} أقسام قيد التنفيذ ولا تعرض أي بيانات.",
+  "placeholdersNote_many": "{{count}} قسمًا قيد التنفيذ ولا تعرض أي بيانات.",
+  "placeholdersNote_other": "{{count}} قسم قيد التنفيذ ولا تعرض أي بيانات.",
+  "overview": {
+    "title": "نظرة عامة على النظام",
+    "version": "إصدار الـ API",
+    "environment": "البيئة",
+    "uptime": "مدة التشغيل",
+    "uptimeValue": "{{days}} يوم {{hours}} ساعة {{minutes}} دقيقة",
+    "services": "الخدمات",
+    "counts": "المحتوى والبيانات",
+    "serverTime": "وقت الخادم: {{date}}",
+    "states": {
+      "up": "تعمل",
+      "down": "متوقفة"
+    },
+    "serviceNames": {
+      "database": "قاعدة البيانات",
+      "redis": "Redis",
+      "storage": "التخزين"
+    },
+    "healthUnavailable": "تعذّر الوصول إلى فحص الحالة.",
+    "warningsTitle": "يحتاج إلى انتباه",
+    "warnings": {
+      "demo_data_in_production": "توجد بيانات تجريبية في الإنتاج — احذفها.",
+      "redis_down_jobs_paused": "Redis متوقف: المهام الخلفية متوقفة.",
+      "failed_background_jobs": "فشلت بعض المهام الخلفية (راجع النظام).",
+      "failed_imports": "فشلت عمليات استيراد خلال آخر 7 أيام.",
+      "stations_not_recently_verified": "محطات منشورة لم يُتحقق منها مؤخرًا.",
+      "outdated_prices": "بعض الأسعار الحالية قديمة.",
+      "rss_feeds_failing": "مصادر RSS تفشل.",
+      "media_processing_stuck": "معالجة الوسائط تبدو عالقة.",
+      "storage_not_configured": "تم اختيار تخزين S3 لكنه غير مُهيأ."
+    },
+    "demoRows": "صفوف تجريبية (is_demo) في قاعدة البيانات هذه — لا تُعرض كبيانات حقيقية: {{list}}",
+    "demoKinds": {
+      "articles": "مقالات",
+      "stations": "محطات",
+      "variants": "فئات",
+      "prices": "أسعار"
+    },
+    "countNames": {
+      "users": "المستخدمون",
+      "articles": "المقالات",
+      "brands": "الماركات",
+      "models": "الموديلات",
+      "variants": "الفئات",
+      "stations": "محطات الشحن",
+      "tours": "جولات 360°",
+      "media": "ملفات الوسائط",
+      "openStationReports": "بلاغات محطات مفتوحة",
+      "pendingReviews": "تقييمات بانتظار المراجعة",
+      "pendingComments": "تعليقات بانتظار المراجعة"
+    },
+    "statuses": {
+      "draft": "مسودة",
+      "in_review": "قيد المراجعة",
+      "scheduled": "مجدول",
+      "published": "منشور",
+      "archived": "مؤرشف",
+      "hidden": "مخفي",
+      "pending": "معلّق",
+      "uploading": "قيد الرفع",
+      "processing": "قيد المعالجة",
+      "ready": "جاهز",
+      "failed": "فشل",
+      "rejected": "مرفوض"
+    },
+    "stale": "حداثة البيانات",
+    "staleNames": {
+      "stationsNotRecentlyVerified": "محطات منشورة لم يُتحقق منها منذ {{threshold}} يومًا",
+      "pricesOutdated": "أسعار حالية أقدم من {{threshold}} يومًا",
+      "specsUnverified": "قيم مواصفات غير موثّقة",
+      "rssFeedsFailing": "مصادر RSS بلا نجاح منذ {{threshold}} ساعة",
+      "mediaStuck": "ملفات وسائط قيد المعالجة لأكثر من {{threshold}} ساعة"
+    },
+    "importsRunning_zero": "لا توجد عمليات استيراد جارية",
+    "importsRunning_one": "عملية استيراد واحدة جارية",
+    "importsRunning_two": "عمليتا استيراد جاريتان",
+    "importsRunning_few": "{{count}} عمليات استيراد جارية",
+    "importsRunning_many": "{{count}} عملية استيراد جارية",
+    "importsRunning_other": "{{count}} عملية استيراد جارية",
+    "importsFailed_zero": "لا توجد عمليات استيراد فاشلة خلال 7 أيام",
+    "importsFailed_one": "عملية استيراد فاشلة خلال 7 أيام",
+    "importsFailed_two": "عمليتا استيراد فاشلتان خلال 7 أيام",
+    "importsFailed_few": "{{count}} عمليات استيراد فاشلة خلال 7 أيام",
+    "importsFailed_many": "{{count}} عملية استيراد فاشلة خلال 7 أيام",
+    "importsFailed_other": "{{count}} عملية استيراد فاشلة خلال 7 أيام"
+  },
+  "integrations": {
+    "title": "التكاملات",
+    "details": "التفاصيل",
+    "configured": "{{count}} من {{total}} تكاملات مُهيأة",
+    "failing_zero": "لا توجد تكاملات متعطلة",
+    "failing_one": "تكامل واحد متعطل",
+    "failing_two": "تكاملان متعطلان",
+    "failing_few": "{{count}} تكاملات متعطلة",
+    "failing_many": "{{count}} تكاملًا متعطلًا",
+    "failing_other": "{{count}} تكامل متعطل",
+    "notConfigured": "غير مُهيأ:",
+    "more": "و{{count}} أخرى"
+  },
+  "jobs": {
+    "failed_zero": "لا توجد مهام خلفية فاشلة",
+    "failed_one": "مهمة خلفية واحدة فاشلة",
+    "failed_two": "مهمتان خلفيتان فاشلتان",
+    "failed_few": "{{count}} مهام خلفية فاشلة",
+    "failed_many": "{{count}} مهمة خلفية فاشلة",
+    "failed_other": "{{count}} مهمة خلفية فاشلة",
+    "redisDown": "Redis متوقف: المهام الخلفية متوقفة."
+  }
+}

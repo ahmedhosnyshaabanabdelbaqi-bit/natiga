@@ -1,0 +1,14 @@
+{
+  "@@locale": "ar",
+  "shellNavHome": "الرئيسية",
+  "shellNavCars": "السيارات",
+  "shellNavCompare": "المقارنات",
+  "shellNavCharging": "الشحن",
+  "shellNavAccount": "حسابي",
+  "shellRouteNotFoundTitle": "الصفحة غير موجودة",
+  "shellRouteNotFoundMessage": "لا توجد في التطبيق شاشة بهذا العنوان.",
+  "shellGoHome": "العودة إلى الرئيسية",
+  "shellSessionExpired": "انتهت جلستك. سجّل الدخول مرة أخرى.",
+  "shellSearchTooltip": "بحث",
+  "shellNotificationsTooltip": "الإشعارات"
+}

@@ -1,0 +1,429 @@
+// Media assets, licences, renditions, resumable uploads and 360° interior
+// tours (modules: media, tours).
+
+enum MediaKind {
+  image
+  /// Equirectangular 2:1 interior panorama.
+  panorama
+  video
+  document
+  /// GLB/glTF (future extension; never called a "360° tour").
+  model_3d
+  other
+
+  @@map("media_kind")
+}
+
+enum MediaStatus {
+  uploading
+  uploaded
+  processing
+  ready
+  failed
+  /// Failed validation (corrupt, wrong type, bad dimensions...).
+  rejected
+
+  @@map("media_status")
+}
+
+enum MediaProjection {
+  flat
+  equirectangular
+  cubemap
+
+  @@map("media_projection")
+}
+
+enum StorageDriver {
+  local
+  s3
+
+  @@map("storage_driver")
+}
+
+enum AssetVariantKind {
+  thumbnail
+  /// Fast low-quality preview (e.g. 1024×512 for panoramas).
+  preview
+  /// Device rendition (e.g. 2048 / 4096 / 8192 px wide).
+  rendition
+  /// Pannellum multires tile.
+  tile
+  cubemap_face
+  /// Generated multires/cubemap config JSON.
+  multires_config
+  poster
+
+  @@map("asset_variant_kind")
+}
+
+enum UploadSessionStatus {
+  active
+  completed
+  aborted
+  expired
+
+  @@map("upload_session_status")
+}
+
+enum LicenseType {
+  owned
+  commissioned
+  press_kit
+  licensed
+  cc0
+  cc_by
+  cc_by_sa
+  permission
+  other
+
+  @@map("license_type")
+}
+
+enum TourMatchType {
+  /// Imagery is of exactly this variant + year + market + colour + drive side.
+  exact
+  /// Imagery of a similar trim; requires editor approval + visible difference note.
+  reference_similar_trim
+
+  @@map("tour_match_type")
+}
+
+enum ScenePosition {
+  driver_seat
+  front_passenger
+  rear_seats
+  third_row
+  cargo
+  other
+
+  @@map("scene_position")
+}
+
+enum HotspotType {
+  info
+  /// Navigates to another scene of the same tour.
+  scene
+  image
+  video
+  /// Shows a linked spec (spec_definitions.key) of the tour's variant.
+  spec
+
+  @@map("hotspot_type")
+}
+
+/// Every stored file. The original is always kept (storage_key); generated
+/// renditions/tiles are in asset_variants. Replacing a file creates a new
+/// asset row that points to the previous version.
+model MediaAsset {
+  id                 String           @id @default(uuid(7)) @db.Uuid
+  kind               MediaKind
+  status             MediaStatus      @default(uploading)
+  storageDriver      StorageDriver    @map("storage_driver")
+  storageKey         String           @unique @map("storage_key") @db.VarChar(1024)
+  bucket             String?          @db.VarChar(255)
+  originalFilename   String?          @map("original_filename") @db.VarChar(255)
+  /// Sniffed from content (not the client-declared type).
+  mimeType           String?          @map("mime_type") @db.VarChar(100)
+  sizeBytes          BigInt?          @map("size_bytes")
+  width              Int?
+  height             Int?
+  durationSeconds    Decimal?         @map("duration_seconds") @db.Decimal(10, 2)
+  checksumSha256     String?          @map("checksum_sha256") @db.Char(64)
+  projection         MediaProjection?
+  /// Safe metadata subset (EXIF orientation, XMP GPano...), no GPS by default.
+  metadata           Json             @default("{}")
+  processingProgress Int              @default(0) @map("processing_progress") @db.SmallInt
+  processingError    String?          @map("processing_error")
+  processedAt        DateTime?        @map("processed_at") @db.Timestamptz(3)
+  licenseId          String?          @map("license_id") @db.Uuid
+  altTextEn          String?          @map("alt_text_en") @db.VarChar(500)
+  altTextAr          String?          @map("alt_text_ar") @db.VarChar(500)
+  captionEn          String?          @map("caption_en") @db.VarChar(1000)
+  captionAr          String?          @map("caption_ar") @db.VarChar(1000)
+  version            Int              @default(1)
+  previousVersionId  String?          @map("previous_version_id") @db.Uuid
+  uploadedById       String?          @map("uploaded_by_id") @db.Uuid
+  isDemo             Boolean          @default(false) @map("is_demo")
+  createdAt          DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt          DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt          DateTime?        @map("deleted_at") @db.Timestamptz(3)
+
+  license         AssetLicense?       @relation("AssetLicenseAssignment", fields: [licenseId], references: [id], onDelete: SetNull)
+  previousVersion MediaAsset?         @relation("MediaAssetVersion", fields: [previousVersionId], references: [id], onDelete: SetNull)
+  nextVersions    MediaAsset[]        @relation("MediaAssetVersion")
+  uploadedBy      User?               @relation("MediaUploader", fields: [uploadedById], references: [id], onDelete: SetNull)
+  variants        AssetVariant[]
+  uploadSession   UploadSession?
+  licenseProofs   AssetLicense[]      @relation("LicenseProof")
+  brandLogos      Brand[]             @relation("BrandLogo")
+  modelHeroes     CarModel[]          @relation("ModelHero")
+  vehicleMedia    VehicleMedia[]
+  articleCovers   Article[]           @relation("ArticleCover")
+  tourScenes      TourScene[]
+  hotspots        SceneHotspot[]
+  spinFrames      ExteriorSpinFrame[]
+  stationMedia    StationMedia[]
+  stationReports  StationReport[]
+  operatorLogos   ChargingOperator[]
+  encyclopedia    EncyclopediaEntry[]
+  adCreatives     AdCreative[]
+  importJobs      ImportJob[]
+
+  @@index([kind, status])
+  @@index([checksumSha256])
+  @@index([licenseId])
+  @@index([uploadedById])
+  @@map("media_assets")
+}
+
+/// Rights record: holder, licence, attribution requirements, validity.
+/// A tour can only be published when every scene asset has a licence.
+model AssetLicense {
+  id                  String      @id @default(uuid(7)) @db.Uuid
+  licenseType         LicenseType @map("license_type")
+  rightsHolder        String      @map("rights_holder") @db.VarChar(300)
+  attributionText     String?     @map("attribution_text")
+  attributionRequired Boolean     @default(false) @map("attribution_required")
+  licenseUrl          String?     @map("license_url") @db.VarChar(2048)
+  sourceUrl           String?     @map("source_url") @db.VarChar(2048)
+  permittedUses       String?     @map("permitted_uses")
+  restrictions        String?
+  validFrom           DateTime?   @map("valid_from") @db.Date
+  validUntil          DateTime?   @map("valid_until") @db.Date
+  /// Optional document proving the licence (contract, e-mail PDF...).
+  proofAssetId        String?     @map("proof_asset_id") @db.Uuid
+  notes               String?
+  isDemo              Boolean     @default(false) @map("is_demo")
+  createdById         String?     @map("created_by_id") @db.Uuid
+  createdAt           DateTime    @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt           DateTime    @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  proofAsset MediaAsset?  @relation("LicenseProof", fields: [proofAssetId], references: [id], onDelete: SetNull)
+  assets     MediaAsset[] @relation("AssetLicenseAssignment")
+
+  @@map("asset_licenses")
+}
+
+/// Generated files derived from an asset (previews, renditions, tiles...).
+model AssetVariant {
+  id         String           @id @default(uuid(7)) @db.Uuid
+  assetId    String           @map("asset_id") @db.Uuid
+  kind       AssetVariantKind
+  /// Distinguishes variants of the same kind, e.g. "2048", "l3/f/2_1", "preview".
+  label      String           @db.VarChar(128)
+  storageKey String           @map("storage_key") @db.VarChar(1024)
+  mimeType   String?          @map("mime_type") @db.VarChar(100)
+  width      Int?
+  height     Int?
+  sizeBytes  BigInt?          @map("size_bytes")
+  /// Multires level (tiles).
+  level      Int?             @db.SmallInt
+  /// Cubemap face f/b/l/r/u/d.
+  face       String?          @db.VarChar(1)
+  createdAt  DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  asset MediaAsset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  @@unique([assetId, kind, label])
+  @@map("asset_variants")
+}
+
+/// Resumable chunked upload: client appends chunks at `receivedBytes` offset.
+model UploadSession {
+  id               String              @id @default(uuid(7)) @db.Uuid
+  userId           String?             @map("user_id") @db.Uuid
+  kind             MediaKind
+  filename         String              @db.VarChar(255)
+  declaredMimeType String?             @map("declared_mime_type") @db.VarChar(100)
+  totalBytes       BigInt              @map("total_bytes")
+  receivedBytes    BigInt              @default(0) @map("received_bytes")
+  chunkSizeBytes   Int?                @map("chunk_size_bytes")
+  expectedSha256   String?             @map("expected_sha256") @db.Char(64)
+  /// Temporary storage location of the partial file.
+  tempKey          String              @map("temp_key") @db.VarChar(1024)
+  status           UploadSessionStatus @default(active)
+  assetId          String?             @unique @map("asset_id") @db.Uuid
+  error            String?
+  expiresAt        DateTime            @map("expires_at") @db.Timestamptz(3)
+  completedAt      DateTime?           @map("completed_at") @db.Timestamptz(3)
+  createdAt        DateTime            @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt        DateTime            @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  user  User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  asset MediaAsset? @relation(fields: [assetId], references: [id], onDelete: SetNull)
+
+  @@index([userId, status])
+  @@index([status, expiresAt])
+  @@map("upload_sessions")
+}
+
+/// A 360° interior tour bound to variant (→ model year) + market + interior
+/// colour + drive side. Publishing rules are enforced by CHECK constraints
+/// (reference tours need approval + difference notes) and by the service
+/// (all scene assets ready + licensed).
+model InteriorTour {
+  id                  String        @id @default(uuid(7)) @db.Uuid
+  slug                String        @unique @db.VarChar(200)
+  variantId           String        @map("variant_id") @db.Uuid
+  marketCode          String        @map("market_code") @db.VarChar(8)
+  driveSide           DriveSide     @map("drive_side")
+  interiorColorNameEn String        @map("interior_color_name_en") @db.VarChar(100)
+  interiorColorNameAr String        @map("interior_color_name_ar") @db.VarChar(100)
+  /// #RRGGBB swatch (optional).
+  interiorColorHex    String?       @map("interior_color_hex") @db.Char(7)
+  titleEn             String?       @map("title_en") @db.VarChar(200)
+  titleAr             String?       @map("title_ar") @db.VarChar(200)
+  descriptionEn       String?       @map("description_en")
+  descriptionAr       String?       @map("description_ar")
+  status              ContentStatus @default(draft)
+  matchType           TourMatchType @default(exact) @map("match_type")
+  /// Variant whose interior was actually photographed (reference tours only).
+  referenceVariantId  String?       @map("reference_variant_id") @db.Uuid
+  differenceNoteEn    String?       @map("difference_note_en")
+  differenceNoteAr    String?       @map("difference_note_ar")
+  approvedById        String?       @map("approved_by_id") @db.Uuid
+  approvedAt          DateTime?     @map("approved_at") @db.Timestamptz(3)
+  initialSceneId      String?       @unique @map("initial_scene_id") @db.Uuid
+  publishedAt         DateTime?     @map("published_at") @db.Timestamptz(3)
+  isDemo              Boolean       @default(false) @map("is_demo")
+  createdById         String?       @map("created_by_id") @db.Uuid
+  updatedById         String?       @map("updated_by_id") @db.Uuid
+  createdAt           DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt           DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt           DateTime?     @map("deleted_at") @db.Timestamptz(3)
+
+  variant          VehicleVariant  @relation("TourVariant", fields: [variantId], references: [id], onDelete: Restrict)
+  referenceVariant VehicleVariant? @relation("TourReferenceVariant", fields: [referenceVariantId], references: [id], onDelete: Restrict)
+  market           Market          @relation(fields: [marketCode], references: [code], onDelete: Restrict)
+  approvedBy       User?           @relation("TourApprover", fields: [approvedById], references: [id], onDelete: SetNull)
+  initialScene     TourScene?      @relation("TourInitialScene", fields: [initialSceneId], references: [id], onDelete: SetNull)
+  scenes           TourScene[]     @relation("TourScenes")
+  favorites        Favorite[]
+
+  @@index([variantId, marketCode, status])
+  @@index([status, publishedAt(sort: Desc)])
+  @@map("interior_tours")
+}
+
+/// One independent panorama per seat position. The asset must be a
+/// `panorama` with equirectangular or cubemap projection (trigger) — a flat
+/// image is never a 360° scene.
+model TourScene {
+  id           String        @id @default(uuid(7)) @db.Uuid
+  tourId       String        @map("tour_id") @db.Uuid
+  /// Stable scene id used by Pannellum configs, unique per tour.
+  key          String        @db.VarChar(64)
+  position     ScenePosition @default(other)
+  titleEn      String?       @map("title_en") @db.VarChar(200)
+  titleAr      String?       @map("title_ar") @db.VarChar(200)
+  assetId      String        @map("asset_id") @db.Uuid
+  sortOrder    Int           @default(0) @map("sort_order")
+  /// Degrees: yaw -180..180, pitch -90..90, hfov 10..150 (CHECK).
+  initialYaw   Decimal       @default(0) @map("initial_yaw") @db.Decimal(6, 2)
+  initialPitch Decimal       @default(0) @map("initial_pitch") @db.Decimal(6, 2)
+  initialHfov  Decimal       @default(100) @map("initial_hfov") @db.Decimal(6, 2)
+  minHfov      Decimal?      @map("min_hfov") @db.Decimal(6, 2)
+  maxHfov      Decimal?      @map("max_hfov") @db.Decimal(6, 2)
+  northOffset  Decimal?      @map("north_offset") @db.Decimal(6, 2)
+  createdAt    DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt    DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  tour             InteriorTour   @relation("TourScenes", fields: [tourId], references: [id], onDelete: Cascade)
+  asset            MediaAsset     @relation(fields: [assetId], references: [id], onDelete: Restrict)
+  initialSceneOf   InteriorTour?  @relation("TourInitialScene")
+  hotspots         SceneHotspot[] @relation("SceneHotspots")
+  incomingHotspots SceneHotspot[] @relation("HotspotTargetScene")
+
+  @@unique([tourId, key])
+  @@unique([tourId, id])
+  @@index([tourId, sortOrder])
+  @@index([assetId])
+  @@map("tour_scenes")
+}
+
+/// Hotspot inside a scene. Text lives in scene_hotspot_translations and is
+/// plain text only (never HTML/JS). tour_id ties the hotspot, its scene and
+/// its target scene to ONE tour (composite FKs): a hotspot can never lead
+/// into another trim's tour.
+model SceneHotspot {
+  id            String      @id @default(uuid(7)) @db.Uuid
+  tourId        String      @map("tour_id") @db.Uuid
+  sceneId       String      @map("scene_id") @db.Uuid
+  type          HotspotType
+  yaw           Decimal     @db.Decimal(6, 2)
+  pitch         Decimal     @db.Decimal(6, 2)
+  targetSceneId String?     @map("target_scene_id") @db.Uuid
+  targetYaw     Decimal?    @map("target_yaw") @db.Decimal(6, 2)
+  targetPitch   Decimal?    @map("target_pitch") @db.Decimal(6, 2)
+  mediaAssetId  String?     @map("media_asset_id") @db.Uuid
+  specKey       String?     @map("spec_key") @db.VarChar(100)
+  /// Icon identifier from the viewer's fixed icon set (e.g. "screen", "seat").
+  iconKey       String?     @map("icon_key") @db.VarChar(32)
+  sortOrder     Int         @default(0) @map("sort_order")
+  createdAt     DateTime    @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt     DateTime    @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  scene        TourScene                 @relation("SceneHotspots", fields: [tourId, sceneId], references: [tourId, id], onDelete: Cascade)
+  targetScene  TourScene?                @relation("HotspotTargetScene", fields: [tourId, targetSceneId], references: [tourId, id], onDelete: Cascade)
+  mediaAsset   MediaAsset?               @relation(fields: [mediaAssetId], references: [id], onDelete: Restrict)
+  spec         SpecDefinition?           @relation(fields: [specKey], references: [key], onDelete: Restrict, onUpdate: Cascade)
+  translations SceneHotspotTranslation[]
+
+  @@index([sceneId, sortOrder])
+  @@index([tourId])
+  @@index([targetSceneId])
+  @@map("scene_hotspots")
+}
+
+model SceneHotspotTranslation {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  hotspotId String   @map("hotspot_id") @db.Uuid
+  locale    String   @db.VarChar(10)
+  title     String   @db.VarChar(200)
+  /// Plain text only.
+  body      String?
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  hotspot SceneHotspot @relation(fields: [hotspotId], references: [id], onDelete: Cascade)
+
+  @@unique([hotspotId, locale])
+  @@map("scene_hotspot_translations")
+}
+
+/// Extension point: exterior 360° spin built from a licensed image sequence.
+model ExteriorSpin {
+  id          String        @id @default(uuid(7)) @db.Uuid
+  variantId   String        @map("variant_id") @db.Uuid
+  marketCode  String?       @map("market_code") @db.VarChar(8)
+  colorNameEn String?       @map("color_name_en") @db.VarChar(100)
+  colorNameAr String?       @map("color_name_ar") @db.VarChar(100)
+  status      ContentStatus @default(draft)
+  isDemo      Boolean       @default(false) @map("is_demo")
+  createdById String?       @map("created_by_id") @db.Uuid
+  createdAt   DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt   DateTime?     @map("deleted_at") @db.Timestamptz(3)
+
+  variant VehicleVariant      @relation(fields: [variantId], references: [id], onDelete: Restrict)
+  market  Market?             @relation(fields: [marketCode], references: [code], onDelete: Restrict)
+  frames  ExteriorSpinFrame[]
+
+  @@index([variantId, status])
+  @@map("exterior_spins")
+}
+
+model ExteriorSpinFrame {
+  id         String @id @default(uuid(7)) @db.Uuid
+  spinId     String @map("spin_id") @db.Uuid
+  assetId    String @map("asset_id") @db.Uuid
+  frameIndex Int    @map("frame_index")
+
+  spin  ExteriorSpin @relation(fields: [spinId], references: [id], onDelete: Cascade)
+  asset MediaAsset   @relation(fields: [assetId], references: [id], onDelete: Restrict)
+
+  @@unique([spinId, frameIndex])
+  @@index([assetId])
+  @@map("exterior_spin_frames")
+}

@@ -1,0 +1,4 @@
+/* Localized Info.plist values (English). */
+"CFBundleDisplayName" = "EV Car News";
+"NSLocationWhenInUseUsageDescription" = "EV Car News uses your location only while you use the app, to show nearby charging stations and distances. You can choose a city or a point on the map instead.";
+"NSMotionUsageDescription" = "EV Car News uses motion sensors only when you turn on gyroscope mode in a 360° interior tour.";

@@ -1,0 +1,195 @@
+{
+  "app": {
+    "adminSuffix": "Admin"
+  },
+  "actions": {
+    "actions": "Actions",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "discard": "Discard changes",
+    "edit": "Edit",
+    "retry": "Try again",
+    "reload": "Reload page",
+    "search": "Search",
+    "clear": "Clear",
+    "resetFilters": "Reset filters",
+    "backHome": "Back to dashboard"
+  },
+  "states": {
+    "loading": "Loading…",
+    "emptyTitle": "Nothing here yet",
+    "emptyDescription": "No records match the current filters.",
+    "notAvailable": "Not available"
+  },
+  "errors": {
+    "requestId": "Request ID",
+    "unexpectedTitle": "Something went wrong",
+    "unexpected": "An unexpected error occurred.",
+    "networkTitle": "Cannot reach the server",
+    "network": "Check your connection or whether the API server is running, then try again.",
+    "sessionExpiredTitle": "Session expired",
+    "sessionExpired": "Please sign in again.",
+    "forbiddenTitle": "Permission denied",
+    "forbidden": "Your account is not allowed to do this.",
+    "notFoundTitle": "Not found",
+    "notFound": "The requested resource does not exist (or this API endpoint is not available yet).",
+    "notConfiguredTitle": "Integration not configured",
+    "validationTitle": "Please check the form",
+    "rateLimitedTitle": "Too many requests",
+    "rateLimited": "Please wait a moment before trying again.",
+    "serverTitle": "Server error",
+    "server": "The server failed to process the request."
+  },
+  "validation": {
+    "required": "This field is required",
+    "maxLength": "At most {{max}} characters",
+    "httpsUrl": "Enter a valid https:// URL",
+    "hexColor": "Enter a hex colour such as #0A5CFF",
+    "decimal": "Enter a number with up to {{scale}} decimals",
+    "url": "Enter a valid http:// or https:// URL"
+  },
+  "languages": {
+    "ar": "العربية",
+    "en": "English"
+  },
+  "navGroups": {
+    "overview": "Overview",
+    "content": "Content",
+    "vehicles": "Vehicles",
+    "media": "Media & 360°",
+    "stations": "Charging",
+    "community": "Community",
+    "engagement": "Engagement",
+    "administration": "Administration"
+  },
+  "nav": {
+    "main": "Main navigation",
+    "open": "Open navigation",
+    "close": "Close navigation",
+    "skipToContent": "Skip to content"
+  },
+  "header": {
+    "language": "Interface language",
+    "darkMode": "Switch to dark mode",
+    "lightMode": "Switch to light mode",
+    "accountMenu": "Account menu",
+    "logout": "Sign out"
+  },
+  "roles": {
+    "owner": "Owner",
+    "admin": "Administrator",
+    "editor": "Editor",
+    "content_reviewer": "Content reviewer",
+    "vehicle_data_manager": "Vehicle data manager",
+    "station_manager": "Stations manager",
+    "community_moderator": "Community moderator",
+    "user": "User"
+  },
+  "notImplemented": {
+    "badge": "Not implemented yet",
+    "short": "Soon",
+    "title": "Not implemented yet",
+    "body": "This section is not built yet. Nothing here is saved or published, and no sample data is shown.",
+    "plannedScope": "Planned scope"
+  },
+  "status": {
+    "draft": "Draft",
+    "in_review": "In review",
+    "scheduled": "Scheduled",
+    "published": "Published",
+    "archived": "Archived"
+  },
+  "reliability": {
+    "verified": "Verified",
+    "manufacturer_claim": "Manufacturer claim",
+    "estimated": "Estimated",
+    "unverified": "Unverified",
+    "disputed": "Disputed",
+    "source": "Source",
+    "verifiedAt": "Verified on"
+  },
+  "table": {
+    "range": "{{from}}–{{to}} of {{total}}",
+    "pageSize": "Rows per page",
+    "sortable": "sortable",
+    "sorted": {
+      "asc": "sorted ascending",
+      "desc": "sorted descending"
+    },
+    "pagination": {
+      "first": "First page",
+      "previous": "Previous page",
+      "next": "Next page",
+      "last": "Last page",
+      "page": "Page {{page}}"
+    }
+  },
+  "confirm": {
+    "typeToConfirm": "Type {{text}} to confirm"
+  },
+  "form": {
+    "unsavedChanges": "You have unsaved changes. Leave this page anyway?"
+  },
+  "money": {
+    "currency": "Currency"
+  },
+  "units": {
+    "inputUnit": "Input unit",
+    "storedAs": "Stored as {{value}} {{unit}}"
+  },
+  "demo": "Demo",
+  "disabled": "disabled",
+  "forbidden": {
+    "title": "You don't have access to this section",
+    "body": "Your role does not include the permission required here. Ask an owner or administrator if you need it."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "The page you are looking for does not exist."
+  },
+  "noAccess": {
+    "title": "No admin access",
+    "body": "The account {{email}} does not have any admin role. Sign out and use an account with admin permissions."
+  },
+  "routeError": {
+    "title": "This page failed to load",
+    "body": "If the admin was just updated, reloading usually fixes it."
+  },
+  "editor": {
+    "bold": "Bold",
+    "italic": "Italic",
+    "underline": "Underline",
+    "strike": "Strikethrough",
+    "clearFormatting": "Clear formatting",
+    "bulletList": "Bullet list",
+    "orderedList": "Numbered list",
+    "blockquote": "Quote",
+    "hr": "Horizontal line",
+    "link": "Link",
+    "unlink": "Remove link",
+    "linkNewTab": "Open in new tab",
+    "linkSameTab": "Open in same tab",
+    "undo": "Undo",
+    "redo": "Redo",
+    "tableInsert": "Insert table",
+    "tableSize": "{{columns}} × {{rows}} table",
+    "tableDelete": "Delete table",
+    "tableRowAfter": "Add row",
+    "tableRowDelete": "Delete row",
+    "tableColumnAfter": "Add column",
+    "tableColumnDelete": "Delete column",
+    "tableHeaderRow": "Toggle header row",
+    "insertImage": "Insert image",
+    "insertVideo": "Embed video",
+    "insert": "Insert",
+    "url": "URL",
+    "altText": "Alternative text",
+    "altHint": "Describes the image for screen readers.",
+    "altRequired": "Alternative text is required",
+    "imageHttpsOnly": "Use an https:// image URL",
+    "videoNotAllowed": "This video host is not allowed. Use a YouTube video link.",
+    "allowedHosts": "Allowed video hosts: {{hosts}}",
+    "licenceReminder": "Only insert images you have the right to publish; record the licence in the media library."
+  }
+}

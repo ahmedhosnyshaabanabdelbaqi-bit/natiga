@@ -1,0 +1,114 @@
+{
+  "title": "Users & roles",
+  "description": "Search accounts, assign roles, suspend accounts and revoke sessions. Every change is recorded in the audit log.",
+  "tabs": {
+    "users": "Users",
+    "roles": "Roles"
+  },
+  "columns": {
+    "user": "User",
+    "roles": "Roles",
+    "status": "Status",
+    "email": "Email",
+    "lastLogin": "Last sign-in",
+    "createdAt": "Created"
+  },
+  "filters": {
+    "searchPlaceholder": "Search by name or email",
+    "role": "Role",
+    "anyRole": "Any role",
+    "status": "Status",
+    "anyStatus": "Any status"
+  },
+  "emailVerified": "Email verified",
+  "emailNotVerified": "Email not verified",
+  "verifiedShort": "Verified",
+  "unverifiedShort": "Unverified",
+  "never": "Never",
+  "you": "You",
+  "readOnly": "You can view roles but not change them (requires users.manage).",
+  "createdOn": "Created {{date}}",
+  "lastLoginOn": "last sign-in {{date}}",
+  "neverLoggedIn": "never signed in",
+  "drawer": {
+    "title": "Account"
+  },
+  "status": {
+    "title": "Account status",
+    "active": "Active",
+    "suspended": "Suspended",
+    "suspend": "Suspend account",
+    "reactivate": "Reactivate account",
+    "suspendTitle": "Suspend this account?",
+    "suspendBody": "{{name}} will no longer be able to sign in to the app or the admin.",
+    "reactivateTitle": "Reactivate this account?",
+    "reactivateBody": "{{name}} will be able to sign in again.",
+    "reason": "Reason (internal)",
+    "reasonHint": "Stored in the audit log.",
+    "cannotSuspendSelf": "You cannot suspend your own account.",
+    "saved": "Account status updated",
+    "staffNeedsManage": "Staff accounts can only be suspended by holders of users.manage.",
+    "privilegedLocked": "Owner and admin accounts can only be changed by an owner or holders of users.manage_admins."
+  },
+  "roles": {
+    "title": "Roles",
+    "save": "Save roles",
+    "saved": "Roles updated",
+    "selfWarning": "You are editing your own roles. Removing admin roles may lock you out of these pages.",
+    "ownerOnly": "Only an owner can grant or remove the owner role.",
+    "adminOnly": "Only accounts allowed to manage admins (owners by default) can grant or remove the admin role.",
+    "targetLocked": "This account holds an owner or admin role that you are not allowed to change."
+  },
+  "sessions": {
+    "title": "Signed-in devices",
+    "device": "Device",
+    "lastUsed": "Last used",
+    "state": "State",
+    "createdAt": "Signed in {{date}}",
+    "unknownDevice": "Unknown device",
+    "empty": "No sessions",
+    "states": {
+      "active": "Active",
+      "revoked": "Revoked",
+      "expired": "Expired"
+    },
+    "revoke": "Revoke",
+    "revokeAll": "Sign out everywhere",
+    "revokeTitle": "Revoke this session?",
+    "revokeBody": "The device will be signed out when its access token expires (at most a few minutes).",
+    "revokeAllTitle": "Sign out all devices?",
+    "revokeAllBody": "All sessions of this account will be revoked. Devices are signed out when their access tokens expire (at most a few minutes).",
+    "revoked": "Session revoked",
+    "revokedAll": "All sessions revoked",
+    "hidden": "Sessions (IP addresses and devices) of owner and admin accounts are only visible to an owner or holders of users.manage_admins."
+  },
+  "rolesTab": {
+    "intro": "Built-in roles and their permissions (defined by the server). Permissions are enforced by the API; hiding buttons in the admin is only cosmetic.",
+    "system": "Built-in",
+    "permissions_one": "{{count}} permission",
+    "permissions_other": "{{count}} permissions",
+    "showUsers": "Show users",
+    "showUsersCount_one": "Show {{count}} user",
+    "showUsersCount_other": "Show {{count}} users",
+    "editPermissions": "Edit permissions",
+    "editTitle": "Permissions of “{{role}}”",
+    "editIntro": "Tick the permissions this role grants. Changes apply to every account with this role on its next request and are written to the audit log.",
+    "notEditable": "The owner role always has every permission.",
+    "ownerOnlyEdit": "Only owners can change role permissions.",
+    "savePermissions": "Save permissions",
+    "saved": "Role permissions updated",
+    "groupAll": "All in group",
+    "selectedCount_one": "{{count}} selected",
+    "selectedCount_other": "{{count}} selected"
+  },
+  "roleDescriptions": {
+    "owner": "Full access, including managing owners and admins.",
+    "admin": "Full access except managing owners and admins.",
+    "editor": "Writes news, reviews, guides and encyclopedia drafts.",
+    "content_reviewer": "Reviews, publishes and archives content; approves reference tours.",
+    "vehicle_data_manager": "Maintains the car catalog, specs, sources, prices, media and tours.",
+    "station_manager": "Maintains charging stations, tariffs, imports and station reports.",
+    "community_moderator": "Moderates reviews, comments, Q&A and user reports.",
+    "user": "Registered app user (no admin permissions)."
+  }
+}

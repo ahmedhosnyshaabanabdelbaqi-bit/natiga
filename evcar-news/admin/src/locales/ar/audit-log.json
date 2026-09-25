@@ -1,0 +1,42 @@
+{
+  "title": "سجل التدقيق",
+  "description": "كل تغيير تم عبر واجهة الإدارة: من فعل ماذا ومتى ومن أين، مع مقارنة القيم قبل وبعد.",
+  "system": "النظام",
+  "columns": {
+    "time": "الوقت",
+    "actor": "المنفّذ",
+    "action": "الإجراء",
+    "entity": "الكيان",
+    "entityId": "معرّف الكيان",
+    "ip": "عنوان IP",
+    "userAgent": "المتصفح",
+    "requestId": "معرّف الطلب"
+  },
+  "filters": {
+    "search": "بحث",
+    "entity": "الكيان (مثل article)",
+    "action": "الإجراء (مثل update)",
+    "dateRange": "الفترة الزمنية",
+    "entityIdActive": "الكيان:",
+    "actorIdActive": "المنفّذ:"
+  },
+  "drawer": { "title": "سجل تدقيق" },
+  "diff": {
+    "title": "التغييرات",
+    "changes_zero": "لا تغييرات",
+    "changes_one": "تغيير واحد",
+    "changes_two": "تغييران",
+    "changes_few": "{{count}} تغييرات",
+    "changes_many": "{{count}} تغييرًا",
+    "changes_other": "{{count}} تغيير",
+    "raw": "JSON خام",
+    "before": "قبل",
+    "after": "بعد",
+    "field": "الحقل",
+    "kind": "نوع التغيير",
+    "none": "(لا شيء)",
+    "noChanges": "لا توجد فروق في الحقول بين القيم قبل وبعد.",
+    "noData": "هذا السجل لا يحتوي بيانات قبل/بعد.",
+    "kinds": { "added": "إضافة", "removed": "حذف", "changed": "تعديل" }
+  }
+}

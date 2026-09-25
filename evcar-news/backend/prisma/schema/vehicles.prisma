@@ -1,0 +1,658 @@
+// Vehicle catalog (module: vehicles).
+//
+// Hierarchy: brand → car_model → generation → model_year → vehicle_variant.
+// Specs, ranges, charging data and prices are attached to the VARIANT (never to
+// a model name), and the powertrain type (BEV/PHEV/EREV/HEV) is a required
+// variant column, so a BEV and a same-named hybrid can never share specs.
+// Market availability and local naming live in variant_markets.
+
+enum PowertrainType {
+  BEV
+  PHEV
+  EREV
+  HEV
+
+  @@map("powertrain_type")
+}
+
+enum BodyType {
+  sedan
+  hatchback
+  suv
+  crossover
+  coupe
+  convertible
+  wagon
+  pickup
+  van
+  mpv
+  other
+
+  @@map("body_type")
+}
+
+enum DriveType {
+  fwd
+  rwd
+  awd
+
+  @@map("drive_type")
+}
+
+/// Reliability of a data point (contract §3).
+enum Reliability {
+  verified
+  manufacturer_claim
+  estimated
+  unverified
+  disputed
+
+  @@map("reliability")
+}
+
+enum RangeCycle {
+  WLTP
+  EPA
+  CLTC
+  NEDC
+  OTHER
+
+  @@map("range_cycle")
+}
+
+enum RangeType {
+  electric
+  total
+
+  @@map("range_type")
+}
+
+enum PriceType {
+  official_msrp
+  dealer
+  market_estimate
+
+  @@map("price_type")
+}
+
+enum SpecDataType {
+  number
+  text
+  boolean
+
+  @@map("spec_data_type")
+}
+
+/// Which direction is "better" when comparing a spec (none = not rankable).
+enum BetterDirection {
+  higher
+  lower
+  none
+
+  @@map("better_direction")
+}
+
+enum SourceType {
+  manufacturer
+  official_document
+  press_release
+  homologation
+  independent_test
+  dealer
+  media_review
+  third_party_database
+  user_submitted
+  other
+
+  @@map("source_type")
+}
+
+enum MarketAvailability {
+  available
+  coming_soon
+  discontinued
+  not_available
+  unknown
+
+  @@map("market_availability")
+}
+
+enum CurrentType {
+  AC
+  DC
+
+  @@map("current_type")
+}
+
+/// What a consumption value measures (canonical units: Wh/km, L/100km).
+enum ConsumptionKind {
+  /// Electricity, Wh/km.
+  electricity
+  /// Fuel (hybrids / range extenders), L/100km.
+  fuel
+
+  @@map("consumption_kind")
+}
+
+/// Operating mode a (hybrid) consumption value was measured in.
+enum ConsumptionMode {
+  combined
+  charge_depleting
+  charge_sustaining
+  weighted
+
+  @@map("consumption_mode")
+}
+
+model Brand {
+  id            String        @id @default(uuid(7)) @db.Uuid
+  slug          String        @unique @db.VarChar(120)
+  nameEn        String        @map("name_en") @db.VarChar(120)
+  nameAr        String        @map("name_ar") @db.VarChar(120)
+  /// ISO-3166 alpha-2 country of origin.
+  countryCode   String?       @map("country_code") @db.Char(2)
+  websiteUrl    String?       @map("website_url") @db.VarChar(2048)
+  logoAssetId   String?       @map("logo_asset_id") @db.Uuid
+  descriptionEn String?       @map("description_en")
+  descriptionAr String?       @map("description_ar")
+  status        ContentStatus @default(draft)
+  sortOrder     Int           @default(0) @map("sort_order")
+  isDemo        Boolean       @default(false) @map("is_demo")
+  createdById   String?       @map("created_by_id") @db.Uuid
+  updatedById   String?       @map("updated_by_id") @db.Uuid
+  createdAt     DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt     DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt     DateTime?     @map("deleted_at") @db.Timestamptz(3)
+
+  logoAsset                 MediaAsset?                @relation("BrandLogo", fields: [logoAssetId], references: [id], onDelete: SetNull)
+  models                    CarModel[]
+  articleLinks              ArticleVehicleLink[]
+  notificationSubscriptions NotificationSubscription[]
+  serviceProviders          ServiceProviderBrand[]
+
+  @@index([status, sortOrder])
+  @@map("brands")
+}
+
+model CarModel {
+  id            String        @id @default(uuid(7)) @db.Uuid
+  brandId       String        @map("brand_id") @db.Uuid
+  slug          String        @unique @db.VarChar(160)
+  nameEn        String        @map("name_en") @db.VarChar(120)
+  nameAr        String        @map("name_ar") @db.VarChar(120)
+  bodyType      BodyType?     @map("body_type")
+  /// Market segment label, e.g. "C", "D-SUV".
+  segment       String?       @db.VarChar(32)
+  descriptionEn String?       @map("description_en")
+  descriptionAr String?       @map("description_ar")
+  heroAssetId   String?       @map("hero_asset_id") @db.Uuid
+  status        ContentStatus @default(draft)
+  sortOrder     Int           @default(0) @map("sort_order")
+  isDemo        Boolean       @default(false) @map("is_demo")
+  createdById   String?       @map("created_by_id") @db.Uuid
+  updatedById   String?       @map("updated_by_id") @db.Uuid
+  createdAt     DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt     DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt     DateTime?     @map("deleted_at") @db.Timestamptz(3)
+
+  brand                     Brand                      @relation(fields: [brandId], references: [id], onDelete: Restrict)
+  heroAsset                 MediaAsset?                @relation("ModelHero", fields: [heroAssetId], references: [id], onDelete: SetNull)
+  generations               Generation[]
+  media                     VehicleMedia[]
+  competitors               ModelCompetitor[]          @relation("ModelCompetitorOf")
+  competitorOf              ModelCompetitor[]          @relation("ModelCompetitorTarget")
+  articleLinks              ArticleVehicleLink[]
+  questions                 Question[]
+  favorites                 Favorite[]
+  notificationSubscriptions NotificationSubscription[]
+
+  @@index([brandId])
+  @@index([status, sortOrder])
+  @@map("car_models")
+}
+
+model Generation {
+  id        String    @id @default(uuid(7)) @db.Uuid
+  modelId   String    @map("model_id") @db.Uuid
+  slug      String    @db.VarChar(120)
+  nameEn    String    @map("name_en") @db.VarChar(120)
+  nameAr    String    @map("name_ar") @db.VarChar(120)
+  /// Manufacturer/platform code, e.g. "EA1".
+  code      String?   @db.VarChar(32)
+  startYear Int?      @map("start_year")
+  endYear   Int?      @map("end_year")
+  isDemo    Boolean   @default(false) @map("is_demo")
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz(3)
+
+  model      CarModel    @relation(fields: [modelId], references: [id], onDelete: Cascade)
+  modelYears ModelYear[]
+
+  @@unique([modelId, slug])
+  @@map("generations")
+}
+
+model ModelYear {
+  id           String   @id @default(uuid(7)) @db.Uuid
+  generationId String   @map("generation_id") @db.Uuid
+  year         Int
+  isDemo       Boolean  @default(false) @map("is_demo")
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  generation Generation       @relation(fields: [generationId], references: [id], onDelete: Cascade)
+  variants   VehicleVariant[]
+
+  @@unique([generationId, year])
+  @@index([year])
+  @@map("model_years")
+}
+
+/// A concrete trim of a model year with a single powertrain type.
+model VehicleVariant {
+  id             String         @id @default(uuid(7)) @db.Uuid
+  modelYearId    String         @map("model_year_id") @db.Uuid
+  slug           String         @unique @db.VarChar(200)
+  nameEn         String         @map("name_en") @db.VarChar(160)
+  nameAr         String         @map("name_ar") @db.VarChar(160)
+  trimCode       String?        @map("trim_code") @db.VarChar(64)
+  powertrainType PowertrainType @map("powertrain_type")
+  bodyType       BodyType?      @map("body_type")
+  driveType      DriveType?     @map("drive_type")
+  seats          Int?           @db.SmallInt
+  doors          Int?           @db.SmallInt
+  status         ContentStatus  @default(draft)
+  publishedAt    DateTime?      @map("published_at") @db.Timestamptz(3)
+  isDemo         Boolean        @default(false) @map("is_demo")
+  createdById    String?        @map("created_by_id") @db.Uuid
+  updatedById    String?        @map("updated_by_id") @db.Uuid
+  createdAt      DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt      DateTime       @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt      DateTime?      @map("deleted_at") @db.Timestamptz(3)
+
+  modelYear                 ModelYear                  @relation(fields: [modelYearId], references: [id], onDelete: Restrict)
+  markets                   VariantMarket[]
+  specifications            VehicleSpecification[]
+  rangeMeasurements         RangeMeasurement[]
+  chargingCurves            ChargingCurve[]
+  chargingTimes             ChargingTimeMeasurement[]
+  prices                    PriceHistory[]
+  consumptionMeasurements   ConsumptionMeasurement[]
+  media                     VehicleMedia[]
+  articleLinks              ArticleVehicleLink[]
+  tours                     InteriorTour[]             @relation("TourVariant")
+  referencedByTours         InteriorTour[]             @relation("TourReferenceVariant")
+  exteriorSpins             ExteriorSpin[]
+  reviews                   Review[]
+  questions                 Question[]
+  favorites                 Favorite[]
+  comparisonItems           ComparisonItem[]
+  userVehicles              UserVehicle[]
+  tripPlans                 TripPlan[]
+  notificationSubscriptions NotificationSubscription[]
+
+  /// Same trim name may exist for BEV and PHEV of one model year, but never twice per powertrain.
+  @@unique([modelYearId, powertrainType, nameEn])
+  @@index([powertrainType, status])
+  @@index([status, publishedAt(sort: Desc)])
+  @@map("vehicle_variants")
+}
+
+/// Availability and local naming of a variant in a market.
+model VariantMarket {
+  id             String             @id @default(uuid(7)) @db.Uuid
+  variantId      String             @map("variant_id") @db.Uuid
+  marketCode     String             @map("market_code") @db.VarChar(8)
+  availability   MarketAvailability @default(unknown)
+  localNameEn    String?            @map("local_name_en") @db.VarChar(200)
+  localNameAr    String?            @map("local_name_ar") @db.VarChar(200)
+  driveSide      DriveSide?         @map("drive_side")
+  launchDate     DateTime?          @map("launch_date") @db.Date
+  discontinuedAt DateTime?          @map("discontinued_at") @db.Date
+  sourceId       String?            @map("source_id") @db.Uuid
+  verifiedAt     DateTime?          @map("verified_at") @db.Timestamptz(3)
+  notes          String?
+  createdAt      DateTime           @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt      DateTime           @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  variant VehicleVariant       @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  market  Market               @relation(fields: [marketCode], references: [code], onDelete: Restrict)
+  source  SpecificationSource? @relation(fields: [sourceId], references: [id], onDelete: Restrict)
+  inlets  VariantMarketInlet[]
+
+  @@unique([variantId, marketCode])
+  @@index([marketCode, availability])
+  @@map("variant_markets")
+}
+
+/// Charging inlets of a variant IN A MARKET (the same imported trim can have
+/// a GB/T inlet in one market and CCS2 in another). Structured, source-backed
+/// data used to filter compatible station connectors (REQUIREMENTS §11) —
+/// never free text. current_type must be supported by the connector type
+/// (trigger). A matching plug shape alone does not prove compatibility.
+model VariantMarketInlet {
+  id                String      @id @default(uuid(7)) @db.Uuid
+  variantMarketId   String      @map("variant_market_id") @db.Uuid
+  connectorTypeCode String      @map("connector_type_code") @db.VarChar(32)
+  currentType       CurrentType @map("current_type")
+  /// Max power accepted through this inlet in kW (AC: on-board charger limit; DC: peak). NULL = unknown.
+  maxPowerKw        Decimal?    @map("max_power_kw") @db.Decimal(8, 2)
+  sourceId          String?     @map("source_id") @db.Uuid
+  verifiedAt        DateTime?   @map("verified_at") @db.Timestamptz(3)
+  reliability       Reliability @default(unverified)
+  notes             String?
+  createdAt         DateTime    @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime    @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  variantMarket VariantMarket        @relation(fields: [variantMarketId], references: [id], onDelete: Cascade)
+  connectorType ConnectorType        @relation(fields: [connectorTypeCode], references: [code], onDelete: Restrict, onUpdate: Cascade)
+  source        SpecificationSource? @relation(fields: [sourceId], references: [id], onDelete: Restrict)
+
+  @@unique([variantMarketId, connectorTypeCode, currentType])
+  @@index([connectorTypeCode, currentType])
+  @@map("variant_market_inlets")
+}
+
+/// Catalog of spec keys with canonical unit and comparison direction,
+/// e.g. key "battery.usable_kwh", unit "kWh", betterDirection higher.
+model SpecDefinition {
+  key             String          @id @db.VarChar(100)
+  group           String          @db.VarChar(50)
+  dataType        SpecDataType    @map("data_type")
+  /// Canonical unit (km, kWh, kW, Wh/km, min, mm, l, kg, s, Nm, hp, %, V, A, year...). NULL for text/boolean.
+  unit            String?         @db.VarChar(20)
+  betterDirection BetterDirection @default(none) @map("better_direction")
+  labelEn         String          @map("label_en") @db.VarChar(200)
+  labelAr         String          @map("label_ar") @db.VarChar(200)
+  descriptionEn   String?         @map("description_en")
+  descriptionAr   String?         @map("description_ar")
+  /// Important specs must carry a source + reliability to be shown as verified.
+  isKeySpec       Boolean         @default(false) @map("is_key_spec")
+  isComparable    Boolean         @default(true) @map("is_comparable")
+  sortOrder       Int             @default(0) @map("sort_order")
+  createdAt       DateTime        @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt       DateTime        @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  specifications VehicleSpecification[]
+  hotspots       SceneHotspot[]
+
+  @@index([group, sortOrder])
+  @@map("spec_definitions")
+}
+
+/// Where a data point came from (spec sheet, homologation doc, test, dealer...).
+/// Also referenced by prices, tariffs and energy prices.
+model SpecificationSource {
+  id           String     @id @default(uuid(7)) @db.Uuid
+  type         SourceType
+  title        String     @db.VarChar(300)
+  publisher    String?    @db.VarChar(200)
+  url          String?    @db.VarChar(2048)
+  documentDate DateTime?  @map("document_date") @db.Date
+  accessedAt   DateTime?  @map("accessed_at") @db.Timestamptz(3)
+  marketCode   String?    @map("market_code") @db.VarChar(8)
+  language     String?    @db.VarChar(10)
+  notes        String?
+  isDemo       Boolean    @default(false) @map("is_demo")
+  createdById  String?    @map("created_by_id") @db.Uuid
+  createdAt    DateTime   @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt    DateTime   @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  market                  Market?                   @relation(fields: [marketCode], references: [code], onDelete: SetNull)
+  specifications          VehicleSpecification[]
+  rangeMeasurements       RangeMeasurement[]
+  consumptionMeasurements ConsumptionMeasurement[]
+  variantMarketInlets     VariantMarketInlet[]
+  chargingCurves          ChargingCurve[]
+  chargingTimes           ChargingTimeMeasurement[]
+  prices                  PriceHistory[]
+  variantMarkets          VariantMarket[]
+  tariffs                 Tariff[]
+  energyPrices            EnergyPrice[]
+
+  @@index([type])
+  @@map("specification_sources")
+}
+
+/// One row per variant × spec key × market scope: market_code NULL = the
+/// value applies to every market; a market-specific row (e.g. a warranty
+/// that differs in EG and SA) overrides it for that market (lookups: market
+/// row first, then the global row). Uniqueness is enforced by two partial
+/// unique indexes (market NULL / not NULL) in the migration. Values are in the
+/// canonical unit of the spec definition (trigger: unit and value column must
+/// match the definition); the value as published is kept in original_value/unit.
+model VehicleSpecification {
+  id            String      @id @default(uuid(7)) @db.Uuid
+  variantId     String      @map("variant_id") @db.Uuid
+  specKey       String      @map("spec_key") @db.VarChar(100)
+  /// NULL = applies to all markets.
+  marketCode    String?     @map("market_code") @db.VarChar(8)
+  valueNum      Decimal?    @map("value_num") @db.Decimal(18, 6)
+  valueText     String?     @map("value_text")
+  valueBool     Boolean?    @map("value_bool")
+  unit          String?     @db.VarChar(20)
+  originalValue String?     @map("original_value") @db.VarChar(200)
+  originalUnit  String?     @map("original_unit") @db.VarChar(20)
+  sourceId      String?     @map("source_id") @db.Uuid
+  verifiedAt    DateTime?   @map("verified_at") @db.Timestamptz(3)
+  reliability   Reliability @default(unverified)
+  notes         String?
+  updatedById   String?     @map("updated_by_id") @db.Uuid
+  createdAt     DateTime    @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt     DateTime    @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  variant    VehicleVariant       @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  definition SpecDefinition       @relation(fields: [specKey], references: [key], onDelete: Restrict, onUpdate: Cascade)
+  market     Market?              @relation(fields: [marketCode], references: [code], onDelete: Restrict)
+  source     SpecificationSource? @relation(fields: [sourceId], references: [id], onDelete: Restrict)
+
+  @@index([variantId, specKey])
+  @@index([specKey])
+  @@index([marketCode])
+  @@index([sourceId])
+  @@map("vehicle_specifications")
+}
+
+/// Energy / fuel consumption ALWAYS with its test cycle (like ranges): values
+/// from different cycles are never compared or converted (REQUIREMENTS §7).
+model ConsumptionMeasurement {
+  id            String           @id @default(uuid(7)) @db.Uuid
+  variantId     String           @map("variant_id") @db.Uuid
+  /// NULL = applies to all markets.
+  marketCode    String?          @map("market_code") @db.VarChar(8)
+  cycle         RangeCycle
+  /// Free-text name of the cycle when cycle = OTHER.
+  cycleNote     String?          @map("cycle_note") @db.VarChar(100)
+  kind          ConsumptionKind
+  /// Hybrids: which operating mode the value describes.
+  mode          ConsumptionMode?
+  /// electricity: Wh/km; fuel: L/100km (canonical units).
+  value         Decimal          @db.Decimal(8, 2)
+  originalValue String?          @map("original_value") @db.VarChar(50)
+  originalUnit  String?          @map("original_unit") @db.VarChar(20)
+  conditions    String?
+  sourceId      String?          @map("source_id") @db.Uuid
+  verifiedAt    DateTime?        @map("verified_at") @db.Timestamptz(3)
+  reliability   Reliability      @default(unverified)
+  createdAt     DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt     DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  variant VehicleVariant       @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  market  Market?              @relation(fields: [marketCode], references: [code], onDelete: Restrict)
+  source  SpecificationSource? @relation(fields: [sourceId], references: [id], onDelete: Restrict)
+
+  @@index([variantId, cycle, kind])
+  @@index([marketCode])
+  @@map("consumption_measurements")
+}
+
+/// Range values always carry their test cycle and whether they are electric
+/// or total (hybrids). Values are never converted between cycles.
+model RangeMeasurement {
+  id            String      @id @default(uuid(7)) @db.Uuid
+  variantId     String      @map("variant_id") @db.Uuid
+  /// NULL = applies to all markets.
+  marketCode    String?     @map("market_code") @db.VarChar(8)
+  cycle         RangeCycle
+  /// Free-text name of the cycle when cycle = OTHER.
+  cycleNote     String?     @map("cycle_note") @db.VarChar(100)
+  rangeType     RangeType   @map("range_type")
+  valueKm       Decimal     @map("value_km") @db.Decimal(8, 1)
+  originalValue String?     @map("original_value") @db.VarChar(50)
+  originalUnit  String?     @map("original_unit") @db.VarChar(20)
+  wheelSizeInch Decimal?    @map("wheel_size_inch") @db.Decimal(4, 1)
+  conditions    String?
+  sourceId      String?     @map("source_id") @db.Uuid
+  verifiedAt    DateTime?   @map("verified_at") @db.Timestamptz(3)
+  reliability   Reliability @default(unverified)
+  createdAt     DateTime    @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt     DateTime    @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  variant VehicleVariant       @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  market  Market?              @relation(fields: [marketCode], references: [code], onDelete: Restrict)
+  source  SpecificationSource? @relation(fields: [sourceId], references: [id], onDelete: Restrict)
+
+  @@index([variantId, cycle, rangeType])
+  @@map("range_measurements")
+}
+
+/// Documented charging power curve (power vs state of charge).
+model ChargingCurve {
+  id                String      @id @default(uuid(7)) @db.Uuid
+  variantId         String      @map("variant_id") @db.Uuid
+  currentType       CurrentType @default(DC) @map("current_type")
+  label             String?     @db.VarChar(200)
+  /// Rated power of the charger used for the measurement (test condition).
+  chargerMaxPowerKw Decimal?    @map("charger_max_power_kw") @db.Decimal(8, 2)
+  batteryTempC      Decimal?    @map("battery_temp_c") @db.Decimal(5, 1)
+  preconditioned    Boolean?
+  conditions        String?
+  sourceId          String?     @map("source_id") @db.Uuid
+  verifiedAt        DateTime?   @map("verified_at") @db.Timestamptz(3)
+  reliability       Reliability @default(unverified)
+  createdAt         DateTime    @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime    @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  variant VehicleVariant       @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  source  SpecificationSource? @relation(fields: [sourceId], references: [id], onDelete: Restrict)
+  points  ChargingCurvePoint[]
+
+  @@index([variantId])
+  @@map("charging_curves")
+}
+
+model ChargingCurvePoint {
+  id         String  @id @default(uuid(7)) @db.Uuid
+  curveId    String  @map("curve_id") @db.Uuid
+  /// 0..100 (CHECK)
+  socPercent Decimal @map("soc_percent") @db.Decimal(5, 2)
+  /// >= 0 (CHECK)
+  powerKw    Decimal @map("power_kw") @db.Decimal(8, 2)
+
+  curve ChargingCurve @relation(fields: [curveId], references: [id], onDelete: Cascade)
+
+  @@unique([curveId, socPercent])
+  @@map("charging_curve_points")
+}
+
+/// Measured / claimed charging time between two SoC levels under a stated
+/// charger condition (charger_power_kw or, when no number is published, the
+/// conditions text — CHECK). Peak and average power are separate fields.
+model ChargingTimeMeasurement {
+  id                    String      @id @default(uuid(7)) @db.Uuid
+  variantId             String      @map("variant_id") @db.Uuid
+  currentType           CurrentType @map("current_type")
+  fromSoc               Decimal     @map("from_soc") @db.Decimal(5, 2)
+  toSoc                 Decimal     @map("to_soc") @db.Decimal(5, 2)
+  durationMinutes       Decimal     @map("duration_minutes") @db.Decimal(8, 2)
+  /// Rated power of the charger (condition), e.g. 11 kW AC wallbox or 350 kW DC.
+  chargerPowerKw        Decimal?    @map("charger_power_kw") @db.Decimal(8, 2)
+  peakPowerKw           Decimal?    @map("peak_power_kw") @db.Decimal(8, 2)
+  averagePowerKw        Decimal?    @map("average_power_kw") @db.Decimal(8, 2)
+  onboardChargerLimitKw Decimal?    @map("onboard_charger_limit_kw") @db.Decimal(8, 2)
+  conditions            String?
+  sourceId              String?     @map("source_id") @db.Uuid
+  verifiedAt            DateTime?   @map("verified_at") @db.Timestamptz(3)
+  reliability           Reliability @default(unverified)
+  createdAt             DateTime    @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt             DateTime    @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  variant VehicleVariant       @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  source  SpecificationSource? @relation(fields: [sourceId], references: [id], onDelete: Restrict)
+
+  @@index([variantId, currentType])
+  @@map("charging_time_measurements")
+}
+
+/// Price points per variant × market with type, effective date and source.
+/// Enforced in SQL: official_msrp and dealer prices need a source and the
+/// market's own currency (a converted/foreign price can only be a
+/// market_estimate); official_msrp periods of one variant × market never
+/// overlap (EXCLUDE USING gist), so "the current official price" is unique.
+model PriceHistory {
+  id            String      @id @default(uuid(7)) @db.Uuid
+  variantId     String      @map("variant_id") @db.Uuid
+  marketCode    String      @map("market_code") @db.VarChar(8)
+  amount        Decimal     @db.Decimal(14, 2)
+  currencyCode  String      @map("currency_code") @db.Char(3)
+  priceType     PriceType   @map("price_type")
+  effectiveFrom DateTime    @map("effective_from") @db.Date
+  effectiveTo   DateTime?   @map("effective_to") @db.Date
+  sourceId      String?     @map("source_id") @db.Uuid
+  verifiedAt    DateTime?   @map("verified_at") @db.Timestamptz(3)
+  reliability   Reliability @default(unverified)
+  notes         String?
+  isDemo        Boolean     @default(false) @map("is_demo")
+  createdById   String?     @map("created_by_id") @db.Uuid
+  createdAt     DateTime    @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt     DateTime    @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  variant  VehicleVariant       @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  market   Market               @relation(fields: [marketCode], references: [code], onDelete: Restrict)
+  currency Currency             @relation(fields: [currencyCode], references: [code], onDelete: Restrict)
+  source   SpecificationSource? @relation(fields: [sourceId], references: [id], onDelete: Restrict)
+
+  @@index([variantId, marketCode, effectiveFrom(sort: Desc)])
+  @@index([marketCode, priceType])
+  @@map("price_history")
+}
+
+/// Gallery images attached to a model or a specific variant (exactly one; CHECK).
+model VehicleMedia {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  modelId   String?  @map("model_id") @db.Uuid
+  variantId String?  @map("variant_id") @db.Uuid
+  assetId   String   @map("asset_id") @db.Uuid
+  /// gallery | exterior | interior | detail
+  kind      String   @default("gallery") @db.VarChar(32)
+  captionEn String?  @map("caption_en") @db.VarChar(500)
+  captionAr String?  @map("caption_ar") @db.VarChar(500)
+  isCover   Boolean  @default(false) @map("is_cover")
+  sortOrder Int      @default(0) @map("sort_order")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  model   CarModel?       @relation(fields: [modelId], references: [id], onDelete: Cascade)
+  variant VehicleVariant? @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  asset   MediaAsset      @relation(fields: [assetId], references: [id], onDelete: Restrict)
+
+  @@index([modelId, sortOrder])
+  @@index([variantId, sortOrder])
+  @@index([assetId])
+  @@map("vehicle_media")
+}
+
+/// Editor-curated competitors ("السيارات المنافسة").
+model ModelCompetitor {
+  modelId           String   @map("model_id") @db.Uuid
+  competitorModelId String   @map("competitor_model_id") @db.Uuid
+  sortOrder         Int      @default(0) @map("sort_order")
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  model      CarModel @relation("ModelCompetitorOf", fields: [modelId], references: [id], onDelete: Cascade)
+  competitor CarModel @relation("ModelCompetitorTarget", fields: [competitorModelId], references: [id], onDelete: Cascade)
+
+  @@id([modelId, competitorModelId])
+  @@index([competitorModelId])
+  @@map("model_competitors")
+}

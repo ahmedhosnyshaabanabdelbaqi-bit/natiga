@@ -1,0 +1,101 @@
+{
+  "title": "Dashboard",
+  "description": "System overview",
+  "greeting": "Welcome, {{name}}.",
+  "noSystemAccess": "System status is visible to roles with system.read (overview) or settings.read / integrations.read (integrations).",
+  "sections": "Your sections",
+  "placeholdersNote_one": "{{count}} section is not implemented yet and shows no data.",
+  "placeholdersNote_other": "{{count}} sections are not implemented yet and show no data.",
+  "overview": {
+    "title": "System overview",
+    "version": "API version",
+    "environment": "Environment",
+    "uptime": "Uptime",
+    "uptimeValue": "{{days}}d {{hours}}h {{minutes}}m",
+    "services": "Services",
+    "counts": "Content & data",
+    "serverTime": "Server time: {{date}}",
+    "states": {
+      "up": "up",
+      "down": "down"
+    },
+    "serviceNames": {
+      "database": "Database",
+      "redis": "Redis",
+      "storage": "Storage"
+    },
+    "healthUnavailable": "The health check could not be reached.",
+    "warningsTitle": "Needs attention",
+    "warnings": {
+      "demo_data_in_production": "Demo rows exist in production — remove them.",
+      "redis_down_jobs_paused": "Redis is down: background jobs are paused.",
+      "failed_background_jobs": "Some background jobs failed (see System).",
+      "failed_imports": "Imports failed in the last 7 days.",
+      "stations_not_recently_verified": "Published stations have not been verified recently.",
+      "outdated_prices": "Some current prices are old.",
+      "rss_feeds_failing": "RSS feeds are failing.",
+      "media_processing_stuck": "Media processing looks stuck.",
+      "storage_not_configured": "Object storage (S3) is selected but not configured."
+    },
+    "demoRows": "Demo rows (is_demo) in this database — never shown as real data: {{list}}",
+    "demoKinds": {
+      "articles": "articles",
+      "stations": "stations",
+      "variants": "variants",
+      "prices": "prices"
+    },
+    "countNames": {
+      "users": "Users",
+      "articles": "Articles",
+      "brands": "Brands",
+      "models": "Models",
+      "variants": "Variants",
+      "stations": "Charging stations",
+      "tours": "360° tours",
+      "media": "Media files",
+      "openStationReports": "Open station reports",
+      "pendingReviews": "Reviews to moderate",
+      "pendingComments": "Comments to moderate"
+    },
+    "statuses": {
+      "draft": "draft",
+      "in_review": "in review",
+      "scheduled": "scheduled",
+      "published": "published",
+      "archived": "archived",
+      "hidden": "hidden",
+      "pending": "pending",
+      "uploading": "uploading",
+      "processing": "processing",
+      "ready": "ready",
+      "failed": "failed",
+      "rejected": "rejected"
+    },
+    "stale": "Data freshness",
+    "staleNames": {
+      "stationsNotRecentlyVerified": "published stations not verified for {{threshold}} days",
+      "pricesOutdated": "current prices older than {{threshold}} days",
+      "specsUnverified": "unverified spec values",
+      "rssFeedsFailing": "RSS feeds without success for {{threshold}} h",
+      "mediaStuck": "media files processing for over {{threshold}} h"
+    },
+    "importsRunning_one": "{{count}} import running",
+    "importsRunning_other": "{{count}} imports running",
+    "importsFailed_one": "{{count}} failed import in 7 days",
+    "importsFailed_other": "{{count}} failed imports in 7 days"
+  },
+  "integrations": {
+    "title": "Integrations",
+    "details": "Details",
+    "configured": "{{count}} of {{total}} integrations configured",
+    "failing_one": "{{count}} integration is failing",
+    "failing_other": "{{count}} integrations are failing",
+    "notConfigured": "Not configured:",
+    "more": "and {{count}} more"
+  },
+  "jobs": {
+    "failed_one": "{{count}} failed background job",
+    "failed_other": "{{count}} failed background jobs",
+    "redisDown": "Redis is down: background jobs are paused."
+  }
+}

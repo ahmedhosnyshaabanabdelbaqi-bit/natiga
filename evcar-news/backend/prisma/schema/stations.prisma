@@ -1,0 +1,507 @@
+// Charging stations (module: stations).
+//
+// station → charging_point (EVSE) → connector. The number of connectors is
+// NOT the number of cars that can charge at once (that is the number of
+// points/EVSEs). Three independent status concepts:
+//   1. operational status   (charging_stations.operational_status, points, connectors)
+//   2. open now             (computed from opening_hours + timezone at request time)
+//   3. live availability    (availability_observations, only from a live provider,
+//                            ignored once expires_at has passed → "unknown")
+// `location` is geography(Point,4326) maintained by a trigger from
+// latitude/longitude (see migration) with a GIST index.
+
+enum StationOperationalStatus {
+  operational
+  planned
+  temporarily_unavailable
+  permanently_closed
+  unknown
+
+  @@map("station_operational_status")
+}
+
+enum StationPublicationStatus {
+  draft
+  /// User suggestions / imports awaiting review.
+  pending_review
+  published
+  hidden
+  rejected
+
+  @@map("station_publication_status")
+}
+
+enum StationAccessType {
+  public
+  customers_only
+  restricted
+  private
+  unknown
+
+  @@map("station_access_type")
+}
+
+enum StationDataSource {
+  manual
+  ocm
+  csv
+  partner
+  user_suggestion
+
+  @@map("station_data_source")
+}
+
+enum ConnectorFormat {
+  socket
+  cable
+
+  @@map("connector_format")
+}
+
+/// Live status vocabulary (aligned with OCPI).
+enum AvailabilityStatus {
+  available
+  charging
+  reserved
+  blocked
+  out_of_order
+  inoperative
+  unknown
+
+  @@map("availability_status")
+}
+
+enum TariffComponentType {
+  energy
+  time
+  flat
+  parking_time
+  idle
+
+  @@map("tariff_component_type")
+}
+
+enum TariffPriceUnit {
+  per_kwh
+  per_minute
+  per_hour
+  per_session
+
+  @@map("tariff_price_unit")
+}
+
+enum StationReportType {
+  not_working
+  wrong_location
+  connector_mismatch
+  price_changed
+  access_restricted
+  other
+
+  @@map("station_report_type")
+}
+
+enum ReportStatus {
+  open
+  in_review
+  resolved
+  rejected
+
+  @@map("report_status")
+}
+
+enum CheckinOutcome {
+  charged_successfully
+  waited_then_charged
+  could_not_charge
+  other
+
+  @@map("checkin_outcome")
+}
+
+model ChargingOperator {
+  id          String   @id @default(uuid(7)) @db.Uuid
+  name        String   @db.VarChar(200)
+  nameAr      String?  @map("name_ar") @db.VarChar(200)
+  websiteUrl  String?  @map("website_url") @db.VarChar(2048)
+  phone       String?  @db.VarChar(50)
+  email       String?  @db.VarChar(320)
+  logoAssetId String?  @map("logo_asset_id") @db.Uuid
+  isDemo      Boolean  @default(false) @map("is_demo")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  logoAsset       MediaAsset?       @relation(fields: [logoAssetId], references: [id], onDelete: SetNull)
+  stations        ChargingStation[]
+  providerRecords ProviderRecord[]
+
+  @@index([name])
+  @@map("charging_operators")
+}
+
+model ChargingStation {
+  id                  String                                @id @default(uuid(7)) @db.Uuid
+  slug                String?                               @unique @db.VarChar(200)
+  name                String                                @db.VarChar(300)
+  nameAr              String?                               @map("name_ar") @db.VarChar(300)
+  nameEn              String?                               @map("name_en") @db.VarChar(300)
+  operatorId          String?                               @map("operator_id") @db.Uuid
+  latitude            Float
+  longitude           Float
+  /// Maintained by trigger from latitude/longitude. Read with raw SQL (PrismaService.geo helpers).
+  location            Unsupported("geography(Point,4326)")?
+  addressLine         String?                               @map("address_line") @db.VarChar(500)
+  addressAr           String?                               @map("address_ar") @db.VarChar(500)
+  addressEn           String?                               @map("address_en") @db.VarChar(500)
+  city                String?                               @db.VarChar(120)
+  region              String?                               @db.VarChar(120)
+  postalCode          String?                               @map("postal_code") @db.VarChar(20)
+  /// ISO-3166 alpha-2.
+  countryCode         String                                @map("country_code") @db.Char(2)
+  marketCode          String?                               @map("market_code") @db.VarChar(8)
+  /// Where the entrance / access point is, when known ("مدخل الوصول").
+  accessEntranceNote  String?                               @map("access_entrance_note")
+  accessType          StationAccessType                     @default(unknown) @map("access_type")
+  accessRestrictions  String?                               @map("access_restrictions")
+  /// Structured weekly schedule, e.g. {"mon":[["08:00","22:00"]],...}; NULL = unknown.
+  openingHours        Json?                                 @map("opening_hours")
+  /// true = 24/7, false = see opening_hours, NULL = unknown.
+  isAlwaysOpen        Boolean?                              @map("is_always_open")
+  /// IANA time zone used to evaluate "open now".
+  timezone            String                                @db.VarChar(64)
+  phone               String?                               @db.VarChar(50)
+  email               String?                               @db.VarChar(320)
+  websiteUrl          String?                               @map("website_url") @db.VarChar(2048)
+  /// e.g. app, rfid, bank_card, cash, free, plug_and_charge.
+  paymentMethods      String[]                              @default([]) @map("payment_methods")
+  /// How a session is started: app, rfid, plug_and_charge, card, staff.
+  startMethods        String[]                              @default([]) @map("start_methods")
+  /// Nearby services: restroom, cafe, restaurant, shopping, wifi, mosque, hotel...
+  amenities           String[]                              @default([])
+  operationalStatus   StationOperationalStatus              @default(unknown) @map("operational_status")
+  publicationStatus   StationPublicationStatus              @default(draft) @map("publication_status")
+  dataSource          StationDataSource                     @default(manual) @map("data_source")
+  /// Licence of the source data (e.g. "CC BY 4.0 — Open Charge Map").
+  dataLicense         String?                               @map("data_license") @db.VarChar(200)
+  attribution         String?
+  /// Number of vehicles the SOURCE says can charge at the same time (e.g. OCM
+  /// NumberOfPoints) when the charge points themselves are not modelled; NULL = unknown.
+  /// Never derived from the number of connectors.
+  publishedPointCount Int?                                  @map("published_point_count")
+  /// Price as free text exactly as published by the source (e.g. OCM UsageCost);
+  /// never parsed into tariffs.
+  usageCostText       String?                               @map("usage_cost_text")
+  lastVerifiedAt      DateTime?                             @map("last_verified_at") @db.Timestamptz(3)
+  sourceUpdatedAt     DateTime?                             @map("source_updated_at") @db.Timestamptz(3)
+  /// Normalized (Arabic-aware) search text, maintained by trigger.
+  searchText          String?                               @map("search_text")
+  isDemo              Boolean                               @default(false) @map("is_demo")
+  createdById         String?                               @map("created_by_id") @db.Uuid
+  updatedById         String?                               @map("updated_by_id") @db.Uuid
+  createdAt           DateTime                              @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt           DateTime                              @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt           DateTime?                             @map("deleted_at") @db.Timestamptz(3)
+
+  operator                  ChargingOperator?          @relation(fields: [operatorId], references: [id], onDelete: SetNull)
+  market                    Market?                    @relation(fields: [marketCode], references: [code], onDelete: Restrict)
+  points                    ChargingPoint[]
+  connectors                Connector[]
+  tariffs                   Tariff[]
+  providerRecords           ProviderRecord[]
+  availabilityObservations  AvailabilityObservation[]
+  reports                   StationReport[]
+  checkins                  StationCheckin[]
+  media                     StationMedia[]
+  reviews                   Review[]
+  questions                 Question[]
+  favorites                 Favorite[]
+  chargingLogs              ChargingLog[]
+  notificationSubscriptions NotificationSubscription[]
+
+  @@index([location], type: Gist, map: "charging_stations_location_gist")
+  @@index([searchText(ops: raw("gin_trgm_ops"))], type: Gin, map: "charging_stations_search_text_trgm")
+  @@index([publicationStatus, operationalStatus])
+  @@index([marketCode])
+  @@index([operatorId])
+  @@index([countryCode, city])
+  @@map("charging_stations")
+}
+
+/// EVSE: one physical charging position that can charge one car at a time.
+model ChargingPoint {
+  id                  String                   @id @default(uuid(7)) @db.Uuid
+  stationId           String                   @map("station_id") @db.Uuid
+  /// eMI3 EVSE ID when known.
+  evseId              String?                  @map("evse_id") @db.VarChar(64)
+  label               String?                  @db.VarChar(64)
+  physicalReference   String?                  @map("physical_reference") @db.VarChar(64)
+  floorLevel          String?                  @map("floor_level") @db.VarChar(16)
+  parkingRestrictions String?                  @map("parking_restrictions")
+  operationalStatus   StationOperationalStatus @default(unknown) @map("operational_status")
+  notes               String?
+  createdAt           DateTime                 @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt           DateTime                 @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  station                  ChargingStation           @relation(fields: [stationId], references: [id], onDelete: Cascade)
+  connectors               Connector[]
+  tariffs                  Tariff[]
+  availabilityObservations AvailabilityObservation[]
+
+  @@unique([stationId, id])
+  @@index([stationId])
+  @@map("charging_points")
+}
+
+/// Reference data: plug standards with AC/DC capability.
+model ConnectorType {
+  code           String   @id @db.VarChar(32)
+  nameEn         String   @map("name_en") @db.VarChar(100)
+  nameAr         String   @map("name_ar") @db.VarChar(100)
+  supportsAc     Boolean  @map("supports_ac")
+  supportsDc     Boolean  @map("supports_dc")
+  /// Typical maximum power; informational only, NULL when not meaningful.
+  typicalMaxAcKw Decimal? @map("typical_max_ac_kw") @db.Decimal(8, 2)
+  typicalMaxDcKw Decimal? @map("typical_max_dc_kw") @db.Decimal(8, 2)
+  /// Standard reference, e.g. "IEC 62196-2 Type 2".
+  standard       String?  @db.VarChar(200)
+  /// Alternative names used by providers (e.g. Open Charge Map titles).
+  aliases        String[] @default([])
+  iconKey        String?  @map("icon_key") @db.VarChar(32)
+  sortOrder      Int      @default(0) @map("sort_order")
+  isActive       Boolean  @default(true) @map("is_active")
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt      DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  connectors    Connector[]
+  variantInlets VariantMarketInlet[]
+
+  @@map("connector_types")
+}
+
+/// A plug. Belongs to a station and — when the source says so — to one
+/// charge point (EVSE); `charging_point_id` is NULL when the grouping is
+/// unknown (Open Charge Map), so an import never has to invent EVSEs or
+/// assume one car per connector. (station_id, charging_point_id) must name a
+/// charge point of the same station (composite FK). current_type must be
+/// supported by the connector type (trigger).
+model Connector {
+  id                String                   @id @default(uuid(7)) @db.Uuid
+  stationId         String                   @map("station_id") @db.Uuid
+  /// NULL = the source does not group connectors into charge points.
+  chargingPointId   String?                  @map("charging_point_id") @db.Uuid
+  connectorTypeCode String                   @map("connector_type_code") @db.VarChar(32)
+  /// Identical connectors as listed by the source (e.g. OCM Quantity); not "cars at once".
+  quantity          Int                      @default(1) @db.SmallInt
+  format            ConnectorFormat?
+  currentType       CurrentType              @map("current_type")
+  maxPowerKw        Decimal?                 @map("max_power_kw") @db.Decimal(8, 2)
+  maxVoltage        Int?                     @map("max_voltage")
+  maxAmperage       Int?                     @map("max_amperage")
+  phases            Int?                     @db.SmallInt
+  operationalStatus StationOperationalStatus @default(unknown) @map("operational_status")
+  createdAt         DateTime                 @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime                 @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  station                  ChargingStation           @relation(fields: [stationId], references: [id], onDelete: Cascade)
+  chargingPoint            ChargingPoint?            @relation(fields: [stationId, chargingPointId], references: [stationId, id], onDelete: Cascade)
+  connectorType            ConnectorType             @relation(fields: [connectorTypeCode], references: [code], onDelete: Restrict, onUpdate: Cascade)
+  tariffs                  Tariff[]
+  availabilityObservations AvailabilityObservation[]
+  reports                  StationReport[]
+  checkins                 StationCheckin[]
+
+  @@unique([stationId, id])
+  @@index([stationId])
+  @@index([chargingPointId])
+  @@index([connectorTypeCode, currentType])
+  @@map("connectors")
+}
+
+/// Tariff header; applies to a station, optionally narrowed to a point or
+/// connector. Price components with their unit are in tariff_elements.
+model Tariff {
+  id              String      @id @default(uuid(7)) @db.Uuid
+  stationId       String      @map("station_id") @db.Uuid
+  chargingPointId String?     @map("charging_point_id") @db.Uuid
+  connectorId     String?     @map("connector_id") @db.Uuid
+  name            String?     @db.VarChar(200)
+  currencyCode    String      @map("currency_code") @db.Char(3)
+  validFrom       DateTime?   @map("valid_from") @db.Timestamptz(3)
+  validTo         DateTime?   @map("valid_to") @db.Timestamptz(3)
+  /// NULL = unknown whether taxes are included.
+  taxIncluded     Boolean?    @map("tax_included")
+  taxPercent      Decimal?    @map("tax_percent") @db.Decimal(5, 2)
+  notes           String?
+  sourceId        String?     @map("source_id") @db.Uuid
+  verifiedAt      DateTime?   @map("verified_at") @db.Timestamptz(3)
+  reliability     Reliability @default(unverified)
+  isDemo          Boolean     @default(false) @map("is_demo")
+  createdById     String?     @map("created_by_id") @db.Uuid
+  createdAt       DateTime    @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt       DateTime    @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  station       ChargingStation      @relation(fields: [stationId], references: [id], onDelete: Cascade)
+  chargingPoint ChargingPoint?       @relation(fields: [chargingPointId], references: [id], onDelete: Cascade)
+  connector     Connector?           @relation(fields: [connectorId], references: [id], onDelete: Cascade)
+  currency      Currency             @relation(fields: [currencyCode], references: [code], onDelete: Restrict)
+  source        SpecificationSource? @relation(fields: [sourceId], references: [id], onDelete: Restrict)
+  elements      TariffElement[]
+
+  @@index([stationId])
+  @@index([chargingPointId])
+  @@index([connectorId])
+  @@map("tariffs")
+}
+
+model TariffElement {
+  id            String              @id @default(uuid(7)) @db.Uuid
+  tariffId      String              @map("tariff_id") @db.Uuid
+  componentType TariffComponentType @map("component_type")
+  price         Decimal             @db.Decimal(12, 4)
+  priceUnit     TariffPriceUnit     @map("price_unit")
+  /// Billing step (e.g. 60 seconds, 1 Wh) as published by the operator.
+  stepSize      Int?                @map("step_size")
+  graceMinutes  Int?                @map("grace_minutes")
+  minPowerKw    Decimal?            @map("min_power_kw") @db.Decimal(8, 2)
+  maxPowerKw    Decimal?            @map("max_power_kw") @db.Decimal(8, 2)
+  currentType   CurrentType?        @map("current_type")
+  /// Local time-of-day window "HH:MM" (station timezone).
+  startTime     String?             @map("start_time") @db.VarChar(5)
+  endTime       String?             @map("end_time") @db.VarChar(5)
+  /// ISO weekdays 1 (Mon) .. 7 (Sun); empty = every day.
+  daysOfWeek    Int[]               @default([]) @map("days_of_week")
+  sortOrder     Int                 @default(0) @map("sort_order")
+  createdAt     DateTime            @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  tariff Tariff @relation(fields: [tariffId], references: [id], onDelete: Cascade)
+
+  @@index([tariffId])
+  @@map("tariff_elements")
+}
+
+/// Raw provenance of imported records. Unique per (provider, external_id):
+/// re-running a sync upserts instead of duplicating. Sub-entities of the same
+/// provider use prefixed ids (e.g. "conn:123") to stay unique.
+model ProviderRecord {
+  id                String    @id @default(uuid(7)) @db.Uuid
+  /// e.g. "ocm", "csv", "partner:<name>".
+  provider          String    @db.VarChar(64)
+  externalId        String    @map("external_id") @db.VarChar(200)
+  /// station | operator | point | connector
+  entityType        String    @default("station") @map("entity_type") @db.VarChar(32)
+  stationId         String?   @map("station_id") @db.Uuid
+  operatorId        String?   @map("operator_id") @db.Uuid
+  /// Stored only as far as the provider licence allows.
+  payload           Json?
+  payloadHash       String?   @map("payload_hash") @db.Char(64)
+  dataLicense       String?   @map("data_license") @db.VarChar(200)
+  attribution       String?
+  firstSeenAt       DateTime  @default(now()) @map("first_seen_at") @db.Timestamptz(3)
+  lastSeenAt        DateTime  @default(now()) @map("last_seen_at") @db.Timestamptz(3)
+  lastSyncedAt      DateTime? @map("last_synced_at") @db.Timestamptz(3)
+  removedAtSourceAt DateTime? @map("removed_at_source_at") @db.Timestamptz(3)
+  syncError         String?   @map("sync_error")
+  createdAt         DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  station  ChargingStation?  @relation(fields: [stationId], references: [id], onDelete: SetNull)
+  operator ChargingOperator? @relation(fields: [operatorId], references: [id], onDelete: SetNull)
+
+  @@unique([provider, externalId])
+  @@index([stationId])
+  @@index([operatorId])
+  @@map("provider_records")
+}
+
+/// Live availability as reported by a live provider. Consumers MUST ignore
+/// observations whose expires_at is in the past (→ status "unknown").
+model AvailabilityObservation {
+  id              String             @id @default(uuid(7)) @db.Uuid
+  provider        String             @db.VarChar(64)
+  stationId       String             @map("station_id") @db.Uuid
+  chargingPointId String?            @map("charging_point_id") @db.Uuid
+  connectorId     String?            @map("connector_id") @db.Uuid
+  status          AvailabilityStatus
+  observedAt      DateTime           @map("observed_at") @db.Timestamptz(3)
+  receivedAt      DateTime           @default(now()) @map("received_at") @db.Timestamptz(3)
+  expiresAt       DateTime           @map("expires_at") @db.Timestamptz(3)
+  rawPayload      Json?              @map("raw_payload")
+
+  station       ChargingStation @relation(fields: [stationId], references: [id], onDelete: Cascade)
+  chargingPoint ChargingPoint?  @relation(fields: [chargingPointId], references: [id], onDelete: Cascade)
+  connector     Connector?      @relation(fields: [connectorId], references: [id], onDelete: Cascade)
+
+  @@index([stationId, expiresAt])
+  @@index([connectorId, observedAt(sort: Desc)])
+  @@index([chargingPointId, observedAt(sort: Desc)])
+  @@map("availability_observations")
+}
+
+/// User reports (community data, dated, moderated; never live evidence).
+model StationReport {
+  id             String            @id @default(uuid(7)) @db.Uuid
+  stationId      String            @map("station_id") @db.Uuid
+  connectorId    String?           @map("connector_id") @db.Uuid
+  userId         String?           @map("user_id") @db.Uuid
+  type           StationReportType
+  description    String?
+  /// Structured suggestion, e.g. {"latitude":..,"longitude":..} or new price.
+  suggestedData  Json?             @map("suggested_data")
+  photoAssetId   String?           @map("photo_asset_id") @db.Uuid
+  status         ReportStatus      @default(open)
+  /// sha256(ip + salt) for abuse throttling; never the raw IP.
+  reporterIpHash String?           @map("reporter_ip_hash") @db.Char(64)
+  resolvedById   String?           @map("resolved_by_id") @db.Uuid
+  resolvedAt     DateTime?         @map("resolved_at") @db.Timestamptz(3)
+  resolutionNote String?           @map("resolution_note")
+  createdAt      DateTime          @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt      DateTime          @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  station    ChargingStation @relation(fields: [stationId], references: [id], onDelete: Cascade)
+  connector  Connector?      @relation(fields: [connectorId], references: [id], onDelete: SetNull)
+  user       User?           @relation("StationReportReporter", fields: [userId], references: [id], onDelete: SetNull)
+  resolvedBy User?           @relation("StationReportResolver", fields: [resolvedById], references: [id], onDelete: SetNull)
+  photo      MediaAsset?     @relation(fields: [photoAssetId], references: [id], onDelete: SetNull)
+
+  @@index([status, createdAt])
+  @@index([stationId, createdAt(sort: Desc)])
+  @@index([userId])
+  @@map("station_reports")
+}
+
+/// User check-ins (community data, dated; not live availability).
+model StationCheckin {
+  id              String           @id @default(uuid(7)) @db.Uuid
+  stationId       String           @map("station_id") @db.Uuid
+  userId          String?          @map("user_id") @db.Uuid
+  connectorId     String?          @map("connector_id") @db.Uuid
+  outcome         CheckinOutcome
+  observedPowerKw Decimal?         @map("observed_power_kw") @db.Decimal(8, 2)
+  comment         String?
+  status          ModerationStatus @default(approved)
+  createdAt       DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  station   ChargingStation @relation(fields: [stationId], references: [id], onDelete: Cascade)
+  user      User?           @relation(fields: [userId], references: [id], onDelete: SetNull)
+  connector Connector?      @relation(fields: [connectorId], references: [id], onDelete: SetNull)
+
+  @@index([stationId, createdAt(sort: Desc)])
+  @@index([userId])
+  @@map("station_checkins")
+}
+
+model StationMedia {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  stationId String   @map("station_id") @db.Uuid
+  assetId   String   @map("asset_id") @db.Uuid
+  caption   String?  @db.VarChar(500)
+  sortOrder Int      @default(0) @map("sort_order")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  station ChargingStation @relation(fields: [stationId], references: [id], onDelete: Cascade)
+  asset   MediaAsset      @relation(fields: [assetId], references: [id], onDelete: Restrict)
+
+  @@unique([stationId, assetId])
+  @@index([assetId])
+  @@map("station_media")
+}

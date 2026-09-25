@@ -1,0 +1,12 @@
+node_modules
+dist
+coverage
+storage
+src/generated
+test
+.env
+.env.*
+*.tsbuildinfo
+openapi.json
+Dockerfile
+.dockerignore

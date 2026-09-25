@@ -1,0 +1,74 @@
+{
+  "@@locale": "en",
+  "authLoginTitle": "Sign in",
+  "authRegisterTitle": "Create account",
+  "authEmailLabel": "Email",
+  "authPasswordLabel": "Password",
+  "authConfirmPasswordLabel": "Confirm password",
+  "authDisplayNameLabel": "Display name",
+  "authLoginButton": "Sign in",
+  "authRegisterButton": "Create account",
+  "authForgotPasswordLink": "Forgot password?",
+  "authNoAccount": "No account yet?",
+  "authHaveAccount": "Already have an account?",
+  "authGuestNote": "You can browse news, cars and stations without an account. An account is only needed for sync and personal features.",
+  "authContinueAsGuest": "Continue as guest",
+  "authEmailInvalid": "Enter a valid email address.",
+  "authRequired": "This field is required.",
+  "authPasswordTooShort": "Password must be at least {min} characters.",
+  "@authPasswordTooShort": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "authPasswordTooLong": "Password is too long (max {max} characters).",
+  "@authPasswordTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "authPasswordsDoNotMatch": "Passwords do not match.",
+  "authDisplayNameTooLong": "Name is too long (max {max} characters).",
+  "@authDisplayNameTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "authRegisterSuccessTitle": "Account created",
+  "authRegisterSuccessMessage": "We sent a confirmation link to {email}. Open it from your inbox to verify your account, then sign in.",
+  "@authRegisterSuccessMessage": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "authVerifyTitle": "Verify email",
+  "authVerifyIntro": "Open the verification link we emailed you on this device, or paste the verification code here.",
+  "authVerifyTokenLabel": "Verification code",
+  "authVerifyButton": "Verify",
+  "authVerifySuccess": "Your email has been verified.",
+  "authResendVerification": "Resend verification link",
+  "authResendVerificationDone": "If the account exists and is not verified yet, a new link is on its way.",
+  "authForgotTitle": "Reset your password",
+  "authForgotIntro": "Enter your email and we'll send you a link to reset your password.",
+  "authForgotButton": "Send link",
+  "authForgotDone": "If an account exists for this email, you'll receive reset instructions.",
+  "authHaveResetCode": "I have a reset code",
+  "authResetTitle": "Set a new password",
+  "authResetTokenLabel": "Reset code",
+  "authNewPasswordLabel": "New password",
+  "authResetButton": "Save password",
+  "authResetDone": "Your password has been changed. Sign in with your new password.",
+  "authBackToLogin": "Back to sign in",
+  "authVerifyEmailAction": "Verify my email",
+  "@authVerifyEmailAction": {
+    "description": "Button shown when sign-in is refused because the e-mail address is not verified yet."
+  }
+}

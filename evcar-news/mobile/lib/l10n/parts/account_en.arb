@@ -1,0 +1,60 @@
+{
+  "@@locale": "en",
+  "accountTitle": "My account",
+  "accountGuestTitle": "You're browsing as a guest",
+  "accountGuestMessage": "All public content is available without signing in. Create an account to save your cars and favorites and sync them across devices.",
+  "accountRestoring": "Restoring your session…",
+  "accountEmailNotVerified": "Your email is not verified yet.",
+  "accountVerifyNow": "Verify now",
+  "accountEmailVerified": "Email verified",
+  "accountProfile": "Profile",
+  "accountSessions": "Devices & sessions",
+  "accountMyToolsSection": "My tools",
+  "accountExploreSection": "Explore",
+  "accountSettingsSection": "Settings & privacy",
+  "accountLogout": "Sign out",
+  "accountLogoutConfirm": "Sign out of this device?",
+  "accountLoggedOut": "Signed out.",
+  "accountDeleteAccount": "Delete account",
+  "accountOfflineUser": "Showing saved account details because you're offline.",
+  "accountProfileTitle": "Profile",
+  "accountProfileSaved": "Changes saved.",
+  "accountPreferredLanguageLabel": "Language for emails and notifications",
+  "accountSessionsTitle": "Devices & sessions",
+  "accountSessionsEmpty": "No active sessions.",
+  "accountSessionThisDevice": "This device",
+  "accountSessionUnknownDevice": "Unknown device",
+  "accountSessionLastUsed": "Last used: {time}",
+  "@accountSessionLastUsed": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "accountSessionCreated": "Started: {time}",
+  "@accountSessionCreated": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "accountSessionIp": "IP address: {ip}",
+  "@accountSessionIp": {
+    "placeholders": {
+      "ip": {
+        "type": "String"
+      }
+    }
+  },
+  "accountSessionRevoke": "End session",
+  "accountSessionRevokeConfirm": "End this session? That device will need to sign in again.",
+  "accountSessionRevoked": "Session ended.",
+  "accountDeleteTitle": "Delete account",
+  "accountDeleteWarning": "Your account and personal data will be permanently deleted, such as your garage, favorites, charging log, reminders and synced settings. Public contributions such as reviews and comments will be anonymized. This cannot be undone.",
+  "accountDeletePasswordLabel": "Enter your password to confirm",
+  "accountDeleteAcknowledge": "I understand this is permanent and cannot be undone.",
+  "accountDeleteButton": "Delete account permanently",
+  "accountDeleted": "Your account has been deleted."
+}

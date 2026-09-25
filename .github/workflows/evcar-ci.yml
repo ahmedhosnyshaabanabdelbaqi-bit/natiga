@@ -1,0 +1,116 @@
+# EV Car News — CI (ARCHITECTURE §1: lives at the repository root).
+# backend: typecheck, lint, format, build, unit tests, migration drift, e2e
+#          (real PostGIS + Redis), OpenAPI export must match the committed file
+# admin:   generated API types up to date, typecheck, lint, format, tests, build
+# mobile:  ARB parts merged, analyze, tests
+# No APK/AAB/IPA is built here (signing material is not in the repository).
+name: evcar-ci
+
+on:
+  push:
+    branches: [main]
+    paths: ['evcar-news/**', '.github/workflows/evcar-ci.yml']
+  pull_request:
+    paths: ['evcar-news/**', '.github/workflows/evcar-ci.yml']
+  workflow_dispatch:
+
+concurrency:
+  group: evcar-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  backend:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: evcar-news/backend
+    services:
+      postgres:
+        image: postgis/postgis:16-3.5
+        env:
+          POSTGRES_USER: evcar
+          POSTGRES_PASSWORD: evcar_ci_pw
+          POSTGRES_DB: evcar_dev
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U evcar -d evcar_dev"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+      redis:
+        image: redis:7.4.11-alpine
+        ports: ['6379:6379']
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s --health-timeout 3s --health-retries 20
+    env:
+      NODE_ENV: test
+      DATABASE_URL: postgresql://evcar:evcar_ci_pw@localhost:5432/evcar_dev
+      E2E_DATABASE_ADMIN_URL: postgresql://evcar:evcar_ci_pw@localhost:5432/postgres
+      REDIS_URL: redis://localhost:6379
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: evcar-news/backend/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npm run build
+      - run: npm test
+      - name: Migrations match the Prisma schema
+        run: npm run prisma:check-drift
+      - name: e2e (own databases, dropped afterwards)
+        run: npm run test:e2e
+      - name: Committed openapi.json is up to date
+        run: |
+          npm run openapi:export
+          git diff --exit-code -- openapi.json
+
+  admin:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: evcar-news/admin
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: evcar-news/admin/package-lock.json
+      - run: npm ci
+      - name: Generated API types match backend/openapi.json
+        run: |
+          npm run api:types
+          git diff --exit-code -- src/api/schema.d.ts
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npm test
+      - run: npm run build
+
+  mobile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: evcar-news/mobile
+    steps:
+      - uses: actions/checkout@v7
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.47.5
+          cache: true
+      - run: flutter pub get
+      - name: ARB parts are merged
+        run: dart run tool/merge_arb.dart --check
+      - run: flutter analyze
+      - run: flutter test
