@@ -6,6 +6,7 @@
 import { bearer, createAndLogin, type LoggedIn } from './auth-test-helpers';
 import { createTestCar } from './personal-helpers';
 import { createTestApp, type TestApp } from './utils/test-app';
+import { orderedSteps } from './utils/ordered-steps';
 
 describe('Personal: calculators (e2e)', () => {
   let t: TestApp;
@@ -229,15 +230,16 @@ describe('Personal: calculators (e2e)', () => {
   });
 
   describe('reference prices', () => {
+    const { step, run } = orderedSteps();
     let priceId: string;
     let fuelId: string;
 
-    it('empty until an admin adds one', async () => {
+    step('empty until an admin adds one', async () => {
       const res = await t.http().get('/api/v1/calculators/reference-prices?market=EG').expect(200);
       expect(res.body.data).toEqual([]);
     });
 
-    it('admin endpoints are permission-guarded', async () => {
+    step('admin endpoints are permission-guarded', async () => {
       await t.http().get('/api/v1/admin/energy-prices').set(bearer(user.accessToken)).expect(403);
       await t
         .http()
@@ -253,7 +255,7 @@ describe('Personal: calculators (e2e)', () => {
         .expect(403);
     });
 
-    it('admin adds prices (with date + source); the latest in effect is listed', async () => {
+    step('admin adds prices (with date + source); the latest in effect is listed', async () => {
       const source = await t.prisma.specificationSource.create({
         data: { type: 'official_document', title: 'Test tariff decree (synthetic)' },
       });
@@ -323,7 +325,7 @@ describe('Personal: calculators (e2e)', () => {
       );
     });
 
-    it('a calculation using reference prices shows their origin and date', async () => {
+    step('a calculation using reference prices shows their origin and date', async () => {
       const res = await post('vs-fuel', {
         consumptionKwhPer100km: 18,
         fuelConsumptionLPer100km: 8,
@@ -351,7 +353,7 @@ describe('Personal: calculators (e2e)', () => {
       }).expect(422);
     });
 
-    it('admin can update and delete; changes are audited', async () => {
+    step('admin can update and delete; changes are audited', async () => {
       await t
         .http()
         .patch(`/api/v1/admin/energy-prices/${priceId}`)
@@ -371,5 +373,6 @@ describe('Personal: calculators (e2e)', () => {
       const audits = await t.prisma.auditLog.count({ where: { entityId: priceId } });
       expect(audits).toBeGreaterThanOrEqual(2);
     });
+    it('workflow: the steps above, in order', () => run(), run.timeout);
   });
 });

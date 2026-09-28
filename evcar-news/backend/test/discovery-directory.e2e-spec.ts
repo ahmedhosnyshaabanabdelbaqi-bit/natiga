@@ -6,6 +6,7 @@
 import { createEntry, createProvider } from './discovery-helpers';
 import { userWithRoles, waitForAudit, type PlatformUser } from './platform-helpers';
 import { createTestApp, type TestApp } from './utils/test-app';
+import { orderedSteps } from './utils/ordered-steps';
 
 const CHECKLIST = {
   facts_verified: true,
@@ -40,10 +41,45 @@ describe('discovery: encyclopedia + services directory (e2e)', () => {
   });
 
   describe('encyclopedia', () => {
+    const { step, run } = orderedSteps();
     let id: string;
     let slug: string;
 
-    it('public categories are listed with counts', async () => {
+    it('same HTML policy as articles: licensed library images only, nocookie video embeds (review 3)', async () => {
+      const post = (bodyHtml: string) =>
+        t
+          .http()
+          .post('/api/v1/admin/encyclopedia/entries')
+          .set(editor.auth)
+          .send({
+            categoryKey: 'connectors',
+            translations: { en: { title: 'Policy (test)', bodyHtml } },
+          });
+      const img = await post(
+        '<p>x</p><img src="https://tracker.example.com/pixel.png" alt="">',
+      ).expect(422);
+      expect(img.body.error).toMatchObject({
+        code: 'ENCYCLOPEDIA_IMAGE_NOT_LICENSED',
+        details: { images: ['https://tracker.example.com/pixel.png'] },
+      });
+      const frame = await post('<iframe src="https://evil.example.com/embed"></iframe>').expect(
+        422,
+      );
+      expect(frame.body.error.code).toBe('ENCYCLOPEDIA_EMBED_NOT_ALLOWED');
+      const ok = await post(
+        '<p>Video:</p><iframe src="https://www.youtube.com/embed/abcdefghijk"></iframe>',
+      ).expect(201);
+      const html = ok.body.data.translations[0].bodyHtml as string;
+      expect(html).toContain('https://www.youtube-nocookie.com/embed/abcdefghijk');
+      expect(html).not.toContain('https://www.youtube.com/');
+      await t
+        .http()
+        .delete(`/api/v1/admin/encyclopedia/entries/${ok.body.data.id}`)
+        .set(editor.auth)
+        .expect(204);
+    });
+
+    step('public categories are listed with counts', async () => {
       const res = await t.http().get('/api/v1/encyclopedia/categories?lang=ar').expect(200);
       const keys = res.body.data.map((c: { key: string }) => c.key);
       expect(keys).toEqual(
@@ -52,7 +88,7 @@ describe('discovery: encyclopedia + services directory (e2e)', () => {
       expect(res.body.data[0].name).toBeTruthy();
     });
 
-    it('editor creates a draft (sanitized HTML) that is not public', async () => {
+    step('editor creates a draft (sanitized HTML) that is not public', async () => {
       const res = await t
         .http()
         .post('/api/v1/admin/encyclopedia/entries')
@@ -88,7 +124,7 @@ describe('discovery: encyclopedia + services directory (e2e)', () => {
         .expect(403);
     });
 
-    it('blocks obviously unsafe electrical instructions', async () => {
+    step('blocks obviously unsafe electrical instructions', async () => {
       const bad = await t
         .http()
         .post('/api/v1/admin/encyclopedia/entries')
@@ -108,7 +144,7 @@ describe('discovery: encyclopedia + services directory (e2e)', () => {
       expect(JSON.stringify(res.body.error.details)).toContain('unsafeElectricalInstructions');
     });
 
-    it('cannot be published before the technical review', async () => {
+    step('cannot be published before the technical review', async () => {
       await t
         .http()
         .post(`/api/v1/admin/encyclopedia/entries/${id}/submit`)
@@ -130,41 +166,44 @@ describe('discovery: encyclopedia + services directory (e2e)', () => {
       expect(locked.body.error.code).toBe('ENCYCLOPEDIA_ENTRY_LOCKED');
     });
 
-    it('review needs every checklist item + attestation, by someone else than the author', async () => {
-      await t
-        .http()
-        .post(`/api/v1/admin/encyclopedia/entries/${id}/review`)
-        .set(editor.auth)
-        .send({ checklist: CHECKLIST, attestation: true })
-        .expect(403); // editors cannot review
-      const partial = await t
-        .http()
-        .post(`/api/v1/admin/encyclopedia/entries/${id}/review`)
-        .set(reviewer.auth)
-        .send({ checklist: { ...CHECKLIST, no_safety_bypass: false }, attestation: true })
-        .expect(422);
-      expect(JSON.stringify(partial.body.error.details)).toContain('checklist.no_safety_bypass');
-      await t
-        .http()
-        .post(`/api/v1/admin/encyclopedia/entries/${id}/review`)
-        .set(reviewer.auth)
-        .send({ checklist: CHECKLIST, attestation: false })
-        .expect(422);
-      const ok = await t
-        .http()
-        .post(`/api/v1/admin/encyclopedia/entries/${id}/review`)
-        .set(reviewer.auth)
-        .send({ checklist: CHECKLIST, attestation: true, note: 'Checked against standards.' })
-        .expect(200);
-      expect(ok.body.data.review.checklist).toEqual(CHECKLIST);
-      expect(ok.body.data.allowedActions).toContain('publish');
-      const audit = await waitForAudit(t, 'encyclopedia.technical_review');
-      expect(audit.entityId).toBe(id);
-      expect(audit.actorId).toBe(reviewer.id);
-      expect(JSON.stringify(audit.after)).toContain('attestation');
-    });
+    step(
+      'review needs every checklist item + attestation, by someone else than the author',
+      async () => {
+        await t
+          .http()
+          .post(`/api/v1/admin/encyclopedia/entries/${id}/review`)
+          .set(editor.auth)
+          .send({ checklist: CHECKLIST, attestation: true })
+          .expect(403); // editors cannot review
+        const partial = await t
+          .http()
+          .post(`/api/v1/admin/encyclopedia/entries/${id}/review`)
+          .set(reviewer.auth)
+          .send({ checklist: { ...CHECKLIST, no_safety_bypass: false }, attestation: true })
+          .expect(422);
+        expect(JSON.stringify(partial.body.error.details)).toContain('checklist.no_safety_bypass');
+        await t
+          .http()
+          .post(`/api/v1/admin/encyclopedia/entries/${id}/review`)
+          .set(reviewer.auth)
+          .send({ checklist: CHECKLIST, attestation: false })
+          .expect(422);
+        const ok = await t
+          .http()
+          .post(`/api/v1/admin/encyclopedia/entries/${id}/review`)
+          .set(reviewer.auth)
+          .send({ checklist: CHECKLIST, attestation: true, note: 'Checked against standards.' })
+          .expect(200);
+        expect(ok.body.data.review.checklist).toEqual(CHECKLIST);
+        expect(ok.body.data.allowedActions).toContain('publish');
+        const audit = await waitForAudit(t, 'encyclopedia.technical_review');
+        expect(audit.entityId).toBe(id);
+        expect(audit.actorId).toBe(reviewer.id);
+        expect(JSON.stringify(audit.after)).toContain('attestation');
+      },
+    );
 
-    it('the author cannot review their own entry', async () => {
+    step('the author cannot review their own entry', async () => {
       const own = await t
         .http()
         .post('/api/v1/admin/encyclopedia/entries')
@@ -188,7 +227,7 @@ describe('discovery: encyclopedia + services directory (e2e)', () => {
       expect(res.body.error.code).toBe('ENCYCLOPEDIA_SELF_REVIEW');
     });
 
-    it('published entry is public with the reviewed badge and a safety notice', async () => {
+    step('published entry is public with the reviewed badge and a safety notice', async () => {
       await t
         .http()
         .post(`/api/v1/admin/encyclopedia/entries/${id}/publish`)
@@ -212,7 +251,7 @@ describe('discovery: encyclopedia + services directory (e2e)', () => {
       expect(q.body.data.map((e: { id: string }) => e.id)).toEqual([id]);
     });
 
-    it('unpublish returns to draft and clears the review', async () => {
+    step('unpublish returns to draft and clears the review', async () => {
       const res = await t
         .http()
         .post(`/api/v1/admin/encyclopedia/entries/${id}/unpublish`)
@@ -223,7 +262,7 @@ describe('discovery: encyclopedia + services directory (e2e)', () => {
       await t.http().get(`/api/v1/encyclopedia/${slug}`).expect(404);
     });
 
-    it('unreviewed entries never reach the public list', async () => {
+    step('unreviewed entries never reach the public list', async () => {
       const unreviewed = await createEntry(t, {
         titleEn: 'Unreviewed (test)',
         status: 'in_review',
@@ -232,7 +271,7 @@ describe('discovery: encyclopedia + services directory (e2e)', () => {
       expect(list.body.data.map((e: { id: string }) => e.id)).not.toContain(unreviewed.id);
     });
 
-    it('system categories cannot be deleted; custom ones can', async () => {
+    step('system categories cannot be deleted; custom ones can', async () => {
       await t
         .http()
         .delete('/api/v1/admin/encyclopedia/categories/home_charging')
@@ -250,9 +289,11 @@ describe('discovery: encyclopedia + services directory (e2e)', () => {
         .set(owner.auth)
         .expect(204);
     });
+    it('workflow: the steps above, in order', () => run(), run.timeout);
   });
 
   describe('services directory', () => {
+    const { step, run } = orderedSteps();
     let alpha: string;
     let beta: string;
     let gamma: string;
@@ -290,28 +331,31 @@ describe('discovery: encyclopedia + services directory (e2e)', () => {
       await createProvider(t, { nameEn: 'Draft test centre', city: 'Testopolis', status: 'draft' });
     });
 
-    it('editorial order ignores sponsorship; sponsored entries are labelled separately', async () => {
-      const res = await t
-        .http()
-        .get('/api/v1/services')
-        .query({ city: 'testopolis', lang: 'en' })
-        .expect(200);
-      expect(res.body.data.map((p: { id: string }) => p.id)).toEqual([alpha, beta, gamma]);
-      const b = res.body.data[1];
-      expect(b).toMatchObject({ isSponsored: true, sponsorLabel: 'Sponsored (test)' });
-      expect(res.body.data[0]).toMatchObject({ isSponsored: false, sponsorLabel: null });
-      expect(res.body.meta.sponsored.map((p: { id: string }) => p.id)).toEqual([beta]);
-      expect(res.body.meta.total).toBe(3);
-      expect(res.body.data[0].contact).toMatchObject({ verified: true, stale: false });
-      expect(res.body.data[0].contact.label).toMatch(/^Verified on /);
-      expect(res.body.data[2].contact).toMatchObject({
-        verified: false,
-        verifiedAt: null,
-        label: 'Contact details have not been verified',
-      });
-    });
+    step(
+      'editorial order ignores sponsorship; sponsored entries are labelled separately',
+      async () => {
+        const res = await t
+          .http()
+          .get('/api/v1/services')
+          .query({ city: 'testopolis', lang: 'en' })
+          .expect(200);
+        expect(res.body.data.map((p: { id: string }) => p.id)).toEqual([alpha, beta, gamma]);
+        const b = res.body.data[1];
+        expect(b).toMatchObject({ isSponsored: true, sponsorLabel: 'Sponsored (test)' });
+        expect(res.body.data[0]).toMatchObject({ isSponsored: false, sponsorLabel: null });
+        expect(res.body.meta.sponsored.map((p: { id: string }) => p.id)).toEqual([beta]);
+        expect(res.body.meta.total).toBe(3);
+        expect(res.body.data[0].contact).toMatchObject({ verified: true, stale: false });
+        expect(res.body.data[0].contact.label).toMatch(/^Verified on /);
+        expect(res.body.data[2].contact).toMatchObject({
+          verified: false,
+          verifiedAt: null,
+          label: 'Contact details have not been verified',
+        });
+      },
+    );
 
-    it('expired sponsorship is no longer flagged', async () => {
+    step('expired sponsorship is no longer flagged', async () => {
       await t.prisma.serviceProvider.update({
         where: { id: beta },
         data: { sponsoredUntil: new Date(Date.now() - 1000) },
@@ -326,7 +370,7 @@ describe('discovery: encyclopedia + services directory (e2e)', () => {
       });
     });
 
-    it('orders by distance around a point and filters open now', async () => {
+    step('orders by distance around a point and filters open now', async () => {
       const res = await t
         .http()
         .get('/api/v1/services')
@@ -342,7 +386,7 @@ describe('discovery: encyclopedia + services directory (e2e)', () => {
       expect(open.body.data.map((p: { id: string }) => p.id)).toEqual([alpha]);
     });
 
-    it('types and detail', async () => {
+    step('types and detail', async () => {
       const types = await t.http().get('/api/v1/services/types?lang=ar').expect(200);
       const sc = types.body.data.find((x: { type: string }) => x.type === 'service_center');
       expect(sc.label).toBe('مركز خدمة');
@@ -352,94 +396,98 @@ describe('discovery: encyclopedia + services directory (e2e)', () => {
       expect(detail.body.data.openNow).toBe('closed');
     });
 
-    it('admin: create → publish, sponsorship needs ads.manage, contact verification', async () => {
-      const forbidden = await t
-        .http()
-        .post('/api/v1/admin/services')
-        .set(stationManager.auth)
-        .send({
-          type: 'charger_installer',
-          nameAr: 'مركّب شواحن اختبار',
-          nameEn: 'Test installer',
-          marketCode: 'EG',
-          isSponsored: true,
-          sponsorLabel: 'Ad',
-        })
-        .expect(403);
-      expect(forbidden.body.error.code).toBe('SPONSORSHIP_PERMISSION_REQUIRED');
+    step(
+      'admin: create → publish, sponsorship needs ads.manage, contact verification',
+      async () => {
+        const forbidden = await t
+          .http()
+          .post('/api/v1/admin/services')
+          .set(stationManager.auth)
+          .send({
+            type: 'charger_installer',
+            nameAr: 'مركّب شواحن اختبار',
+            nameEn: 'Test installer',
+            marketCode: 'EG',
+            isSponsored: true,
+            sponsorLabel: 'Ad',
+          })
+          .expect(403);
+        expect(forbidden.body.error.code).toBe('SPONSORSHIP_PERMISSION_REQUIRED');
 
-      const created = await t
-        .http()
-        .post('/api/v1/admin/services')
-        .set(stationManager.auth)
-        .send({
-          type: 'charger_installer',
-          nameAr: 'مركّب شواحن اختبار',
-          nameEn: 'Test installer',
-          marketCode: 'EG',
-          city: 'Testopolis',
-          phone: '+20 111 000 0000',
-          openingHours: { mon: [['09:00', '17:00']] },
-        })
-        .expect(201);
-      const pid = created.body.data.id;
-      expect(created.body.data.status).toBe('draft');
-      await t.http().get(`/api/v1/services/${pid}`).expect(404);
+        const created = await t
+          .http()
+          .post('/api/v1/admin/services')
+          .set(stationManager.auth)
+          .send({
+            type: 'charger_installer',
+            nameAr: 'مركّب شواحن اختبار',
+            nameEn: 'Test installer',
+            marketCode: 'EG',
+            city: 'Testopolis',
+            phone: '+20 111 000 0000',
+            openingHours: { mon: [['09:00', '17:00']] },
+          })
+          .expect(201);
+        const pid = created.body.data.id;
+        expect(created.body.data.status).toBe('draft');
+        await t.http().get(`/api/v1/services/${pid}`).expect(404);
 
-      await t
-        .http()
-        .post(`/api/v1/admin/services/${pid}/verify-contact`)
-        .set(stationManager.auth)
-        .send({ note: 'Called the listed number (test).' })
-        .expect(200);
-      await t
-        .http()
-        .post(`/api/v1/admin/services/${pid}/publish`)
-        .set(stationManager.auth)
-        .expect(200);
-      const pub = await t.http().get(`/api/v1/services/${pid}`).expect(200);
-      expect(pub.body.data.contact.verified).toBe(true);
+        await t
+          .http()
+          .post(`/api/v1/admin/services/${pid}/verify-contact`)
+          .set(stationManager.auth)
+          .send({ note: 'Called the listed number (test).' })
+          .expect(200);
+        await t
+          .http()
+          .post(`/api/v1/admin/services/${pid}/publish`)
+          .set(stationManager.auth)
+          .expect(200);
+        const pub = await t.http().get(`/api/v1/services/${pid}`).expect(200);
+        expect(pub.body.data.contact.verified).toBe(true);
 
-      // Changing the phone clears the verification.
-      const upd = await t
-        .http()
-        .patch(`/api/v1/admin/services/${pid}`)
-        .set(stationManager.auth)
-        .send({ phone: '+20 122 000 0000' })
-        .expect(200);
-      expect(upd.body.data.contactVerifiedAt).toBeNull();
+        // Changing the phone clears the verification.
+        const upd = await t
+          .http()
+          .patch(`/api/v1/admin/services/${pid}`)
+          .set(stationManager.auth)
+          .send({ phone: '+20 122 000 0000' })
+          .expect(200);
+        expect(upd.body.data.contactVerifiedAt).toBeNull();
 
-      // Sponsored without label is rejected; the owner (ads.manage) can sponsor with a label.
-      await t
-        .http()
-        .patch(`/api/v1/admin/services/${pid}`)
-        .set(owner.auth)
-        .send({ isSponsored: true })
-        .expect(422);
-      const sp = await t
-        .http()
-        .patch(`/api/v1/admin/services/${pid}`)
-        .set(owner.auth)
-        .send({ isSponsored: true, sponsorLabel: 'إعلان' })
-        .expect(200);
-      expect(sp.body.data.isSponsored).toBe(true);
-      const audit = await waitForAudit(t, 'services.update');
-      expect(audit.entityId).toBe(pid);
+        // Sponsored without label is rejected; the owner (ads.manage) can sponsor with a label.
+        await t
+          .http()
+          .patch(`/api/v1/admin/services/${pid}`)
+          .set(owner.auth)
+          .send({ isSponsored: true })
+          .expect(422);
+        const sp = await t
+          .http()
+          .patch(`/api/v1/admin/services/${pid}`)
+          .set(owner.auth)
+          .send({ isSponsored: true, sponsorLabel: 'إعلان' })
+          .expect(200);
+        expect(sp.body.data.isSponsored).toBe(true);
+        const audit = await waitForAudit(t, 'services.update');
+        expect(audit.entityId).toBe(pid);
 
-      // Invalid opening hours / unknown market → 422.
-      await t
-        .http()
-        .patch(`/api/v1/admin/services/${pid}`)
-        .set(stationManager.auth)
-        .send({ openingHours: { mon: [['25:00', '26:00']] } })
-        .expect(422);
-      await t
-        .http()
-        .post('/api/v1/admin/services')
-        .set(stationManager.auth)
-        .send({ type: 'dealer', nameAr: 'x', nameEn: 'x', marketCode: 'ZZ' })
-        .expect(422);
-      await t.http().get('/api/v1/admin/services').set(plain.auth).expect(403);
-    });
+        // Invalid opening hours / unknown market → 422.
+        await t
+          .http()
+          .patch(`/api/v1/admin/services/${pid}`)
+          .set(stationManager.auth)
+          .send({ openingHours: { mon: [['25:00', '26:00']] } })
+          .expect(422);
+        await t
+          .http()
+          .post('/api/v1/admin/services')
+          .set(stationManager.auth)
+          .send({ type: 'dealer', nameAr: 'x', nameEn: 'x', marketCode: 'ZZ' })
+          .expect(422);
+        await t.http().get('/api/v1/admin/services').set(plain.auth).expect(403);
+      },
+    );
+    it('workflow: the steps above, in order', () => run(), run.timeout);
   });
 });

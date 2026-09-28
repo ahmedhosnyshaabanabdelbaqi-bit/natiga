@@ -8,6 +8,7 @@ import { COMMUNITY_LIMITS } from '../src/modules/stations/services/station-commu
 import { bearer, createAndLogin, type LoggedIn } from './auth-test-helpers';
 import { createStation, createVariantWithInlets, idsOf, type ListBody } from './stations-helpers';
 import { createTestApp, type TestApp } from './utils/test-app';
+import { orderedSteps } from './utils/ordered-steps';
 
 describe('Stations community writes (e2e)', () => {
   let t: TestApp;
@@ -33,13 +34,14 @@ describe('Stations community writes (e2e)', () => {
   });
 
   describe('reports', () => {
+    const { step, run } = orderedSteps();
     const url = () => `/api/v1/stations/${station.id}/reports`;
 
-    it('guests cannot report (401)', async () => {
+    step('guests cannot report (401)', async () => {
       await t.http().post(url()).send({ type: 'not_working' }).expect(401);
     });
 
-    it('a signed-in user reports a problem; it waits for moderation', async () => {
+    step('a signed-in user reports a problem; it waits for moderation', async () => {
       const res = await t
         .http()
         .post(`${url()}?lang=en`)
@@ -67,7 +69,7 @@ describe('Stations community writes (e2e)', () => {
       expect(row.suggestedData).toEqual({ connectorTypeCode: 'chademo', currentType: 'DC' });
     });
 
-    it('the same open report twice → 409 STATION_REPORT_DUPLICATE', async () => {
+    step('the same open report twice → 409 STATION_REPORT_DUPLICATE', async () => {
       const res = await t
         .http()
         .post(url())
@@ -77,7 +79,7 @@ describe('Stations community writes (e2e)', () => {
       expect(res.body.error.code).toBe('STATION_REPORT_DUPLICATE');
     });
 
-    it('"other" needs a description; the connector must belong to the station', async () => {
+    step('"other" needs a description; the connector must belong to the station', async () => {
       const r1 = await t
         .http()
         .post(url())
@@ -101,7 +103,7 @@ describe('Stations community writes (e2e)', () => {
         .expect(422);
     });
 
-    it('unpublished stations cannot be reported (404)', async () => {
+    step('unpublished stations cannot be reported (404)', async () => {
       const draft = await createStation(t, { lat: 21.9, lng: 39.9, publicationStatus: 'draft' });
       await t
         .http()
@@ -111,7 +113,7 @@ describe('Stations community writes (e2e)', () => {
         .expect(404);
     });
 
-    it('per-user limit: 20 reports in 24 h → 429 STATION_REPORT_LIMIT', async () => {
+    step('per-user limit: 20 reports in 24 h → 429 STATION_REPORT_LIMIT', async () => {
       const spammer = await createAndLogin(t, ['user']);
       const since = Date.now();
       await t.prisma.stationReport.createMany({
@@ -133,7 +135,7 @@ describe('Stations community writes (e2e)', () => {
       expect(res.body.error.code).toBe('STATION_REPORT_LIMIT');
     });
 
-    it('my reports list shows the moderation status', async () => {
+    step('my reports list shows the moderation status', async () => {
       const res = await t
         .http()
         .get('/api/v1/me/station-reports')
@@ -144,83 +146,91 @@ describe('Stations community writes (e2e)', () => {
       await t.http().get('/api/v1/me/station-reports').expect(401);
     });
 
-    it('recent reports appear in the community section, dated, without text or author', async () => {
-      const res = await t.http().get(`/api/v1/stations/${station.id}?lang=en`).expect(200);
-      expect(res.body.data.community.reports.openCount).toBe(1);
-      expect(res.body.data.community.reports.recent[0]).toEqual({
-        id: expect.any(String) as string,
-        type: 'different_connector',
-        typeLabel: 'Different connector',
-        status: 'open',
-        createdAt: expect.any(String) as string,
-      });
-      // Community data never changes live availability.
-      expect(res.body.data.availability.status).toBe('unknown');
-    });
+    step(
+      'recent reports appear in the community section, dated, without text or author',
+      async () => {
+        const res = await t.http().get(`/api/v1/stations/${station.id}?lang=en`).expect(200);
+        expect(res.body.data.community.reports.openCount).toBe(1);
+        expect(res.body.data.community.reports.recent[0]).toEqual({
+          id: expect.any(String) as string,
+          type: 'different_connector',
+          typeLabel: 'Different connector',
+          status: 'open',
+          createdAt: expect.any(String) as string,
+        });
+        // Community data never changes live availability.
+        expect(res.body.data.availability.status).toBe('unknown');
+      },
+    );
+    it('workflow: the steps above, in order', () => run(), run.timeout);
   });
 
   describe('check-ins', () => {
+    const { step, run } = orderedSteps();
     const url = () => `/api/v1/stations/${station.id}/checkins`;
 
-    it('guests cannot check in (401)', async () => {
+    step('guests cannot check in (401)', async () => {
       await t.http().post(url()).send({ outcome: 'charged_successfully' }).expect(401);
     });
 
-    it('records a dated check-in with the car used; once per 10 minutes per station', async () => {
-      const variantId = await createVariantWithInlets(t, 'EG', [
-        { type: 'ccs2', current: 'DC', kw: 100, reliability: 'verified' },
-      ]);
-      const res = await t
-        .http()
-        .post(url())
-        .set(bearer(user.accessToken))
-        .send({
-          outcome: 'charged_successfully',
-          connectorId: station.connectorIds[0],
-          variantId,
-          observedPowerKw: 48.5,
-          waitMinutes: 5,
-          comment: 'Test check-in comment',
-        })
-        .expect(201);
-      expect(res.body.data).toMatchObject({
-        outcome: 'charged_successfully',
-        observedPowerKw: 48.5,
-        waitMinutes: 5,
-        status: 'approved',
-      });
-      const again = await t
-        .http()
-        .post(url())
-        .set(bearer(user.accessToken))
-        .send({ outcome: 'could_not_charge' })
-        .expect(429);
-      expect(again.body.error.code).toBe('STATION_CHECKIN_TOO_SOON');
-      expect(Number(again.headers['retry-after'])).toBeGreaterThan(500);
-
-      const page = await t.http().get(`/api/v1/stations/${station.id}?lang=en`).expect(200);
-      expect(page.body.data.community.checkins).toMatchObject({
-        total: 1,
-        last30Days: 1,
-        successRate30d: null,
-        recent: [
-          {
+    step(
+      'records a dated check-in with the car used; once per 10 minutes per station',
+      async () => {
+        const variantId = await createVariantWithInlets(t, 'EG', [
+          { type: 'ccs2', current: 'DC', kw: 100, reliability: 'verified' },
+        ]);
+        const res = await t
+          .http()
+          .post(url())
+          .set(bearer(user.accessToken))
+          .send({
             outcome: 'charged_successfully',
-            outcomeLabel: 'Charged successfully',
-            connectorType: { code: 'ccs2' },
-            currentType: 'DC',
+            connectorId: station.connectorIds[0],
+            variantId,
             observedPowerKw: 48.5,
             waitMinutes: 5,
             comment: 'Test check-in comment',
-            vehicle: { id: variantId },
-          },
-        ],
-      });
-      expect(page.body.data.community.checkins.recent[0].vehicle.name).toContain('2026');
-      expect(page.body.data.community.checkins.recent[0]).not.toHaveProperty('userId');
-    });
+          })
+          .expect(201);
+        expect(res.body.data).toMatchObject({
+          outcome: 'charged_successfully',
+          observedPowerKw: 48.5,
+          waitMinutes: 5,
+          status: 'approved',
+        });
+        const again = await t
+          .http()
+          .post(url())
+          .set(bearer(user.accessToken))
+          .send({ outcome: 'could_not_charge' })
+          .expect(429);
+        expect(again.body.error.code).toBe('STATION_CHECKIN_TOO_SOON');
+        expect(Number(again.headers['retry-after'])).toBeGreaterThan(500);
 
-    it('comments with links wait for a moderator; invalid values are refused', async () => {
+        const page = await t.http().get(`/api/v1/stations/${station.id}?lang=en`).expect(200);
+        expect(page.body.data.community.checkins).toMatchObject({
+          total: 1,
+          last30Days: 1,
+          successRate30d: null,
+          recent: [
+            {
+              outcome: 'charged_successfully',
+              outcomeLabel: 'Charged successfully',
+              connectorType: { code: 'ccs2' },
+              currentType: 'DC',
+              observedPowerKw: 48.5,
+              waitMinutes: 5,
+              comment: 'Test check-in comment',
+              vehicle: { id: variantId },
+            },
+          ],
+        });
+        expect(page.body.data.community.checkins.recent[0].vehicle.name).toContain('2026');
+        expect(page.body.data.community.checkins.recent[0]).not.toHaveProperty('userId');
+      },
+    );
+
+    step('comments with links wait for a moderator; invalid values are refused', async () => {
       const other = await createAndLogin(t, ['user']);
       const res = await t
         .http()
@@ -242,10 +252,12 @@ describe('Stations community writes (e2e)', () => {
         await t.http().post(url()).set(bearer(third.accessToken)).send(body).expect(422);
       }
     });
+    it('workflow: the steps above, in order', () => run(), run.timeout);
   });
 
   describe('suggestions (review queue, never on the map)', () => {
-    it('guests cannot suggest (401)', async () => {
+    const { step, run } = orderedSteps();
+    step('guests cannot suggest (401)', async () => {
       await t
         .http()
         .post('/api/v1/stations/suggestions')
@@ -253,7 +265,7 @@ describe('Stations community writes (e2e)', () => {
         .expect(401);
     });
 
-    it('stores a pending suggestion and lists nearby published stations', async () => {
+    step('stores a pending suggestion and lists nearby published stations', async () => {
       const res = await t
         .http()
         .post('/api/v1/stations/suggestions')
@@ -296,7 +308,7 @@ describe('Stations community writes (e2e)', () => {
       expect(row.marketCode).toBe('EG');
     });
 
-    it('validates connector types and AC/DC support', async () => {
+    step('validates connector types and AC/DC support', async () => {
       const bad = await t
         .http()
         .post('/api/v1/stations/suggestions')
@@ -330,7 +342,7 @@ describe('Stations community writes (e2e)', () => {
         .expect(422);
     });
 
-    it('my suggestions: list and withdraw (only my own, only pending)', async () => {
+    step('my suggestions: list and withdraw (only my own, only pending)', async () => {
       const mine = await t
         .http()
         .get('/api/v1/me/station-suggestions')
@@ -358,7 +370,7 @@ describe('Stations community writes (e2e)', () => {
       expect(again.body.error.code).toBe('STATION_SUGGESTION_NOT_PENDING');
     });
 
-    it('too many pending suggestions → 429', async () => {
+    step('too many pending suggestions → 429', async () => {
       const busy = await createAndLogin(t, ['user']);
       await t.prisma.stationSuggestion.createMany({
         data: Array.from({ length: COMMUNITY_LIMITS.pendingSuggestionsPerUser }, (_, i) => ({
@@ -377,6 +389,7 @@ describe('Stations community writes (e2e)', () => {
         .expect(429);
       expect(res.body.error.code).toBe('STATION_SUGGESTION_LIMIT');
     });
+    it('workflow: the steps above, in order', () => run(), run.timeout);
   });
 });
 

@@ -166,13 +166,14 @@ class _PreferencesBodyState extends ConsumerState<_PreferencesBody> {
                 ),
                 const SizedBox(height: AppSpacing.lg),
               ],
+              if (_p.supportedTypes.isNotEmpty) ...[
               SectionCard(
                 title: l10n.notificationsTypesSection,
                 icon: Icons.category_outlined,
                 subtitle: l10n.notificationsTypesHint,
                 child: Column(
                   children: [
-                    for (final key in NotificationTypes.all)
+                    for (final key in _p.supportedTypes)
                       SwitchListTile.adaptive(
                         contentPadding: EdgeInsets.zero,
                         title: Text(_typeLabel(l10n, key)),
@@ -187,8 +188,11 @@ class _PreferencesBodyState extends ConsumerState<_PreferencesBody> {
                 ),
               ),
               const SizedBox(height: AppSpacing.lg),
-              const _TopicsSection(),
-              const SizedBox(height: AppSpacing.lg),
+              ],
+              if (_p.supportedTopicTypes.isNotEmpty) ...[
+                _TopicsSection(supported: _p.supportedTopicTypes),
+                const SizedBox(height: AppSpacing.lg),
+              ],
               SectionCard(
                 title: l10n.notificationsChannelsSection,
                 icon: Icons.send_outlined,
@@ -289,7 +293,10 @@ class _PreferencesBodyState extends ConsumerState<_PreferencesBody> {
 
 /// Followed topics (`/me/notification-subscriptions`).
 class _TopicsSection extends ConsumerWidget {
-  const _TopicsSection();
+  const _TopicsSection({required this.supported});
+
+  /// Topic types the server produces notifications for.
+  final List<String> supported;
 
   String _typeLabel(AppLocalizations l10n, String t) => switch (t) {
     TopicTypes.brand => l10n.notificationsTopicBrand,
@@ -364,26 +371,18 @@ class _TopicsSection extends ConsumerWidget {
             spacing: AppSpacing.sm,
             runSpacing: AppSpacing.sm,
             children: [
-              ActionChip(
-                avatar: const Icon(Icons.add, size: 18),
-                label: Text(l10n.notificationsFollowBrand),
-                onPressed: () => _follow(context, ref, TopicTypes.brand),
-              ),
-              ActionChip(
-                avatar: const Icon(Icons.add, size: 18),
-                label: Text(l10n.notificationsFollowModel),
-                onPressed: () => _follow(context, ref, TopicTypes.model),
-              ),
-              ActionChip(
-                avatar: const Icon(Icons.add, size: 18),
-                label: Text(l10n.notificationsFollowCategory),
-                onPressed: () => _follow(context, ref, TopicTypes.category),
-              ),
-              ActionChip(
-                avatar: const Icon(Icons.add, size: 18),
-                label: Text(l10n.notificationsFollowMarket),
-                onPressed: () => _follow(context, ref, TopicTypes.market),
-              ),
+              for (final (type, label) in [
+                (TopicTypes.brand, l10n.notificationsFollowBrand),
+                (TopicTypes.model, l10n.notificationsFollowModel),
+                (TopicTypes.category, l10n.notificationsFollowCategory),
+                (TopicTypes.market, l10n.notificationsFollowMarket),
+              ])
+                if (supported.contains(type))
+                  ActionChip(
+                    avatar: const Icon(Icons.add, size: 18),
+                    label: Text(label),
+                    onPressed: () => _follow(context, ref, type),
+                  ),
             ],
           ),
         ],

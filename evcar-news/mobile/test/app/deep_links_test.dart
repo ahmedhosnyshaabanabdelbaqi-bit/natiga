@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:evcar_news/app/router/app_routes.dart';
 import 'package:evcar_news/app/router/deep_links.dart';
 import 'package:evcar_news/features/auth/domain/app_user.dart';
@@ -5,6 +7,12 @@ import 'package:evcar_news/features/auth/domain/auth_state.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  test('Android App Links hosts == router deep-link hosts (review 3)', () {
+    final manifest = File('android/app/src/main/AndroidManifest.xml').readAsStringSync();
+    final hosts = RegExp(r'android:host="([^"]+)"').allMatches(manifest).map((m) => m.group(1)).toSet();
+    expect(hosts, deepLinkHosts);
+  });
+
   group('deepLinkRedirect (public web URLs → app routes)', () {
     test('articles /n/<slug> → /news/<slug>', () {
       expect(deepLinkRedirect(Uri.parse('https://evcar.news/n/byd-seal-2026')), '/news/byd-seal-2026');

@@ -76,6 +76,23 @@ void main() {
       expect(other.isTokenExpired, isFalse);
     });
 
+    test('503 INTEGRATION_QUOTA maps to rateLimited (try later, server message kept)', () {
+      final e = ApiException.fromResponse(
+        statusCode: 503,
+        body: {
+          'error': {
+            'code': 'INTEGRATION_QUOTA',
+            'message': 'Trip planning has reached its routing-service limit for now.',
+            'details': {'integration': 'routing.openrouteservice', 'window': 'day'},
+            'requestId': 'r',
+          },
+        },
+      );
+      expect(e.kind, ApiErrorKind.rateLimited);
+      expect(e.isRetryable, isTrue);
+      expect(e.message, contains('limit'));
+    });
+
     test('503 INTEGRATION_NOT_CONFIGURED maps to notConfigured (not retryable)', () {
       final e = ApiException.fromResponse(
         statusCode: 503,

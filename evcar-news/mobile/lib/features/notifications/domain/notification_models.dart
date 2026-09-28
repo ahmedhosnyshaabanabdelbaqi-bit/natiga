@@ -155,9 +155,20 @@ class NotificationPreferences {
     required this.pushConfigured,
     required this.registeredDevices,
     required this.pushStatus,
+    this.supportedTypes = NotificationTypes.all,
+    this.supportedTopicTypes = TopicTypes.all,
   });
 
   final Map<String, bool> types;
+
+  /// Switches the server actually produces notifications for
+  /// (`supported.types`); only these are shown (review 3: a switch without a
+  /// producer is a button without a function). Older servers that do not send
+  /// the field get every switch, as before.
+  final List<String> supportedTypes;
+
+  /// Topic types whose follow leads to notifications (`supported.topicTypes`).
+  final List<String> supportedTopicTypes;
   final bool pushEnabled;
   final bool emailEnabled;
   final QuietHours? quietHours;
@@ -183,7 +194,17 @@ class NotificationPreferences {
       pushConfigured: push.boolOr('configured', false),
       registeredDevices: push.intOrNull('registeredDevices') ?? 0,
       pushStatus: push.stringOrNull('status') ?? 'not_configured',
+      supportedTypes: _supported(j, 'types', NotificationTypes.all),
+      supportedTopicTypes: _supported(j, 'topicTypes', TopicTypes.all),
     );
+  }
+
+  static List<String> _supported(Map<String, dynamic> j, String key, List<String> known) {
+    final raw = j.objectOrNull('supported')?[key];
+    if (raw is! List) return known;
+    final set = {for (final v in raw) if (v is String) v};
+    // Keep the app's order; ignore values this app version does not know.
+    return [for (final k in known) if (set.contains(k)) k];
   }
 
   static NotificationPreferences fromJsonValue(Object? data) =>
@@ -199,6 +220,8 @@ abstract final class TopicTypes {
   static const market = 'market';
   static const station = 'station';
   static const priceAlert = 'price_alert';
+
+  static const all = [brand, model, variant, category, market, station, priceAlert];
 }
 
 @immutable

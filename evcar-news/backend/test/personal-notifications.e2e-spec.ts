@@ -17,6 +17,7 @@ import type {
 } from '../src/providers/push/push.types';
 import { bearer, createAndLogin, type LoggedIn } from './auth-test-helpers';
 import { createTestApp, type TestApp } from './utils/test-app';
+import { orderedSteps } from './utils/ordered-steps';
 
 class FakePushChannel {
   readonly sent: { token: string; message: PushMessage }[] = [];
@@ -58,8 +59,6 @@ const token = (prefix = 'tok') => `${prefix}-${randomBytes(12).toString('hex')}`
 
 describe('Personal: notifications (e2e)', () => {
   let t: TestApp;
-  let alice: LoggedIn;
-  let bob: LoggedIn;
   let notifier: NotificationService;
   let dispatch: PushDispatchService;
   const fcm = new FakePushChannel('fcm', true);
@@ -70,8 +69,6 @@ describe('Personal: notifications (e2e)', () => {
       override: (b) =>
         b.overrideProvider(PUSH_GATEWAY).useValue(new PushGateway(fcm as never, apns as never)),
     });
-    alice = await createAndLogin(t, ['user']);
-    bob = await createAndLogin(t, ['user']);
     notifier = t.app.get(NotificationService);
     dispatch = t.app.get(PushDispatchService);
   });
@@ -85,6 +82,13 @@ describe('Personal: notifications (e2e)', () => {
   });
 
   describe('center', () => {
+    // Own users per block (review 3): blocks run in any order under --randomize.
+    let alice: LoggedIn;
+    let bob: LoggedIn;
+    beforeAll(async () => {
+      alice = await createAndLogin(t, ['user']);
+      bob = await createAndLogin(t, ['user']);
+    });
     it('requires sign-in', async () => {
       await t.http().get('/api/v1/me/notifications').expect(401);
     });
@@ -208,6 +212,13 @@ describe('Personal: notifications (e2e)', () => {
   });
 
   describe('preferences', () => {
+    // Own users per block (review 3): blocks run in any order under --randomize.
+    let alice: LoggedIn;
+    let bob: LoggedIn;
+    beforeAll(async () => {
+      alice = await createAndLogin(t, ['user']);
+      bob = await createAndLogin(t, ['user']);
+    });
     it('defaults: everything on; push status reflects configuration and devices', async () => {
       const res = await t
         .http()
@@ -313,97 +324,116 @@ describe('Personal: notifications (e2e)', () => {
   });
 
   describe('devices and push', () => {
+    // Own users per block (review 3): blocks run in any order under --randomize.
+    let alice: LoggedIn;
+    let bob: LoggedIn;
+    beforeAll(async () => {
+      alice = await createAndLogin(t, ['user']);
+      bob = await createAndLogin(t, ['user']);
+    });
+    const { step, run } = orderedSteps();
     let aliceToken: string;
 
-    it('registers a device (token masked); the same installation replaces its old token', async () => {
-      const first = token();
-      await t
-        .http()
-        .post('/api/v1/me/devices')
-        .set(bearer(alice.accessToken))
-        .send({ token: first, platform: 'android', installationId: 'inst-a', appVersion: '1.0.0' })
-        .expect(200);
-      aliceToken = token();
-      const res = await t
-        .http()
-        .post('/api/v1/me/devices')
-        .set(bearer(alice.accessToken))
-        .send({
-          token: aliceToken,
+    step(
+      'registers a device (token masked); the same installation replaces its old token',
+      async () => {
+        const first = token();
+        await t
+          .http()
+          .post('/api/v1/me/devices')
+          .set(bearer(alice.accessToken))
+          .send({
+            token: first,
+            platform: 'android',
+            installationId: 'inst-a',
+            appVersion: '1.0.0',
+          })
+          .expect(200);
+        aliceToken = token();
+        const res = await t
+          .http()
+          .post('/api/v1/me/devices')
+          .set(bearer(alice.accessToken))
+          .send({
+            token: aliceToken,
+            platform: 'android',
+            installationId: 'inst-a',
+            appVersion: '1.0.1',
+          })
+          .expect(200);
+        expect(res.body.data).toMatchObject({
           platform: 'android',
-          installationId: 'inst-a',
-          appVersion: '1.0.1',
-        })
-        .expect(200);
-      expect(res.body.data).toMatchObject({
-        platform: 'android',
-        provider: 'fcm',
-        active: true,
-        tokenHint: `…${aliceToken.slice(-6)}`,
-      });
-      expect(JSON.stringify(res.body)).not.toContain(aliceToken);
-      const list = await t
-        .http()
-        .get('/api/v1/me/devices')
-        .set(bearer(alice.accessToken))
-        .expect(200);
-      expect(list.body.data).toHaveLength(1);
-      await t
-        .http()
-        .post('/api/v1/me/devices')
-        .set(bearer(alice.accessToken))
-        .send({ token: 'short', platform: 'android' })
-        .expect(422);
-      const prefs = await t
-        .http()
-        .get('/api/v1/me/notification-preferences')
-        .set(bearer(alice.accessToken))
-        .expect(200);
-      expect(prefs.body.data.push).toMatchObject({ status: 'active', registeredDevices: 1 });
-    });
+          provider: 'fcm',
+          active: true,
+          tokenHint: `…${aliceToken.slice(-6)}`,
+        });
+        expect(JSON.stringify(res.body)).not.toContain(aliceToken);
+        const list = await t
+          .http()
+          .get('/api/v1/me/devices')
+          .set(bearer(alice.accessToken))
+          .expect(200);
+        expect(list.body.data).toHaveLength(1);
+        await t
+          .http()
+          .post('/api/v1/me/devices')
+          .set(bearer(alice.accessToken))
+          .send({ token: 'short', platform: 'android' })
+          .expect(422);
+        const prefs = await t
+          .http()
+          .get('/api/v1/me/notification-preferences')
+          .set(bearer(alice.accessToken))
+          .expect(200);
+        expect(prefs.body.data.push).toMatchObject({ status: 'active', registeredDevices: 1 });
+      },
+    );
 
-    it('sends push to configured providers only; the in-app entry is always created', async () => {
-      await t
-        .http()
-        .post('/api/v1/me/devices')
-        .set(bearer(alice.accessToken))
-        .send({ token: token('ios'), platform: 'ios' })
-        .expect(200);
-      const before = fcm.sent.length;
-      const now = new Date('2026-09-25T10:00:00Z'); // 13:00 Cairo, no quiet hours
-      const r = await notifier.notify(
-        {
-          userIds: [alice.userId],
-          type: 'test.push',
-          category: 'news',
-          dedupeKey: 'test.push:1',
-          content: content('Push'),
-          deepLink: '/news/p',
-        },
-        now,
-      );
-      expect(r).toMatchObject({ created: 1, push: { queued: 1, skippedNotConfigured: 1 } });
-      await dispatch.flushDue(now);
-      expect(fcm.sent.length).toBe(before + 1);
-      expect(fcm.sent[fcm.sent.length - 1]).toMatchObject({
-        token: aliceToken,
-        message: { title: 'Push', deepLink: '/news/p' },
-      });
-      const n = await t.prisma.notification.findFirstOrThrow({
-        where: { userId: alice.userId, dedupeKey: 'test.push:1' },
-        include: { deliveries: true },
-      });
-      const statuses = n.deliveries
-        .map((d) => `${d.channel}:${d.status}:${d.skipReason ?? ''}`)
-        .sort();
-      expect(statuses).toEqual([
-        'in_app:sent:',
-        'push:sent:',
-        'push:skipped:channel_not_configured',
-      ]);
-    });
+    step(
+      'sends push to configured providers only; the in-app entry is always created',
+      async () => {
+        await t
+          .http()
+          .post('/api/v1/me/devices')
+          .set(bearer(alice.accessToken))
+          .send({ token: token('ios'), platform: 'ios' })
+          .expect(200);
+        const before = fcm.sent.length;
+        const now = new Date('2026-09-25T10:00:00Z'); // 13:00 Cairo, no quiet hours
+        const r = await notifier.notify(
+          {
+            userIds: [alice.userId],
+            type: 'test.push',
+            category: 'news',
+            dedupeKey: 'test.push:1',
+            content: content('Push'),
+            deepLink: '/news/p',
+          },
+          now,
+        );
+        expect(r).toMatchObject({ created: 1, push: { queued: 1, skippedNotConfigured: 1 } });
+        await dispatch.flushDue(now);
+        expect(fcm.sent.length).toBe(before + 1);
+        expect(fcm.sent[fcm.sent.length - 1]).toMatchObject({
+          token: aliceToken,
+          message: { title: 'Push', deepLink: '/news/p' },
+        });
+        const n = await t.prisma.notification.findFirstOrThrow({
+          where: { userId: alice.userId, dedupeKey: 'test.push:1' },
+          include: { deliveries: true },
+        });
+        const statuses = n.deliveries
+          .map((d) => `${d.channel}:${d.status}:${d.skipReason ?? ''}`)
+          .sort();
+        expect(statuses).toEqual([
+          'in_app:sent:',
+          'push:sent:',
+          'push:skipped:channel_not_configured',
+        ]);
+      },
+    );
 
-    it('quiet hours postpone push until the window ends', async () => {
+    step('quiet hours postpone push until the window ends', async () => {
       await t
         .http()
         .patch('/api/v1/me/notification-preferences')
@@ -439,7 +469,7 @@ describe('Personal: notifications (e2e)', () => {
         .expect(200);
     });
 
-    it('an invalid token is revoked; push can be switched off', async () => {
+    step('an invalid token is revoked; push can be switched off', async () => {
       const bad = token('bad');
       await t
         .http()
@@ -480,7 +510,7 @@ describe('Personal: notifications (e2e)', () => {
       expect(prefs.body.data.push.status).toBe('disabled_by_user');
     });
 
-    it('unregister is idempotent and scoped to the caller', async () => {
+    step('unregister is idempotent and scoped to the caller', async () => {
       await t
         .http()
         .post('/api/v1/me/devices/unregister')
@@ -502,9 +532,18 @@ describe('Personal: notifications (e2e)', () => {
         .expect(204);
       expect(await t.prisma.deviceToken.count({ where: { token: aliceToken } })).toBe(0);
     });
+    it('workflow: the steps above, in order', () => run(), run.timeout);
   });
 
   describe('subscriptions and the article-published trigger', () => {
+    // Own users per block (review 3): blocks run in any order under --randomize.
+    let alice: LoggedIn;
+    let bob: LoggedIn;
+    beforeAll(async () => {
+      alice = await createAndLogin(t, ['user']);
+      bob = await createAndLogin(t, ['user']);
+    });
+    const { step, run } = orderedSteps();
     let brandId: string;
     let modelId: string;
     let subId: string;
@@ -532,44 +571,47 @@ describe('Personal: notifications (e2e)', () => {
       modelId = model.id;
     });
 
-    it('follow a brand (201, then 200 idempotent), validate targets, list with names', async () => {
-      const post = (user: LoggedIn, body: object) =>
-        t
+    step(
+      'follow a brand (201, then 200 idempotent), validate targets, list with names',
+      async () => {
+        const post = (user: LoggedIn, body: object) =>
+          t
+            .http()
+            .post('/api/v1/me/notification-subscriptions?lang=en')
+            .set(bearer(user.accessToken))
+            .send(body);
+        const created = await post(alice, { topicType: 'brand', brandId }).expect(201);
+        subId = created.body.data.id;
+        expect(created.body.data).toMatchObject({
+          topicType: 'brand',
+          target: { id: brandId, name: `NBrand ${tag}` },
+          marketCode: null,
+        });
+        const again = await post(alice, { topicType: 'brand', brandId }).expect(200);
+        expect(again.body.data.id).toBe(subId);
+        await post(alice, { topicType: 'brand' }).expect(422);
+        await post(alice, { topicType: 'brand', brandId, modelId }).expect(422);
+        await post(alice, {
+          topicType: 'brand',
+          brandId: '00000000-0000-4000-8000-000000000000',
+        }).expect(422);
+        await post(alice, { topicType: 'market' }).expect(422);
+        await post(alice, { topicType: 'market', marketCode: 'EG' }).expect(201);
+        // bob follows the model but only in SA
+        await post(bob, { topicType: 'model', modelId, marketCode: 'SA' }).expect(201);
+        const list = await t
           .http()
-          .post('/api/v1/me/notification-subscriptions?lang=en')
-          .set(bearer(user.accessToken))
-          .send(body);
-      const created = await post(alice, { topicType: 'brand', brandId }).expect(201);
-      subId = created.body.data.id;
-      expect(created.body.data).toMatchObject({
-        topicType: 'brand',
-        target: { id: brandId, name: `NBrand ${tag}` },
-        marketCode: null,
-      });
-      const again = await post(alice, { topicType: 'brand', brandId }).expect(200);
-      expect(again.body.data.id).toBe(subId);
-      await post(alice, { topicType: 'brand' }).expect(422);
-      await post(alice, { topicType: 'brand', brandId, modelId }).expect(422);
-      await post(alice, {
-        topicType: 'brand',
-        brandId: '00000000-0000-4000-8000-000000000000',
-      }).expect(422);
-      await post(alice, { topicType: 'market' }).expect(422);
-      await post(alice, { topicType: 'market', marketCode: 'EG' }).expect(201);
-      // bob follows the model but only in SA
-      await post(bob, { topicType: 'model', modelId, marketCode: 'SA' }).expect(201);
-      const list = await t
-        .http()
-        .get('/api/v1/me/notification-subscriptions?lang=en')
-        .set(bearer(alice.accessToken))
-        .expect(200);
-      expect(list.body.data).toHaveLength(2);
-      await t
-        .http()
-        .delete(`/api/v1/me/notification-subscriptions/${subId}`)
-        .set(bearer(bob.accessToken))
-        .expect(404);
-    });
+          .get('/api/v1/me/notification-subscriptions?lang=en')
+          .set(bearer(alice.accessToken))
+          .expect(200);
+        expect(list.body.data).toHaveLength(2);
+        await t
+          .http()
+          .delete(`/api/v1/me/notification-subscriptions/${subId}`)
+          .set(bearer(bob.accessToken))
+          .expect(404);
+      },
+    );
 
     async function publishArticle(opts: { isDemo?: boolean; markets?: string[] } = {}) {
       const slug = `n-article-${randomBytes(4).toString('hex')}`;
@@ -598,7 +640,7 @@ describe('Personal: notifications (e2e)', () => {
       return { article, slug, results };
     }
 
-    it('notifies followers of the linked model’s brand in the article market, once', async () => {
+    step('notifies followers of the linked model’s brand in the article market, once', async () => {
       await t
         .http()
         .patch('/api/v1/me/notification-preferences')
@@ -628,7 +670,7 @@ describe('Personal: notifications (e2e)', () => {
       ).toBe(1);
     });
 
-    it('market-narrowed follow matches; demo articles notify nobody', async () => {
+    step('market-narrowed follow matches; demo articles notify nobody', async () => {
       const { article } = await publishArticle({ markets: ['SA'] });
       const n = await t.prisma.notification.findMany({
         where: { dedupeKey: `article.published:${article.id}` },
@@ -644,7 +686,7 @@ describe('Personal: notifications (e2e)', () => {
       ).toBe(0);
     });
 
-    it('unsubscribing stops them', async () => {
+    step('unsubscribing stops them', async () => {
       await t
         .http()
         .delete(`/api/v1/me/notification-subscriptions/${subId}`)
@@ -657,5 +699,6 @@ describe('Personal: notifications (e2e)', () => {
         }),
       ).toBe(0);
     });
+    it('workflow: the steps above, in order', () => run(), run.timeout);
   });
 });

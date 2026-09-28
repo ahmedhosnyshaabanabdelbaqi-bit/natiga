@@ -383,3 +383,7 @@ None blocking. Optional improvement for the integrator:
 - Home caches are per instance (in memory), not in Redis.
 - openapi.json was not re-exported (other agents are adding endpoints).
 - No real data was added; tests use fictional rows only.
+
+## Review 3 (2026-09-28)
+
+See `review-fixes-3.md`: encyclopedia bodies use the article HTML policy (422 `ENCYCLOPEDIA_IMAGE_NOT_LICENSED` / `ENCYCLOPEDIA_EMBED_NOT_ALLOWED`).

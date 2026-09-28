@@ -114,3 +114,7 @@ Opening marks the notification read (optimistic, rolled back on failure).
   ar-dark / en-light at 200 % text across 12 personal screens without overflow).
 - Full `flutter test` at the time of writing: 619 passed, 7 skipped, 2 failing — both in
   `test/features/community/community_screens_test.dart`, owned by the community agent and in progress.
+
+## Review 3 (2026-09-28)
+
+See `review-fixes-3.md`: calculator unit rates use `AppFormatters.rate()`; notification preferences show only the server-`supported` switches and follow chips; `INTEGRATION_QUOTA` is shown as "try again later".

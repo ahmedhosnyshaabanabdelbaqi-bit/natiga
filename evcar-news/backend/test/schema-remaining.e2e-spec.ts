@@ -28,6 +28,7 @@ import { fromPostgresCode } from '../src/common/filters/all-exceptions.filter';
 import { STORAGE_PROVIDER } from '../src/providers/provider-tokens';
 import type { StorageProvider } from '../src/providers/storage/storage.types';
 import { createTestApp, type TestApp } from './utils/test-app';
+import { orderedSteps } from './utils/ordered-steps';
 
 /** Error text (message + driver metadata) of a refused write; throws when it succeeded. */
 async function refused(write: Promise<unknown>): Promise<string> {
@@ -69,7 +70,8 @@ describe('Remaining features data model (e2e)', () => {
   });
 
   describe('reference and demo seeds', () => {
-    it('seeds connector types incl. domestic sockets and ChaoJi, with AC/DC flags', async () => {
+    const { step, run } = orderedSteps();
+    step('seeds connector types incl. domestic sockets and ChaoJi, with AC/DC flags', async () => {
       const rows = await db.connectorType.findMany({ orderBy: { code: 'asc' } });
       expect(rows.map((r) => r.code)).toEqual(CONNECTOR_TYPES.map((c) => c.code).sort());
       const byCode = new Map(rows.map((r) => [r.code, r]));
@@ -79,39 +81,42 @@ describe('Remaining features data model (e2e)', () => {
       expect(byCode.get('chaoji')?.typicalMaxDcKw).toBeNull();
     });
 
-    it('seeds encyclopedia categories, report reasons for every enum value and disabled ad placements', async () => {
-      const cats = await db.encyclopediaCategory.findMany({ where: { isSystem: true } });
-      expect(cats.map((c) => c.key).sort()).toEqual(
-        ENCYCLOPEDIA_CATEGORIES.map((c) => c.key).sort(),
-      );
-      const reasons = await db.reportReason.findMany();
-      expect(reasons).toHaveLength(REPORT_REASONS.length);
-      expect(
-        reasons
-          .filter((r) => r.scope === 'station')
-          .map((r) => r.code)
-          .sort(),
-      ).toEqual(Object.values(StationReportType).sort());
-      expect(
-        reasons
-          .filter((r) => r.scope === 'content')
-          .map((r) => r.code)
-          .sort(),
-      ).toEqual(Object.values(ContentReportReason).sort());
-      const placements = await db.adPlacement.findMany();
-      expect(placements.map((p) => p.key).sort()).toEqual(AD_PLACEMENTS.map((a) => a.key).sort());
-      expect(placements.every((p) => !p.isEnabled)).toBe(true);
-      // A label for a value that is not in the enum is refused.
-      expect(
-        await refused(
-          db.reportReason.create({
-            data: { scope: 'station', code: 'bogus', labelAr: 'س', labelEn: 'x' },
-          }),
-        ),
-      ).toMatch(/report_reasons_code_chk/);
-    });
+    step(
+      'seeds encyclopedia categories, report reasons for every enum value and disabled ad placements',
+      async () => {
+        const cats = await db.encyclopediaCategory.findMany({ where: { isSystem: true } });
+        expect(cats.map((c) => c.key).sort()).toEqual(
+          ENCYCLOPEDIA_CATEGORIES.map((c) => c.key).sort(),
+        );
+        const reasons = await db.reportReason.findMany();
+        expect(reasons).toHaveLength(REPORT_REASONS.length);
+        expect(
+          reasons
+            .filter((r) => r.scope === 'station')
+            .map((r) => r.code)
+            .sort(),
+        ).toEqual(Object.values(StationReportType).sort());
+        expect(
+          reasons
+            .filter((r) => r.scope === 'content')
+            .map((r) => r.code)
+            .sort(),
+        ).toEqual(Object.values(ContentReportReason).sort());
+        const placements = await db.adPlacement.findMany();
+        expect(placements.map((p) => p.key).sort()).toEqual(AD_PLACEMENTS.map((a) => a.key).sort());
+        expect(placements.every((p) => !p.isEnabled)).toBe(true);
+        // A label for a value that is not in the enum is refused.
+        expect(
+          await refused(
+            db.reportReason.create({
+              data: { scope: 'station', code: 'bogus', labelAr: 'س', labelEn: 'x' },
+            }),
+          ),
+        ).toMatch(/report_reasons_code_chk/);
+      },
+    );
 
-    it('grants owner-verification review to community moderators', async () => {
+    step('grants owner-verification review to community moderators', async () => {
       const role = await db.role.findUnique({
         where: { key: 'community_moderator' },
         include: { permissions: { include: { permission: true } } },
@@ -119,24 +124,27 @@ describe('Remaining features data model (e2e)', () => {
       expect(role?.permissions.map((p) => p.permission.key)).toContain('community.verify_owners');
     });
 
-    it('re-running the reference seed adds nothing and adopts placeholder categories', async () => {
-      // A category created by the migration for an old entry topic (name = key).
-      await db.encyclopediaCategory.delete({ where: { key: 'warranty' } });
-      await db.encyclopediaCategory.create({
-        data: { key: 'warranty', nameAr: 'warranty', nameEn: 'warranty' },
-      });
-      const summary = await runReferenceSeed(db);
-      expect(summary).toMatchObject({
-        encyclopediaCategoriesAdded: 0,
-        reportReasonsAdded: 0,
-        adPlacementsAdded: 0,
-      });
-      expect(
-        await db.encyclopediaCategory.findUnique({ where: { key: 'warranty' } }),
-      ).toMatchObject({ isSystem: true, nameEn: 'Warranty', nameAr: 'الضمان' });
-    });
+    step(
+      're-running the reference seed adds nothing and adopts placeholder categories',
+      async () => {
+        // A category created by the migration for an old entry topic (name = key).
+        await db.encyclopediaCategory.delete({ where: { key: 'warranty' } });
+        await db.encyclopediaCategory.create({
+          data: { key: 'warranty', nameAr: 'warranty', nameEn: 'warranty' },
+        });
+        const summary = await runReferenceSeed(db);
+        expect(summary).toMatchObject({
+          encyclopediaCategoriesAdded: 0,
+          reportReasonsAdded: 0,
+          adPlacementsAdded: 0,
+        });
+        expect(
+          await db.encyclopediaCategory.findUnique({ where: { key: 'warranty' } }),
+        ).toMatchObject({ isSystem: true, nameEn: 'Warranty', nameAr: 'الضمان' });
+      },
+    );
 
-    it('demo stations are fictional, at sea, and their live status is expired', async () => {
+    step('demo stations are fictional, at sea, and their live status is expired', async () => {
       const s = await db.chargingStation.findUniqueOrThrow({ where: { id: I.station } });
       expect(s.nameAr).toBe(DEMO_STATION_NAME_AR);
       expect(s.isDemo).toBe(true);
@@ -154,50 +162,64 @@ describe('Remaining features data model (e2e)', () => {
       expect(s2.openingHours).toMatchObject({ fri: [] });
     });
 
-    it('the demo tour is published with synthetic, licensed, ready panoramas stored in storage', async () => {
-      const tour = await db.interiorTour.findUniqueOrThrow({
-        where: { id: I.tour },
-        include: {
-          scenes: { include: { asset: { include: { variants: true, license: true } } } },
-        },
-      });
-      expect(tour).toMatchObject({
-        status: 'published',
-        isDemo: true,
-        initialSceneId: I.sceneDriver,
-      });
-      expect(tour.titleEn).toMatch(/DEMO/);
-      expect(tour.scenes.map((s) => s.position).sort()).toEqual(['driver', 'rear']);
-      for (const scene of tour.scenes) {
-        expect(scene.asset).toMatchObject({
-          kind: 'panorama',
-          projection: 'equirectangular',
-          status: 'ready',
-          width: 4096,
-          height: 2048,
-          isDemo: true,
+    step(
+      'the demo tour is published with synthetic, licensed, ready panoramas stored in storage',
+      async () => {
+        const tour = await db.interiorTour.findUniqueOrThrow({
+          where: { id: I.tour },
+          include: {
+            scenes: { include: { asset: { include: { variants: true, license: true } } } },
+          },
         });
-        expect(scene.asset.license?.isDemo).toBe(true);
-        expect(scene.asset.variants.map((v) => v.kind).sort()).toEqual(['preview', 'rendition']);
-        const keys = demoPanoramaKeys(scene.assetId);
-        expect(await storage.exists(keys.original)).toBe(true);
-        expect(await storage.exists(keys.preview)).toBe(true);
-      }
-      const hotspots = await db.sceneHotspot.findMany({
-        where: { tourId: I.tour },
-        include: { translations: true },
-      });
-      expect(hotspots.map((h) => h.type).sort()).toEqual([
-        'info',
-        'scene_link',
-        'scene_link',
-        'spec_link',
-      ]);
-      expect(hotspots.every((h) => h.translations.length === 2)).toBe(true);
-      // Idempotent (also with storage).
-      const again = await runDemoSeed(db, { storage });
-      expect(again).toMatchObject({ tours: 1, stations: 2, encyclopediaEntries: 1 });
-    });
+        expect(tour).toMatchObject({
+          status: 'published',
+          isDemo: true,
+          initialSceneId: I.sceneDriver,
+        });
+        expect(tour.titleEn).toMatch(/DEMO/);
+        expect(tour.scenes.map((s) => s.position).sort()).toEqual(['driver', 'rear']);
+        for (const scene of tour.scenes) {
+          expect(scene.asset).toMatchObject({
+            kind: 'panorama',
+            projection: 'equirectangular',
+            status: 'ready',
+            width: 4096,
+            height: 2048,
+            isDemo: true,
+          });
+          expect(scene.asset.license?.isDemo).toBe(true);
+          expect(scene.asset.variants.map((v) => v.kind).sort()).toEqual(['preview', 'rendition']);
+          const keys = demoPanoramaKeys(scene.assetId);
+          expect(await storage.exists(keys.original)).toBe(true);
+          expect(await storage.exists(keys.preview)).toBe(true);
+        }
+        const hotspots = await db.sceneHotspot.findMany({
+          where: { tourId: I.tour },
+          include: { translations: true },
+        });
+        expect(hotspots.map((h) => h.type).sort()).toEqual([
+          'info',
+          'scene_link',
+          'scene_link',
+          'spec_link',
+        ]);
+        expect(hotspots.every((h) => h.translations.length === 2)).toBe(true);
+        // Idempotent (also with storage): a second run adds nothing. The summary counts
+        // every demo row, and other blocks of this file add demo rows of their own
+        // (any order under --randomize, review 3), so compare with the counts before.
+        const count = async () => ({
+          tours: await db.interiorTour.count({ where: { isDemo: true } }),
+          stations: await db.chargingStation.count({ where: { isDemo: true } }),
+          encyclopediaEntries: await db.encyclopediaEntry.count({ where: { isDemo: true } }),
+        });
+        const before = await count();
+        const again = await runDemoSeed(db, { storage });
+        expect(again).toMatchObject(before);
+        expect(await count()).toEqual(before);
+        expect(await db.interiorTour.count({ where: { id: I.tour } })).toBe(1);
+      },
+    );
+    it('workflow: the steps above, in order', () => run(), run.timeout);
   });
 
   describe('stations', () => {

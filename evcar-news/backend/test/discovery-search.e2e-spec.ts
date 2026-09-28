@@ -8,6 +8,7 @@ import { createEntry, createProvider } from './discovery-helpers';
 import { userWithRoles, waitForAudit, type PlatformUser } from './platform-helpers';
 import { createStation } from './stations-helpers';
 import { createTestApp, type TestApp } from './utils/test-app';
+import { orderedSteps } from './utils/ordered-steps';
 
 interface Hit {
   type: string;
@@ -205,14 +206,15 @@ describe('discovery: unified search (e2e)', () => {
   });
 
   describe('aliases', () => {
+    const { step, run } = orderedSteps();
     let aliasId: string;
 
-    it('admin routes are permission-guarded', async () => {
+    step('admin routes are permission-guarded', async () => {
       await t.http().get('/api/v1/admin/search-aliases').expect(401);
       await t.http().get('/api/v1/admin/search-aliases').set(plain.auth).expect(403);
     });
 
-    it('an alias makes an alternative spelling find the entity', async () => {
+    step('an alias makes an alternative spelling find the entity', async () => {
       // before: the transliteration is unknown
       expect(ids(await search('VTX'), 'brands')).not.toContain(brandId);
       const res = await t
@@ -232,7 +234,7 @@ describe('discovery: unified search (e2e)', () => {
       expect(hit.matchedBy).toBe('alias');
     });
 
-    it('an alias bound to an entity pins it', async () => {
+    step('an alias bound to an entity pins it', async () => {
       await t
         .http()
         .post('/api/v1/admin/search-aliases')
@@ -247,7 +249,7 @@ describe('discovery: unified search (e2e)', () => {
       expect(ids(await search('شاحن البيت'), 'encyclopedia')).toContain(entryHome);
     });
 
-    it('rejects duplicates, identical pairs and unknown entities', async () => {
+    step('rejects duplicates, identical pairs and unknown entities', async () => {
       const dup = await t
         .http()
         .post('/api/v1/admin/search-aliases')
@@ -280,7 +282,7 @@ describe('discovery: unified search (e2e)', () => {
         .expect(422);
     });
 
-    it('system aliases can only be (de)activated', async () => {
+    step('system aliases can only be (de)activated', async () => {
       const list = await t
         .http()
         .get('/api/v1/admin/search-aliases')
@@ -311,7 +313,7 @@ describe('discovery: unified search (e2e)', () => {
         .expect(200);
     });
 
-    it('deactivated / deleted aliases stop matching', async () => {
+    step('deactivated / deleted aliases stop matching', async () => {
       await t
         .http()
         .patch(`/api/v1/admin/search-aliases/${aliasId}`)
@@ -322,6 +324,7 @@ describe('discovery: unified search (e2e)', () => {
       await t.http().delete(`/api/v1/admin/search-aliases/${aliasId}`).set(owner.auth).expect(204);
       await t.http().get(`/api/v1/admin/search-aliases/${aliasId}`).set(owner.auth).expect(404);
     });
+    it('workflow: the steps above, in order', () => run(), run.timeout);
   });
 
   describe('suggest', () => {

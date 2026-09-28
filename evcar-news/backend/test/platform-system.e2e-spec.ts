@@ -116,9 +116,15 @@ describe('Platform: system, jobs, imports, health (e2e)', () => {
       },
       staleData: { thresholds: { stationVerificationDays: 180 }, pricesOutdated: 0 },
       jobs: { redis: 'up' },
-      imports: { running: 0, failedLast7Days: 0 },
+      imports: { running: 0, failedLast7Days: expect.any(Number) },
       integrations: { total: expect.any(Number) },
     });
+    // Other tests of this file may record a failed import first (any order, review 3).
+    expect(d.imports.failedLast7Days).toBe(
+      await t.prisma.importJob.count({
+        where: { status: 'failed', createdAt: { gte: new Date(Date.now() - 7 * 86_400_000) } },
+      }),
+    );
     expect(d.integrations.notConfigured).toContain('routing.none');
     expect(Array.isArray(d.warnings)).toBe(true);
     await t.http().get('/api/v1/admin/system/overview').set(normal.auth).expect(403);

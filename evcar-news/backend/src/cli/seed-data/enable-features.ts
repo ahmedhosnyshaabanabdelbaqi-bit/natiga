@@ -1,4 +1,4 @@
-import type { PrismaClient } from '../../generated/prisma/client';
+import type { Prisma, PrismaClient } from '../../generated/prisma/client';
 import { IMPLEMENTED_FEATURES } from '../../modules/settings/settings.types';
 
 /**
@@ -13,8 +13,8 @@ export async function enableImplementedFeatures(prisma: PrismaClient): Promise<s
   return prisma.$transaction(async (tx) => {
     const row = await tx.appSetting.findUnique({ where: { key: 'features' } });
     if (!row) throw new Error('The "features" setting is missing: run the reference seed first.');
-    const before = (row.value ?? {}) as Record<string, unknown>;
-    const after: Record<string, unknown> = { ...before };
+    const before = (row.value ?? {}) as Prisma.InputJsonObject;
+    const after: { [key: string]: Prisma.InputJsonValue | null | undefined } = { ...before };
     const enabled: string[] = [];
     for (const flag of IMPLEMENTED_FEATURES) {
       if (after[flag] !== true) {
@@ -23,7 +23,7 @@ export async function enableImplementedFeatures(prisma: PrismaClient): Promise<s
       }
     }
     if (enabled.length === 0) return [];
-    await tx.appSetting.update({ where: { key: 'features' }, data: { value: after as object } });
+    await tx.appSetting.update({ where: { key: 'features' }, data: { value: after } });
     await tx.auditLog.create({
       data: {
         actorId: null,
@@ -31,8 +31,8 @@ export async function enableImplementedFeatures(prisma: PrismaClient): Promise<s
         action: 'settings.features.seed_enable',
         entityType: 'app_setting',
         entityId: 'features',
-        before: before as object,
-        after: after as object,
+        before,
+        after,
       },
     });
     return enabled;

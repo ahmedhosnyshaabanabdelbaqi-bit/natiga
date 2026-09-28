@@ -7,6 +7,7 @@
 import { item, seedTestCatalog, type TestCatalog } from './comparisons-helpers';
 import { userWithRoles, waitForAudit, type PlatformUser } from './platform-helpers';
 import { createTestApp, type TestApp } from './utils/test-app';
+import { orderedSteps } from './utils/ordered-steps';
 
 interface Val {
   carKey: string;
@@ -291,7 +292,8 @@ describe('Comparisons API (e2e)', () => {
   });
 
   describe('save / share / isolation', () => {
-    it('guest share link: created once, reused when identical, opened publicly', async () => {
+    const { step, run } = orderedSteps();
+    step('guest share link: created once, reused when identical, opened publicly', async () => {
       const body = { items: [item(cat.a), item(cat.b)] };
       const first = await t.http().post('/api/v1/comparisons?lang=en').send(body).expect(201);
       const c = first.body.data;
@@ -326,84 +328,92 @@ describe('Comparisons API (e2e)', () => {
       await t.http().get('/api/v1/comparisons/s/bad%20id').expect(404);
     });
 
-    it('signed-in users save to their account; others can neither list, read nor delete it', async () => {
-      const created = await t
-        .http()
-        .post('/api/v1/comparisons')
-        .set(alice.auth)
-        .send({ items: [item(cat.b), item(cat.a)], title: 'My shortlist' })
-        .expect(201);
-      const c = created.body.data;
-      expect(c).toMatchObject({ kind: 'saved', saved: true, isMine: true, title: 'My shortlist' });
-      expect((await t.prisma.comparison.findUniqueOrThrow({ where: { id: c.id } })).userId).toBe(
-        alice.id,
-      );
-      // identical → reused (title updated)
-      const again = await t
-        .http()
-        .post('/api/v1/comparisons')
-        .set(alice.auth)
-        .send({ items: [item(cat.b), item(cat.a)], title: 'Renamed' })
-        .expect(200);
-      expect(again.body.data).toMatchObject({ id: c.id, reused: true, title: 'Renamed' });
+    step(
+      'signed-in users save to their account; others can neither list, read nor delete it',
+      async () => {
+        const created = await t
+          .http()
+          .post('/api/v1/comparisons')
+          .set(alice.auth)
+          .send({ items: [item(cat.b), item(cat.a)], title: 'My shortlist' })
+          .expect(201);
+        const c = created.body.data;
+        expect(c).toMatchObject({
+          kind: 'saved',
+          saved: true,
+          isMine: true,
+          title: 'My shortlist',
+        });
+        expect((await t.prisma.comparison.findUniqueOrThrow({ where: { id: c.id } })).userId).toBe(
+          alice.id,
+        );
+        // identical → reused (title updated)
+        const again = await t
+          .http()
+          .post('/api/v1/comparisons')
+          .set(alice.auth)
+          .send({ items: [item(cat.b), item(cat.a)], title: 'Renamed' })
+          .expect(200);
+        expect(again.body.data).toMatchObject({ id: c.id, reused: true, title: 'Renamed' });
 
-      const mine = await t.http().get('/api/v1/me/comparisons').set(alice.auth).expect(200);
-      expect(mine.body.meta).toMatchObject({ total: 1, page: 1 });
-      expect(mine.body.data[0]).toMatchObject({ id: c.id, displayTitle: 'Renamed' });
-      const bobs = await t.http().get('/api/v1/me/comparisons').set(bob.auth).expect(200);
-      expect(bobs.body.data).toEqual([]);
-      await t.http().get(`/api/v1/me/comparisons/${c.id}`).set(bob.auth).expect(404);
-      await t
-        .http()
-        .patch(`/api/v1/me/comparisons/${c.id}`)
-        .set(bob.auth)
-        .send({ title: 'x' })
-        .expect(404);
-      await t.http().delete(`/api/v1/me/comparisons/${c.id}`).set(bob.auth).expect(404);
-      await t.http().get('/api/v1/me/comparisons').expect(401);
+        const mine = await t.http().get('/api/v1/me/comparisons').set(alice.auth).expect(200);
+        expect(mine.body.meta).toMatchObject({ total: 1, page: 1 });
+        expect(mine.body.data[0]).toMatchObject({ id: c.id, displayTitle: 'Renamed' });
+        const bobs = await t.http().get('/api/v1/me/comparisons').set(bob.auth).expect(200);
+        expect(bobs.body.data).toEqual([]);
+        await t.http().get(`/api/v1/me/comparisons/${c.id}`).set(bob.auth).expect(404);
+        await t
+          .http()
+          .patch(`/api/v1/me/comparisons/${c.id}`)
+          .set(bob.auth)
+          .send({ title: 'x' })
+          .expect(404);
+        await t.http().delete(`/api/v1/me/comparisons/${c.id}`).set(bob.auth).expect(404);
+        await t.http().get('/api/v1/me/comparisons').expect(401);
 
-      // The share link works for others but never reveals the owner's label.
-      const asBob = await t
-        .http()
-        .get(`/api/v1/comparisons/s/${c.shareId}`)
-        .set(bob.auth)
-        .expect(200);
-      expect(asBob.body.data.comparison).toMatchObject({
-        isMine: false,
-        title: null,
-        kind: 'saved',
-      });
-      expect(JSON.stringify(asBob.body)).not.toContain(alice.id);
-      const asAlice = await t
-        .http()
-        .get(`/api/v1/comparisons/s/${c.shareId}`)
-        .set(alice.auth)
-        .expect(200);
-      expect(asAlice.body.data.comparison).toMatchObject({ isMine: true, title: 'Renamed' });
+        // The share link works for others but never reveals the owner's label.
+        const asBob = await t
+          .http()
+          .get(`/api/v1/comparisons/s/${c.shareId}`)
+          .set(bob.auth)
+          .expect(200);
+        expect(asBob.body.data.comparison).toMatchObject({
+          isMine: false,
+          title: null,
+          kind: 'saved',
+        });
+        expect(JSON.stringify(asBob.body)).not.toContain(alice.id);
+        const asAlice = await t
+          .http()
+          .get(`/api/v1/comparisons/s/${c.shareId}`)
+          .set(alice.auth)
+          .expect(200);
+        expect(asAlice.body.data.comparison).toMatchObject({ isMine: true, title: 'Renamed' });
 
-      const detail = await t
-        .http()
-        .get(`/api/v1/me/comparisons/${c.id}?lang=en`)
-        .set(alice.auth)
-        .expect(200);
-      expect(detail.body.data.result.cars.map((x: { key: string }) => x.key)).toEqual([
-        k(cat.b),
-        k(cat.a),
-      ]);
-      const renamed = await t
-        .http()
-        .patch(`/api/v1/me/comparisons/${c.id}`)
-        .set(alice.auth)
-        .send({ title: null })
-        .expect(200);
-      expect(renamed.body.data.title).toBeNull();
+        const detail = await t
+          .http()
+          .get(`/api/v1/me/comparisons/${c.id}?lang=en`)
+          .set(alice.auth)
+          .expect(200);
+        expect(detail.body.data.result.cars.map((x: { key: string }) => x.key)).toEqual([
+          k(cat.b),
+          k(cat.a),
+        ]);
+        const renamed = await t
+          .http()
+          .patch(`/api/v1/me/comparisons/${c.id}`)
+          .set(alice.auth)
+          .send({ title: null })
+          .expect(200);
+        expect(renamed.body.data.title).toBeNull();
 
-      await t.http().delete(`/api/v1/me/comparisons/${c.id}`).set(alice.auth).expect(204);
-      await t.http().get(`/api/v1/me/comparisons/${c.id}`).set(alice.auth).expect(404);
-      await t.http().get(`/api/v1/comparisons/s/${c.shareId}`).expect(404);
-    });
+        await t.http().delete(`/api/v1/me/comparisons/${c.id}`).set(alice.auth).expect(204);
+        await t.http().get(`/api/v1/me/comparisons/${c.id}`).set(alice.auth).expect(404);
+        await t.http().get(`/api/v1/comparisons/s/${c.shareId}`).expect(404);
+      },
+    );
 
-    it('a trim unpublished later is reported as unavailable (no draft data leaks)', async () => {
+    step('a trim unpublished later is reported as unavailable (no draft data leaks)', async () => {
       const c = (
         await t
           .http()
@@ -427,17 +437,20 @@ describe('Comparisons API (e2e)', () => {
       }
     });
 
-    it('a stale token never turns an intended save into a guest share (401 TOKEN_EXPIRED)', async () => {
-      const res = await t
-        .http()
-        .post('/api/v1/comparisons')
-        .set('Authorization', 'Bearer not-a-valid-token')
-        .send({ items: [item(cat.c), item(cat.d)] })
-        .expect(401);
-      expect(res.body.error.code).toBe('TOKEN_EXPIRED');
-    });
+    step(
+      'a stale token never turns an intended save into a guest share (401 TOKEN_EXPIRED)',
+      async () => {
+        const res = await t
+          .http()
+          .post('/api/v1/comparisons')
+          .set('Authorization', 'Bearer not-a-valid-token')
+          .send({ items: [item(cat.c), item(cat.d)] })
+          .expect(401);
+        expect(res.body.error.code).toBe('TOKEN_EXPIRED');
+      },
+    );
 
-    it('rejects bad bodies for saving (422)', async () => {
+    step('rejects bad bodies for saving (422)', async () => {
       await t
         .http()
         .post('/api/v1/comparisons')
@@ -450,6 +463,7 @@ describe('Comparisons API (e2e)', () => {
         .send({ items: [item(cat.a), item(cat.b)], title: 'x'.repeat(201) })
         .expect(422);
     });
+    it('workflow: the steps above, in order', () => run(), run.timeout);
   });
 
   describe('featured comparisons (admin) and reports', () => {

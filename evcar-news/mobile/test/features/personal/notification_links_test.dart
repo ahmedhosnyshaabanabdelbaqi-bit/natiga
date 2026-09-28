@@ -89,6 +89,26 @@ void main() {
       expect(p.quietHours?.timezone, 'Africa/Cairo');
       expect(p.pushConfigured, isFalse);
       expect(p.pushStatus, 'not_configured');
+      // An older server without `supported` → every switch, as before.
+      expect(p.supportedTypes, NotificationTypes.all);
+      expect(p.supportedTopicTypes, TopicTypes.all);
+    });
+
+    test('only switches and topics the server produces are offered (review 3)', () {
+      final p = NotificationPreferences.fromJson({
+        'types': {'news': true, 'priceAlerts': true, 'reminders': true},
+        'channels': {'inApp': true, 'push': true, 'email': false},
+        'unsubscribedAll': false,
+        'push': {'configured': true, 'registeredDevices': 1, 'status': 'active'},
+        'supported': {
+          'types': ['news', 'future_type'],
+          'topicTypes': ['category', 'brand', 'model', 'variant'],
+        },
+      });
+      expect(p.supportedTypes, ['news']);
+      expect(p.supportedTopicTypes, ['brand', 'model', 'variant', 'category']);
+      expect(p.supportedTopicTypes, isNot(contains(TopicTypes.priceAlert)));
+      expect(p.supportedTopicTypes, isNot(contains(TopicTypes.market)));
     });
   });
 

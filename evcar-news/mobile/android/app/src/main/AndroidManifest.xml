@@ -44,14 +44,18 @@
             </intent-filter>
 
             <!-- Android App Links for public share URLs. Verification needs
-                 https://evcar.news/.well-known/assetlinks.json (served by the
-                 backend `share` module) with this app's signing-cert SHA-256. -->
+                 https://evcar.news/.well-known/assetlinks.json AND the same file
+                 on https://www.evcar.news (to be served by the backend `share`
+                 module, not implemented yet) with this app's signing-cert
+                 SHA-256. Until then Android 12+ opens these links in the
+                 browser. Hosts must match deepLinkHosts in deep_links.dart. -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="https" />
                 <data android:host="evcar.news" />
+                <data android:host="www.evcar.news" />
                 <data android:pathPrefix="/n/" />
                 <data android:pathPrefix="/cars/" />
                 <data android:pathPrefix="/compare/" />

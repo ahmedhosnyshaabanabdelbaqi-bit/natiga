@@ -67,6 +67,10 @@ jobs:
         run: npm run prisma:check-drift
       - name: e2e (own databases, dropped afterwards)
         run: npm run test:e2e
+      # Tests must not depend on their order (review 3): a second run in a
+      # shuffled order with a per-run seed (printed by Jest to reproduce).
+      - name: e2e in random order
+        run: npm run test:e2e -- --randomize --seed=${{ github.run_number }}
       - name: Committed openapi.json is up to date
         run: |
           npm run openapi:export
@@ -114,3 +118,5 @@ jobs:
         run: dart run tool/merge_arb.dart --check
       - run: flutter analyze
       - run: flutter test
+      - name: flutter test in random order
+        run: flutter test --test-randomize-ordering-seed=random

@@ -16,6 +16,7 @@ import {
   uniqueText,
 } from './community-helpers';
 import type { TestApp } from './utils/test-app';
+import { orderedSteps } from './utils/ordered-steps';
 
 interface Review {
   id: string;
@@ -52,9 +53,10 @@ describe('Community content (e2e)', () => {
   });
 
   describe('reviews', () => {
+    const { step, run } = orderedSteps();
     let reviewId: string;
 
-    it('guests cannot write (401); unverified e-mail → 403 EMAIL_NOT_VERIFIED', async () => {
+    step('guests cannot write (401); unverified e-mail → 403 EMAIL_NOT_VERIFIED', async () => {
       await t
         .http()
         .post('/api/v1/community/reviews')
@@ -70,7 +72,7 @@ describe('Community content (e2e)', () => {
       expect(res.body.error.code).toBe('EMAIL_NOT_VERIFIED');
     });
 
-    it('needs exactly one target and dimensions that fit it (422)', async () => {
+    step('needs exactly one target and dimensions that fit it (422)', async () => {
       await t
         .http()
         .post('/api/v1/community/reviews')
@@ -91,7 +93,7 @@ describe('Community content (e2e)', () => {
       expect(res.body.error.details[0].field).toBe('ratings');
     });
 
-    it('a new review waits for moderation and carries no badge', async () => {
+    step('a new review waits for moderation and carries no badge', async () => {
       const res = await t
         .http()
         .post('/api/v1/community/reviews?lang=en')
@@ -120,7 +122,7 @@ describe('Community content (e2e)', () => {
       expect(r.ratings[0].label).toBe('Charging');
     });
 
-    it('pending reviews are invisible publicly but visible to their author', async () => {
+    step('pending reviews are invisible publicly but visible to their author', async () => {
       const list = await t
         .http()
         .get(`/api/v1/community/reviews?variantId=${car.variantId}`)
@@ -137,7 +139,7 @@ describe('Community content (e2e)', () => {
       expect(own.body.data.status).toBe('pending');
     });
 
-    it('one review per user and variant (409 COMMUNITY_REVIEW_EXISTS)', async () => {
+    step('one review per user and variant (409 COMMUNITY_REVIEW_EXISTS)', async () => {
       const res = await t
         .http()
         .post('/api/v1/community/reviews')
@@ -148,77 +150,86 @@ describe('Community content (e2e)', () => {
       expect(res.body.error.details.existingId).toBe(reviewId);
     });
 
-    it('once approved it is listed and summarized (null averages when nothing is rated)', async () => {
-      await moderate(t, mod, 'reviews', reviewId, 'approve');
-      const list = await t
-        .http()
-        .get(`/api/v1/community/reviews?variantId=${car.variantId}&lang=ar`)
-        .expect(200);
-      expect(list.body.data).toHaveLength(1);
-      expect(list.body.data[0]).toMatchObject({
-        id: reviewId,
-        status: 'approved',
-        verifiedOwner: false,
-      });
-      expect(list.headers['cache-control']).toContain('public');
+    step(
+      'once approved it is listed and summarized (null averages when nothing is rated)',
+      async () => {
+        await moderate(t, mod, 'reviews', reviewId, 'approve');
+        const list = await t
+          .http()
+          .get(`/api/v1/community/reviews?variantId=${car.variantId}&lang=ar`)
+          .expect(200);
+        expect(list.body.data).toHaveLength(1);
+        expect(list.body.data[0]).toMatchObject({
+          id: reviewId,
+          status: 'approved',
+          verifiedOwner: false,
+        });
+        expect(list.headers['cache-control']).toContain('public');
 
-      const sum = await t
-        .http()
-        .get(`/api/v1/community/reviews/summary?variantId=${car.variantId}&lang=en`)
-        .expect(200);
-      expect(sum.body.data).toMatchObject({ count: 1, average: 4, verifiedOwnerCount: 0 });
-      expect(sum.body.data.distribution).toContainEqual({ rating: 4, count: 1 });
-      const dims = sum.body.data.dimensions as {
-        dimension: string;
-        average: number | null;
-        count: number;
-      }[];
-      expect(dims.find((d) => d.dimension === 'charging')).toMatchObject({ average: 5, count: 1 });
-      expect(dims.find((d) => d.dimension === 'reliability')).toMatchObject({
-        average: null,
-        count: 0,
-      });
+        const sum = await t
+          .http()
+          .get(`/api/v1/community/reviews/summary?variantId=${car.variantId}&lang=en`)
+          .expect(200);
+        expect(sum.body.data).toMatchObject({ count: 1, average: 4, verifiedOwnerCount: 0 });
+        expect(sum.body.data.distribution).toContainEqual({ rating: 4, count: 1 });
+        const dims = sum.body.data.dimensions as {
+          dimension: string;
+          average: number | null;
+          count: number;
+        }[];
+        expect(dims.find((d) => d.dimension === 'charging')).toMatchObject({
+          average: 5,
+          count: 1,
+        });
+        expect(dims.find((d) => d.dimension === 'reliability')).toMatchObject({
+          average: null,
+          count: 0,
+        });
 
-      const empty = await t
-        .http()
-        .get(`/api/v1/community/reviews/summary?variantId=${otherCar.variantId}`)
-        .expect(200);
-      expect(empty.body.data).toMatchObject({ count: 0, average: null });
-    });
+        const empty = await t
+          .http()
+          .get(`/api/v1/community/reviews/summary?variantId=${otherCar.variantId}`)
+          .expect(200);
+        expect(empty.body.data).toMatchObject({ count: 0, average: null });
+      },
+    );
 
-    it('no verified-owner badge without an approved verification (API filter + DB rule)', async () => {
-      const verified = await t
-        .http()
-        .get(`/api/v1/community/reviews?variantId=${car.variantId}&verifiedOnly=true`)
-        .expect(200);
-      expect(verified.body.data).toEqual([]);
-      // The flag cannot be forced (the trigger keeps it equal to the link), and a
-      // pending verification cannot back a badge.
-      const forced = await t.prisma.review.update({
-        where: { id: reviewId },
-        data: { isVerifiedOwner: true },
-      });
-      expect(forced.isVerifiedOwner).toBe(false);
-      const pending = await t.prisma.ownerVerification.create({
-        data: { userId: alice.userId, variantId: car.variantId, method: 'document_review' },
-      });
-      await expect(
-        t.prisma.review.update({
+    step(
+      'no verified-owner badge without an approved verification (API filter + DB rule)',
+      async () => {
+        const verified = await t
+          .http()
+          .get(`/api/v1/community/reviews?variantId=${car.variantId}&verifiedOnly=true`)
+          .expect(200);
+        expect(verified.body.data).toEqual([]);
+        // The flag cannot be forced (the trigger keeps it equal to the link), and a
+        // pending verification cannot back a badge.
+        const forced = await t.prisma.review.update({
           where: { id: reviewId },
-          data: { ownerVerificationId: pending.id },
-        }),
-      ).rejects.toThrow(/reviews_verified_owner_chk/);
-      await t.prisma.ownerVerification.delete({ where: { id: pending.id } });
-      // Clients cannot send the badge either (unknown field → 422).
-      await t
-        .http()
-        .post('/api/v1/community/reviews')
-        .set(bob.auth)
-        .send({ variantId: car.variantId, rating: 5, body: reviewText(), isVerifiedOwner: true })
-        .expect(422);
-    });
+          data: { isVerifiedOwner: true },
+        });
+        expect(forced.isVerifiedOwner).toBe(false);
+        const pending = await t.prisma.ownerVerification.create({
+          data: { userId: alice.userId, variantId: car.variantId, method: 'document_review' },
+        });
+        await expect(
+          t.prisma.review.update({
+            where: { id: reviewId },
+            data: { ownerVerificationId: pending.id },
+          }),
+        ).rejects.toThrow(/reviews_verified_owner_chk/);
+        await t.prisma.ownerVerification.delete({ where: { id: pending.id } });
+        // Clients cannot send the badge either (unknown field → 422).
+        await t
+          .http()
+          .post('/api/v1/community/reviews')
+          .set(bob.auth)
+          .send({ variantId: car.variantId, rating: 5, body: reviewText(), isVerifiedOwner: true })
+          .expect(422);
+      },
+    );
 
-    it('editing sends the review back to moderation; deleting removes it', async () => {
+    step('editing sends the review back to moderation; deleting removes it', async () => {
       const res = await t
         .http()
         .patch(`/api/v1/community/reviews/${reviewId}`)
@@ -237,9 +248,11 @@ describe('Community content (e2e)', () => {
         .expect(403);
       await moderate(t, mod, 'reviews', reviewId, 'approve');
     });
+    it('workflow: the steps above, in order', () => run(), run.timeout);
   });
 
   describe('comments', () => {
+    const { step, run } = orderedSteps();
     let article: { id: string };
     let commentId: string;
 
@@ -247,7 +260,7 @@ describe('Community content (e2e)', () => {
       article = await publishArticle(t, await newsStaff(t));
     });
 
-    it('a clean comment by an established account is published at once', async () => {
+    step('a clean comment by an established account is published at once', async () => {
       const res = await t
         .http()
         .post('/api/v1/comments')
@@ -294,35 +307,38 @@ describe('Community content (e2e)', () => {
       expect(list.body.data[0].replies).toHaveLength(2);
     });
 
-    it('the reply must be on the same target; unpublished targets are refused (422)', async () => {
-      await t
-        .http()
-        .post('/api/v1/comments')
-        .set(bob.auth)
-        .send({
-          targetType: 'variant',
-          targetId: car.variantId,
-          parentId: commentId,
-          body: uniqueText(),
-        })
-        .expect(422);
-      await t.prisma.vehicleVariant.update({
-        where: { id: otherCar.variantId },
-        data: { status: 'draft' },
-      });
-      await t
-        .http()
-        .post('/api/v1/comments')
-        .set(bob.auth)
-        .send({ targetType: 'variant', targetId: otherCar.variantId, body: uniqueText() })
-        .expect(422);
-      await t.prisma.vehicleVariant.update({
-        where: { id: otherCar.variantId },
-        data: { status: 'published' },
-      });
-    });
+    step(
+      'the reply must be on the same target; unpublished targets are refused (422)',
+      async () => {
+        await t
+          .http()
+          .post('/api/v1/comments')
+          .set(bob.auth)
+          .send({
+            targetType: 'variant',
+            targetId: car.variantId,
+            parentId: commentId,
+            body: uniqueText(),
+          })
+          .expect(422);
+        await t.prisma.vehicleVariant.update({
+          where: { id: otherCar.variantId },
+          data: { status: 'draft' },
+        });
+        await t
+          .http()
+          .post('/api/v1/comments')
+          .set(bob.auth)
+          .send({ targetType: 'variant', targetId: otherCar.variantId, body: uniqueText() })
+          .expect(422);
+        await t.prisma.vehicleVariant.update({
+          where: { id: otherCar.variantId },
+          data: { status: 'published' },
+        });
+      },
+    );
 
-    it('articles with comments turned off → 409 COMMUNITY_COMMENTS_CLOSED', async () => {
+    step('articles with comments turned off → 409 COMMUNITY_COMMENTS_CLOSED', async () => {
       await t.prisma.article.update({ where: { id: article.id }, data: { allowComments: false } });
       const res = await t
         .http()
@@ -334,7 +350,7 @@ describe('Community content (e2e)', () => {
       await t.prisma.article.update({ where: { id: article.id }, data: { allowComments: true } });
     });
 
-    it('comments on car model and variant pages', async () => {
+    step('comments on car model and variant pages', async () => {
       await t
         .http()
         .post('/api/v1/comments')
@@ -348,75 +364,83 @@ describe('Community content (e2e)', () => {
       expect(list.body.meta.total).toBe(1);
     });
 
-    it('a comment with a link is held for review (invisible publicly, visible to its author)', async () => {
-      const res = await t
-        .http()
-        .post('/api/v1/comments')
-        .set(carol.auth)
-        .send({
-          targetType: 'variant',
-          targetId: car.variantId,
-          body: 'Details at https://example.com/test',
-        })
-        .expect(201);
-      expect(res.body.data.status).toBe('pending');
-      const list = await t
-        .http()
-        .get(`/api/v1/comments?targetType=variant&targetId=${car.variantId}`)
-        .expect(200);
-      expect(list.body.data.map((c: { id: string }) => c.id)).not.toContain(res.body.data.id);
-      const mine = await t
-        .http()
-        .get('/api/v1/me/community/content?type=comment')
-        .set(carol.auth)
-        .expect(200);
-      expect(mine.body.data).toContainEqual(
-        expect.objectContaining({ id: res.body.data.id, status: 'pending' }),
-      );
-      const signal = await t.prisma.spamSignal.findFirst({
-        where: { targetType: 'comment', targetId: res.body.data.id, signal: 'link_spam' },
-      });
-      expect(signal).not.toBeNull();
-    });
+    step(
+      'a comment with a link is held for review (invisible publicly, visible to its author)',
+      async () => {
+        const res = await t
+          .http()
+          .post('/api/v1/comments')
+          .set(carol.auth)
+          .send({
+            targetType: 'variant',
+            targetId: car.variantId,
+            body: 'Details at https://example.com/test',
+          })
+          .expect(201);
+        expect(res.body.data.status).toBe('pending');
+        const list = await t
+          .http()
+          .get(`/api/v1/comments?targetType=variant&targetId=${car.variantId}`)
+          .expect(200);
+        expect(list.body.data.map((c: { id: string }) => c.id)).not.toContain(res.body.data.id);
+        const mine = await t
+          .http()
+          .get('/api/v1/me/community/content?type=comment')
+          .set(carol.auth)
+          .expect(200);
+        expect(mine.body.data).toContainEqual(
+          expect.objectContaining({ id: res.body.data.id, status: 'pending' }),
+        );
+        const signal = await t.prisma.spamSignal.findFirst({
+          where: { targetType: 'comment', targetId: res.body.data.id, signal: 'link_spam' },
+        });
+        expect(signal).not.toBeNull();
+      },
+    );
 
-    it('hidden content is invisible publicly (list, detail, replies); the author sees "hidden"', async () => {
-      await moderate(t, mod, 'comments', commentId, 'hide', 'Test hide');
-      const list = await t
-        .http()
-        .get(`/api/v1/comments?targetType=article&targetId=${article.id}`)
-        .expect(200);
-      expect(list.body.data).toEqual([]);
-      await t.http().get(`/api/v1/comments/${commentId}`).expect(404);
-      await t.http().get(`/api/v1/comments/${commentId}`).set(bob.auth).expect(404);
-      const own = await t.http().get(`/api/v1/comments/${commentId}`).set(alice.auth).expect(200);
-      expect(own.body.data.status).toBe('hidden');
-      const replies = await t
-        .http()
-        .get(`/api/v1/comments/${commentId}/replies`)
-        .set(alice.auth)
-        .expect(200);
-      expect(replies.body.data).toEqual([]);
-      // Hidden content cannot be edited by its author.
-      await t
-        .http()
-        .patch(`/api/v1/comments/${commentId}`)
-        .set(alice.auth)
-        .send({ body: uniqueText() })
-        .expect(409);
-      await moderate(t, mod, 'comments', commentId, 'restore');
-      const back = await t
-        .http()
-        .get(`/api/v1/comments?targetType=article&targetId=${article.id}`)
-        .expect(200);
-      expect(back.body.data).toHaveLength(1);
-    });
+    step(
+      'hidden content is invisible publicly (list, detail, replies); the author sees "hidden"',
+      async () => {
+        await moderate(t, mod, 'comments', commentId, 'hide', 'Test hide');
+        const list = await t
+          .http()
+          .get(`/api/v1/comments?targetType=article&targetId=${article.id}`)
+          .expect(200);
+        expect(list.body.data).toEqual([]);
+        await t.http().get(`/api/v1/comments/${commentId}`).expect(404);
+        await t.http().get(`/api/v1/comments/${commentId}`).set(bob.auth).expect(404);
+        const own = await t.http().get(`/api/v1/comments/${commentId}`).set(alice.auth).expect(200);
+        expect(own.body.data.status).toBe('hidden');
+        const replies = await t
+          .http()
+          .get(`/api/v1/comments/${commentId}/replies`)
+          .set(alice.auth)
+          .expect(200);
+        expect(replies.body.data).toEqual([]);
+        // Hidden content cannot be edited by its author.
+        await t
+          .http()
+          .patch(`/api/v1/comments/${commentId}`)
+          .set(alice.auth)
+          .send({ body: uniqueText() })
+          .expect(409);
+        await moderate(t, mod, 'comments', commentId, 'restore');
+        const back = await t
+          .http()
+          .get(`/api/v1/comments?targetType=article&targetId=${article.id}`)
+          .expect(200);
+        expect(back.body.data).toHaveLength(1);
+      },
+    );
+    it('workflow: the steps above, in order', () => run(), run.timeout);
   });
 
   describe('questions & answers', () => {
+    const { step, run } = orderedSteps();
     let questionId: string;
     let answerId: string;
 
-    it('asks a question about a car model and gets answers', async () => {
+    step('asks a question about a car model and gets answers', async () => {
       const q = await t
         .http()
         .post('/api/v1/questions')
@@ -453,11 +477,11 @@ describe('Community content (e2e)', () => {
       expect(listed.body.data[0]).toMatchObject({ id: questionId, answerCount: 1 });
     });
 
-    it('targetType and targetId go together (422)', async () => {
+    step('targetType and targetId go together (422)', async () => {
       await t.http().get(`/api/v1/questions?targetType=model`).expect(422);
     });
 
-    it('only the asker accepts an answer', async () => {
+    step('only the asker accepts an answer', async () => {
       await t
         .http()
         .post(`/api/v1/questions/${questionId}/accept`)
@@ -476,7 +500,7 @@ describe('Community content (e2e)', () => {
       expect(answers.body.data[0]).toMatchObject({ id: answerId, isAccepted: true });
     });
 
-    it('helpful votes: once per user, changeable, removable, never on own posts', async () => {
+    step('helpful votes: once per user, changeable, removable, never on own posts', async () => {
       const url = '/api/v1/community/votes';
       await t
         .http()
@@ -535,7 +559,7 @@ describe('Community content (e2e)', () => {
       expect(asGuest.body.data[0].votes.myVote).toBeNull();
     });
 
-    it('votes on hidden content → 404; deleting an accepted answer clears it', async () => {
+    step('votes on hidden content → 404; deleting an accepted answer clears it', async () => {
       await moderate(t, mod, 'answers', answerId, 'hide');
       await t
         .http()
@@ -552,6 +576,7 @@ describe('Community content (e2e)', () => {
         answerCount: 0,
       });
     });
+    it('workflow: the steps above, in order', () => run(), run.timeout);
   });
 
   describe('user mutes ("block this user" for me)', () => {

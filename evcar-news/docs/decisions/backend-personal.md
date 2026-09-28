@@ -321,3 +321,7 @@ None. Existing tables were enough (`user_vehicles`, `charging_logs`, `reminders`
 - **Other modules**: inject `NotificationService` (export of `NotificationsModule`) and call
   `notify({ userIds, type, category, dedupeKey, content: {ar:{title,body}, en:{title,body}}, deepLink, data })`.
   `VehicleDataService` (export of `CalculatorsModule`) resolves catalog battery / charging / consumption values.
+
+## Review 3 (2026-09-28)
+
+See `review-fixes-3.md`: the trip planner goes through `RoutingGuardService` (route cache, global minute/day budget → 503 `INTEGRATION_QUOTA`, 6 plans/min/IP); `/me/notification-preferences` returns `supported.types` / `supported.topicTypes` (only news is produced today).

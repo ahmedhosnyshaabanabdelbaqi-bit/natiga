@@ -209,3 +209,7 @@ feature-flag checks are unchanged.
   `STATION_MERGED.mergedIntoId`.
 * **Trips team:** `evaluateOpenNow(StationHours, instant)` evaluates opening
   hours at any instant (e.g. ETA) in the station time zone.
+
+## Review 3 (2026-09-28)
+
+See `review-fixes-3.md`: tariff prices use `AppFormatters.rate()` (4 decimals, never 0.00); on-device open-now returns unknown when the previous day is unknown (parity fixture `open_now_parity.json`).

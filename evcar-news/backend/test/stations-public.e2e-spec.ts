@@ -15,6 +15,7 @@ import {
   uniq,
 } from './stations-helpers';
 import { createTestApp, type TestApp } from './utils/test-app';
+import { orderedSteps } from './utils/ordered-steps';
 
 describe('Stations public API (e2e)', () => {
   let t: TestApp;
@@ -592,6 +593,7 @@ describe('Stations public API (e2e)', () => {
   });
 
   describe('live availability (expired → unknown, never available by default)', () => {
+    const { step, run } = orderedSteps();
     let stationId: string;
     let c: string[];
     let points: string[];
@@ -612,7 +614,7 @@ describe('Stations public API (e2e)', () => {
       points = s.pointIds;
     });
 
-    it('with only expired observations the station is unknown', async () => {
+    step('with only expired observations the station is unknown', async () => {
       const now = Date.now();
       await t.prisma.availabilityObservation.create({
         data: {
@@ -639,7 +641,7 @@ describe('Stations public API (e2e)', () => {
       expect(res.body.data.availability).toMatchObject({ isLive: false, status: 'unknown' });
     });
 
-    it('ingested live observations are shown with source and expiry, then expire', async () => {
+    step('ingested live observations are shown with source and expiry, then expire', async () => {
       const manager = await userWithRoles(t, ['station_manager']);
       const observedAt = new Date(Date.now() - 60_000).toISOString();
       const ingest = await t
@@ -689,7 +691,7 @@ describe('Stations public API (e2e)', () => {
       expect(later1).toMatchObject({ status: 'unknown', freshness: 'expired' });
     });
 
-    it('ingestion refuses unknown targets, future and station-level readings', async () => {
+    step('ingestion refuses unknown targets, future and station-level readings', async () => {
       const manager = await userWithRoles(t, ['station_manager']);
       const now = new Date().toISOString();
       for (const obs of [
@@ -723,6 +725,7 @@ describe('Stations public API (e2e)', () => {
         })
         .expect(403);
     });
+    it('workflow: the steps above, in order', () => run(), run.timeout);
   });
 
   describe('compatibility with my vehicle (verified inlets only)', () => {

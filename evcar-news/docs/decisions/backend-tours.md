@@ -352,3 +352,7 @@ or `MediaProcessingService.process(id)`), verified in `tours-workflow`.
   viewer needs (plus the two embed origins for videos).
 - **Integrator**: the demo seed could run `MediaProcessingService.process()`
   for its two panoramas so the demo tour has multires tiles without a worker.
+
+## Review 3 (2026-09-28)
+
+See `review-fixes-3.md`: a reference tour must use a trim of the same model generation (422 `referenceVariantId.sameModel`).

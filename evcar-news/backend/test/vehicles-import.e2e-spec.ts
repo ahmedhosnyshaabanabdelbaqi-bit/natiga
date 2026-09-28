@@ -7,10 +7,12 @@
  */
 import { userWithRoles, waitForAudit, type PlatformUser } from './platform-helpers';
 import { createTestApp, type TestApp } from './utils/test-app';
+import { orderedSteps } from './utils/ordered-steps';
 
 const csv = (lines: string[]) => Buffer.from(`${lines.join('\n')}\n`, 'utf8');
 
 describe('Vehicles CSV import / export (e2e)', () => {
+  const { step, run } = orderedSteps();
   let t: TestApp;
   let manager: PlatformUser;
   let admin: PlatformUser;
@@ -60,7 +62,7 @@ describe('Vehicles CSV import / export (e2e)', () => {
   const BEV = 'csvtest-motors-nova-2025-base-bev';
   const PHEV = 'csvtest-motors-nova-2025-base-phev';
 
-  it('lists templates and serves an empty CSV template', async () => {
+  step('lists templates and serves an empty CSV template', async () => {
     const list = await t
       .http()
       .get('/api/v1/admin/vehicles/import/templates?lang=en')
@@ -87,12 +89,12 @@ describe('Vehicles CSV import / export (e2e)', () => {
       .expect(404);
   });
 
-  it('needs imports.run + vehicles.write', async () => {
+  step('needs imports.run + vehicles.write', async () => {
     await upload(normal, 'variants', csv(VARIANTS)).expect(403);
     await upload(editor, 'variants', csv(VARIANTS)).expect(403);
   });
 
-  it('refuses malformed files with CSV_INVALID', async () => {
+  step('refuses malformed files with CSV_INVALID', async () => {
     const unknown = await upload(manager, 'variants', csv(['brand_slug,surprise', 'x,y'])).expect(
       422,
     );
@@ -108,7 +110,7 @@ describe('Vehicles CSV import / export (e2e)', () => {
     await upload(manager, 'variants', csv([VARIANTS[0]])).expect(422);
   });
 
-  it('dry run: row errors and duplicates, nothing written', async () => {
+  step('dry run: row errors and duplicates, nothing written', async () => {
     const res = await upload(manager, 'variants', csv(VARIANTS)).expect(200);
     const d = res.body.data;
     previewId = d.job.id;
@@ -133,7 +135,7 @@ describe('Vehicles CSV import / export (e2e)', () => {
     expect(audit.entityId).toBe(previewId);
   });
 
-  it('commit applies the preview once (idempotent)', async () => {
+  step('commit applies the preview once (idempotent)', async () => {
     const res = await t
       .http()
       .post(`/api/v1/admin/vehicles/import/jobs/${previewId}/commit`)
@@ -172,7 +174,7 @@ describe('Vehicles CSV import / export (e2e)', () => {
     });
   });
 
-  it('re-importing the same file changes nothing', async () => {
+  step('re-importing the same file changes nothing', async () => {
     const res = await upload(manager, 'variants', csv(VARIANTS), false).expect(200);
     expect(res.body.data.summary).toMatchObject({
       create: 0,
@@ -192,108 +194,111 @@ describe('Vehicles CSV import / export (e2e)', () => {
     expect(upd.body.data.summary).toMatchObject({ update: 1 });
   });
 
-  it('imports markets, specs (canonical units), ranges and consumption with row-level rules', async () => {
-    const markets = await upload(
-      manager,
-      'variant_markets',
-      csv([
-        'variant_slug,market,availability,local_name_en',
-        `${BEV},EG,available,Nova Base EG`,
-        `${PHEV},EG,available,`,
-        `${BEV},ZZ,available,`,
-        `no-such-variant,EG,available,`,
-      ]),
-      false,
-    ).expect(200);
-    expect(markets.body.data.summary).toMatchObject({ create: 2, invalid: 2 });
+  step(
+    'imports markets, specs (canonical units), ranges and consumption with row-level rules',
+    async () => {
+      const markets = await upload(
+        manager,
+        'variant_markets',
+        csv([
+          'variant_slug,market,availability,local_name_en',
+          `${BEV},EG,available,Nova Base EG`,
+          `${PHEV},EG,available,`,
+          `${BEV},ZZ,available,`,
+          `no-such-variant,EG,available,`,
+        ]),
+        false,
+      ).expect(200);
+      expect(markets.body.data.summary).toMatchObject({ create: 2, invalid: 2 });
 
-    const source = await t
-      .http()
-      .post('/api/v1/admin/spec-sources')
-      .set(manager.auth)
-      .send({ type: 'manufacturer', title: 'CSV test sheet (fictional)' })
-      .expect(201);
-    const sourceId = source.body.data.id as string;
-    const specs = await upload(
-      writer,
-      'specs',
-      csv([
-        'variant_slug,spec_key,market,value,unit,original_value,original_unit,reliability,source_id',
-        `${BEV},battery.usable_kwh,,77.5,,,,manufacturer_claim,${sourceId}`,
-        `${BEV},performance.power_kw,,340,PS,,,,`,
-        `${BEV},battery.chemistry,,"=HYPERLINK(""x"")",,,,,`,
-        `${BEV},safety.aeb,,نعم,,,,,`,
-        `${BEV},battery.gross_kwh,,80,,,,verified,${sourceId}`,
-        `${BEV},no.key,,1,,,,,`,
-        `${PHEV},charging.ac_max_kw,,6.6,,,,,`,
-      ]),
-      false,
-    ).expect(200);
-    const s = specs.body.data;
-    expect(s.summary).toMatchObject({ create: 5, invalid: 2 });
-    const forbidden = s.rows.find((r: { rowNumber: number }) => r.rowNumber === 5);
-    expect(forbidden.errors[0].code).toBe('verify_permission_required');
-    const power = await t.prisma.vehicleSpecification.findFirstOrThrow({
-      where: { variant: { slug: BEV }, specKey: 'performance.power_kw' },
-    });
-    expect(Number(power.valueNum)).toBeCloseTo(250.07, 1);
-    expect(power).toMatchObject({ originalValue: '340', originalUnit: 'PS', unit: 'kW' });
+      const source = await t
+        .http()
+        .post('/api/v1/admin/spec-sources')
+        .set(manager.auth)
+        .send({ type: 'manufacturer', title: 'CSV test sheet (fictional)' })
+        .expect(201);
+      const sourceId = source.body.data.id as string;
+      const specs = await upload(
+        writer,
+        'specs',
+        csv([
+          'variant_slug,spec_key,market,value,unit,original_value,original_unit,reliability,source_id',
+          `${BEV},battery.usable_kwh,,77.5,,,,manufacturer_claim,${sourceId}`,
+          `${BEV},performance.power_kw,,340,PS,,,,`,
+          `${BEV},battery.chemistry,,"=HYPERLINK(""x"")",,,,,`,
+          `${BEV},safety.aeb,,نعم,,,,,`,
+          `${BEV},battery.gross_kwh,,80,,,,verified,${sourceId}`,
+          `${BEV},no.key,,1,,,,,`,
+          `${PHEV},charging.ac_max_kw,,6.6,,,,,`,
+        ]),
+        false,
+      ).expect(200);
+      const s = specs.body.data;
+      expect(s.summary).toMatchObject({ create: 5, invalid: 2 });
+      const forbidden = s.rows.find((r: { rowNumber: number }) => r.rowNumber === 5);
+      expect(forbidden.errors[0].code).toBe('verify_permission_required');
+      const power = await t.prisma.vehicleSpecification.findFirstOrThrow({
+        where: { variant: { slug: BEV }, specKey: 'performance.power_kw' },
+      });
+      expect(Number(power.valueNum)).toBeCloseTo(250.07, 1);
+      expect(power).toMatchObject({ originalValue: '340', originalUnit: 'PS', unit: 'kW' });
 
-    const ranges = await upload(
-      manager,
-      'ranges',
-      csv([
-        'variant_slug,market,cycle,range_type,value,unit',
-        `${BEV},,WLTP,electric,300,mi`,
-        `${BEV},,WLTP,total,900,`,
-        `${PHEV},,WLTP,total,1000,`,
-        `${PHEV},,NEDC,electric,90,`,
-        `${BEV},,OTHER,electric,500,`,
-      ]),
-      false,
-    ).expect(200);
-    const r = ranges.body.data;
-    expect(r.summary).toMatchObject({ create: 3, invalid: 2 });
-    expect(r.rows.find((x: { rowNumber: number }) => x.rowNumber === 2).errors[0].code).toBe(
-      'not_applicable_to_powertrain',
-    );
-    expect(r.rows.find((x: { rowNumber: number }) => x.rowNumber === 5).errors[0].field).toBe(
-      'cycle_note',
-    );
-    const bevRange = await t.prisma.rangeMeasurement.findFirstOrThrow({
-      where: { variant: { slug: BEV } },
-    });
-    expect(Number(bevRange.valueKm)).toBeCloseTo(482.8, 1);
+      const ranges = await upload(
+        manager,
+        'ranges',
+        csv([
+          'variant_slug,market,cycle,range_type,value,unit',
+          `${BEV},,WLTP,electric,300,mi`,
+          `${BEV},,WLTP,total,900,`,
+          `${PHEV},,WLTP,total,1000,`,
+          `${PHEV},,NEDC,electric,90,`,
+          `${BEV},,OTHER,electric,500,`,
+        ]),
+        false,
+      ).expect(200);
+      const r = ranges.body.data;
+      expect(r.summary).toMatchObject({ create: 3, invalid: 2 });
+      expect(r.rows.find((x: { rowNumber: number }) => x.rowNumber === 2).errors[0].code).toBe(
+        'not_applicable_to_powertrain',
+      );
+      expect(r.rows.find((x: { rowNumber: number }) => x.rowNumber === 5).errors[0].field).toBe(
+        'cycle_note',
+      );
+      const bevRange = await t.prisma.rangeMeasurement.findFirstOrThrow({
+        where: { variant: { slug: BEV } },
+      });
+      expect(Number(bevRange.valueKm)).toBeCloseTo(482.8, 1);
 
-    const cons = await upload(
-      manager,
-      'consumption',
-      csv([
-        'variant_slug,cycle,kind,mode,value,unit',
-        `${PHEV},WLTP,fuel,charge_sustaining,5.3,`,
-        `${BEV},WLTP,fuel,,5.3,`,
-        `${BEV},WLTP,electricity,,6.2,km/kWh`,
-      ]),
-      false,
-    ).expect(200);
-    expect(cons.body.data.summary).toMatchObject({ create: 2, invalid: 1 });
+      const cons = await upload(
+        manager,
+        'consumption',
+        csv([
+          'variant_slug,cycle,kind,mode,value,unit',
+          `${PHEV},WLTP,fuel,charge_sustaining,5.3,`,
+          `${BEV},WLTP,fuel,,5.3,`,
+          `${BEV},WLTP,electricity,,6.2,km/kWh`,
+        ]),
+        false,
+      ).expect(200);
+      expect(cons.body.data.summary).toMatchObject({ create: 2, invalid: 1 });
 
-    const times = await upload(
-      manager,
-      'charging_times',
-      csv([
-        'variant_slug,current_type,from_soc,to_soc,duration,charger_power_kw,conditions',
-        `${BEV},DC,10,80,28,150,`,
-        `${BEV},DC,80,10,28,150,`,
-        `${BEV},DC,10,80,40,,`,
-        `${BEV},AC,0,100,7.5,11,`,
-      ]),
-      false,
-    ).expect(200);
-    expect(times.body.data.summary).toMatchObject({ create: 2, invalid: 2 });
-  });
+      const times = await upload(
+        manager,
+        'charging_times',
+        csv([
+          'variant_slug,current_type,from_soc,to_soc,duration,charger_power_kw,conditions',
+          `${BEV},DC,10,80,28,150,`,
+          `${BEV},DC,80,10,28,150,`,
+          `${BEV},DC,10,80,40,,`,
+          `${BEV},AC,0,100,7.5,11,`,
+        ]),
+        false,
+      ).expect(200);
+      expect(times.body.data.summary).toMatchObject({ create: 2, invalid: 2 });
+    },
+  );
 
-  it('prices: permission, source, local currency, history — never converted', async () => {
+  step('prices: permission, source, local currency, history — never converted', async () => {
     const header =
       'variant_slug,market,amount,currency,price_type,effective_from,effective_to,source_title,source_type,source_url';
     await upload(
@@ -361,7 +366,7 @@ describe('Vehicles CSV import / export (e2e)', () => {
     expect(same.body.data.summary).toMatchObject({ unchanged: 1 });
   });
 
-  it('export is restricted, audited and round-trips as unchanged', async () => {
+  step('export is restricted, audited and round-trips as unchanged', async () => {
     await t.http().get('/api/v1/admin/vehicles/export/specs').set(manager.auth).expect(403); // no data.export
     await t.http().get('/api/v1/admin/vehicles/export/specs').set(editor.auth).expect(403);
     const res = await t
@@ -403,4 +408,5 @@ describe('Vehicles CSV import / export (e2e)', () => {
       expect(sum.unchanged).toBe(sum.total);
     }
   });
+  it('workflow: the steps above, in order', () => run(), run.timeout);
 });

@@ -226,6 +226,9 @@ class ApiException implements Exception {
 
   static ApiErrorKind _kindFor(int? status, String? code) {
     if (code == notConfiguredCode) return ApiErrorKind.notConfigured;
+    // 503 when the operator's shared budget of a paid service (e.g. routing)
+    // is used up: "try again later" with the server's message (review 3).
+    if (code == 'INTEGRATION_QUOTA') return ApiErrorKind.rateLimited;
     if (code == 'VALIDATION_FAILED') return ApiErrorKind.validation;
     if (code == 'NOT_IMPLEMENTED') return ApiErrorKind.notImplemented;
     if (status == null) return ApiErrorKind.badResponse;

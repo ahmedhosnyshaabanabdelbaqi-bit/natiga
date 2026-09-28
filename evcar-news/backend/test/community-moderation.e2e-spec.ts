@@ -20,6 +20,7 @@ import {
   uniqueText,
 } from './community-helpers';
 import type { TestApp } from './utils/test-app';
+import { orderedSteps } from './utils/ordered-steps';
 
 describe('Community moderation (e2e)', () => {
   let t: TestApp;
@@ -49,6 +50,7 @@ describe('Community moderation (e2e)', () => {
   });
 
   describe('permissions (server-side)', () => {
+    const { step, run } = orderedSteps();
     let pendingReviewId: string;
 
     beforeAll(async () => {
@@ -61,7 +63,7 @@ describe('Community moderation (e2e)', () => {
       pendingReviewId = res.body.data.id;
     });
 
-    it('guests 401, plain users / editors / station managers 403', async () => {
+    step('guests 401, plain users / editors / station managers 403', async () => {
       await t.http().get('/api/v1/admin/community/reviews').expect(401);
       const editor = await member(t, { roles: ['editor'] });
       const stations = await member(t, { roles: ['station_manager'] });
@@ -83,43 +85,50 @@ describe('Community moderation (e2e)', () => {
       }
     });
 
-    it('community_moderator sees the queue and moderates (moderation_actions + audit log)', async () => {
-      const queue = await t.http().get('/api/v1/admin/community/reviews').set(mod.auth).expect(200);
-      expect(queue.body.data.map((i: { id: string }) => i.id)).toContain(pendingReviewId);
-      const overview = await t
-        .http()
-        .get('/api/v1/admin/community/overview')
-        .set(mod.auth)
-        .expect(200);
-      expect(overview.body.data.pending.review).toBeGreaterThanOrEqual(1);
-      await t.http().get('/api/v1/admin/community/unknown').set(mod.auth).expect(404);
+    step(
+      'community_moderator sees the queue and moderates (moderation_actions + audit log)',
+      async () => {
+        const queue = await t
+          .http()
+          .get('/api/v1/admin/community/reviews')
+          .set(mod.auth)
+          .expect(200);
+        expect(queue.body.data.map((i: { id: string }) => i.id)).toContain(pendingReviewId);
+        const overview = await t
+          .http()
+          .get('/api/v1/admin/community/overview')
+          .set(mod.auth)
+          .expect(200);
+        expect(overview.body.data.pending.review).toBeGreaterThanOrEqual(1);
+        await t.http().get('/api/v1/admin/community/unknown').set(mod.auth).expect(404);
 
-      const res = await t
-        .http()
-        .post(`/api/v1/admin/community/reviews/${pendingReviewId}/moderate`)
-        .set(mod.auth)
-        .send({ action: 'reject', reason: 'Test rejection' })
-        .expect(200);
-      expect(res.body.data).toMatchObject({ status: 'rejected' });
-      expect(res.body.data.history[0]).toMatchObject({
-        action: 'reject',
-        reason: 'Test rejection',
-      });
-      const audit = await t.prisma.auditLog.findFirst({
-        where: { actorId: mod.userId, entityId: pendingReviewId },
-      });
-      expect(audit).not.toBeNull();
-      // Invalid transition: a rejected item cannot be "approved" (use restore).
-      const bad = await t
-        .http()
-        .post(`/api/v1/admin/community/reviews/${pendingReviewId}/moderate`)
-        .set(mod.auth)
-        .send({ action: 'approve' })
-        .expect(409);
-      expect(bad.body.error.code).toBe('COMMUNITY_INVALID_TRANSITION');
-    });
+        const res = await t
+          .http()
+          .post(`/api/v1/admin/community/reviews/${pendingReviewId}/moderate`)
+          .set(mod.auth)
+          .send({ action: 'reject', reason: 'Test rejection' })
+          .expect(200);
+        expect(res.body.data).toMatchObject({ status: 'rejected' });
+        expect(res.body.data.history[0]).toMatchObject({
+          action: 'reject',
+          reason: 'Test rejection',
+        });
+        const audit = await t.prisma.auditLog.findFirst({
+          where: { actorId: mod.userId, entityId: pendingReviewId },
+        });
+        expect(audit).not.toBeNull();
+        // Invalid transition: a rejected item cannot be "approved" (use restore).
+        const bad = await t
+          .http()
+          .post(`/api/v1/admin/community/reviews/${pendingReviewId}/moderate`)
+          .set(mod.auth)
+          .send({ action: 'approve' })
+          .expect(409);
+        expect(bad.body.error.code).toBe('COMMUNITY_INVALID_TRANSITION');
+      },
+    );
 
-    it('deleted content can only be seen / restored by moderators', async () => {
+    step('deleted content can only be seen / restored by moderators', async () => {
       await moderate(t, mod, 'reviews', pendingReviewId, 'delete');
       await t
         .http()
@@ -136,6 +145,7 @@ describe('Community moderation (e2e)', () => {
       const back = await t.http().get(`/api/v1/community/reviews/${pendingReviewId}`).expect(200);
       expect(back.body.data.status).toBe('approved');
     });
+    it('workflow: the steps above, in order', () => run(), run.timeout);
   });
 
   describe('anti-spam', () => {
@@ -187,13 +197,14 @@ describe('Community moderation (e2e)', () => {
   });
 
   describe('reports', () => {
+    const { step, run } = orderedSteps();
     let target: string;
 
     beforeAll(async () => {
       target = (await comment(dave, uniqueText('Reported comment')).expect(201)).body.data.id;
     });
 
-    it('validates reporter, reason details and duplicates', async () => {
+    step('validates reporter, reason details and duplicates', async () => {
       const url = '/api/v1/community/reports';
       await t
         .http()
@@ -241,52 +252,57 @@ describe('Community moderation (e2e)', () => {
         .expect(201);
     });
 
-    it('three distinct reports hold the content; a moderator restore dismisses the reports', async () => {
-      await t
-        .http()
-        .post('/api/v1/community/reports')
-        .set(bob.auth)
-        .send({ targetType: 'comment', targetId: target, reason: 'abuse' })
-        .expect(201);
-      await t.http().get(`/api/v1/comments/${target}`).expect(200);
-      await t
-        .http()
-        .post('/api/v1/community/reports')
-        .set(carol.auth)
-        .send({ targetType: 'comment', targetId: target, reason: 'off_topic' })
-        .expect(201);
-      await t.http().get(`/api/v1/comments/${target}`).expect(404);
+    step(
+      'three distinct reports hold the content; a moderator restore dismisses the reports',
+      async () => {
+        await t
+          .http()
+          .post('/api/v1/community/reports')
+          .set(bob.auth)
+          .send({ targetType: 'comment', targetId: target, reason: 'abuse' })
+          .expect(201);
+        await t.http().get(`/api/v1/comments/${target}`).expect(200);
+        await t
+          .http()
+          .post('/api/v1/community/reports')
+          .set(carol.auth)
+          .send({ targetType: 'comment', targetId: target, reason: 'off_topic' })
+          .expect(201);
+        await t.http().get(`/api/v1/comments/${target}`).expect(404);
 
-      const queue = await t
-        .http()
-        .get('/api/v1/admin/community/comments?reported=true')
-        .set(mod.auth)
-        .expect(200);
-      expect(queue.body.data).toContainEqual(
-        expect.objectContaining({ id: target, openReports: 3 }),
-      );
-      const reports = await t
-        .http()
-        .get(`/api/v1/admin/community/reports?targetId=${target}`)
-        .set(mod.auth)
-        .expect(200);
-      expect(reports.body.meta.total).toBe(3);
-      expect(reports.body.data[0].target).toMatchObject({ status: 'pending' });
+        const queue = await t
+          .http()
+          .get('/api/v1/admin/community/comments?reported=true')
+          .set(mod.auth)
+          .expect(200);
+        expect(queue.body.data).toContainEqual(
+          expect.objectContaining({ id: target, openReports: 3 }),
+        );
+        const reports = await t
+          .http()
+          .get(`/api/v1/admin/community/reports?targetId=${target}`)
+          .set(mod.auth)
+          .expect(200);
+        expect(reports.body.meta.total).toBe(3);
+        expect(reports.body.data[0].target).toMatchObject({ status: 'pending' });
 
-      await moderate(t, mod, 'comments', target, 'approve', 'Test: reports not upheld');
-      await t.http().get(`/api/v1/comments/${target}`).expect(200);
-      const closed = await t.prisma.contentReport.findMany({ where: { targetId: target } });
-      expect(closed.every((r) => r.status === 'rejected' && r.handledById === mod.userId)).toBe(
-        true,
-      );
-      const mine = await t.http().get('/api/v1/me/community/reports').set(alice.auth).expect(200);
-      expect(mine.body.data).toContainEqual(
-        expect.objectContaining({ targetId: target, status: 'rejected' }),
-      );
-    });
+        await moderate(t, mod, 'comments', target, 'approve', 'Test: reports not upheld');
+        await t.http().get(`/api/v1/comments/${target}`).expect(200);
+        const closed = await t.prisma.contentReport.findMany({ where: { targetId: target } });
+        expect(closed.every((r) => r.status === 'rejected' && r.handledById === mod.userId)).toBe(
+          true,
+        );
+        const mine = await t.http().get('/api/v1/me/community/reports').set(alice.auth).expect(200);
+        expect(mine.body.data).toContainEqual(
+          expect.objectContaining({ targetId: target, status: 'rejected' }),
+        );
+      },
+    );
+    it('workflow: the steps above, in order', () => run(), run.timeout);
   });
 
   describe('blocks ("ban")', () => {
+    const { step, run } = orderedSteps();
     let spammer: Member;
     let postId: string;
 
@@ -295,7 +311,7 @@ describe('Community moderation (e2e)', () => {
       postId = (await comment(spammer, uniqueText('Before block')).expect(201)).body.data.id;
     });
 
-    it('moderators cannot block owners / admins / themselves', async () => {
+    step('moderators cannot block owners / admins / themselves', async () => {
       const owner = await member(t, { roles: ['owner'] });
       for (const id of [owner.userId, mod.userId]) {
         const res = await t
@@ -308,7 +324,7 @@ describe('Community moderation (e2e)', () => {
       }
     });
 
-    it('a blocked user cannot post, vote or report; hideContent hides their posts', async () => {
+    step('a blocked user cannot post, vote or report; hideContent hides their posts', async () => {
       const res = await t
         .http()
         .post(`/api/v1/admin/community/users/${spammer.userId}/block`)
@@ -359,7 +375,7 @@ describe('Community moderation (e2e)', () => {
       expect(overview.body.data.history[0]).toMatchObject({ action: 'block_user' });
     });
 
-    it('unblock restores posting (hidden posts stay hidden until restored)', async () => {
+    step('unblock restores posting (hidden posts stay hidden until restored)', async () => {
       await t
         .http()
         .post(`/api/v1/admin/community/users/${spammer.userId}/unblock`)
@@ -370,7 +386,7 @@ describe('Community moderation (e2e)', () => {
       await t.http().get(`/api/v1/comments/${postId}`).expect(404);
     });
 
-    it('an expired block no longer applies and does not prevent a new block', async () => {
+    step('an expired block no longer applies and does not prevent a new block', async () => {
       const temp = await t
         .http()
         .post(`/api/v1/admin/community/users/${spammer.userId}/block`)
@@ -400,7 +416,7 @@ describe('Community moderation (e2e)', () => {
       expect(blocks.body.meta.total).toBe(3);
     });
 
-    it('warnings are recorded in the user history', async () => {
+    step('warnings are recorded in the user history', async () => {
       await t
         .http()
         .post(`/api/v1/admin/community/users/${dave.userId}/warn`)
@@ -414,9 +430,11 @@ describe('Community moderation (e2e)', () => {
         .expect(200);
       expect(o.body.data.history[0]).toMatchObject({ action: 'warn_user', reason: 'Test warning' });
     });
+    it('workflow: the steps above, in order', () => run(), run.timeout);
   });
 
   describe('verified owner flow', () => {
+    const { step, run } = orderedSteps();
     let owner: Member;
     let reviewId: string;
     let verificationId: string;
@@ -440,44 +458,47 @@ describe('Community moderation (e2e)', () => {
         verifiedOwnerLabel: string | null;
       };
 
-    it('a request alone gives no badge; document review cannot be approved without a document', async () => {
-      const res = await t
-        .http()
-        .post('/api/v1/me/owner-verifications')
-        .set(owner.auth)
-        .send({ variantId: car.variantId, method: 'document_review' })
-        .expect(201);
-      verificationId = res.body.data.id;
-      expect(res.body.data).toMatchObject({ status: 'pending', hasEvidence: false });
-      expect((await badge()).verifiedOwner).toBe(false);
-      await t
-        .http()
-        .post('/api/v1/me/owner-verifications')
-        .set(owner.auth)
-        .send({ variantId: car.variantId, method: 'dealer_confirmation' })
-        .expect(409);
-      // Users cannot approve (403); staff cannot approve a document review without evidence (422).
-      await t
-        .http()
-        .post(`/api/v1/admin/community/owner-verifications/${verificationId}/approve`)
-        .set(owner.auth)
-        .send({})
-        .expect(403);
-      const noDoc = await t
-        .http()
-        .post(`/api/v1/admin/community/owner-verifications/${verificationId}/approve`)
-        .set(mod.auth)
-        .send({})
-        .expect(422);
-      expect(noDoc.body.error.code).toBe('OWNER_VERIFICATION_NO_EVIDENCE');
-      await t
-        .http()
-        .delete(`/api/v1/me/owner-verifications/${verificationId}`)
-        .set(owner.auth)
-        .expect(204);
-    });
+    step(
+      'a request alone gives no badge; document review cannot be approved without a document',
+      async () => {
+        const res = await t
+          .http()
+          .post('/api/v1/me/owner-verifications')
+          .set(owner.auth)
+          .send({ variantId: car.variantId, method: 'document_review' })
+          .expect(201);
+        verificationId = res.body.data.id;
+        expect(res.body.data).toMatchObject({ status: 'pending', hasEvidence: false });
+        expect((await badge()).verifiedOwner).toBe(false);
+        await t
+          .http()
+          .post('/api/v1/me/owner-verifications')
+          .set(owner.auth)
+          .send({ variantId: car.variantId, method: 'dealer_confirmation' })
+          .expect(409);
+        // Users cannot approve (403); staff cannot approve a document review without evidence (422).
+        await t
+          .http()
+          .post(`/api/v1/admin/community/owner-verifications/${verificationId}/approve`)
+          .set(owner.auth)
+          .send({})
+          .expect(403);
+        const noDoc = await t
+          .http()
+          .post(`/api/v1/admin/community/owner-verifications/${verificationId}/approve`)
+          .set(mod.auth)
+          .send({})
+          .expect(422);
+        expect(noDoc.body.error.code).toBe('OWNER_VERIFICATION_NO_EVIDENCE');
+        await t
+          .http()
+          .delete(`/api/v1/me/owner-verifications/${verificationId}`)
+          .set(owner.auth)
+          .expect(204);
+      },
+    );
 
-    it('evidence must be the user’s own owner_evidence upload', async () => {
+    step('evidence must be the user’s own owner_evidence upload', async () => {
       const res = await t
         .http()
         .post('/api/v1/me/owner-verifications')
@@ -487,7 +508,7 @@ describe('Community moderation (e2e)', () => {
       expect(res.body.error.details[0].field).toBe('evidenceAssetId');
     });
 
-    it('approval with a document attaches the badge; the evidence file is deleted', async () => {
+    step('approval with a document attaches the badge; the evidence file is deleted', async () => {
       const storage = t.app.get<StorageProvider>(STORAGE_PROVIDER);
       const key = `private/test-evidence/${randomBytes(6).toString('hex')}.jpg`;
       await storage.put(key, Buffer.from('synthetic test evidence'));
@@ -558,7 +579,7 @@ describe('Community moderation (e2e)', () => {
       expect(mine.body.data[0]).toMatchObject({ status: 'approved', hasEvidence: false });
     });
 
-    it('an expired verification no longer shows the badge', async () => {
+    step('an expired verification no longer shows the badge', async () => {
       await t.prisma.ownerVerification.update({
         where: { id: verificationId },
         data: { expiresAt: new Date(Date.now() - 1000) },
@@ -571,7 +592,7 @@ describe('Community moderation (e2e)', () => {
       expect((await badge()).verifiedOwner).toBe(true);
     });
 
-    it('revoking removes the badge', async () => {
+    step('revoking removes the badge', async () => {
       await t
         .http()
         .post(`/api/v1/admin/community/owner-verifications/${verificationId}/revoke`)
@@ -583,26 +604,30 @@ describe('Community moderation (e2e)', () => {
       expect(row).toMatchObject({ isVerifiedOwner: false, ownerVerificationId: null });
     });
 
-    it('dealer confirmation needs a staff note; reject keeps the review without badge', async () => {
-      const req = await t
-        .http()
-        .post('/api/v1/me/owner-verifications')
-        .set(owner.auth)
-        .send({ variantId: car.variantId, method: 'dealer_confirmation' })
-        .expect(201);
-      await t
-        .http()
-        .post(`/api/v1/admin/community/owner-verifications/${req.body.data.id}/approve`)
-        .set(mod.auth)
-        .send({})
-        .expect(422);
-      await t
-        .http()
-        .post(`/api/v1/admin/community/owner-verifications/${req.body.data.id}/reject`)
-        .set(mod.auth)
-        .send({ decisionNote: 'Test: dealer could not confirm' })
-        .expect(200);
-      expect((await badge()).verifiedOwner).toBe(false);
-    });
+    step(
+      'dealer confirmation needs a staff note; reject keeps the review without badge',
+      async () => {
+        const req = await t
+          .http()
+          .post('/api/v1/me/owner-verifications')
+          .set(owner.auth)
+          .send({ variantId: car.variantId, method: 'dealer_confirmation' })
+          .expect(201);
+        await t
+          .http()
+          .post(`/api/v1/admin/community/owner-verifications/${req.body.data.id}/approve`)
+          .set(mod.auth)
+          .send({})
+          .expect(422);
+        await t
+          .http()
+          .post(`/api/v1/admin/community/owner-verifications/${req.body.data.id}/reject`)
+          .set(mod.auth)
+          .send({ decisionNote: 'Test: dealer could not confirm' })
+          .expect(200);
+        expect((await badge()).verifiedOwner).toBe(false);
+      },
+    );
+    it('workflow: the steps above, in order', () => run(), run.timeout);
   });
 });

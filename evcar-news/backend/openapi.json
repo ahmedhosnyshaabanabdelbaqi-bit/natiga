@@ -37835,7 +37835,7 @@
     },
     "/api/v1/trips/plan": {
       "post": {
-        "description": "503 INTEGRATION_NOT_CONFIGURED when no routing provider is configured (app-config features.tripPlanner is then false). 422 TRIP_VEHICLE_DATA_MISSING / TRIP_NO_REACHABLE_STATION when the data does not support a plan (never invented). Never guarantees arrival or a free connector. `save: true` (signed in) stores it under /me/trips. See docs/decisions/backend-personal.md §7.",
+        "description": "503 INTEGRATION_NOT_CONFIGURED when no routing provider is configured (app-config features.tripPlanner is then false). 503 INTEGRATION_QUOTA (+ Retry-After) when the operator's global routing budget (ROUTING_MINUTE_BUDGET / ROUTING_DAILY_BUDGET) is used up; identical waypoints are served from a cache. Rate limit: 6 plans / minute / IP. 422 TRIP_VEHICLE_DATA_MISSING / TRIP_NO_REACHABLE_STATION when the data does not support a plan (never invented). Never guarantees arrival or a free connector. `save: true` (signed in) stores it under /me/trips. See docs/decisions/backend-personal.md §7.",
         "operationId": "Trips_plan",
         "parameters": [
           {
@@ -69018,6 +69018,33 @@
                 ]
               }
             }
+          },
+          "supported": {
+            "type": "object",
+            "description": "What the server can actually produce today (review 3). Clients show only these preference switches (`types` keys) and offer only these topic types to follow; the other stored switches are kept for when their producers ship.",
+            "properties": {
+              "types": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "news"
+                ]
+              },
+              "topicTypes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "brand",
+                  "model",
+                  "variant",
+                  "category"
+                ]
+              }
+            }
           }
         },
         "required": [
@@ -69026,7 +69053,8 @@
           "quietHours",
           "unsubscribedAll",
           "unsubscribedAt",
-          "push"
+          "push",
+          "supported"
         ]
       },
       "TypeSwitchesDto": {

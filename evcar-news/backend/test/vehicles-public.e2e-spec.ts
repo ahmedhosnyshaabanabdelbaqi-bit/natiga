@@ -10,8 +10,10 @@ import { STORAGE_PROVIDER } from '../src/providers/provider-tokens';
 import type { StorageProvider } from '../src/providers/storage/storage.types';
 import { userWithRoles, type PlatformUser } from './platform-helpers';
 import { createTestApp, type TestApp } from './utils/test-app';
+import { orderedSteps } from './utils/ordered-steps';
 
 describe('Vehicles public API with demo data (e2e)', () => {
+  const { step, run } = orderedSteps();
   let t: TestApp;
   let manager: PlatformUser;
   let admin: PlatformUser;
@@ -30,7 +32,7 @@ describe('Vehicles public API with demo data (e2e)', () => {
 
   const get = (path: string) => t.http().get(`/api/v1${path}`);
 
-  it('lists the demo car flagged as demo, with a 360° tour, and supports 304', async () => {
+  step('lists the demo car flagged as demo, with a 360° tour, and supports 304', async () => {
     const res = await get('/cars?market=EG&lang=en').expect(200);
     const card = res.body.data.find((c: { id: string }) => c.id === I.model);
     expect(card).toMatchObject({ isDemo: true, hasTour: true, slug: 'demo-motors-ev-one' });
@@ -46,7 +48,7 @@ describe('Vehicles public API with demo data (e2e)', () => {
     expect(none.body).toMatchObject({ data: [], meta: { total: 0 } });
   });
 
-  it('model page shows the tour summary and related (demo) articles', async () => {
+  step('model page shows the tour summary and related (demo) articles', async () => {
     const res = await get('/cars/demo-motors-ev-one?market=EG&lang=en').expect(200);
     const d = res.body.data;
     expect(d.tours.available).toBe(true);
@@ -89,7 +91,7 @@ describe('Vehicles public API with demo data (e2e)', () => {
     expect(sa.body.data.tours.available).toBe(false);
   });
 
-  it('galleries accept only ready, licensed images and show them publicly', async () => {
+  step('galleries accept only ready, licensed images and show them publicly', async () => {
     const license = await t.prisma.assetLicense.create({
       data: {
         licenseType: 'owned',
@@ -154,7 +156,7 @@ describe('Vehicles public API with demo data (e2e)', () => {
     expect(adminList.body.data[0]).toMatchObject({ assetId: good.id, image: null });
   });
 
-  it('admin variant detail and deletion guards', async () => {
+  step('admin variant detail and deletion guards', async () => {
     const d = await t
       .http()
       .get(`/api/v1/admin/variants/${I.variantBev}`)
@@ -193,7 +195,7 @@ describe('Vehicles public API with demo data (e2e)', () => {
     });
   });
 
-  it('reports incomplete / stale data of a market', async () => {
+  step('reports incomplete / stale data of a market', async () => {
     const res = await t
       .http()
       .get('/api/v1/admin/vehicles/data-quality?marketCode=EG')
@@ -217,7 +219,7 @@ describe('Vehicles public API with demo data (e2e)', () => {
     );
   });
 
-  it('rebuilds the search index for published cars', async () => {
+  step('rebuilds the search index for published cars', async () => {
     const res = await t
       .http()
       .post('/api/v1/admin/vehicles/search-index/rebuild')
@@ -230,4 +232,5 @@ describe('Vehicles public API with demo data (e2e)', () => {
     expect(docs.map((x) => x.locale).sort()).toEqual(['ar', 'en']);
     expect(docs[0].marketCodes.sort()).toEqual(['EG', 'SA']);
   });
+  it('workflow: the steps above, in order', () => run(), run.timeout);
 });

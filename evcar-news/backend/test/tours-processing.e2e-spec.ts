@@ -139,7 +139,7 @@ describe('Media processing (e2e)', () => {
       processingAttempts: 2,
       processingProgress: 100,
     });
-  });
+  }, 180_000); // 4096×2048 tiles: ~20–60 s alone, more under load (review 3)
 
   it('orients the cube faces like Pannellum (front, right, back, left, up, down)', async () => {
     const asset = await uploadAsset(t, staff.manager, await directionPanorama(2048), {

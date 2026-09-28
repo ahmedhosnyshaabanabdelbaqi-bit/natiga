@@ -25,6 +25,7 @@ import {
   type TourStaff,
 } from './tours-helpers';
 import { createTestApp, type TestApp } from './utils/test-app';
+import { orderedSteps } from './utils/ordered-steps';
 
 interface Problem {
   code: string;
@@ -383,6 +384,7 @@ describe('360° tours: admin workflow and public API (e2e)', () => {
   });
 
   describe('scenes and hotspots', () => {
+    const { step, run } = orderedSteps();
     let tourId: string;
     let driverId: string;
     let rearId: string;
@@ -407,7 +409,7 @@ describe('360° tours: admin workflow and public API (e2e)', () => {
       expect(b.body.data.initialSceneId).toBe(driverId);
     });
 
-    it('stores hotspot texts as plain text only (HTML stripped)', async () => {
+    step('stores hotspot texts as plain text only (HTML stripped)', async () => {
       const res = await addHotspot(tourId, driverId, {
         type: 'info',
         yaw: -30,
@@ -439,7 +441,7 @@ describe('360° tours: admin workflow and public API (e2e)', () => {
       expect(none.status).toBe(422);
     });
 
-    it('checks the fields of each hotspot type', async () => {
+    step('checks the fields of each hotspot type', async () => {
       const image = await uploadAsset(t, staff.manager, await flatImage(1200, 800), {
         kind: 'image',
         licenseId,
@@ -525,7 +527,7 @@ describe('360° tours: admin workflow and public API (e2e)', () => {
         .expect(200);
     });
 
-    it('publishes and serves the full viewer configuration to the apps', async () => {
+    step('publishes and serves the full viewer configuration to the apps', async () => {
       // The image hotspot file must be processed before publishing.
       const blocked = await publish(tourId);
       expect(codes(blocked.body)).toEqual(['hotspot_media_asset_not_ready']);
@@ -648,61 +650,68 @@ describe('360° tours: admin workflow and public API (e2e)', () => {
       expect((byYear.body.data as { id: string }[]).map((x) => x.id)).toContain(tourId);
     });
 
-    it('re-checks files swapped into a published tour and hides tours whose licence expired', async () => {
-      const unprocessed = await uploadAsset(t, staff.manager, await syntheticPanorama(2048), {
-        kind: 'panorama',
-        licenseId,
-      });
-      const swap = await t
-        .http()
-        .patch(`/api/v1/admin/tours/${tourId}/scenes/${rearId}`)
-        .set(auth(staff.manager))
-        .send({ assetId: unprocessed.id });
-      expect(swap.status).toBe(409);
-      expect(swap.body.error.code).toBe('TOUR_PUBLISHED_ASSET_NOT_READY');
-      const replacement = await readyPanorama(t, staff.manager, { licenseId, tint: '#AA3300' });
-      await t
-        .http()
-        .patch(`/api/v1/admin/tours/${tourId}/scenes/${rearId}`)
-        .set(auth(staff.manager))
-        .send({ assetId: replacement, initialPitch: -10 })
-        .expect(200);
-      const locked = await t
-        .http()
-        .patch(`/api/v1/admin/tours/${tourId}`)
-        .set(auth(staff.manager))
-        .send({ variantId: trim.otherVariantId });
-      expect(locked.status).toBe(409);
-      // Hotspots of a published tour need both languages.
-      const oneLanguage = await addHotspot(tourId, rearId, {
-        type: 'info',
-        yaw: 20,
-        pitch: 0,
-        texts: { en: { title: 'Only English' } },
-      });
-      expect(oneLanguage.status).toBe(422);
-      expect(oneLanguage.body.error.details[0].field).toBe('texts');
+    step(
+      're-checks files swapped into a published tour and hides tours whose licence expired',
+      async () => {
+        const unprocessed = await uploadAsset(t, staff.manager, await syntheticPanorama(2048), {
+          kind: 'panorama',
+          licenseId,
+        });
+        const swap = await t
+          .http()
+          .patch(`/api/v1/admin/tours/${tourId}/scenes/${rearId}`)
+          .set(auth(staff.manager))
+          .send({ assetId: unprocessed.id });
+        expect(swap.status).toBe(409);
+        expect(swap.body.error.code).toBe('TOUR_PUBLISHED_ASSET_NOT_READY');
+        const replacement = await readyPanorama(t, staff.manager, { licenseId, tint: '#AA3300' });
+        await t
+          .http()
+          .patch(`/api/v1/admin/tours/${tourId}/scenes/${rearId}`)
+          .set(auth(staff.manager))
+          .send({ assetId: replacement, initialPitch: -10 })
+          .expect(200);
+        const locked = await t
+          .http()
+          .patch(`/api/v1/admin/tours/${tourId}`)
+          .set(auth(staff.manager))
+          .send({ variantId: trim.otherVariantId });
+        expect(locked.status).toBe(409);
+        // Hotspots of a published tour need both languages.
+        const oneLanguage = await addHotspot(tourId, rearId, {
+          type: 'info',
+          yaw: 20,
+          pitch: 0,
+          texts: { en: { title: 'Only English' } },
+        });
+        expect(oneLanguage.status).toBe(422);
+        expect(oneLanguage.body.error.details[0].field).toBe('texts');
 
-      // The licence expires: the tour disappears from the apps and publishing is refused.
-      const yesterday = new Date(Date.now() - 86_400_000);
-      await t.prisma.assetLicense.update({
-        where: { id: licenseId },
-        data: { validUntil: yesterday },
-      });
-      await t.http().get(`/api/v1/tours/${tourId}`).expect(404);
-      const list = await t.http().get(`/api/v1/tours?variantId=${trim.variantId}`).expect(200);
-      expect((list.body.data as { id: string }[]).some((x) => x.id === tourId)).toBe(false);
-      const readiness = await t
-        .http()
-        .get(`/api/v1/admin/tours/${tourId}/readiness`)
-        .set(auth(staff.manager))
-        .expect(200);
-      expect(readiness.body.data.problems.map((p: Problem) => p.code)).toContain(
-        'scene_licence_expired',
-      );
-      await t.prisma.assetLicense.update({ where: { id: licenseId }, data: { validUntil: null } });
-      await t.http().get(`/api/v1/tours/${tourId}`).expect(200);
-    });
+        // The licence expires: the tour disappears from the apps and publishing is refused.
+        const yesterday = new Date(Date.now() - 86_400_000);
+        await t.prisma.assetLicense.update({
+          where: { id: licenseId },
+          data: { validUntil: yesterday },
+        });
+        await t.http().get(`/api/v1/tours/${tourId}`).expect(404);
+        const list = await t.http().get(`/api/v1/tours?variantId=${trim.variantId}`).expect(200);
+        expect((list.body.data as { id: string }[]).some((x) => x.id === tourId)).toBe(false);
+        const readiness = await t
+          .http()
+          .get(`/api/v1/admin/tours/${tourId}/readiness`)
+          .set(auth(staff.manager))
+          .expect(200);
+        expect(readiness.body.data.problems.map((p: Problem) => p.code)).toContain(
+          'scene_licence_expired',
+        );
+        await t.prisma.assetLicense.update({
+          where: { id: licenseId },
+          data: { validUntil: null },
+        });
+        await t.http().get(`/api/v1/tours/${tourId}`).expect(200);
+      },
+    );
+    it('workflow: the steps above, in order', () => run(), run.timeout);
   });
 
   describe('demo seed', () => {

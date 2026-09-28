@@ -7,6 +7,7 @@ import { bearer, createAndLogin, type LoggedIn } from './auth-test-helpers';
 import { userWithRoles, waitForAudit, type PlatformUser } from './platform-helpers';
 import { createStation, idsOf, type ListBody } from './stations-helpers';
 import { createTestApp, type TestApp } from './utils/test-app';
+import { orderedSteps } from './utils/ordered-steps';
 
 describe('Stations admin API (e2e)', () => {
   let t: TestApp;
@@ -45,9 +46,10 @@ describe('Stations admin API (e2e)', () => {
   });
 
   describe('stations, points, connectors, publication', () => {
+    const { step, run } = orderedSteps();
     let id: string;
 
-    it('creates a staff-verified draft with market defaults and audits it', async () => {
+    step('creates a staff-verified draft with market defaults and audits it', async () => {
       const res = await t
         .http()
         .post('/api/v1/admin/stations')
@@ -74,29 +76,32 @@ describe('Stations admin API (e2e)', () => {
       await t.http().get(`/api/v1/stations/${id}`).expect(404);
     });
 
-    it('validates hours, time zone, market and the 24/7 rule (422 with field paths)', async () => {
-      const cases: [Record<string, unknown>, string][] = [
-        [{ openingHours: { mon: [['8:00', '22:00']] } }, 'openingHours.mon[0]'],
-        [{ openingHours: { funday: [] } }, 'openingHours.funday'],
-        [{ isAlwaysOpen: true, openingHours: { mon: [['08:00', '22:00']] } }, 'openingHours'],
-        [{ timezone: 'Mars/Base' }, 'timezone'],
-        [{ marketCode: 'ZZ' }, 'marketCode'],
-        [{ countryCode: 'KW' }, 'timezone'],
-        [{ websiteUrl: 'javascript:alert(1)' }, 'websiteUrl'],
-        [{ amenities: ['Bad Code'] }, 'amenities'],
-      ];
-      for (const [patch, field] of cases) {
-        const res = await t
-          .http()
-          .post('/api/v1/admin/stations')
-          .set(manager.auth)
-          .send({ ...base, ...patch })
-          .expect(422);
-        expect(res.body.error.details.map((d: { field: string }) => d.field)).toContain(field);
-      }
-    });
+    step(
+      'validates hours, time zone, market and the 24/7 rule (422 with field paths)',
+      async () => {
+        const cases: [Record<string, unknown>, string][] = [
+          [{ openingHours: { mon: [['8:00', '22:00']] } }, 'openingHours.mon[0]'],
+          [{ openingHours: { funday: [] } }, 'openingHours.funday'],
+          [{ isAlwaysOpen: true, openingHours: { mon: [['08:00', '22:00']] } }, 'openingHours'],
+          [{ timezone: 'Mars/Base' }, 'timezone'],
+          [{ marketCode: 'ZZ' }, 'marketCode'],
+          [{ countryCode: 'KW' }, 'timezone'],
+          [{ websiteUrl: 'javascript:alert(1)' }, 'websiteUrl'],
+          [{ amenities: ['Bad Code'] }, 'amenities'],
+        ];
+        for (const [patch, field] of cases) {
+          const res = await t
+            .http()
+            .post('/api/v1/admin/stations')
+            .set(manager.auth)
+            .send({ ...base, ...patch })
+            .expect(422);
+          expect(res.body.error.details.map((d: { field: string }) => d.field)).toContain(field);
+        }
+      },
+    );
 
-    it('publishing needs connectors; points and connectors are validated', async () => {
+    step('publishing needs connectors; points and connectors are validated', async () => {
       const r = await t
         .http()
         .post(`/api/v1/admin/stations/${id}/publication`)
@@ -184,7 +189,7 @@ describe('Stations admin API (e2e)', () => {
         .expect(422);
     });
 
-    it('PATCH edits hours and keeps the three statuses separate', async () => {
+    step('PATCH edits hours and keeps the three statuses separate', async () => {
       const res = await t
         .http()
         .patch(`/api/v1/admin/stations/${id}`)
@@ -218,7 +223,7 @@ describe('Stations admin API (e2e)', () => {
         .expect(422);
     });
 
-    it('slugs are unique', async () => {
+    step('slugs are unique', async () => {
       await t
         .http()
         .patch(`/api/v1/admin/stations/${id}`)
@@ -234,7 +239,7 @@ describe('Stations admin API (e2e)', () => {
       expect(res.body.error.code).toBe('SLUG_TAKEN');
     });
 
-    it('creates and publishes in one call when connectors are given', async () => {
+    step('creates and publishes in one call when connectors are given', async () => {
       const res = await t
         .http()
         .post('/api/v1/admin/stations')
@@ -256,7 +261,7 @@ describe('Stations admin API (e2e)', () => {
         .expect(422);
     });
 
-    it('tariffs by unit with fees, taxes, currency and dates', async () => {
+    step('tariffs by unit with fees, taxes, currency and dates', async () => {
       const bad = await t
         .http()
         .post(`/api/v1/admin/stations/${id}/tariffs`)
@@ -356,7 +361,7 @@ describe('Stations admin API (e2e)', () => {
         .expect(204);
     });
 
-    it('deleting needs stations.delete (owner); a deleted station disappears', async () => {
+    step('deleting needs stations.delete (owner); a deleted station disappears', async () => {
       await t.http().delete(`/api/v1/admin/stations/${id}`).set(manager.auth).expect(403);
       await t.http().delete(`/api/v1/admin/stations/${id}`).set(owner.auth).expect(204);
       await t.http().get(`/api/v1/stations/${id}`).expect(404);
@@ -364,7 +369,7 @@ describe('Stations admin API (e2e)', () => {
       expect(admin.body.data.deletedAt).not.toBeNull();
     });
 
-    it('admin list filters', async () => {
+    step('admin list filters', async () => {
       const res = await t
         .http()
         .get('/api/v1/admin/stations?dataSource=manual&publicationStatus=published&q=one%20call')
@@ -372,6 +377,7 @@ describe('Stations admin API (e2e)', () => {
         .expect(200);
       expect(res.body.data.map((s: { name: string }) => s.name)).toEqual(['Test One Call Station']);
     });
+    it('workflow: the steps above, in order', () => run(), run.timeout);
   });
 
   it('photos: only ready + licensed images are shown, with their credit', async () => {

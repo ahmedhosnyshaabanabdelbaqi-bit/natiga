@@ -220,3 +220,7 @@ None.
 Not done: openapi.json not re-exported (integrator); no load testing of the
 compute endpoint; the shared-link web fallback page belongs to the web/share
 team.
+
+## Review 3 (2026-09-28)
+
+See `review-fixes-3.md`: different price types never decide a winner (`not_comparable_conditions`); a charger-limited time vs an unknown charger is not comparable; a stored 0 on a measured spec is treated as missing.

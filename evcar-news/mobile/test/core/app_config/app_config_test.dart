@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:evcar_news/app/di/providers.dart';
 import 'package:evcar_news/core/app_config/app_config.dart';
 import 'package:evcar_news/core/app_config/app_config_controller.dart';
@@ -9,6 +11,22 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../helpers/fake_http_adapter.dart';
 import '../../helpers/test_app.dart';
+
+/// Waits until the controller state satisfies [done] (no fixed sleeps: the
+/// background refresh finishes whenever the event loop gets to it, which
+/// depends on test order and machine load — review 3).
+Future<AppConfigState> waitForState(ProviderContainer c, bool Function(AppConfigState s) done) async {
+  final completer = Completer<AppConfigState>();
+  final sub = c.listen<AsyncValue<AppConfigState>>(appConfigControllerProvider, (_, next) {
+    final v = next.value;
+    if (v != null && done(v) && !completer.isCompleted) completer.complete(v);
+  }, fireImmediately: true);
+  try {
+    return await completer.future.timeout(const Duration(seconds: 10));
+  } finally {
+    sub.close();
+  }
+}
 
 Future<(ProviderContainer, FakeHttpAdapter, MemoryJsonCache)> setup({MemoryJsonCache? cache}) async {
   SharedPreferences.setMockInitialValues({});
@@ -120,8 +138,7 @@ void main() {
       expect(first.config.branding.appName, 'Cached Name');
 
       // Background refresh (Timer.run) → network value.
-      await Future<void>.delayed(const Duration(milliseconds: 20));
-      final next = c.read(appConfigControllerProvider).value!;
+      final next = await waitForState(c, (s) => s.source == AppConfigSource.network);
       expect(next.source, AppConfigSource.network);
       expect(next.config.branding.appName, 'EV Car News');
     });
@@ -132,8 +149,7 @@ void main() {
       final (c, adapter, _) = await setup(cache: cache);
       adapter.on('GET /app-config', (_) => FakeResponse.error(500, 'INTERNAL_ERROR'));
       await c.read(appConfigControllerProvider.future);
-      await Future<void>.delayed(const Duration(milliseconds: 20));
-      final s = c.read(appConfigControllerProvider).value!;
+      final s = await waitForState(c, (s) => s.lastError != null);
       expect(s.source, AppConfigSource.cache);
       expect(s.lastError!.statusCode, 500);
     });

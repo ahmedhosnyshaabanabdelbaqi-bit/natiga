@@ -7,10 +7,12 @@ import { seedTestCatalog, type TestCatalog } from './comparisons-helpers';
 import { userWithRoles, type PlatformUser } from './platform-helpers';
 import { createStation } from './stations-helpers';
 import { createTestApp, type TestApp } from './utils/test-app';
+import { orderedSteps } from './utils/ordered-steps';
 
 const MISSING = '00000000-0000-4000-8000-000000000001';
 
 describe('discovery: favorites (e2e)', () => {
+  const { step, run } = orderedSteps();
   let t: TestApp;
   let a: PlatformUser;
   let b: PlatformUser;
@@ -56,13 +58,13 @@ describe('discovery: favorites (e2e)', () => {
     await t?.close();
   });
 
-  it('requires a signed-in user', async () => {
+  step('requires a signed-in user', async () => {
     await t.http().get('/api/v1/me/favorites').expect(401);
     await t.http().put(`/api/v1/me/favorites/model/${cat.modelId}`).expect(401);
     await t.http().post('/api/v1/me/favorites/merge').send({ items: [] }).expect(401);
   });
 
-  it('adds idempotently (201 then 200) and lists newest first', async () => {
+  step('adds idempotently (201 then 200) and lists newest first', async () => {
     const first = await t
       .http()
       .put(`/api/v1/me/favorites/model/${cat.modelId}`)
@@ -95,7 +97,7 @@ describe('discovery: favorites (e2e)', () => {
     expect(byType.body.data).toHaveLength(1);
   });
 
-  it('isolates users strictly', async () => {
+  step('isolates users strictly', async () => {
     const other = await t.http().get('/api/v1/me/favorites').set(b.auth).expect(200);
     expect(other.body.meta.total).toBe(0);
     const keys = await t.http().get('/api/v1/me/favorites/keys').set(b.auth).expect(200);
@@ -106,7 +108,7 @@ describe('discovery: favorites (e2e)', () => {
     expect(mine.body.data.map((k: { id: string }) => k.id)).toContain(cat.modelId);
   });
 
-  it('only visible targets can be added', async () => {
+  step('only visible targets can be added', async () => {
     const draft = await t
       .http()
       .put(`/api/v1/me/favorites/variant/${cat.draft}`)
@@ -119,7 +121,7 @@ describe('discovery: favorites (e2e)', () => {
     await t.http().put('/api/v1/me/favorites/model/not-a-uuid').set(a.auth).expect(404);
   });
 
-  it('comparisons: own private / anonymous shares only, never another user’s', async () => {
+  step('comparisons: own private / anonymous shares only, never another user’s', async () => {
     const own = await t
       .http()
       .put(`/api/v1/me/favorites/comparison/${aPrivate}`)
@@ -135,7 +137,7 @@ describe('discovery: favorites (e2e)', () => {
     expect(anon.body.data.shareId).toBeTruthy();
   });
 
-  it('keeps favorites whose target was unpublished, marked unavailable', async () => {
+  step('keeps favorites whose target was unpublished, marked unavailable', async () => {
     await t.prisma.chargingStation.update({
       where: { id: stationId },
       data: { publicationStatus: 'hidden' },
@@ -153,14 +155,14 @@ describe('discovery: favorites (e2e)', () => {
     });
   });
 
-  it('removes idempotently', async () => {
+  step('removes idempotently', async () => {
     await t.http().delete(`/api/v1/me/favorites/variant/${cat.a}`).set(a.auth).expect(204);
     await t.http().delete(`/api/v1/me/favorites/variant/${cat.a}`).set(a.auth).expect(204);
     const keys = await t.http().get('/api/v1/me/favorites/keys').set(a.auth).expect(200);
     expect(keys.body.data.map((k: { id: string }) => k.id)).not.toContain(cat.a);
   });
 
-  it('merges guest favorites into the account', async () => {
+  step('merges guest favorites into the account', async () => {
     const saved = '2026-01-02T03:04:05.000Z';
     const res = await t
       .http()
@@ -204,7 +206,7 @@ describe('discovery: favorites (e2e)', () => {
     expect(aKeys.body.data.map((k: { id: string }) => k.id)).not.toContain(anonymous);
   });
 
-  it('validates the merge body', async () => {
+  step('validates the merge body', async () => {
     await t
       .http()
       .post('/api/v1/me/favorites/merge')
@@ -218,4 +220,5 @@ describe('discovery: favorites (e2e)', () => {
       .send({ items: Array.from({ length: 201 }, () => ({ type: 'model', id: cat.modelId })) })
       .expect(422);
   });
+  it('workflow: the steps above, in order', () => run(), run.timeout);
 });

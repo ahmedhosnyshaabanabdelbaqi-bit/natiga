@@ -1,8 +1,8 @@
 # Requirements tracker — EV Car News
 
 Source: `docs/REQUIREMENTS_AR.md` (sections 1–23). Contract: `docs/ARCHITECTURE.md`.
-Last update: 2026-09-28 — integration pass 2 ("finish the mobile app first"), see
-`docs/decisions/integration-2.md`. Earlier: Phase 1 (`integration.md`), review 2
+Last update: 2026-09-28 — review 3 fixes (`docs/decisions/review-fixes-3.md`), after
+integration pass 2 ("finish the mobile app first", `docs/decisions/integration-2.md`). Earlier: Phase 1 (`integration.md`), review 2
 (`review-fixes-2.md`), feature records `docs/decisions/{backend,mobile}-*.md`.
 
 **Status values** (ARCHITECTURE §8):
@@ -112,7 +112,7 @@ English. Screenshots: `docs/screenshots/app/` (`ar-*`, `en-*`).
 | 6.5 | Car page with all spec groups, ranges + cycle, charging times with SoC window | done & tested | Live `ar-06/07`, `en-06/07` |
 | 6.6 | Tabs: reviews, news, owners, tours, competitors | done & tested | Owners tab has owner reviews + model comments (CommentsSection embedded in this pass) |
 | 6.7 | Source, date, reliability per spec | done & tested | Live: "بيان الشركة المصنّعة" badge + source per value |
-| 6.8 | Missing → «غير متوفر», never 0 | done & tested | Live: PHEV "0–100 km/h: Not available", "AC charging: Not available", price "Price not available" |
+| 6.8 | Missing → «غير متوفر», never 0 | done & tested | Live: PHEV "0–100 km/h: Not available", "AC charging: Not available", price "Price not available". Review 3: admin API / CSV refuse 0 on measured specs (placeholder), unit rates keep 4 decimals in the app (never "0.00") |
 | 6.9 | Converted price never shown as official | done & tested | Server refuses foreign-currency official prices; PHEV shows no price instead of a conversion |
 | 6.10 | Car/station photos from the media library | done & tested | Fixed in this pass: vehicles/stations fall back to the public renditions when the original is private (unit test) |
 
@@ -123,7 +123,7 @@ English. Screenshots: `docs/screenshots/app/` (`ar-*`, `en-*`).
 | 7.1 | 2–4 cars; year, trim, market mandatory | done & tested | Live: two trims added from the car page to the tray |
 | 7.2 | Short/detailed, differences only, sticky names, save, share | done & tested | Live: saved to account → reload → still in "Saved comparisons" (`ar-17-…`, `en-17-…`); guest share link created |
 | 7.3 | Electric vs total range, cycle next to value, no cross-cycle winner | done & tested | Live: "480 km WLTP vs 120 km CLTC — Different test cycles — no winner"; BEV total range "not applicable" |
-| 7.4 | Units normalised; peak ≠ average; SoC windows | done & tested | Live: DC time 10–80 % vs 30–80 % → not comparable |
+| 7.4 | Units normalised; peak ≠ average; SoC windows | done & tested | Live: DC time 10–80 % vs 30–80 % → not comparable. Review 3: a charger-limited time vs an unknown charger → not comparable; a stored 0 on a measured spec is missing, never a win; different price types (MSRP / dealer / estimate) never decide a winner (unit tests) |
 | 7.5 | Recommendations with weights, reasons, missing data | done & tested | e2e + app wizard tests (not part of the live run) |
 | 7.6 | Ads never change results | done & tested | `sponsored:false` + disclosure in every result; ads module not built |
 
@@ -135,7 +135,7 @@ English. Screenshots: `docs/screenshots/app/` (`ar-*`, `en-*`).
 | 8.2 | 2:1 sources, renditions, multires, quick preview | done & tested | Live: synthetic 4096×2048 test grid processed by the worker into preview, 2048/4096 renditions and multires tiles; live contract test `test/live/live_tours_test.dart` parses them |
 | 8.3 | Several scenes | done & tested | e2e + app tests |
 | 8.4 | Hotspots | done & tested | Live tour has one info hotspot (ar/en) |
-| 8.5 | Tour bound to trim/market/colour/drive side; reference tours need approval + visible note | done & tested | e2e |
+| 8.5 | Tour bound to trim/market/colour/drive side; reference tours need approval + visible note | done & tested | e2e; review 3: the reference trim must be of the same model generation |
 | 8.6 | No fake 360°; «الجولة غير متاحة»; demo labelled | done & tested | Only synthetic grids labelled "DEMO 360° — TEST ONLY — NOT A CAR INTERIOR" exist |
 | 8.7 | Acceptance with a licensed panorama on a device | blocked | Needs a licensed interior panorama and a phone |
 
@@ -173,7 +173,7 @@ English. Screenshots: `docs/screenshots/app/` (`ar-*`, `en-*`).
 
 | ID | Requirement | Status | Evidence / notes |
 |---|---|---|---|
-| 12.1–12.3 | Planner with real routing, stops, assumptions | done & tested (mocked routing) · blocked live | e2e with mocked OSRM; app screen tests. **Blocked: routing provider** |
+| 12.1–12.3 | Planner with real routing, stops, assumptions | done & tested (mocked routing) · blocked live | e2e with mocked OSRM; app screen tests. Review 3: route cache + global daily/minute budget of upstream calls (503 `INTEGRATION_QUOTA`) + 6 plans/min/IP protect a keyed provider's quota. **Blocked: routing provider** |
 | 12.4 | Hidden while routing is unconfigured, explained | done & tested | Live account hub: "مخطط الرحلات غير متاح بعد" with explanation |
 
 ## 13. حاسبات الشحن والتشغيل — Calculators
@@ -190,8 +190,8 @@ English. Screenshots: `docs/screenshots/app/` (`ar-*`, `en-*`).
 
 | ID | Requirement | Status | Evidence / notes |
 |---|---|---|---|
-| 14.1 | E-mail registration and verification | done & tested | Live: register in app → e-mail link `/verify-email?token=` opened in the app → verified → sign in |
-| 14.2 | Google / Apple sign-in | blocked | Backend ready; no client IDs / Apple account; no buttons in the app |
+| 14.1 | E-mail registration and verification | done & tested (web preview) · device caveat | Live on the web preview: register → e-mail link `/verify-email?token=` → verified → sign in. **On an installed APK** the e-mail link opens the browser on a page that is not served yet (share module / assetlinks not built, CI builds are debug-signed): the user pastes the code from the e-mail into the app's verify / reset screen, which works (review 3) |
+| 14.2 | Google / Apple sign-in | partial | Backend done (`POST /auth/oauth/google`, `/auth/oauth/apple`). **App side not started**: no google_sign_in / sign_in_with_apple SDK, no buttons (review 3). Live use also needs client IDs / an Apple account |
 | 14.3 | Sessions; delete account | done & tested | |
 | 14.4 | Browsing never needs sign-in | done & tested | live |
 | 14.5 | Garage: several cars with trim and market | done & tested | Live: picker brand → model → year → trim (BEV), added as primary car (`ar-26…30`, `en-30`) |
@@ -204,7 +204,7 @@ English. Screenshots: `docs/screenshots/app/` (`ar-*`, `en-*`).
 
 | ID | Requirement | Status | Evidence / notes |
 |---|---|---|---|
-| 15.1 | Reviewed encyclopedia | done & tested (API + app) · admin screen deferred | publish requires technical review |
+| 15.1 | Reviewed encyclopedia | done & tested (API + app) · admin screen deferred | publish requires technical review; same HTML policy as articles (licensed library images, nocookie embeds — review 3) |
 | 15.2 | Q&A, comments, reviews with moderation and anti-spam | done & tested | e2e; app screens; comments now embedded in article and car pages (live `ar-02-article.png`); Q&A reachable from Account → Explore; blocked-users screen routed at `/account/blocked-users` (this pass) |
 | 15.3 | No demo reviews as real; verified owner only after verification | partial | Rules enforced; the app cannot upload owner evidence yet (no user upload route) |
 | 15.4 | Services directory with verified contacts; sponsorship labelled | done & tested | e2e + app |
@@ -213,8 +213,8 @@ English. Screenshots: `docs/screenshots/app/` (`ar-*`, `en-*`).
 
 | ID | Requirement | Status | Evidence / notes |
 |---|---|---|---|
-| 16.1 | Notification centre, preferences, quiet hours, deep links | done & tested | In-app centre + preferences (e2e + app) |
-| 16.2 | Push | blocked | No FCM/APNs credentials; the app has no push SDK |
+| 16.1 | Notification centre, preferences, quiet hours, deep links | partial | In-app centre, preferences, quiet hours and deep links done & tested (e2e + app). Only **news** notifications (followed brand / model / trim / category) have a server producer; price alerts, community replies, station alerts and campaigns do not. Review 3: the server announces `supported` types/topics in `/me/notification-preferences` and the app shows only those switches and follow chips |
+| 16.2 | Push | partial | Server dispatch done (FCM/APNs channels, `/me/devices`, quiet hours). **App side not started**: no firebase_messaging SDK, the app never registers a device (review 3). Live push also needs FCM/APNs credentials |
 | 16.3 | Assistant | not started | **Blocked: LLM provider decision + key** |
 | 16.4 | Ads / sponsorship | partial | Sponsored articles labelled; ads module not built |
 | 16.5 | Payments only after real integration | not started | nothing fake exists |
@@ -252,9 +252,9 @@ English. Screenshots: `docs/screenshots/app/` (`ar-*`, `en-*`).
 | 19.3 | Restricted public SDK keys | not started | none used |
 | 19.4 | Rate limits, validation, file checks, sanitising, SSRF | done & tested | incl. media magic-byte/decoding checks |
 | 19.5 | Isolated 360° viewer | done & tested (unit) | CSP, allowed origins, text-only hotspots; public media now sends `Access-Control-Allow-Origin: *` without credentials so tiles load (this pass, e2e + live) |
-| 19.6 | Location only when needed | done & tested | Live: charging list uses the market's default city until "use my location" is tapped |
+| 19.6 | Location only when needed | done & tested | Live: charging list uses the market's default city until "use my location" is tapped. Review 3: request logs keep coordinates rounded to ≈ 1 km. Known gap: markets added later fall back to a built-in city (needs a per-market default centre, schema request) |
 | 19.7 | Backups + restore test | done & tested (deploy kit) | `deploy/` backup/restore tested on local PG (`deploy-followups.md`) |
-| 19.8 | Monitoring, logs without secrets | partial | pino redaction, `/health`, monitor script; no external alerting |
+| 19.8 | Monitoring, logs without secrets | partial | pino redaction (incl. article preview tokens, review 3), `/health`, monitor script; no external alerting |
 | 19.9 | Images, pagination, caching, geo | done & tested | ETag/304 on public content; renditions per device width |
 | 19.10 | Offline saved items with date; cached status never live | done & tested | |
 | 19.11 | No unmeasured performance claims | done | |
@@ -265,7 +265,7 @@ English. Screenshots: `docs/screenshots/app/` (`ar-*`, `en-*`).
 |---|---|---|---|
 | 20.1 | One API for web and app | done | |
 | 20.2 | Inspect the current site | blocked | site code not provided |
-| 20.3 | Share links + App/Universal Links with web fallback | partial | Links + app mapping done (cold-start deep link fixed in this pass); **blocked**: release SHA-256, Apple Team ID, `.well-known` hosting; share module pages not built |
+| 20.3 | Share links + App/Universal Links with web fallback | partial | Links + app mapping done (cold-start deep link fixed); manifest now lists `evcar.news` and `www.evcar.news` like the router (review 3, test keeps them equal). **Not built**: share module (`/n/:slug`, `/cars/:slug`, `/compare/:id`, `/verify-email`, `/reset-password` fallback pages, `/.well-known/assetlinks.json` on both hosts) — on Android 12+ these links open the browser on a missing page; e-mail codes can be pasted in the app. **Blocked**: release SHA-256, Apple Team ID |
 | 20.4 | Configurable share titles/images/language | partial | settings only |
 | 20.5 | SEO on public web pages | not started | |
 
