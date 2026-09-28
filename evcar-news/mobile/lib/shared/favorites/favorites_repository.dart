@@ -3,15 +3,37 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../app/di/providers.dart';
+import '../../core/app_config/app_config_controller.dart';
+import '../../core/app_config/features.dart';
 import '../../core/settings/settings_controller.dart';
+import '../../features/favorites/data/api_favorites_remote.dart';
 import 'favorite_item.dart';
+
+/// Why the server did not take a guest favorite during [FavoritesRemote.merge].
+enum MergeSkipReason {
+  /// The target no longer exists / is not public: dropped from the device.
+  notFound,
+
+  /// The account holds the maximum (1000): kept on the device only.
+  limitReached,
+}
+
+/// Result of pushing device favorites to the account.
+class FavoritesMergeResult {
+  const FavoritesMergeResult({this.added = 0, this.alreadyPresent = 0, this.skipped = const {}});
+
+  final int added;
+  final int alreadyPresent;
+
+  /// Keys the server refused, with the reason.
+  final Map<FavoriteKey, MergeSkipReason> skipped;
+}
 
 /// Server side of favorites for signed-in users (`/me/favorites`).
 ///
-/// OWNED BY THE FAVORITES FEATURE: implement it against the real backend
-/// contract (e.g. `ApiFavoritesRemote` using `apiClientProvider`) and return
-/// it from [favoritesRemoteProvider]. Until then favorites stay on the device
-/// for everyone (honest: nothing claims to sync).
+/// Implemented by `ApiFavoritesRemote` (features/favorites) and provided by
+/// [favoritesRemoteProvider] while the `favorites` feature flag is on.
 abstract interface class FavoritesRemote {
   /// Every favorite of the signed-in user (newest first).
   Future<List<FavoriteItem>> fetchAll();
@@ -21,10 +43,19 @@ abstract interface class FavoritesRemote {
 
   /// Idempotent: removing a missing favorite is not an error.
   Future<void> remove(FavoriteKey key);
+
+  /// Pushes device-only (guest) favorites to the account in bulk
+  /// (`POST /me/favorites/merge`); duplicates are ignored by the server.
+  Future<FavoritesMergeResult> merge(List<FavoriteItem> items);
 }
 
-/// `null` = no server sync available (local only).
-final favoritesRemoteProvider = Provider<FavoritesRemote?>((ref) => null);
+/// `null` = no server sync available (local only): the favorites feature is
+/// switched off on the server, so nothing claims to sync.
+final favoritesRemoteProvider = Provider<FavoritesRemote?>((ref) {
+  final enabled = ref.watch(appConfigProvider.select((c) => c.isFeatureEnabled(Features.favorites)));
+  if (!enabled) return null;
+  return ApiFavoritesRemote(ref.watch(apiClientProvider));
+});
 
 /// Device storage of favorites (SharedPreferences JSON; small lists only).
 class LocalFavoritesStore {

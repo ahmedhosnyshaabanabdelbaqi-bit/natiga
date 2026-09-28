@@ -1,22 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../app/router/app_routes.dart';
-import '../../../core/l10n/l10n.dart';
-import '../../../shared/widgets/under_construction_view.dart';
+import '../../../shared/widgets/kit.dart';
+import '../application/news_providers.dart';
+import '../domain/news_query.dart';
+import 'widgets/news_browser.dart';
 
-/// Articles of one category (`/news/category/:slug`), newest first, with pull-to-refresh and pagination.
-///
-/// NOT IMPLEMENTED YET — honest placeholder owned by the `news` feature.
-/// Replace this file (keep the class name and constructor, or update
-/// lib/app/router/app_router.dart in the same change).
-class NewsCategoryScreen extends StatelessWidget {
-  const NewsCategoryScreen({super.key, required this.slug});
+/// Articles of one category (`/news/category/:slug`, sub-categories
+/// included), newest first, with filters, pull-to-refresh and pagination.
+/// The title and description come from `GET /categories/:slug`; an unknown
+/// category simply shows the empty state of its (empty) feed.
+class NewsCategoryScreen extends ConsumerWidget {
+  const NewsCategoryScreen({super.key, required this.slug, this.now});
 
   /// Category slug.
   final String slug;
 
+  /// Injectable clock for tests.
+  final DateTime? now;
+
   @override
-  Widget build(BuildContext context) {
-    return UnderConstructionScreen(title: context.l10n.newsCategoryTitle, requestedPath: AppRoutes.newsCategory(slug));
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
+    final category = ref.watch(newsCategoryProvider(slug)).value?.data;
+    final description = category?.description;
+    return NewsBrowser(
+      title: category?.name ?? l10n.newsCategoryTitle,
+      initialQuery: NewsQuery(category: slug),
+      header: (description == null && category?.isDemo != true)
+          ? null
+          : Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(
+                context.pageGutter,
+                AppSpacing.xs,
+                context.pageGutter,
+                AppSpacing.sm,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (category?.isDemo ?? false)
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: AppSpacing.sm),
+                      child: DemoBadge(),
+                    ),
+                  if (description != null)
+                    Text(
+                      description,
+                      style: Theme.of(context).textTheme.bodyMedium
+                          ?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
+                    ),
+                ],
+              ),
+            ),
+      now: now,
+    );
   }
 }

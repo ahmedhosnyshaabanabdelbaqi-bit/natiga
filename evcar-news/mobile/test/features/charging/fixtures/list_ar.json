@@ -1,0 +1,85 @@
+{
+    "data": [
+        {
+            "id": "d0000000-0000-4000-8000-000000000031",
+            "slug": "demo-charging-station",
+            "name": "محطة تجريبية (Demo)",
+            "operatorName": "مشغل شحن تجريبي (وهمي)",
+            "latitude": 32.5,
+            "longitude": 30.5,
+            "distanceM": 14539,
+            "city": null,
+            "countryCode": "EG",
+            "accessType": "public",
+            "operationalStatus": "operational",
+            "openNow": "open",
+            "isAlwaysOpen": true,
+            "maxPowerKw": 150,
+            "currentTypes": [
+                "AC",
+                "DC"
+            ],
+            "connectorTypes": [
+                "ccs2",
+                "type2"
+            ],
+            "connectorCount": 2,
+            "pointCount": 1,
+            "availability": {
+                "status": "unknown",
+                "availableConnectors": null,
+                "liveConnectors": 0
+            },
+            "compatibility": null,
+            "isDemo": true,
+            "dataSource": "manual"
+        },
+        {
+            "id": "d0000000-0000-4000-8000-000000000037",
+            "slug": "demo-charging-station-2",
+            "name": "محطة تجريبية 2 (Demo)",
+            "operatorName": "مشغل شحن تجريبي (وهمي)",
+            "latitude": 32.45,
+            "longitude": 31,
+            "distanceM": 38028,
+            "city": null,
+            "countryCode": "EG",
+            "accessType": "customers_only",
+            "operationalStatus": "operational",
+            "openNow": "closed",
+            "isAlwaysOpen": false,
+            "maxPowerKw": 22,
+            "currentTypes": [
+                "AC"
+            ],
+            "connectorTypes": [
+                "type2"
+            ],
+            "connectorCount": 2,
+            "pointCount": 2,
+            "availability": {
+                "status": "unknown",
+                "availableConnectors": null,
+                "liveConnectors": 0
+            },
+            "compatibility": null,
+            "isDemo": true,
+            "dataSource": "manual"
+        }
+    ],
+    "meta": {
+        "nextCursor": null,
+        "pageSize": 100,
+        "total": 2,
+        "truncated": false,
+        "center": {
+            "lat": 32.4,
+            "lng": 30.6
+        },
+        "compatibility": null,
+        "liveAvailability": {
+            "configured": false,
+            "provider": null
+        }
+    }
+}

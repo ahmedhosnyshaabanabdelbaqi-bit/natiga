@@ -1,0 +1,58 @@
+{
+    "data": {
+        "id": "d0000000-0000-4000-8000-000000000011",
+        "slug": "demo-motors-ev-one",
+        "title": "Demo Motors Demo EV One",
+        "name": "Demo EV One",
+        "nameAr": "ديمو EV ون (تجريبي)",
+        "nameEn": "Demo EV One",
+        "description": null,
+        "bodyType": "crossover",
+        "segment": null,
+        "brand": {
+            "id": "d0000000-0000-4000-8000-000000000010",
+            "slug": "demo-motors",
+            "name": "Demo Motors",
+            "logo": null
+        },
+        "heroImage": null,
+        "images": [],
+        "marketCode": "SA",
+        "availableInMarket": false,
+        "availableMarkets": [
+            {
+                "code": "EG",
+                "name": "Egypt",
+                "availability": "available"
+            }
+        ],
+        "powertrainTypes": [],
+        "priceFrom": null,
+        "priceTo": null,
+        "generations": [],
+        "defaultVariantId": null,
+        "tours": {
+            "available": false,
+            "tours": [],
+            "unavailableLabel": "The interior tour is not available for this trim"
+        },
+        "competitors": [],
+        "relatedArticles": [
+            {
+                "id": "d0000000-0000-4000-8000-000000000021",
+                "slug": "demo-sample-article",
+                "type": "news",
+                "title": "[DEMO] Sample article for testing the news layout",
+                "summary": "Fictional placeholder text for layout testing only. Not real news.",
+                "language": "en",
+                "coverImage": null,
+                "publishedAt": "2025-01-01T00:00:00.000Z",
+                "isSponsored": false,
+                "sponsorName": null,
+                "isDemo": true
+            }
+        ],
+        "isDemo": true,
+        "notAvailableLabel": "Not available"
+    }
+}

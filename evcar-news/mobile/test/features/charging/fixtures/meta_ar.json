@@ -1,0 +1,377 @@
+{
+    "data": {
+        "connectorTypes": [
+            {
+                "code": "type2",
+                "name": "النوع 2 (منيكس)",
+                "nameAr": "النوع 2 (منيكس)",
+                "nameEn": "Type 2 (Mennekes)",
+                "supportsAc": true,
+                "supportsDc": false,
+                "iconKey": "type2",
+                "standard": "IEC 62196-2 Type 2"
+            },
+            {
+                "code": "ccs2",
+                "name": "CCS2 (كومبو 2)",
+                "nameAr": "CCS2 (كومبو 2)",
+                "nameEn": "CCS2 (Combo 2)",
+                "supportsAc": false,
+                "supportsDc": true,
+                "iconKey": "ccs2",
+                "standard": "IEC 62196-3 Combo 2"
+            },
+            {
+                "code": "gbt_ac",
+                "name": "GB/T تيار متردد",
+                "nameAr": "GB/T تيار متردد",
+                "nameEn": "GB/T AC",
+                "supportsAc": true,
+                "supportsDc": false,
+                "iconKey": "gbt_ac",
+                "standard": "GB/T 20234.2"
+            },
+            {
+                "code": "gbt_dc",
+                "name": "GB/T تيار مستمر",
+                "nameAr": "GB/T تيار مستمر",
+                "nameEn": "GB/T DC",
+                "supportsAc": false,
+                "supportsDc": true,
+                "iconKey": "gbt_dc",
+                "standard": "GB/T 20234.3"
+            },
+            {
+                "code": "chademo",
+                "name": "تشاديمو (CHAdeMO)",
+                "nameAr": "تشاديمو (CHAdeMO)",
+                "nameEn": "CHAdeMO",
+                "supportsAc": false,
+                "supportsDc": true,
+                "iconKey": "chademo",
+                "standard": "CHAdeMO / IEC 62196-3 AA"
+            },
+            {
+                "code": "chaoji",
+                "name": "تشاوجي (CHAdeMO 3.0)",
+                "nameAr": "تشاوجي (CHAdeMO 3.0)",
+                "nameEn": "ChaoJi (CHAdeMO 3.0)",
+                "supportsAc": false,
+                "supportsDc": true,
+                "iconKey": "chaoji",
+                "standard": "CHAdeMO 3.0 / GB/T 20234.4 (ChaoJi)"
+            },
+            {
+                "code": "ccs1",
+                "name": "CCS1 (كومبو 1)",
+                "nameAr": "CCS1 (كومبو 1)",
+                "nameEn": "CCS1 (Combo 1)",
+                "supportsAc": false,
+                "supportsDc": true,
+                "iconKey": "ccs1",
+                "standard": "SAE J1772 Combo 1"
+            },
+            {
+                "code": "type1",
+                "name": "النوع 1 (J1772)",
+                "nameAr": "النوع 1 (J1772)",
+                "nameEn": "Type 1 (J1772)",
+                "supportsAc": true,
+                "supportsDc": false,
+                "iconKey": "type1",
+                "standard": "SAE J1772 / IEC 62196-2 Type 1"
+            },
+            {
+                "code": "nacs",
+                "name": "NACS (تسلا / SAE J3400)",
+                "nameAr": "NACS (تسلا / SAE J3400)",
+                "nameEn": "NACS (SAE J3400)",
+                "supportsAc": true,
+                "supportsDc": true,
+                "iconKey": "nacs",
+                "standard": "SAE J3400"
+            },
+            {
+                "code": "schuko",
+                "name": "مقبس منزلي شوكو (CEE 7/4)",
+                "nameAr": "مقبس منزلي شوكو (CEE 7/4)",
+                "nameEn": "Schuko (CEE 7/4, Type F)",
+                "supportsAc": true,
+                "supportsDc": false,
+                "iconKey": "schuko",
+                "standard": "CEE 7/3 socket, CEE 7/4 plug (Type F)"
+            },
+            {
+                "code": "bs1363",
+                "name": "مقبس منزلي BS 1363 (النوع G)",
+                "nameAr": "مقبس منزلي BS 1363 (النوع G)",
+                "nameEn": "BS 1363 (Type G, 13 A)",
+                "supportsAc": true,
+                "supportsDc": false,
+                "iconKey": "bs1363",
+                "standard": "BS 1363 (Type G)"
+            },
+            {
+                "code": "iec60309",
+                "name": "مقبس صناعي IEC 60309 (CEE)",
+                "nameAr": "مقبس صناعي IEC 60309 (CEE)",
+                "nameEn": "IEC 60309 (industrial / CEE)",
+                "supportsAc": true,
+                "supportsDc": false,
+                "iconKey": "iec60309",
+                "standard": "IEC 60309-2 (blue 1-phase / red 3-phase)"
+            }
+        ],
+        "amenities": [
+            {
+                "code": "restroom",
+                "label": "دورات مياه"
+            },
+            {
+                "code": "cafe",
+                "label": "مقهى"
+            },
+            {
+                "code": "restaurant",
+                "label": "مطعم"
+            },
+            {
+                "code": "shopping",
+                "label": "تسوق"
+            },
+            {
+                "code": "supermarket",
+                "label": "سوبر ماركت"
+            },
+            {
+                "code": "wifi",
+                "label": "واي فاي"
+            },
+            {
+                "code": "mosque",
+                "label": "مسجد / مصلى"
+            },
+            {
+                "code": "hotel",
+                "label": "فندق"
+            },
+            {
+                "code": "parking",
+                "label": "موقف سيارات"
+            },
+            {
+                "code": "covered_parking",
+                "label": "موقف مظلل"
+            },
+            {
+                "code": "fuel_station",
+                "label": "محطة وقود"
+            },
+            {
+                "code": "car_wash",
+                "label": "غسيل سيارات"
+            },
+            {
+                "code": "lounge",
+                "label": "استراحة"
+            },
+            {
+                "code": "playground",
+                "label": "منطقة ألعاب"
+            },
+            {
+                "code": "atm",
+                "label": "صراف آلي"
+            },
+            {
+                "code": "pharmacy",
+                "label": "صيدلية"
+            },
+            {
+                "code": "accessible",
+                "label": "مهيأ لذوي الإعاقة"
+            },
+            {
+                "code": "lighting",
+                "label": "إضاءة ليلية"
+            },
+            {
+                "code": "security",
+                "label": "حراسة / كاميرات"
+            }
+        ],
+        "paymentMethods": [
+            {
+                "code": "app",
+                "label": "تطبيق المشغّل"
+            },
+            {
+                "code": "rfid",
+                "label": "بطاقة RFID"
+            },
+            {
+                "code": "bank_card",
+                "label": "بطاقة بنكية"
+            },
+            {
+                "code": "contactless",
+                "label": "دفع لا تلامسي"
+            },
+            {
+                "code": "cash",
+                "label": "نقدًا"
+            },
+            {
+                "code": "free",
+                "label": "مجاني"
+            },
+            {
+                "code": "plug_and_charge",
+                "label": "Plug & Charge"
+            },
+            {
+                "code": "subscription",
+                "label": "اشتراك"
+            },
+            {
+                "code": "qr_code",
+                "label": "رمز QR"
+            }
+        ],
+        "startMethods": [
+            {
+                "code": "app",
+                "label": "تطبيق المشغّل"
+            },
+            {
+                "code": "rfid",
+                "label": "بطاقة RFID"
+            },
+            {
+                "code": "plug_and_charge",
+                "label": "Plug & Charge"
+            },
+            {
+                "code": "card",
+                "label": "بطاقة بنكية على الشاحن"
+            },
+            {
+                "code": "qr_code",
+                "label": "رمز QR"
+            },
+            {
+                "code": "staff",
+                "label": "بمساعدة الموظفين"
+            },
+            {
+                "code": "plug_in",
+                "label": "يبدأ عند التوصيل"
+            }
+        ],
+        "accessTypes": [
+            {
+                "code": "public",
+                "label": "عامة"
+            },
+            {
+                "code": "customers_only",
+                "label": "للعملاء فقط"
+            },
+            {
+                "code": "restricted",
+                "label": "دخول مقيد"
+            },
+            {
+                "code": "private",
+                "label": "خاصة"
+            },
+            {
+                "code": "unknown",
+                "label": "غير معروف"
+            }
+        ],
+        "operationalStatuses": [
+            {
+                "code": "operational",
+                "label": "تعمل"
+            },
+            {
+                "code": "planned",
+                "label": "مخطط لها"
+            },
+            {
+                "code": "temporarily_unavailable",
+                "label": "متوقفة مؤقتًا"
+            },
+            {
+                "code": "permanently_closed",
+                "label": "مغلقة نهائيًا"
+            },
+            {
+                "code": "unknown",
+                "label": "غير معروف"
+            }
+        ],
+        "checkinOutcomes": [
+            {
+                "code": "charged_successfully",
+                "label": "تم الشحن بنجاح"
+            },
+            {
+                "code": "waited_then_charged",
+                "label": "انتظرت ثم شحنت"
+            },
+            {
+                "code": "could_not_charge",
+                "label": "لم أتمكن من الشحن"
+            },
+            {
+                "code": "other",
+                "label": "أخرى"
+            }
+        ],
+        "reportTypes": [
+            {
+                "code": "not_working",
+                "label": "لا يعمل",
+                "help": "الشاحن أو أحد المنافذ لا يعمل.",
+                "requiresDetails": false
+            },
+            {
+                "code": "wrong_location",
+                "label": "الموقع غير صحيح",
+                "help": "مكان المحطة على الخريطة أو عنوانها غير صحيح.",
+                "requiresDetails": false
+            },
+            {
+                "code": "different_connector",
+                "label": "الموصل مختلف",
+                "help": "الموصل الموجود فعليًا يختلف عن المذكور.",
+                "requiresDetails": false
+            },
+            {
+                "code": "price_changed",
+                "label": "السعر تغيّر",
+                "help": "التعرفة المعروضة لم تعد صحيحة.",
+                "requiresDetails": false
+            },
+            {
+                "code": "access_restricted",
+                "label": "الدخول مقيّد",
+                "help": "المحطة غير متاحة للعامة أو تحتاج تصريحًا أو عضوية.",
+                "requiresDetails": false
+            },
+            {
+                "code": "other",
+                "label": "مشكلة أخرى",
+                "help": "اكتب وصفًا للمشكلة.",
+                "requiresDetails": true
+            }
+        ],
+        "liveAvailability": {
+            "configured": false,
+            "provider": null
+        },
+        "notAvailableLabel": "غير متوفر"
+    }
+}

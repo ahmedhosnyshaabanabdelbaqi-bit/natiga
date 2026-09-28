@@ -1,0 +1,245 @@
+{
+    "data": {
+        "id": "d0000000-0000-4000-8000-000000000031",
+        "slug": "demo-charging-station",
+        "name": "محطة تجريبية (Demo)",
+        "nameAr": "محطة تجريبية (Demo)",
+        "nameEn": "[DEMO] Demo Charging Station (fictional)",
+        "isDemo": true,
+        "operator": {
+            "id": "d0000000-0000-4000-8000-000000000030",
+            "name": "مشغل شحن تجريبي (وهمي)",
+            "websiteUrl": null,
+            "phone": null,
+            "email": null
+        },
+        "latitude": 32.5,
+        "longitude": 30.5,
+        "distanceM": null,
+        "address": {
+            "line": "عنوان تجريبي — ليس مكانًا حقيقيًا (Demo)",
+            "city": null,
+            "region": null,
+            "postalCode": null,
+            "countryCode": "EG",
+            "marketCode": "EG"
+        },
+        "accessEntranceNote": null,
+        "accessType": "public",
+        "accessTypeLabel": "عامة",
+        "accessRestrictions": null,
+        "hours": {
+            "timezone": "Africa/Cairo",
+            "isAlwaysOpen": true,
+            "openingHoursText": null,
+            "weekly": null,
+            "openNow": {
+                "localTime": "20:01",
+                "evaluatedAt": "2026-09-25T17:01:08.256Z",
+                "closesAt": null,
+                "opensAt": null,
+                "state": "open",
+                "reason": "always_open"
+            }
+        },
+        "contact": {
+            "phone": null,
+            "email": null,
+            "websiteUrl": null
+        },
+        "photos": [],
+        "amenities": [],
+        "paymentMethods": [
+            {
+                "code": "app",
+                "label": "تطبيق المشغّل"
+            }
+        ],
+        "startMethods": [
+            {
+                "code": "app",
+                "label": "تطبيق المشغّل"
+            }
+        ],
+        "operationalStatus": "operational",
+        "operationalStatusLabel": "تعمل",
+        "points": [
+            {
+                "id": "d0000000-0000-4000-8000-000000000032",
+                "label": "Demo EVSE 1",
+                "evseId": null,
+                "floorLevel": null,
+                "parkingRestrictions": null,
+                "operationalStatus": "operational",
+                "connectors": [
+                    {
+                        "id": "d0000000-0000-4000-8000-000000000033",
+                        "chargingPointId": "d0000000-0000-4000-8000-000000000032",
+                        "connectorType": {
+                            "code": "ccs2",
+                            "name": "CCS2 (كومبو 2)"
+                        },
+                        "currentType": "DC",
+                        "maxPowerKw": 150,
+                        "maxVoltage": null,
+                        "maxAmperage": null,
+                        "phases": null,
+                        "format": "cable",
+                        "quantity": 1,
+                        "operationalStatus": "unknown",
+                        "availability": {
+                            "status": "unknown",
+                            "providerStatus": "available",
+                            "freshness": "expired",
+                            "source": "demo",
+                            "observedAt": "2025-01-01T00:00:00.000Z",
+                            "expiresAt": "2025-01-01T00:10:00.000Z"
+                        },
+                        "compatibility": null
+                    },
+                    {
+                        "id": "d0000000-0000-4000-8000-000000000034",
+                        "chargingPointId": "d0000000-0000-4000-8000-000000000032",
+                        "connectorType": {
+                            "code": "type2",
+                            "name": "النوع 2 (منيكس)"
+                        },
+                        "currentType": "AC",
+                        "maxPowerKw": 22,
+                        "maxVoltage": null,
+                        "maxAmperage": null,
+                        "phases": 3,
+                        "format": "socket",
+                        "quantity": 1,
+                        "operationalStatus": "unknown",
+                        "availability": {
+                            "status": "unknown",
+                            "providerStatus": null,
+                            "freshness": "none",
+                            "source": null,
+                            "observedAt": null,
+                            "expiresAt": null
+                        },
+                        "compatibility": null
+                    }
+                ]
+            }
+        ],
+        "unassignedConnectors": [],
+        "pointCount": 1,
+        "connectorCount": 2,
+        "tariffs": [
+            {
+                "id": "d0000000-0000-4000-8000-000000000035",
+                "name": "Demo tariff (fictional)",
+                "chargingPointId": null,
+                "connectorId": null,
+                "currency": "EGP",
+                "validFrom": null,
+                "validTo": null,
+                "isCurrent": true,
+                "taxIncluded": null,
+                "taxPercent": null,
+                "notes": "FICTIONAL demo data for testing layouts — not a real product, price or place.",
+                "reliability": "unverified",
+                "verifiedAt": null,
+                "source": {
+                    "id": "d0000000-0000-4000-8000-000000000001",
+                    "title": "Demo data (fictional)",
+                    "publisher": null,
+                    "url": null
+                },
+                "isDemo": true,
+                "elements": [
+                    {
+                        "componentType": "energy",
+                        "componentLabel": "الطاقة",
+                        "price": {
+                            "amount": "5.0000",
+                            "currency": "EGP"
+                        },
+                        "priceUnit": "per_kwh",
+                        "unitLabel": "لكل كيلوواط ساعة",
+                        "stepSize": null,
+                        "graceMinutes": null,
+                        "minPowerKw": null,
+                        "maxPowerKw": null,
+                        "currentType": null,
+                        "startTime": null,
+                        "endTime": null,
+                        "daysOfWeek": []
+                    },
+                    {
+                        "componentType": "idle",
+                        "componentLabel": "رسوم الخمول بعد اكتمال الشحن",
+                        "price": {
+                            "amount": "2.0000",
+                            "currency": "EGP"
+                        },
+                        "priceUnit": "per_minute",
+                        "unitLabel": "لكل دقيقة",
+                        "stepSize": null,
+                        "graceMinutes": 15,
+                        "minPowerKw": null,
+                        "maxPowerKw": null,
+                        "currentType": null,
+                        "startTime": null,
+                        "endTime": null,
+                        "daysOfWeek": []
+                    }
+                ]
+            }
+        ],
+        "usageCostText": null,
+        "availability": {
+            "liveProviderConfigured": false,
+            "provider": null,
+            "isLive": false,
+            "status": "unknown",
+            "counts": {
+                "available": 0,
+                "occupied": 0,
+                "outOfOrder": 0,
+                "unknown": 2
+            },
+            "lastObservedAt": "2025-01-01T00:00:00.000Z",
+            "disclaimer": "يُعرض التوافر اللحظي فقط من مصدر يقدمه فعليًا وقبل انتهاء صلاحيته؛ غير ذلك تكون الحالة غير معروفة."
+        },
+        "source": {
+            "dataSource": "manual",
+            "license": "Demo data (fictional)",
+            "attribution": "FICTIONAL demo data for testing layouts — not a real product, price or place.",
+            "lastVerifiedAt": null,
+            "sourceUpdatedAt": null,
+            "lastUpdated": "2026-09-25T17:00:27.516Z",
+            "providers": [
+                {
+                    "provider": "demo",
+                    "displayName": "Demo data (fictional)",
+                    "sourceUrl": null,
+                    "license": "Demo data (fictional)",
+                    "licenseUrl": null,
+                    "attribution": "FICTIONAL demo data for testing layouts — not a real product, price or place.",
+                    "lastSyncedAt": null
+                }
+            ]
+        },
+        "community": {
+            "isLive": false,
+            "disclaimer": "تسجيلات الزيارة والبلاغات بيانات مجتمعية مؤرخة من المستخدمين، وليست حالة لحظية رسمية للمحطة.",
+            "checkins": {
+                "total": 0,
+                "last30Days": 0,
+                "lastAt": null,
+                "successRate30d": null,
+                "recent": []
+            },
+            "reports": {
+                "openCount": 0,
+                "recent": []
+            }
+        },
+        "compatibility": null,
+        "updatedAt": "2026-09-25T17:00:27.516Z"
+    }
+}

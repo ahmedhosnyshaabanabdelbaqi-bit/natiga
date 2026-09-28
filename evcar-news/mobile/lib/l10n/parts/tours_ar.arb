@@ -1,5 +1,187 @@
 {
   "@@locale": "ar",
   "toursViewerTitle": "جولة داخلية 360°",
-  "toursListTitle": "الجولات الداخلية 360°"
+  "toursListTitle": "الجولات الداخلية 360°",
+  "toursListIntro": "اجلس داخل السيارة وانظر حولك مقعدًا بمقعد. كل جولة مصنوعة من صور داخلية مرخّصة للفئة المذكورة.",
+  "toursListEmptyTitle": "لا توجد جولات 360° بعد",
+  "toursListEmptyMessage": "ننشر الجولات فقط من صور مرخّصة للفئة نفسها. ستظهر الجولات الجديدة هنا فور جاهزيتها.",
+  "toursBrowseCars": "تصفّح السيارات",
+  "toursLoadMoreFailed": "تعذّر تحميل المزيد من الجولات.",
+  "toursSceneCount": "{count, plural, =0{لا مشاهد} =1{مشهد واحد} =2{مشهدان} few{{count} مشاهد} many{{count} مشهدًا} other{{count} مشهد}}",
+  "@toursSceneCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "toursModelYear": "موديل {year}",
+  "@toursModelYear": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "toursMarket": "السوق: {market}",
+  "@toursMarket": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "toursInterior": "المقصورة: {color}",
+  "@toursInterior": {
+    "placeholders": {
+      "color": {
+        "type": "String"
+      }
+    }
+  },
+  "toursDriveLhd": "مقود على اليسار",
+  "toursDriveRhd": "مقود على اليمين",
+  "toursDriveUnknown": "اتجاه القيادة: غير متوفر",
+  "toursTrim": "الفئة: {trim}",
+  "@toursTrim": {
+    "placeholders": {
+      "trim": {
+        "type": "String"
+      }
+    }
+  },
+  "toursReferenceBadge": "فئة قريبة",
+  "toursReferenceTitle": "مصوّرة في فئة قريبة",
+  "toursReferenceBody": "تعرض هذه الصور الفئة {trim}، وليست الفئة المختارة نفسها.",
+  "@toursReferenceBody": {
+    "placeholders": {
+      "trim": {
+        "type": "String"
+      }
+    }
+  },
+  "toursDemoFallback": "تجريبي — ليست مقصورة سيارة حقيقية",
+  "toursOpen": "افتح الجولة 360°",
+  "toursUnavailableTitle": "الجولة غير متاحة لهذه الفئة",
+  "toursUnavailableMessage": "لا توجد مقصورة 360° مرخّصة لهذه الجولة. يمكنك تصفّح الصور العادية بدلًا منها.",
+  "toursOpenGallery": "افتح معرض الصور",
+  "toursGoBack": "رجوع",
+  "toursLoading": "جارٍ تحميل العرض 360°…",
+  "toursQualityPreview": "معاينة",
+  "toursQualityHd": "عالية الدقة",
+  "toursQualityPreviewSemantics": "يُعرض الآن نسخة معاينة منخفضة الدقة",
+  "toursQualityHdSemantics": "يُعرض الآن بجودة عالية",
+  "toursLoadingHd": "جارٍ تحميل الجودة العالية… {percent}",
+  "@toursLoadingHd": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "toursLoadingHdUnknown": "جارٍ تحميل الجودة العالية…",
+  "toursHdFailed": "تعذّر تحميل الجودة العالية. تُعرض المعاينة.",
+  "toursLoadFailedTitle": "تعذّر تحميل العرض 360°",
+  "toursLoadFailedMessage": "تحقق من الاتصال وحاول مرة أخرى. يمكنك أيضًا تصفّح الصور العادية.",
+  "toursWebglTitle": "هذا الجهاز لا يدعم العرض 360°",
+  "toursWebglMessage": "رسوميات ثلاثية الأبعاد (WebGL) غير متاحة على هذا الجهاز. يمكنك تصفّح الصور العادية بدلًا منها.",
+  "toursNoImageTitle": "لا يمكن عرض هذه الجولة على هذا الجهاز",
+  "toursNoImageMessage": "صورها أكبر مما يستطيع هذا الجهاز عرضه.",
+  "toursResetView": "إعادة المنظور",
+  "toursZoomIn": "تكبير",
+  "toursZoomOut": "تصغير",
+  "toursMotionOn": "إيقاف التحكم بحركة الهاتف",
+  "toursMotionOff": "انظر حولك بتحريك الهاتف",
+  "toursMotionEnabled": "التحكم بالحركة يعمل. حرّك هاتفك لتنظر حولك.",
+  "toursMotionUnavailable": "التحكم بحركة الهاتف غير متاح على هذا الجهاز. اسحب لتنظر حولك.",
+  "toursFullscreenEnter": "ملء الشاشة",
+  "toursFullscreenExit": "الخروج من ملء الشاشة",
+  "toursInfo": "عن هذه الجولة",
+  "toursPoints": "نقاط الاهتمام",
+  "toursPointsEmpty": "لا توجد نقاط اهتمام في هذا المشهد.",
+  "toursSeatPicker": "اختر المقعد",
+  "toursSeatDriver": "مقعد السائق",
+  "toursSeatFrontPassenger": "الراكب الأمامي",
+  "toursSeatRear": "المقاعد الخلفية",
+  "toursSeatThirdRow": "الصف الثالث",
+  "toursSeatCargo": "صندوق الأمتعة",
+  "toursSeatOther": "منظر آخر",
+  "toursDragHint": "اسحب لتنظر حولك · قرّب بإصبعين للتكبير",
+  "toursViewerSemantics": "عرض 360° لسيارة {car}. اسحب لتنظر حولك أو استخدم الأزرار.",
+  "@toursViewerSemantics": {
+    "placeholders": {
+      "car": {
+        "type": "String"
+      }
+    }
+  },
+  "toursHotspotInfo": "معلومة",
+  "toursHotspotImage": "صورة تفصيلية",
+  "toursHotspotVideo": "فيديو",
+  "toursHotspotSpec": "مواصفة",
+  "toursHotspotScene": "الانتقال إلى مقعد آخر",
+  "toursImageZoomHint": "اضغط على الصورة للتكبير",
+  "toursImageZoomTitle": "صورة تفصيلية",
+  "toursVideoOpen": "شاهد الفيديو",
+  "toursVideoProvider": "يُفتح على {provider}",
+  "@toursVideoProvider": {
+    "placeholders": {
+      "provider": {
+        "type": "String"
+      }
+    }
+  },
+  "toursVideoSelf": "EV Car News",
+  "toursVideoBlocked": "رابط الفيديو هذا غير مسموح.",
+  "toursSpecOpen": "كل المواصفات",
+  "toursAttributionTitle": "حقوق الصور والترخيص",
+  "toursLicense": "الترخيص: {license}",
+  "@toursLicense": {
+    "placeholders": {
+      "license": {
+        "type": "String"
+      }
+    }
+  },
+  "toursLicenseOwned": "مملوكة",
+  "toursLicenseCommissioned": "بتكليف",
+  "toursLicensePressKit": "مواد صحفية",
+  "toursLicenseLicensed": "مرخّصة",
+  "toursLicenseCc0": "CC0 (ملكية عامة)",
+  "toursLicenseCcBy": "CC BY",
+  "toursLicenseCcBySa": "CC BY-SA",
+  "toursLicensePermission": "بإذن من صاحب الحقوق",
+  "toursLicenseOther": "ترخيص آخر",
+  "toursLicenseTerms": "شروط الترخيص",
+  "toursSourceLink": "المصدر",
+  "toursCredit": "© {credit}",
+  "@toursCredit": {
+    "placeholders": {
+      "credit": {
+        "type": "String"
+      }
+    }
+  },
+  "toursMarketMismatch": "صُنعت هذه الجولة لسوق {market}، وليس للسوق الذي اخترته.",
+  "@toursMarketMismatch": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "toursAbout": "نبذة",
+  "toursPublished": "نُشرت {date}",
+  "@toursPublished": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "toursWebPreviewMessage": "يعمل عارض 360° في تطبيقي Android وiOS. الصورة أدناه معاينة ثابتة فقط وليست الجولة.",
+  "toursStillPreview": "معاينة ثابتة (ليست الجولة 360°)",
+  "toursDetails": "تفاصيل الجولة",
+  "toursCar": "السيارة",
+  "toursViewCar": "صفحة السيارة"
 }

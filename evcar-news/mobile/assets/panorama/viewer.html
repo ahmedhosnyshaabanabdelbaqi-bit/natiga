@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <!--
-  EV Car News — isolated 360° interior viewer (SKELETON, to be completed by the
-  tours feature; see mobile/README.md → "360° viewer").
+  EV Car News — isolated 360° interior viewer.
 
   Loaded by the Flutter app from the bundled asset (webview_flutter
   loadFlutterAsset). Security model (ARCHITECTURE §6, REQUIREMENTS §19):
    * no remote scripts: Pannellum is vendored in ./pannellum (MIT, v2.5.7);
-   * the CSP below is the baseline; on "init" viewer.js adds a second, stricter
-     CSP meta that limits images/XHR to the configured media origin (multiple
-     policies are enforced together, so this can only tighten);
+   * this baseline CSP allows only bundled scripts/styles; on "init"
+     viewer.js adds a second CSP that narrows images to blob:/data: and the
+     configured media origin (multiple policies are enforced together, so it
+     can only tighten). Single-image panoramas arrive as bytes from the app
+     (blob: URLs); only multires tiles are fetched, from the media origin;
    * the app's NavigationDelegate blocks every navigation except this file;
    * messages in both directions follow the schema in viewer.js and are
      validated; hotspot text is rendered with textContent only.
+  `file:` is listed next to 'self' because some WebViews do not match
+  'self' for file:// pages.
 -->
 <html lang="en" dir="ltr">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="Content-Security-Policy"
-        content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data: blob: https:; connect-src https:; media-src 'none'; font-src 'self'; object-src 'none'; frame-src 'none'; worker-src 'none'; child-src 'none'; manifest-src 'none'; base-uri 'none'; form-action 'none'">
+        content="default-src 'none'; script-src 'self' file:; style-src 'self' file:; img-src 'self' file: data: blob: https:; connect-src blob:; media-src 'none'; font-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; child-src 'none'; manifest-src 'none'; base-uri 'none'; form-action 'none'">
   <meta name="referrer" content="no-referrer">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <title>EV Car News 360°</title>

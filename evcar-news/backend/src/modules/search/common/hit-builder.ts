@@ -51,6 +51,8 @@ export interface HitInput {
   pinned: boolean;
   isDemo: boolean;
   details: Record<string, unknown>;
+  /** Extra texts that matched but are not displayed (keywords, other language). */
+  matchTexts?: (string | null | undefined)[];
 }
 
 const SNIPPET_MAX = 200;
@@ -79,7 +81,12 @@ export function buildHit(plan: QueryPlan, input: HitInput): SearchHit {
       title: highlightRanges(input.title, needles),
       snippet: highlightRanges(snippet, needles),
     },
-    matchedBy: matchKind(plan, input.title, [input.subtitle, ...sources], input.pinned),
+    matchedBy: matchKind(
+      plan,
+      input.title,
+      [input.subtitle, ...sources, ...(input.matchTexts ?? [])],
+      input.pinned,
+    ),
     score: Math.round(input.score * 1000) / 1000,
     isDemo: input.isDemo,
     details: input.details,

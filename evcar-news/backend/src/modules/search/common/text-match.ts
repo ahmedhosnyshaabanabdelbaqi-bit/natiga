@@ -32,6 +32,7 @@ export function normalizeWithMap(input: string): MappedText | null {
   const ends: number[] = [];
   let pendingSpace = false;
   let lastEnd = 0;
+  let lastStart = 0;
   let i = 0;
   for (const ch of input) {
     const at = i;
@@ -41,13 +42,22 @@ export function normalizeWithMap(input: string): MappedText | null {
       continue;
     }
     const n = normalizeSearchText(ch);
-    if (n === '') continue;
+    if (n === '') {
+      // Removed mark (diacritic, tatweel…): belongs to the previous letter, so
+      // a highlight of that letter covers it too.
+      if (text.length > 0 && !pendingSpace) {
+        for (let k = lastStart; k < ends.length; k++) ends[k] = at + ch.length;
+        lastEnd = at + ch.length;
+      }
+      continue;
+    }
     if (pendingSpace) {
       text += ' ';
       starts.push(lastEnd);
       ends.push(at);
       pendingSpace = false;
     }
+    lastStart = starts.length;
     for (let k = 0; k < n.length; k++) {
       starts.push(at);
       ends.push(at + ch.length);
@@ -87,7 +97,10 @@ const MAX_RANGES = 20;
  * shorter than 2 characters only match at a word start (avoids highlighting
  * every "a"). Overlapping ranges are merged.
  */
-export function highlightRanges(original: string | null | undefined, needles: string[]): TextRange[] {
+export function highlightRanges(
+  original: string | null | undefined,
+  needles: string[],
+): TextRange[] {
   if (!original) return [];
   const mapped = normalizeWithMap(original);
   if (!mapped || mapped.text.length === 0) return [];

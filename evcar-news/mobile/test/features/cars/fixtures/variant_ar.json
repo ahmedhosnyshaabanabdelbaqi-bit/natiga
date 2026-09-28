@@ -1,0 +1,1164 @@
+{
+    "data": {
+        "id": "d0000000-0000-4000-8000-000000000014",
+        "slug": "demo-ev-one-2025-standard-bev",
+        "name": "ستاندرد (تجريبي)",
+        "nameAr": "ستاندرد (تجريبي)",
+        "nameEn": "Standard (demo)",
+        "title": "ديمو موتورز (تجريبي) ديمو EV ون (تجريبي) 2025 ستاندرد (تجريبي)",
+        "trimCode": null,
+        "powertrainType": "BEV",
+        "bodyType": "crossover",
+        "driveType": "fwd",
+        "seats": 5,
+        "doors": 5,
+        "modelYear": 2025,
+        "publishedAt": "2025-01-01T00:00:00.000Z",
+        "isDemo": true,
+        "brand": {
+            "id": "d0000000-0000-4000-8000-000000000010",
+            "slug": "demo-motors",
+            "name": "ديمو موتورز (تجريبي)",
+            "logo": null
+        },
+        "model": {
+            "id": "d0000000-0000-4000-8000-000000000011",
+            "slug": "demo-motors-ev-one",
+            "name": "ديمو EV ون (تجريبي)"
+        },
+        "generation": {
+            "id": "d0000000-0000-4000-8000-000000000012",
+            "slug": "gen-1",
+            "name": "الجيل الأول (تجريبي)",
+            "code": null,
+            "startYear": 2025,
+            "endYear": null
+        },
+        "market": {
+            "code": "EG",
+            "name": "مصر",
+            "currencyCode": "EGP",
+            "offered": true,
+            "availability": "available",
+            "localName": null,
+            "launchDate": null,
+            "discontinuedAt": null,
+            "driveSide": "lhd",
+            "source": null,
+            "verifiedAt": null
+        },
+        "availableMarkets": [
+            {
+                "code": "EG",
+                "name": "مصر",
+                "availability": "available"
+            }
+        ],
+        "images": [],
+        "price": {
+            "current": {
+                "id": "01a0d96f-73ec-75de-a271-72b141242774",
+                "marketCode": "EG",
+                "amount": {
+                    "amount": "1500000.00",
+                    "currency": "EGP"
+                },
+                "priceType": "official_msrp",
+                "priceTypeLabel": "السعر الرسمي",
+                "effectiveFrom": "2025-01-01",
+                "effectiveTo": null,
+                "isCurrent": true,
+                "inMarketCurrency": true,
+                "notes": "FICTIONAL demo data for testing layouts — not a real product, price or place.",
+                "reliability": "unverified",
+                "verifiedAt": null,
+                "source": {
+                    "id": "d0000000-0000-4000-8000-000000000001",
+                    "type": "other",
+                    "title": "Demo data (fictional)",
+                    "publisher": null,
+                    "url": null,
+                    "documentDate": null,
+                    "accessedAt": null,
+                    "marketCode": null
+                }
+            },
+            "history": [
+                {
+                    "id": "01a0d96f-73ec-75de-a271-72b141242774",
+                    "marketCode": "EG",
+                    "amount": {
+                        "amount": "1500000.00",
+                        "currency": "EGP"
+                    },
+                    "priceType": "official_msrp",
+                    "priceTypeLabel": "السعر الرسمي",
+                    "effectiveFrom": "2025-01-01",
+                    "effectiveTo": null,
+                    "isCurrent": true,
+                    "inMarketCurrency": true,
+                    "notes": "FICTIONAL demo data for testing layouts — not a real product, price or place.",
+                    "reliability": "unverified",
+                    "verifiedAt": null,
+                    "source": {
+                        "id": "d0000000-0000-4000-8000-000000000001",
+                        "type": "other",
+                        "title": "Demo data (fictional)",
+                        "publisher": null,
+                        "url": null,
+                        "documentDate": null,
+                        "accessedAt": null,
+                        "marketCode": null
+                    }
+                }
+            ]
+        },
+        "keyFacts": {
+            "usableBatteryKwh": {
+                "value": 60,
+                "unit": "kWh",
+                "originalValue": null,
+                "originalUnit": null,
+                "marketCode": null,
+                "derived": false,
+                "reliability": "unverified",
+                "verifiedAt": null,
+                "source": {
+                    "id": "d0000000-0000-4000-8000-000000000001",
+                    "type": "other",
+                    "title": "Demo data (fictional)",
+                    "publisher": null,
+                    "url": null,
+                    "documentDate": null,
+                    "accessedAt": null,
+                    "marketCode": null
+                }
+            },
+            "grossBatteryKwh": {
+                "value": 64,
+                "unit": "kWh",
+                "originalValue": null,
+                "originalUnit": null,
+                "marketCode": null,
+                "derived": false,
+                "reliability": "unverified",
+                "verifiedAt": null,
+                "source": {
+                    "id": "d0000000-0000-4000-8000-000000000001",
+                    "type": "other",
+                    "title": "Demo data (fictional)",
+                    "publisher": null,
+                    "url": null,
+                    "documentDate": null,
+                    "accessedAt": null,
+                    "marketCode": null
+                }
+            },
+            "powerKw": {
+                "value": 150,
+                "unit": "kW",
+                "originalValue": null,
+                "originalUnit": null,
+                "marketCode": null,
+                "derived": false,
+                "reliability": "unverified",
+                "verifiedAt": null,
+                "source": {
+                    "id": "d0000000-0000-4000-8000-000000000001",
+                    "type": "other",
+                    "title": "Demo data (fictional)",
+                    "publisher": null,
+                    "url": null,
+                    "documentDate": null,
+                    "accessedAt": null,
+                    "marketCode": null
+                }
+            },
+            "powerHp": {
+                "value": 201,
+                "unit": "hp",
+                "originalValue": "150",
+                "originalUnit": "kW",
+                "marketCode": null,
+                "derived": true,
+                "reliability": "unverified",
+                "verifiedAt": null,
+                "source": {
+                    "id": "d0000000-0000-4000-8000-000000000001",
+                    "type": "other",
+                    "title": "Demo data (fictional)",
+                    "publisher": null,
+                    "url": null,
+                    "documentDate": null,
+                    "accessedAt": null,
+                    "marketCode": null
+                }
+            },
+            "torqueNm": null,
+            "accel0100S": null,
+            "acMaxKw": {
+                "value": 11,
+                "unit": "kW",
+                "originalValue": null,
+                "originalUnit": null,
+                "marketCode": null,
+                "derived": false,
+                "reliability": "unverified",
+                "verifiedAt": null,
+                "source": {
+                    "id": "d0000000-0000-4000-8000-000000000001",
+                    "type": "other",
+                    "title": "Demo data (fictional)",
+                    "publisher": null,
+                    "url": null,
+                    "documentDate": null,
+                    "accessedAt": null,
+                    "marketCode": null
+                }
+            },
+            "dcPeakKw": {
+                "value": 150,
+                "unit": "kW",
+                "originalValue": null,
+                "originalUnit": null,
+                "marketCode": null,
+                "derived": false,
+                "reliability": "unverified",
+                "verifiedAt": null,
+                "source": {
+                    "id": "d0000000-0000-4000-8000-000000000001",
+                    "type": "other",
+                    "title": "Demo data (fictional)",
+                    "publisher": null,
+                    "url": null,
+                    "documentDate": null,
+                    "accessedAt": null,
+                    "marketCode": null
+                }
+            },
+            "electricRanges": [
+                {
+                    "id": "01a0d96f-73cf-75a6-b80b-597940cdd729",
+                    "cycle": "WLTP",
+                    "cycleNote": null,
+                    "rangeType": "electric",
+                    "valueKm": 420,
+                    "originalValue": null,
+                    "originalUnit": null,
+                    "wheelSizeInch": null,
+                    "conditions": null,
+                    "marketCode": null,
+                    "reliability": "unverified",
+                    "verifiedAt": null,
+                    "source": {
+                        "id": "d0000000-0000-4000-8000-000000000001",
+                        "type": "other",
+                        "title": "Demo data (fictional)",
+                        "publisher": null,
+                        "url": null,
+                        "documentDate": null,
+                        "accessedAt": null,
+                        "marketCode": null
+                    }
+                }
+            ]
+        },
+        "specGroups": [
+            {
+                "key": "battery",
+                "label": "البطارية",
+                "items": [
+                    {
+                        "key": "battery.gross_kwh",
+                        "label": "سعة البطارية الإجمالية",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "kWh",
+                        "betterDirection": "none",
+                        "isKeySpec": true,
+                        "point": {
+                            "value": 64,
+                            "unit": "kWh",
+                            "originalValue": null,
+                            "originalUnit": null,
+                            "marketCode": null,
+                            "derived": false,
+                            "reliability": "unverified",
+                            "verifiedAt": null,
+                            "source": {
+                                "id": "d0000000-0000-4000-8000-000000000001",
+                                "type": "other",
+                                "title": "Demo data (fictional)",
+                                "publisher": null,
+                                "url": null,
+                                "documentDate": null,
+                                "accessedAt": null,
+                                "marketCode": null
+                            }
+                        }
+                    },
+                    {
+                        "key": "battery.usable_kwh",
+                        "label": "سعة البطارية القابلة للاستخدام",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "kWh",
+                        "betterDirection": "none",
+                        "isKeySpec": true,
+                        "point": {
+                            "value": 60,
+                            "unit": "kWh",
+                            "originalValue": null,
+                            "originalUnit": null,
+                            "marketCode": null,
+                            "derived": false,
+                            "reliability": "unverified",
+                            "verifiedAt": null,
+                            "source": {
+                                "id": "d0000000-0000-4000-8000-000000000001",
+                                "type": "other",
+                                "title": "Demo data (fictional)",
+                                "publisher": null,
+                                "url": null,
+                                "documentDate": null,
+                                "accessedAt": null,
+                                "marketCode": null
+                            }
+                        }
+                    },
+                    {
+                        "key": "battery.chemistry",
+                        "label": "كيمياء البطارية",
+                        "description": null,
+                        "dataType": "text",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "battery.voltage_v",
+                        "label": "جهد النظام",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "V",
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "battery.warranty_years",
+                        "label": "ضمان البطارية (سنوات)",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "year",
+                        "betterDirection": "higher",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "battery.warranty_km",
+                        "label": "ضمان البطارية (مسافة)",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "km",
+                        "betterDirection": "higher",
+                        "isKeySpec": false,
+                        "point": null
+                    }
+                ]
+            },
+            {
+                "key": "charging",
+                "label": "الشحن",
+                "items": [
+                    {
+                        "key": "charging.ac_max_kw",
+                        "label": "أقصى قدرة شحن AC",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "kW",
+                        "betterDirection": "higher",
+                        "isKeySpec": true,
+                        "point": {
+                            "value": 11,
+                            "unit": "kW",
+                            "originalValue": null,
+                            "originalUnit": null,
+                            "marketCode": null,
+                            "derived": false,
+                            "reliability": "unverified",
+                            "verifiedAt": null,
+                            "source": {
+                                "id": "d0000000-0000-4000-8000-000000000001",
+                                "type": "other",
+                                "title": "Demo data (fictional)",
+                                "publisher": null,
+                                "url": null,
+                                "documentDate": null,
+                                "accessedAt": null,
+                                "marketCode": null
+                            }
+                        }
+                    },
+                    {
+                        "key": "charging.dc_peak_kw",
+                        "label": "أقصى قدرة شحن DC (ذروة)",
+                        "description": "Peak, not average power. Use charging curves/times for realistic durations.",
+                        "dataType": "number",
+                        "unit": "kW",
+                        "betterDirection": "higher",
+                        "isKeySpec": true,
+                        "point": {
+                            "value": 150,
+                            "unit": "kW",
+                            "originalValue": null,
+                            "originalUnit": null,
+                            "marketCode": null,
+                            "derived": false,
+                            "reliability": "unverified",
+                            "verifiedAt": null,
+                            "source": {
+                                "id": "d0000000-0000-4000-8000-000000000001",
+                                "type": "other",
+                                "title": "Demo data (fictional)",
+                                "publisher": null,
+                                "url": null,
+                                "documentDate": null,
+                                "accessedAt": null,
+                                "marketCode": null
+                            }
+                        }
+                    },
+                    {
+                        "key": "charging.ac_phases",
+                        "label": "أطوار الشاحن المدمج",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "charging.v2l",
+                        "label": "تغذية الأجهزة (V2L)",
+                        "description": null,
+                        "dataType": "boolean",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": {
+                            "value": true,
+                            "unit": null,
+                            "originalValue": null,
+                            "originalUnit": null,
+                            "marketCode": null,
+                            "derived": false,
+                            "reliability": "unverified",
+                            "verifiedAt": null,
+                            "source": {
+                                "id": "d0000000-0000-4000-8000-000000000001",
+                                "type": "other",
+                                "title": "Demo data (fictional)",
+                                "publisher": null,
+                                "url": null,
+                                "documentDate": null,
+                                "accessedAt": null,
+                                "marketCode": null
+                            }
+                        }
+                    },
+                    {
+                        "key": "charging.v2l_max_kw",
+                        "label": "أقصى قدرة V2L",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "kW",
+                        "betterDirection": "higher",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "charging.battery_preconditioning",
+                        "label": "التهيئة الحرارية للبطارية",
+                        "description": null,
+                        "dataType": "boolean",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "charging.plug_and_charge",
+                        "label": "الشحن بالتوصيل المباشر (Plug & Charge)",
+                        "description": null,
+                        "dataType": "boolean",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    }
+                ]
+            },
+            {
+                "key": "performance",
+                "label": "الأداء",
+                "items": [
+                    {
+                        "key": "performance.power_kw",
+                        "label": "القوة (كيلوواط)",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "kW",
+                        "betterDirection": "higher",
+                        "isKeySpec": true,
+                        "point": {
+                            "value": 150,
+                            "unit": "kW",
+                            "originalValue": null,
+                            "originalUnit": null,
+                            "marketCode": null,
+                            "derived": false,
+                            "reliability": "unverified",
+                            "verifiedAt": null,
+                            "source": {
+                                "id": "d0000000-0000-4000-8000-000000000001",
+                                "type": "other",
+                                "title": "Demo data (fictional)",
+                                "publisher": null,
+                                "url": null,
+                                "documentDate": null,
+                                "accessedAt": null,
+                                "marketCode": null
+                            }
+                        }
+                    },
+                    {
+                        "key": "performance.power_hp",
+                        "label": "القوة (حصان)",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "hp",
+                        "betterDirection": "higher",
+                        "isKeySpec": false,
+                        "point": {
+                            "value": 201,
+                            "unit": "hp",
+                            "originalValue": "150",
+                            "originalUnit": "kW",
+                            "marketCode": null,
+                            "derived": true,
+                            "reliability": "unverified",
+                            "verifiedAt": null,
+                            "source": {
+                                "id": "d0000000-0000-4000-8000-000000000001",
+                                "type": "other",
+                                "title": "Demo data (fictional)",
+                                "publisher": null,
+                                "url": null,
+                                "documentDate": null,
+                                "accessedAt": null,
+                                "marketCode": null
+                            }
+                        }
+                    },
+                    {
+                        "key": "performance.torque_nm",
+                        "label": "عزم الدوران",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "Nm",
+                        "betterDirection": "higher",
+                        "isKeySpec": true,
+                        "point": null
+                    },
+                    {
+                        "key": "performance.accel_0_100_s",
+                        "label": "التسارع 0–100 كم/س",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "s",
+                        "betterDirection": "lower",
+                        "isKeySpec": true,
+                        "point": null
+                    },
+                    {
+                        "key": "performance.top_speed_kmh",
+                        "label": "السرعة القصوى",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "km/h",
+                        "betterDirection": "higher",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "performance.motors",
+                        "label": "عدد المحركات الكهربائية",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "performance.engine_displacement_l",
+                        "label": "سعة المحرك (الهجينة)",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "l",
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    }
+                ]
+            },
+            {
+                "key": "dimensions",
+                "label": "الأبعاد والوزن",
+                "items": [
+                    {
+                        "key": "dimensions.length_mm",
+                        "label": "الطول",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "mm",
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "dimensions.width_mm",
+                        "label": "العرض",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "mm",
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "dimensions.height_mm",
+                        "label": "الارتفاع",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "mm",
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "dimensions.wheelbase_mm",
+                        "label": "قاعدة العجلات",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "mm",
+                        "betterDirection": "higher",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "dimensions.ground_clearance_mm",
+                        "label": "الخلوص الأرضي",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "mm",
+                        "betterDirection": "higher",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "dimensions.curb_weight_kg",
+                        "label": "الوزن فارغة",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "kg",
+                        "betterDirection": "lower",
+                        "isKeySpec": false,
+                        "point": null
+                    }
+                ]
+            },
+            {
+                "key": "practicality",
+                "label": "المساحة والتخزين",
+                "items": [
+                    {
+                        "key": "practicality.trunk_l",
+                        "label": "سعة الصندوق",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "l",
+                        "betterDirection": "higher",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "practicality.trunk_max_l",
+                        "label": "أقصى سعة تخزين (المقاعد مطوية)",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "l",
+                        "betterDirection": "higher",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "practicality.frunk_l",
+                        "label": "الصندوق الأمامي",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "l",
+                        "betterDirection": "higher",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "practicality.towing_braked_kg",
+                        "label": "قدرة القطر (بفرامل)",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "kg",
+                        "betterDirection": "higher",
+                        "isKeySpec": false,
+                        "point": null
+                    }
+                ]
+            },
+            {
+                "key": "safety",
+                "label": "الأمان",
+                "items": [
+                    {
+                        "key": "safety.airbags",
+                        "label": "الوسائد الهوائية",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": null,
+                        "betterDirection": "higher",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "safety.ncap_rating",
+                        "label": "تقييم اختبار التصادم",
+                        "description": null,
+                        "dataType": "text",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "safety.aeb",
+                        "label": "الكبح التلقائي في حالات الطوارئ",
+                        "description": null,
+                        "dataType": "boolean",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "safety.lane_keeping",
+                        "label": "مساعد البقاء في المسار",
+                        "description": null,
+                        "dataType": "boolean",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "safety.blind_spot",
+                        "label": "مراقبة النقطة العمياء",
+                        "description": null,
+                        "dataType": "boolean",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "safety.adaptive_cruise",
+                        "label": "مثبت السرعة التكيفي",
+                        "description": null,
+                        "dataType": "boolean",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "safety.camera_360",
+                        "label": "كاميرا 360°",
+                        "description": null,
+                        "dataType": "boolean",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    }
+                ]
+            },
+            {
+                "key": "comfort",
+                "label": "الراحة",
+                "items": [
+                    {
+                        "key": "comfort.heat_pump",
+                        "label": "مضخة حرارية",
+                        "description": null,
+                        "dataType": "boolean",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "comfort.panoramic_roof",
+                        "label": "سقف بانورامي",
+                        "description": null,
+                        "dataType": "boolean",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "comfort.ventilated_seats",
+                        "label": "مقاعد أمامية مهواة",
+                        "description": null,
+                        "dataType": "boolean",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "comfort.heated_seats",
+                        "label": "مقاعد أمامية مدفأة",
+                        "description": null,
+                        "dataType": "boolean",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    }
+                ]
+            },
+            {
+                "key": "tech",
+                "label": "التقنيات والبرمجيات",
+                "items": [
+                    {
+                        "key": "tech.screen_in",
+                        "label": "حجم الشاشة المركزية",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "in",
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "tech.apple_carplay",
+                        "label": "Apple CarPlay",
+                        "description": null,
+                        "dataType": "boolean",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "tech.android_auto",
+                        "label": "Android Auto",
+                        "description": null,
+                        "dataType": "boolean",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "tech.ota_updates",
+                        "label": "تحديثات البرمجيات عن بُعد",
+                        "description": null,
+                        "dataType": "boolean",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    }
+                ]
+            },
+            {
+                "key": "warranty",
+                "label": "الضمان",
+                "items": [
+                    {
+                        "key": "warranty.vehicle_years",
+                        "label": "ضمان السيارة (سنوات)",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "year",
+                        "betterDirection": "higher",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "warranty.vehicle_km",
+                        "label": "ضمان السيارة (مسافة)",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "km",
+                        "betterDirection": "higher",
+                        "isKeySpec": false,
+                        "point": null
+                    }
+                ]
+            }
+        ],
+        "ranges": [
+            {
+                "id": "01a0d96f-73cf-75a6-b80b-597940cdd729",
+                "cycle": "WLTP",
+                "cycleNote": null,
+                "rangeType": "electric",
+                "valueKm": 420,
+                "originalValue": null,
+                "originalUnit": null,
+                "wheelSizeInch": null,
+                "conditions": null,
+                "marketCode": null,
+                "reliability": "unverified",
+                "verifiedAt": null,
+                "source": {
+                    "id": "d0000000-0000-4000-8000-000000000001",
+                    "type": "other",
+                    "title": "Demo data (fictional)",
+                    "publisher": null,
+                    "url": null,
+                    "documentDate": null,
+                    "accessedAt": null,
+                    "marketCode": null
+                }
+            }
+        ],
+        "consumption": [
+            {
+                "id": "01a0d96f-73b6-7239-9a3b-f2fcf0604270",
+                "cycle": "WLTP",
+                "cycleNote": null,
+                "kind": "electricity",
+                "mode": "combined",
+                "value": 160,
+                "unit": "Wh/km",
+                "originalValue": null,
+                "originalUnit": null,
+                "conditions": "FICTIONAL demo data for testing layouts — not a real product, price or place.",
+                "marketCode": null,
+                "reliability": "unverified",
+                "verifiedAt": null,
+                "source": {
+                    "id": "d0000000-0000-4000-8000-000000000001",
+                    "type": "other",
+                    "title": "Demo data (fictional)",
+                    "publisher": null,
+                    "url": null,
+                    "documentDate": null,
+                    "accessedAt": null,
+                    "marketCode": null
+                }
+            }
+        ],
+        "charging": {
+            "inlets": [
+                {
+                    "id": "01a0d96f-73c7-7323-9595-6d3b4d179c29",
+                    "connectorType": {
+                        "code": "type2",
+                        "name": "النوع 2 (منيكس)"
+                    },
+                    "currentType": "AC",
+                    "maxPowerKw": 11,
+                    "notes": "FICTIONAL demo data for testing layouts — not a real product, price or place.",
+                    "reliability": "unverified",
+                    "verifiedAt": null,
+                    "source": {
+                        "id": "d0000000-0000-4000-8000-000000000001",
+                        "type": "other",
+                        "title": "Demo data (fictional)",
+                        "publisher": null,
+                        "url": null,
+                        "documentDate": null,
+                        "accessedAt": null,
+                        "marketCode": null
+                    }
+                },
+                {
+                    "id": "01a0d96f-73bc-7578-8c6c-9d5e75a85390",
+                    "connectorType": {
+                        "code": "ccs2",
+                        "name": "CCS2 (كومبو 2)"
+                    },
+                    "currentType": "DC",
+                    "maxPowerKw": 150,
+                    "notes": "FICTIONAL demo data for testing layouts — not a real product, price or place.",
+                    "reliability": "unverified",
+                    "verifiedAt": null,
+                    "source": {
+                        "id": "d0000000-0000-4000-8000-000000000001",
+                        "type": "other",
+                        "title": "Demo data (fictional)",
+                        "publisher": null,
+                        "url": null,
+                        "documentDate": null,
+                        "accessedAt": null,
+                        "marketCode": null
+                    }
+                }
+            ],
+            "times": [
+                {
+                    "id": "01a0d96f-73d2-715f-95f2-1f5bf03103d4",
+                    "currentType": "DC",
+                    "fromSoc": 10,
+                    "toSoc": 80,
+                    "socWindow": "10–80%",
+                    "durationMinutes": 30,
+                    "chargerPowerKw": 150,
+                    "peakPowerKw": 150,
+                    "averagePowerKw": null,
+                    "onboardChargerLimitKw": null,
+                    "conditions": "FICTIONAL demo data for testing layouts — not a real product, price or place.",
+                    "reliability": "unverified",
+                    "verifiedAt": null,
+                    "source": {
+                        "id": "d0000000-0000-4000-8000-000000000001",
+                        "type": "other",
+                        "title": "Demo data (fictional)",
+                        "publisher": null,
+                        "url": null,
+                        "documentDate": null,
+                        "accessedAt": null,
+                        "marketCode": null
+                    }
+                }
+            ],
+            "curves": [
+                {
+                    "id": "d0000000-0000-4000-8000-000000000016",
+                    "currentType": "DC",
+                    "label": "Demo curve (fictional)",
+                    "chargerMaxPowerKw": 150,
+                    "batteryTempC": null,
+                    "preconditioned": null,
+                    "conditions": null,
+                    "points": [
+                        {
+                            "socPercent": 10,
+                            "powerKw": 140
+                        },
+                        {
+                            "socPercent": 30,
+                            "powerKw": 150
+                        },
+                        {
+                            "socPercent": 50,
+                            "powerKw": 120
+                        },
+                        {
+                            "socPercent": 80,
+                            "powerKw": 60
+                        },
+                        {
+                            "socPercent": 100,
+                            "powerKw": 10
+                        }
+                    ],
+                    "peakPowerKw": 150,
+                    "reliability": "unverified",
+                    "verifiedAt": null,
+                    "source": {
+                        "id": "d0000000-0000-4000-8000-000000000001",
+                        "type": "other",
+                        "title": "Demo data (fictional)",
+                        "publisher": null,
+                        "url": null,
+                        "documentDate": null,
+                        "accessedAt": null,
+                        "marketCode": null
+                    }
+                }
+            ]
+        },
+        "tours": {
+            "available": true,
+            "tours": [
+                {
+                    "id": "d0000000-0000-4000-8000-000000000053",
+                    "slug": "demo-ev-one-2025-standard-bev-eg-demo-grey",
+                    "title": "[تجريبي] بانوراما 360° اصطناعية لاختبار العارض — ليست مقصورة سيارة حقيقية",
+                    "variantId": "d0000000-0000-4000-8000-000000000014",
+                    "marketCode": "EG",
+                    "driveSide": "lhd",
+                    "interiorColorName": "رمادي تجريبي (وهمي)",
+                    "interiorColorHex": "#8A8F98",
+                    "seatScenes": [
+                        {
+                            "id": "d0000000-0000-4000-8000-000000000054",
+                            "key": "driver",
+                            "position": "driver",
+                            "title": "مقعد السائق (تجريبي)"
+                        },
+                        {
+                            "id": "d0000000-0000-4000-8000-000000000055",
+                            "key": "rear",
+                            "position": "rear",
+                            "title": "المقاعد الخلفية (تجريبي)"
+                        }
+                    ],
+                    "isReferenceForSimilarTrim": false,
+                    "differenceNote": null,
+                    "referenceVariantName": null,
+                    "previewUrl": "http://localhost:3000/media/demo/panoramas/d0000000-0000-4000-8000-000000000051/preview-1024.jpg",
+                    "isDemo": true
+                }
+            ],
+            "unavailableLabel": "الجولة غير متاحة لهذه الفئة"
+        },
+        "relatedArticles": [
+            {
+                "id": "d0000000-0000-4000-8000-000000000021",
+                "slug": "demo-sample-article",
+                "type": "news",
+                "title": "[تجريبي] مقال تجريبي لاختبار واجهة الأخبار",
+                "summary": "هذا نص تجريبي وهمي لاختبار عرض الأخبار فقط، وليس خبرًا حقيقيًا.",
+                "language": "ar",
+                "coverImage": null,
+                "publishedAt": "2025-01-01T00:00:00.000Z",
+                "isSponsored": false,
+                "sponsorName": null,
+                "isDemo": true
+            }
+        ],
+        "competitors": [],
+        "sources": [
+            {
+                "id": "d0000000-0000-4000-8000-000000000001",
+                "type": "other",
+                "title": "Demo data (fictional)",
+                "publisher": null,
+                "url": null,
+                "documentDate": null,
+                "accessedAt": null,
+                "marketCode": null
+            }
+        ],
+        "notAvailableLabel": "غير متوفر"
+    }
+}

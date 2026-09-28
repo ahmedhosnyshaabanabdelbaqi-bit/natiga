@@ -3,76 +3,187 @@ html, body {
   padding: 0;
   width: 100%;
   height: 100%;
-  background: #000;
+  background: #05070d;
   overflow: hidden;
   -webkit-user-select: none;
   user-select: none;
   -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 #panorama {
   position: absolute;
   inset: 0;
+  direction: ltr;
 }
 
 #status {
   position: absolute;
   inset-inline: 16px;
-  bottom: 16px;
-  padding: 8px 12px;
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.7);
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(5, 7, 13, 0.72);
   color: #fff;
-  font: 14px/1.4 system-ui, sans-serif;
+  font: 15px/1.5 system-ui, sans-serif;
   text-align: center;
 }
 
-/* Pannellum's "About" context-menu entry links to an external site, which the
-   app's navigation policy blocks anyway; hide it. The MIT licence is shown on
-   the app's licences page. */
-.pnlm-about-msg {
+/* Native controls replace Pannellum's (accessible, localized, 48dp). */
+.pnlm-controls-container,
+.pnlm-about-msg,
+.pnlm-fullscreen-toggle-button,
+.pnlm-orientation-button,
+.pnlm-compass,
+.pnlm-panorama-info {
   display: none !important;
 }
 
-/* Fullscreen is handled natively by the app (landscape + immersive mode). */
-.pnlm-fullscreen-toggle-button {
-  display: none !important;
+.pnlm-load-box {
+  background: rgba(5, 7, 13, 0.72) !important;
+  border-radius: 12px !important;
 }
 
-/* Custom hotspot built by viewer.js (text via textContent only). */
+/* Hotspots built by viewer.js (text via textContent only). */
 .evcar-hotspot {
   width: 44px;
   height: 44px;
   margin: -22px 0 0 -22px;
   border-radius: 50%;
-  background: rgba(10, 92, 255, 0.85);
+  background: rgba(10, 92, 255, 0.88);
   border: 3px solid #fff;
   box-sizing: border-box;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
   cursor: pointer;
+  touch-action: none;
+}
+
+.evcar-hotspot::before {
+  content: '';
+  position: absolute;
+  inset: -9px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  animation: evcar-pulse 2.4s ease-out infinite;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .evcar-hotspot::before {
+    animation: none;
+  }
+}
+
+@keyframes evcar-pulse {
+  0% { transform: scale(0.7); opacity: 0.9; }
+  100% { transform: scale(1.35); opacity: 0; }
 }
 
 .evcar-hotspot.scene {
-  background: rgba(0, 194, 224, 0.9);
+  background: rgba(0, 194, 224, 0.92);
 }
 
-.evcar-hotspot .evcar-tooltip {
-  visibility: hidden;
+/* Glyphs drawn with CSS (no icon font / no remote resources). */
+.evcar-glyph {
   position: absolute;
-  bottom: 52px;
+  inset: 0;
+  display: block;
+}
+
+.evcar-icon-info .evcar-glyph::before,
+.evcar-icon-spec .evcar-glyph::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 9px;
+  width: 4px;
+  height: 4px;
+  margin-left: -2px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.evcar-icon-info .evcar-glyph::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 16px;
+  width: 4px;
+  height: 12px;
+  margin-left: -2px;
+  border-radius: 2px;
+  background: #fff;
+}
+
+.evcar-icon-spec .evcar-glyph::after {
+  content: '';
+  position: absolute;
+  left: 11px;
+  right: 11px;
+  top: 17px;
+  height: 10px;
+  border-top: 3px solid #fff;
+  border-bottom: 3px solid #fff;
+  box-sizing: border-box;
+}
+
+.evcar-icon-image .evcar-glyph::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 11px;
+  width: 18px;
+  height: 14px;
+  border: 3px solid #fff;
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+
+.evcar-icon-video .evcar-glyph::before {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: 11px;
+  border-style: solid;
+  border-width: 8px 0 8px 13px;
+  border-color: transparent transparent transparent #fff;
+}
+
+.evcar-icon-scene .evcar-glyph::before {
+  content: '';
+  position: absolute;
+  left: 13px;
+  top: 13px;
+  width: 12px;
+  height: 12px;
+  border-top: 4px solid #fff;
+  border-right: 4px solid #fff;
+  transform: rotate(-45deg);
+  box-sizing: border-box;
+  margin-top: 3px;
+}
+
+.evcar-label {
+  position: absolute;
+  top: 48px;
   left: 50%;
   transform: translateX(-50%);
-  max-width: 220px;
+  max-width: 180px;
   width: max-content;
-  padding: 6px 10px;
-  border-radius: 6px;
-  background: rgba(0, 0, 0, 0.8);
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(5, 7, 13, 0.78);
   color: #fff;
-  font: 14px/1.4 system-ui, sans-serif;
+  font: 600 13px/1.4 system-ui, sans-serif;
   text-align: center;
-  white-space: normal;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
 }
 
-.evcar-hotspot:hover .evcar-tooltip,
-.evcar-hotspot:focus .evcar-tooltip {
-  visibility: visible;
+.evcar-hotspot:focus-visible {
+  outline: 3px solid #00c2e0;
+  outline-offset: 4px;
 }

@@ -102,3 +102,73 @@ export function uuidList(ids: string[]): Prisma.Sql {
 export function setWordSimilarityThreshold(): Prisma.Sql {
   return Prisma.sql`SELECT set_config('pg_trgm.word_similarity_threshold', ${String(WORD_SIMILARITY_THRESHOLD)}, true)`;
 }
+
+/**
+ * Relevance + match condition of a row of a directly-queried table
+ * (stations, encyclopedia, services): the best of the title scores
+ * (exact / prefix / word prefix / contains on each normalized title), "every
+ * token in the text" and typo tolerance on the text, per query variant.
+ */
+export function tableRank(
+  titles: Prisma.Sql[],
+  text: Prisma.Sql,
+  variants: VariantSql[],
+): { score: Prisma.Sql; match: Prisma.Sql } {
+  const scores: Prisma.Sql[] = [];
+  const matches: Prisma.Sql[] = [];
+  for (const p of variants) {
+    const tokens = allTokensIn(text, p);
+    scores.push(
+      weighted(p, [
+        ...titles.map((t) => titleScore(t, p)),
+        Prisma.sql`(CASE WHEN ${tokens} THEN ${f(SCORE.text)} ELSE ${f(0)} END)`,
+        fuzzyScore(text, p),
+      ]),
+    );
+    matches.push(anyOf([Prisma.sql`${text} LIKE ${p.contains}`, tokens, fuzzyMatch(text, p)]));
+  }
+  return { score: greatest(scores), match: anyOf(matches) };
+}
+
+/**
+ * Pages the matches of one group: `inner` yields `(id uuid, score float8)`
+ * (several rows per id allowed, the best one counts). Output columns match
+ * DocumentsSource: grp, id, score, total.
+ */
+export function pagedGroupSql(
+  grp: string,
+  inner: Prisma.Sql,
+  limit: number,
+  offset: number,
+): Prisma.Sql {
+  return Prisma.sql`
+    WITH m AS (
+      SELECT x."id", max(x."score") AS score FROM (${inner}) x GROUP BY x."id"
+    ), r AS (
+      SELECT "id", score, count(*) OVER () AS total,
+             row_number() OVER (ORDER BY score DESC, "id") AS rn
+        FROM m
+    )
+    SELECT ${grp}::text AS grp, "id"::text AS id, score::float8 AS score, total::int AS total, rn
+      FROM r
+     WHERE rn > ${offset} AND rn <= ${offset + limit}
+    UNION ALL
+    SELECT ${grp}::text, NULL, NULL, (SELECT count(*) FROM m)::int, NULL
+     ORDER BY rn NULLS LAST`;
+}
+
+/** Score column for rows bound to a matched alias (pinned ids). */
+export function pinnedScore(
+  idColumn: Prisma.Sql,
+  ids: string[] | undefined,
+): {
+  score: Prisma.Sql;
+  match: Prisma.Sql;
+} {
+  if (!ids || ids.length === 0) return { score: f(0), match: Prisma.sql`false` };
+  const match = Prisma.sql`${idColumn} IN (${uuidList(ids)})`;
+  return {
+    score: Prisma.sql`(CASE WHEN ${match} THEN ${f(SCORE.pinned)} ELSE ${f(0)} END)`,
+    match,
+  };
+}

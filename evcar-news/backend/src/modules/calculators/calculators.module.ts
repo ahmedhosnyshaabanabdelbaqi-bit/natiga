@@ -1,11 +1,21 @@
 import { Module } from '@nestjs/common';
+import { AdminEnergyPricesController, CalculatorsController } from './calculators.controller';
+import { CalculatorsService } from './calculators.service';
+import { EnergyPricesService } from './energy-prices.service';
+import { VehicleDataService } from './vehicle-data.service';
 
 /**
- * Charging cost/time, cost per 100 km, monthly cost, petrol comparison, TCO.
- *
- * Skeleton created by the backend foundation and registered in AppModule.
- * NOT IMPLEMENTED YET: controllers/providers are added by the owning team
- * inside src/modules/calculators/ only.
+ * Calculators (REQUIREMENTS §13), see docs/decisions/backend-personal.md:
+ *   POST /api/v1/calculators/{charge-cost,charge-time,cost-per-100km,monthly-cost,vs-fuel,tco}
+ *   GET  /api/v1/calculators/reference-prices
+ *   /api/v1/admin/energy-prices (prices.write)
+ * The math is the pure engine in ./engine (fully unit-tested).
+ * VehicleDataService (catalog battery / charging / consumption values) is
+ * also used by the trip planner.
  */
-@Module({})
+@Module({
+  controllers: [CalculatorsController, AdminEnergyPricesController],
+  providers: [CalculatorsService, EnergyPricesService, VehicleDataService],
+  exports: [VehicleDataService, EnergyPricesService],
+})
 export class CalculatorsModule {}

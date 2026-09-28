@@ -3,5 +3,689 @@
   "compareTitle": "Comparisons",
   "compareSharedTitle": "Shared comparison",
   "compareRecommendationsTitle": "Find the right car",
-  "comparePickerTitle": "Choose a car"
+  "comparePickerTitle": "Choose a car",
+  "compareIntroTitle": "Compare 2 to 4 cars side by side",
+  "compareIntroMessage": "Pick each car by model year, trim and market. Figures are compared only when they were measured the same way.",
+  "compareIntroRuleMandatory": "Year, trim and market are required for every car.",
+  "compareIntroRuleCycles": "Ranges are compared on the same test cycle only (WLTP, EPA, CLTC or NEDC), never converted.",
+  "compareIntroRuleMissing": "A missing value is shown as “Not available”, never as 0 or a win.",
+  "compareAddCarSlot": "Add car {number}",
+  "@compareAddCarSlot": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "compareAddCarHint": "Brand, model, year, trim and market",
+  "compareAddCarCount": "Add a car ({count} of {max})",
+  "@compareAddCarCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "compareTrayFull": "The comparison is full ({max} cars). Remove a car to add another.",
+  "@compareTrayFull": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "compareSlotFacts": "{year} · {market}",
+  "@compareSlotFacts": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      },
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "compareCarNumbered": "Car {number}: {car}",
+  "@compareCarNumbered": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      },
+      "car": {
+        "type": "String"
+      }
+    }
+  },
+  "compareCarActions": "Options for {car}",
+  "@compareCarActions": {
+    "placeholders": {
+      "car": {
+        "type": "String"
+      }
+    }
+  },
+  "compareChangeCar": "Change trim, year or market",
+  "compareMoveUp": "Move up",
+  "compareMoveDown": "Move down",
+  "compareRemoveCar": "Remove from comparison",
+  "compareRemoved": "{car} removed from the comparison",
+  "@compareRemoved": {
+    "placeholders": {
+      "car": {
+        "type": "String"
+      }
+    }
+  },
+  "compareOpenCar": "Open car page",
+  "compareEditCars": "Cars ({count})",
+  "@compareEditCars": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "compareEditCarsTitle": "Cars in this comparison",
+  "compareRecommendCtaTitle": "Not sure which car suits you?",
+  "compareRecommendCtaMessage": "Answer a few questions about your budget and driving to get an explained recommendation.",
+  "compareLoading": "Loading the comparison…",
+  "compareViewLabel": "Comparison view",
+  "compareViewSummary": "Summary",
+  "compareViewDetailed": "Detailed",
+  "compareDifferencesOnly": "Differences only",
+  "compareDifferencesOnlyHint": "Hide rows where every car has the same value",
+  "compareSave": "Save",
+  "compareShare": "Share link",
+  "compareHeaderSpec": "Specification",
+  "compareNoRowsTitle": "No rows to show",
+  "compareNoDifferencesMessage": "These cars show the same values in this view. Turn off “Differences only” to see every row.",
+  "compareNoRowsMessage": "There is no data for this view yet.",
+  "compareShowAllRows": "Show all rows",
+  "compareSummaryTitle": "At a glance",
+  "compareRowsWon": "{count, plural, =0{Better in no row} =1{Better in 1 row} other{Better in {formatted} rows}}",
+  "@compareRowsWon": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "formatted": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRowsWonUnknown": "Not available",
+  "compareDecidedRows": "Rows with a winner: {decided} of {total}",
+  "@compareDecidedRows": {
+    "placeholders": {
+      "decided": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "compareNotComparableRows": "Not comparable: {count}",
+  "@compareNotComparableRows": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "compareMissingRows": "Missing data: {count}",
+  "@compareMissingRows": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "compareStatusComparable": "Comparable",
+  "compareStatusCycles": "Different test cycles — no winner",
+  "compareStatusSocWindow": "Different charge windows — no winner",
+  "compareStatusConditions": "Different test conditions — no winner",
+  "compareStatusMissing": "Missing data — no winner",
+  "compareStatusCurrency": "Different currencies — no winner",
+  "compareStatusNotApplicable": "Not applicable to every car",
+  "compareStatusUnknown": "Not decided",
+  "compareOutcomeTie": "Equal — no winner",
+  "compareBest": "Best",
+  "compareBestInRow": "Best in this row",
+  "compareDirectionHigher": "Higher is better",
+  "compareDirectionLower": "Lower is better",
+  "compareDirectionNone": "No “better” value — depends on your needs",
+  "compareAboutRow": "About “{label}”",
+  "@compareAboutRow": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "compareComparedOn": "Compared on: {basis}",
+  "@compareComparedOn": {
+    "placeholders": {
+      "basis": {
+        "type": "String"
+      }
+    }
+  },
+  "compareNotApplicable": "Not applicable",
+  "compareYes": "Yes",
+  "compareNo": "No",
+  "compareDerived": "Calculated from another published value",
+  "compareAlternativesCount": "{count, plural, =1{+1 other value} other{+{count} other values}}",
+  "@compareAlternativesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "compareOriginalValue": "Published as {value}",
+  "@compareOriginalValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "compareValueDetailsHint": "Shows the source and measuring conditions",
+  "compareSocWindow": "{window} charge",
+  "@compareSocWindow": {
+    "placeholders": {
+      "window": {
+        "type": "String"
+      }
+    }
+  },
+  "compareCurrentAc": "AC",
+  "compareCurrentDc": "DC",
+  "compareChargerPower": "{power} charger",
+  "@compareChargerPower": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      }
+    }
+  },
+  "compareWheelSize": "{size}-inch wheels",
+  "@compareWheelSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "compareConvertedEstimate": "Estimate after conversion",
+  "compareModeCombined": "Combined",
+  "compareModeWeighted": "Weighted",
+  "compareModeChargeDepleting": "Charge depleting",
+  "compareModeChargeSustaining": "Charge sustaining",
+  "compareModeCity": "City",
+  "compareModeHighway": "Highway",
+  "compareYears": "{count, plural, =1{1 year} other{{count} years}}",
+  "@compareYears": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "compareUnitInch": "in",
+  "compareUnitLitersPer100": "L/100 km",
+  "compareStars": "{stars} stars",
+  "@compareStars": {
+    "placeholders": {
+      "stars": {
+        "type": "String"
+      }
+    }
+  },
+  "compareDetailsCar": "Car",
+  "compareDetailsValue": "Value",
+  "compareDetailsBasis": "Measured on",
+  "compareDetailsConditions": "Test conditions",
+  "compareDetailsPublished": "Published value",
+  "compareDetailsDerivation": "How it was obtained",
+  "compareDetailsNote": "Note",
+  "compareDetailsDocumentDate": "Document date",
+  "compareDetailsAlternatives": "Other published values",
+  "compareAlternativesExplainer": "Values on other cycles, charge windows or wheel sizes are listed for reference and never mixed into the comparison.",
+  "compareOpenSource": "Open source",
+  "compareLegendButton": "What do the labels mean?",
+  "compareLegendTitle": "How cars are compared",
+  "compareLegendBest": "Shown only when every value is available and measured the same way.",
+  "compareRulesText": "Units are unified before comparing and the published values are kept. Ranges are compared only on the same test cycle and never converted; electric and total range are separate. DC peak and average charging power are separate rows. Charging times are compared only for the same charge window (10–80% is not 30–80%). Prices are compared only in the same currency. A bigger battery is not automatically better. A missing value is never treated as 0.",
+  "compareDisclosureFallback": "Results are computed from catalog data only. Ads and sponsorships never change them.",
+  "compareSponsoredWarning": "This result was not confirmed as free of sponsorship. Treat it with caution.",
+  "compareGeneratedAt": "Calculated {time}",
+  "@compareGeneratedAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "compareSaved": "Comparison saved to your account",
+  "compareAlreadySaved": "This comparison is already saved in your account",
+  "compareSaveLimitReached": "You have reached the limit of saved comparisons. Delete an old one to save more.",
+  "compareSaveGuestTitle": "Save this comparison",
+  "compareSaveGuestMessage": "Saving to an account needs sign-in. Without an account you can still create a share link and keep it.",
+  "compareShareLinkInstead": "Create a share link instead",
+  "compareSavedTitle": "Saved comparisons",
+  "compareSavedGuestHint": "Sign in to keep comparisons in your account and open them on any device.",
+  "compareSavedEmptyTitle": "No saved comparisons yet",
+  "compareSavedEmptyMessage": "Compare cars, then tap Save to keep the comparison here.",
+  "compareDeleteSaved": "Delete",
+  "compareDeleteSavedTitle": "Delete this comparison?",
+  "compareDeleteSavedMessage": "“{title}” will be removed from your account. Links you shared will stop working.",
+  "@compareDeleteSavedMessage": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "compareDeleted": "Comparison deleted",
+  "compareFeaturedTitle": "Curated comparisons",
+  "compareSomeUnavailable": "Some cars are no longer available",
+  "compareFavoriteSubtitle": "{count, plural, =1{1 car} other{{count} cars}}",
+  "@compareFavoriteSubtitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "compareKindCurated": "Curated by the editors",
+  "compareKindShared": "Shared link",
+  "compareKindSaved": "Saved comparison",
+  "compareKindMine": "Saved in your account",
+  "compareSharedNotFoundTitle": "Comparison not found",
+  "compareSharedNotFoundMessage": "This link is invalid, or the comparison was deleted or unpublished.",
+  "compareGoToCompare": "Start a new comparison",
+  "compareSharedNoResultTitle": "This comparison can no longer be shown",
+  "compareSharedNoResultMessage": "Fewer than two of its cars are still available in the catalog.",
+  "compareUnavailableTitle": "{count, plural, =1{1 car is no longer available} other{{count} cars are no longer available}}",
+  "@compareUnavailableTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "compareEditInCompare": "Edit in Compare",
+  "compareReplaceTrayTitle": "Replace your current cars?",
+  "compareReplaceTrayMessage": "{count, plural, =1{The car you are comparing now will be replaced by the cars of this comparison.} other{The {count} cars you are comparing now will be replaced by the cars of this comparison.}}",
+  "@compareReplaceTrayMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "compareReplaceTrayConfirm": "Replace",
+  "compareCopiedToTray": "{count} cars copied to Compare",
+  "@compareCopiedToTray": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "comparePickerReplaceTitle": "Change car",
+  "comparePickerBrowseMarket": "Browse cars sold in",
+  "comparePickerAllMarkets": "Include trims from other markets",
+  "comparePickerAllMarketsHint": "Useful to compare the same car across countries. Prices stay in each market's currency.",
+  "comparePickerProgress": "Step {step} of {total}",
+  "@comparePickerProgress": {
+    "placeholders": {
+      "step": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "comparePickerStepBrand": "Brand",
+  "comparePickerStepModel": "Model",
+  "comparePickerStepYear": "Year",
+  "comparePickerStepTrim": "Trim",
+  "comparePickerStepMarket": "Market",
+  "comparePickerStepDone": "chosen",
+  "comparePickerStepCurrent": "current step",
+  "comparePickerStepTodo": "not chosen yet",
+  "comparePickerStepEditHint": "Change this choice",
+  "comparePickerChooseBrand": "Choose the brand",
+  "comparePickerChooseModel": "Choose the model",
+  "comparePickerChooseYear": "Choose the model year",
+  "comparePickerChooseTrim": "Choose the trim",
+  "comparePickerChooseMarket": "Choose the market",
+  "comparePickerMarketHint": "Price, availability and charging inlets are taken from this market.",
+  "comparePickerSearchBrand": "Search brands",
+  "comparePickerSearchModel": "Search models",
+  "comparePickerEmptyTitle": "Nothing to choose here",
+  "comparePickerEmptyMessage": "No published cars match in this market yet. Try including other markets or go back.",
+  "comparePickerEmptyMessageAll": "No published cars match yet. Go back and choose again.",
+  "comparePickerShowAllMarkets": "Include other markets",
+  "comparePickerBack": "Back",
+  "comparePickerNoMatch": "No match for your search",
+  "comparePickerCurrency": "Prices in {currency}",
+  "@comparePickerCurrency": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "comparePickerSoldIn": "Listed in: {markets}",
+  "@comparePickerSoldIn": {
+    "placeholders": {
+      "markets": {
+        "type": "String"
+      }
+    }
+  },
+  "comparePickerTrimCount": "{count, plural, =1{1 trim} other{{formatted} trims}}",
+  "@comparePickerTrimCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "formatted": {
+        "type": "String"
+      }
+    }
+  },
+  "comparePickerAdded": "{car} added to the comparison",
+  "@comparePickerAdded": {
+    "placeholders": {
+      "car": {
+        "type": "String"
+      }
+    }
+  },
+  "comparePickerReplaced": "Replaced with {car}",
+  "@comparePickerReplaced": {
+    "placeholders": {
+      "car": {
+        "type": "String"
+      }
+    }
+  },
+  "comparePickerAlreadyIn": "This trim and market are already in the comparison",
+  "compareAvailabilityAvailable": "Available",
+  "compareAvailabilityComingSoon": "Coming soon",
+  "compareAvailabilityDiscontinued": "Discontinued",
+  "compareAvailabilityUnknown": "Availability not available",
+  "compareBodySedan": "Sedan",
+  "compareBodyHatchback": "Hatchback",
+  "compareBodySuv": "SUV",
+  "compareBodyCrossover": "Crossover",
+  "compareBodyCoupe": "Coupe",
+  "compareBodyWagon": "Wagon",
+  "compareBodyPickup": "Pickup",
+  "compareBodyVan": "Van",
+  "compareBodyMpv": "MPV",
+  "compareFactorPrice": "Price",
+  "compareFactorRange": "Electric range",
+  "compareFactorDc": "DC fast charging",
+  "compareFactorAc": "AC charging",
+  "compareFactorEfficiency": "Energy efficiency",
+  "compareFactorSpace": "Trunk space",
+  "compareFactorPerformance": "Acceleration",
+  "compareRecStepBudget": "Budget",
+  "compareRecStepUsage": "Driving",
+  "compareRecStepNeeds": "Needs",
+  "compareRecStepPriorities": "Priorities",
+  "compareRecStepOf": "Step {step} of {total}: {title}",
+  "@compareRecStepOf": {
+    "placeholders": {
+      "step": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      },
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecNext": "Next",
+  "compareRecBack": "Back",
+  "compareRecShowResults": "Show recommendations",
+  "compareRecBudgetTitle": "What is your budget?",
+  "compareRecBudgetMessage": "We only consider cars whose current local price is within your budget.",
+  "compareRecBudgetLabel": "Maximum price ({currency})",
+  "@compareRecBudgetLabel": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecBudgetHelper": "Prices in {market} ({currency}). Prices in other currencies are never converted.",
+  "@compareRecBudgetHelper": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      },
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecBudgetError": "Enter a budget greater than zero",
+  "compareRecUsageTitle": "How do you drive?",
+  "compareRecUsageMessage": "Your daily distance and long trips decide how much range and fast charging matter.",
+  "compareRecDailyKm": "Daily distance",
+  "compareRecLongTrips": "Long trips per month",
+  "compareRecLongTripsHint": "Trips longer than one full charge",
+  "compareRecHomeCharging": "Can you charge at home or at work?",
+  "compareRecHomeChargingYes": "I can charge at home",
+  "compareRecHomeChargingNo": "Public charging only",
+  "compareRecHomeChargingRequired": "Choose whether you can charge at home",
+  "compareRecNeedsTitle": "What do you need?",
+  "compareRecNeedsMessage": "Cars that do not fit are excluded, and we show how many.",
+  "compareRecSeats": "Seats needed",
+  "compareRecBodyTypes": "Body types",
+  "compareRecBodyTypesAny": "Any body type",
+  "compareRecBodyTypesSome": "{count, plural, =1{1 body type selected} other{{count} body types selected}}",
+  "@compareRecBodyTypesSome": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "compareRecPowertrains": "Powertrains",
+  "compareRecPowertrainsHint": "Choose at least one",
+  "compareRecPowertrainRequired": "Choose at least one powertrain",
+  "compareRecPrioritiesTitle": "What matters most?",
+  "compareRecPrioritiesMessage": "Weights decide how much each factor counts. They are shown with the results.",
+  "compareRecSuggestedWeights": "Use weights suggested from my driving",
+  "compareRecSuggestedWeightsHint": "Turn off to set every weight yourself (0 = ignore)",
+  "compareRecWeightIgnored": "Ignored",
+  "compareRecWeightsAllZero": "At least one priority must be above 0",
+  "compareRecDecrease": "Decrease {label}",
+  "@compareRecDecrease": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecIncrease": "Increase {label}",
+  "@compareRecIncrease": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecResultsTitle": "Your recommendations",
+  "compareRecEditAnswers": "Edit answers",
+  "compareRecInvalidTitle": "Some answers need changes",
+  "compareRecSummaryBudget": "Up to {budget}",
+  "@compareRecSummaryBudget": {
+    "placeholders": {
+      "budget": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecSummaryDaily": "{distance} a day",
+  "@compareRecSummaryDaily": {
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecSummaryTrips": "{count, plural, =0{No long trips} =1{1 long trip a month} other{{formatted} long trips a month}}",
+  "@compareRecSummaryTrips": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "formatted": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecSummarySeats": "{seats} seats",
+  "@compareRecSummarySeats": {
+    "placeholders": {
+      "seats": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecTopPick": "Top pick for you",
+  "compareRecNoDecision": "No decisive recommendation",
+  "compareRecReasonNoCandidates": "No car matches your budget and needs. Try a higher budget or fewer filters.",
+  "compareRecReasonNoComparable": "The matching cars lack data or their data is not comparable, so we will not guess.",
+  "compareRecReasonFewer": "Only one car has complete, comparable data, so there is nothing to rank it against.",
+  "compareRecReasonTooClose": "The top cars score too close to call one of them the best.",
+  "compareRecRankedTitle": "Ranked cars",
+  "compareRecRank": "Rank {rank}",
+  "@compareRecRank": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "compareRecScore": "Match score: {score} / 100",
+  "@compareRecScore": {
+    "placeholders": {
+      "score": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecScoreUnknown": "Match score: not available",
+  "compareRecBreakdown": "How the score was calculated",
+  "compareRecPoints": "{points} points",
+  "@compareRecPoints": {
+    "placeholders": {
+      "points": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecWeightShare": "weight {percent}",
+  "@compareRecWeightShare": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecBasisPeak": "peak",
+  "compareRecSentimentPositive": "Plus",
+  "compareRecSentimentNegative": "Watch out",
+  "compareRecSentimentNeutral": "Note",
+  "compareRecNotRankedTitle": "Could not be ranked",
+  "compareRecNotRankedSubtitle": "Missing values are never counted as 0",
+  "compareRecNotRankedPrice": "Price not available",
+  "compareRecNotRankedSeats": "Seats not available",
+  "compareRecNotRankedComparable": "Data not comparable",
+  "compareRecNotRankedMissing": "Missing data",
+  "compareRecCycleMismatch": "measured on a different test cycle",
+  "compareRecMissingTitle": "Missing data",
+  "compareRecIgnoreFactor": "Rank without “{factor}”",
+  "@compareRecIgnoreFactor": {
+    "placeholders": {
+      "factor": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecExcludedTitle": "{count, plural, =1{1 car did not fit} other{{formatted} cars did not fit}}",
+  "@compareRecExcludedTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "formatted": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecExcludedBudget": "Over budget: {count}",
+  "@compareRecExcludedBudget": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecExcludedSeats": "Too few seats: {count}",
+  "@compareRecExcludedSeats": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecExcludedBody": "Other body type: {count}",
+  "@compareRecExcludedBody": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecExcludedPowertrain": "Other powertrain: {count}",
+  "@compareRecExcludedPowertrain": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecWeightsTitle": "Weights used",
+  "compareRecWeightDefault": "Default weight",
+  "compareRecWeightUsage": "Adjusted to your driving",
+  "compareRecWeightUser": "Your choice",
+  "compareRecBasis": "Ranges and consumption compared on {cycle}; prices in {currency}.",
+  "@compareRecBasis": {
+    "placeholders": {
+      "cycle": {
+        "type": "String"
+      },
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecNotesTitle": "Good to know"
 }

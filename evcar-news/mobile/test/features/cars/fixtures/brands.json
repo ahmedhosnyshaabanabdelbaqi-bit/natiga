@@ -1,0 +1,21 @@
+{
+    "data": [
+        {
+            "id": "d0000000-0000-4000-8000-000000000010",
+            "slug": "demo-motors",
+            "name": "Demo Motors",
+            "logo": null,
+            "nameAr": "ديمو موتورز (تجريبي)",
+            "nameEn": "Demo Motors",
+            "countryCode": null,
+            "carCount": 1,
+            "isDemo": true
+        }
+    ],
+    "meta": {
+        "page": 1,
+        "pageSize": 20,
+        "total": 1,
+        "totalPages": 1
+    }
+}

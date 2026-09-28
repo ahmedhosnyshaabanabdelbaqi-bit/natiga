@@ -1,4 +1,5 @@
 import 'package:evcar_news/app/router/app_router.dart';
+import 'package:evcar_news/features/home/presentation/home_screen.dart';
 import 'package:evcar_news/shared/widgets/under_construction_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,8 +22,9 @@ void main() {
           expect(navLabel(l), findsOneWidget, reason: l);
         }
         expect(Directionality.of(tester.element(find.byType(NavigationBar))), direction);
-        // Home tab is selected and is an honest placeholder.
-        expect(find.byType(UnderConstructionView), findsOneWidget);
+        // Home tab is selected (real home screen, no placeholder).
+        expect(find.byType(HomeScreen), findsOneWidget);
+        expect(find.byType(UnderConstructionView), findsNothing);
         expect(tester.widget<NavigationBar>(find.byType(NavigationBar)).selectedIndex, 0);
       });
 
@@ -37,7 +39,8 @@ void main() {
           expect(tester.widget<NavigationBar>(find.byType(NavigationBar)).selectedIndex, i);
           expect(
             find.descendant(of: find.byType(AppBar), matching: find.text(titles[i - 1])),
-            findsOneWidget,
+            // Large collapsing titles (e.g. the car catalog) render the title twice.
+            findsWidgets,
             reason: 'tab $i',
           );
         }
@@ -72,12 +75,16 @@ void main() {
 
     router.go('/n/byd-seal-review');
     await tester.pumpAndSettle();
-    expect(find.text('Requested route: /news/byd-seal-review'), findsOneWidget);
+    // The news reader is implemented; the fake server has no such article.
+    expect(router.routerDelegate.currentConfiguration.uri.path, '/news/byd-seal-review');
+    expect(find.text('Article not available'), findsOneWidget);
     expect(find.byType(NavigationBar), findsNothing);
 
     router.go('/compare/Ab12');
     await tester.pumpAndSettle();
-    expect(find.text('Requested route: /compare/s/Ab12'), findsOneWidget);
+    // The shared-comparison screen is implemented; the fake server has no such link.
+    expect(router.routerDelegate.currentConfiguration.uri.path, '/compare/s/Ab12');
+    expect(find.text('Comparison not found'), findsOneWidget);
 
     router.go('/cars/bmw-ix/tour/t-1');
     await tester.pumpAndSettle();

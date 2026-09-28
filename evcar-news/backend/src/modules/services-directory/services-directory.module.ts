@@ -1,11 +1,21 @@
 import { Module } from '@nestjs/common';
+import { VehiclesModule } from '../vehicles/vehicles.module';
+import {
+  AdminServicesController,
+  PublicServicesController,
+} from './controllers/services.controller';
+import { ServicesAdminService } from './services/services-admin.service';
+import { ServicesPublicService } from './services/services-public.service';
 
 /**
- * Directory of service centres, dealers, installers and emergency services.
- *
- * Skeleton created by the backend foundation and registered in AppModule.
- * NOT IMPLEMENTED YET: controllers/providers are added by the owning team
- * inside src/modules/services-directory/ only.
+ * Services directory (REQUIREMENTS §15, docs/decisions/backend-discovery.md §5):
+ *   GET /api/v1/services[/types|/:slug] (public)
+ *   /api/v1/admin/services… CRUD, publish/unpublish/archive, verify-contact
  */
-@Module({})
+@Module({
+  imports: [VehiclesModule],
+  controllers: [PublicServicesController, AdminServicesController],
+  providers: [ServicesPublicService, ServicesAdminService],
+  exports: [ServicesPublicService],
+})
 export class ServicesDirectoryModule {}

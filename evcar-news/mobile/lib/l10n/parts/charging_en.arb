@@ -6,5 +6,643 @@
   "chargingCheckInTitle": "Check in",
   "chargingFiltersTitle": "Station filters",
   "chargingLocationTitle": "Choose a place",
-  "chargingSuggestTitle": "Suggest a station"
+  "chargingSuggestTitle": "Suggest a station",
+  "chargingStatusSection": "Status now",
+  "chargingStatusOperational": "Operation",
+  "chargingStatusOpenNow": "Opening hours now",
+  "chargingStatusLive": "Live availability",
+  "chargingOpOperational": "Operational",
+  "chargingOpPlanned": "Planned",
+  "chargingOpTemporarilyUnavailable": "Temporarily unavailable",
+  "chargingOpPermanentlyClosed": "Permanently closed",
+  "chargingOpUnknown": "Operation status unknown",
+  "chargingOpenNow": "Open now",
+  "chargingClosedNow": "Closed now",
+  "chargingHoursUnknown": "Hours unknown",
+  "chargingAvailAvailable": "Connector free now",
+  "chargingAvailOccupied": "All in use",
+  "chargingAvailOutOfOrder": "Out of order",
+  "chargingAvailUncertain": "Uncertain (reading expired)",
+  "chargingAvailUnknown": "Availability unknown",
+  "chargingAvailNotLiveOffline": "No live status (saved data)",
+  "chargingAvailCounts": "Free: {available} · In use: {occupied} · Out of order: {outOfOrder} · Unknown: {unknown}",
+  "@chargingAvailCounts": {
+    "placeholders": {
+      "available": {
+        "type": "String"
+      },
+      "occupied": {
+        "type": "String"
+      },
+      "outOfOrder": {
+        "type": "String"
+      },
+      "unknown": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingAvailSource": "Source: {source}",
+  "@chargingAvailSource": {
+    "placeholders": {
+      "source": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingAvailObserved": "Reading from {time}",
+  "@chargingAvailObserved": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingAvailValidUntil": "valid until {time}",
+  "@chargingAvailValidUntil": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingAvailLastReading": "Last reading {time} — expired, so the current state is uncertain.",
+  "@chargingAvailLastReading": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingAvailExpiredExplain": "The last live reading has expired, so it is not shown as available.",
+  "chargingNoLiveSourceForStation": "No live data source is connected for this station, so availability is unknown. Community check-ins below are not live.",
+  "chargingNoLiveProvider": "Live availability is shown only from a connected live source. None is connected yet, so it shows as unknown.",
+  "chargingOfflineNoLive": "This is saved data. Live status is never shown from saved data.",
+  "chargingOpen24h": "Open 24 hours",
+  "chargingClosesAt": "Closes at {time} (station time)",
+  "@chargingClosesAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingOpensAt": "Opens {time} (station time)",
+  "@chargingOpensAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingHoursTextOnly": "Hours are published as text only — see below.",
+  "chargingHoursNotPublished": "Opening hours are not published.",
+  "chargingOpenNowFromSaved": "Worked out on this device from the saved opening hours.",
+  "chargingStationTimezone": "Station time zone: {zone}",
+  "@chargingStationTimezone": {
+    "placeholders": {
+      "zone": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingSearchHint": "Search stations, operators or cities",
+  "chargingViewMap": "Map",
+  "chargingViewList": "List",
+  "chargingNearMe": "Near me",
+  "chargingUseMyLocation": "Use my location",
+  "chargingChoosePlace": "Choose a place",
+  "chargingQuickDc": "Fast DC",
+  "chargingQuickMyCar": "Fits my car",
+  "chargingQuickMyCarNamed": "Fits {name}",
+  "@chargingQuickMyCarNamed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingSearchThisArea": "Search this area",
+  "chargingSearchHereTitle": "Search around this point?",
+  "chargingSearchHereMessage": "Stations will be listed around the point you picked, with distances from it.",
+  "chargingSearchHereAction": "Search here",
+  "chargingSearching": "Searching for stations…",
+  "chargingNoStationsHere": "No stations found in this area",
+  "chargingResultsCount": "{count, plural, =1{1 station} other{{count} stations}}",
+  "@chargingResultsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingResultsTruncated": "{count} stations shown — zoom in to see all",
+  "@chargingResultsTruncated": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingEndOfResults": "{count, plural, =1{1 station in total} other{{count} stations in total}}",
+  "@chargingEndOfResults": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingMapSemantics": "Charging stations map, {count} stations",
+  "@chargingMapSemantics": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingClusterSemantics": "{count} stations here, tap to zoom in",
+  "@chargingClusterSemantics": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingPlaceMarker": "Chosen search point",
+  "chargingPlaceNearYou": "Near you",
+  "chargingPlaceMapPoint": "Chosen point",
+  "chargingPlaceDefaultCity": "{city} (default)",
+  "@chargingPlaceDefaultCity": {
+    "placeholders": {
+      "city": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingAreaAround": "Around {place} · {radius}",
+  "@chargingAreaAround": {
+    "placeholders": {
+      "place": {
+        "type": "String"
+      },
+      "radius": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingAreaVisibleMap": "Visible map area",
+  "chargingDefaultPlaceHint": "Showing the default city of your country. Use your location or choose another place.",
+  "chargingMapNotConfigured": "The map is not configured yet, so stations are shown as a list.",
+  "chargingTruncatedHint": "Many stations match here. Zoom in or add filters to see them all.",
+  "chargingSavedCopy": "Saved",
+  "chargingEmptyTitle": "No stations here",
+  "chargingEmptyMessage": "No published stations were found in this area. Coverage of any country is not complete — you can suggest a station you know.",
+  "chargingEmptyFilteredMessage": "No station matches these filters here. Try clearing some filters or searching a wider area.",
+  "chargingClearFilters": "Clear filters",
+  "chargingWidenSearch": "Search within 100 km",
+  "chargingCompatUnknownTitle": "Compatibility can't be checked",
+  "chargingCompatUnknownShort": "No verified charging data for this car",
+  "chargingRemoveCarFilter": "Remove car filter",
+  "chargingCompatNotice": "Showing connectors compatible with {car}, based on verified inlet data only.",
+  "@chargingCompatNotice": {
+    "placeholders": {
+      "car": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingCompatIgnored": "{count, plural, =1{1 unverified inlet record was not used.} other{{count} unverified inlet records were not used.}}",
+  "@chargingCompatIgnored": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingCompatibleConnectors": "{count, plural, =1{1 compatible connector} other{{count} compatible connectors}}",
+  "@chargingCompatibleConnectors": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingNotCompatible": "No compatible connector",
+  "chargingDistanceMeters": "{meters} m",
+  "@chargingDistanceMeters": {
+    "placeholders": {
+      "meters": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingDistanceAway": "{distance} away",
+  "@chargingDistanceAway": {
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingMaxPower": "Max power",
+  "chargingPlugCount": "{count, plural, =1{1 connector} other{{count} connectors}}",
+  "@chargingPlugCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingPointCount": "{count, plural, =1{1 charger} other{{count} chargers}}",
+  "@chargingPointCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingPointCountUnknown": "Number of chargers not available",
+  "chargingLocationDenied": "Location permission was not given. You can choose a place instead.",
+  "chargingLocationDeniedForever": "Location access is turned off for this app. Turn it on in settings, or choose a city or a point instead.",
+  "chargingLocationServiceOff": "Location services are off on this device. Turn them on, or choose a city or a point instead.",
+  "chargingLocationUnavailable": "Your location could not be determined. Choose a place instead.",
+  "chargingLocationPrivacy": "Asked only now, used while you use the app, never saved.",
+  "chargingPickPointTitle": "Pick a point on the map",
+  "chargingPickPointSubtitle": "Move the map to place the pin, then search around it.",
+  "chargingPickPointHint": "Pin at {lat}, {lng}. Move the map to adjust.",
+  "@chargingPickPointHint": {
+    "placeholders": {
+      "lat": {
+        "type": "String"
+      },
+      "lng": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingCitySearchHint": "Search cities",
+  "chargingNoCityMatch": "No city matches",
+  "chargingCityListNote": "Cities set only the centre of the search. Which stations exist comes from the station database.",
+  "chargingFilterVehicle": "Compatible with my car",
+  "chargingFilterVehicleHelp": "Uses verified charging-inlet data of your car in its market. Plug shape alone is never treated as compatible, and adapters are never assumed.",
+  "chargingFilterVehicleSignIn": "Sign in to use a car from your garage",
+  "chargingFilterVehicleAddCar": "Add a car to my garage",
+  "chargingFilterVehicleNone": "Any car",
+  "chargingFilterVehicleNotInMarket": "Not listed in this car's market — compatibility may be unknown",
+  "chargingFilterCurrent": "Current type",
+  "chargingFilterAny": "Any",
+  "chargingCurrentAc": "AC",
+  "chargingCurrentDc": "DC",
+  "chargingFilterMinPower": "Minimum power",
+  "chargingFilterMinPowerHelp": "Connectors with unknown power are not included.",
+  "chargingFilterPowerAtLeast": "{power}+",
+  "@chargingFilterPowerAtLeast": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingFilterConnectors": "Connector types",
+  "chargingFilterConnectorsHelp": "One connector must match the type, current and power together.",
+  "chargingFilterMetaUnavailable": "Connector list is not available right now.",
+  "chargingFilterAvailability": "Hours and access",
+  "chargingFilterOpenNow": "Open now",
+  "chargingFilterOpenNowHelp": "By published opening hours. Stations with unknown hours are hidden.",
+  "chargingFilterPublicOnly": "Public access only",
+  "chargingFilterOperator": "Operator",
+  "chargingFilterOperatorHelp": "From the stations loaded in this area.",
+  "chargingFilterAmenities": "Nearby amenities",
+  "chargingFilterAmenitiesHelp": "Stations must have all selected amenities.",
+  "chargingAddressUnknown": "Address not available",
+  "chargingDemoNotRealPlace": "Demo station for testing — not a real place. Do not drive here.",
+  "chargingDistance": "Distance",
+  "chargingCurrentTypes": "Current",
+  "chargingDirections": "Directions",
+  "chargingDirectionsNote": "Opens a navigation app with the station's coordinates. Check access and opening hours before you go.",
+  "chargingDemoNoDirections": "This is a demo station, not a real place.",
+  "chargingNavSystem": "Choose a navigation app",
+  "chargingNavGoogle": "Google Maps",
+  "chargingNavApple": "Apple Maps",
+  "chargingNavWaze": "Waze",
+  "chargingNavWeb": "Open in web map",
+  "chargingNavFailed": "No app could open the directions.",
+  "chargingCheckInShort": "Check in",
+  "chargingReportShort": "Report",
+  "chargingPhoto": "Station photo",
+  "chargingMergedTitle": "This station was merged",
+  "chargingMergedMessage": "It was a duplicate of another station and its details now live there.",
+  "chargingOpenMerged": "Open the station",
+  "chargingCompatSection": "Compatibility with your car",
+  "chargingCompatNone": "No connector here matches the verified charging inlets of {car}.",
+  "@chargingCompatNone": {
+    "placeholders": {
+      "car": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingCompatSome": "{count, plural, =1{1 connector matches {car}.} other{{count} connectors match {car}.}}",
+  "@chargingCompatSome": {
+    "placeholders": {
+      "car": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingCompatBestPower": "Up to {power} with your car",
+  "@chargingCompatBestPower": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingCompatNoAdapters": "Based on the same plug type and current only. No adapter is recommended.",
+  "chargingCompatNoGuess": "The station is shown without a compatibility guess.",
+  "chargingConnectorsSection": "Chargers and connectors",
+  "chargingPlugsNotCars": "The number of connectors is not the number of cars that can charge at the same time.",
+  "chargingUnassignedConnectors": "Connectors",
+  "chargingUnassignedConnectorsHelp": "The source does not say which charger each connector belongs to.",
+  "chargingNoConnectorData": "No connector data is available.",
+  "chargingPointUnnamed": "Charger",
+  "chargingFloor": "Floor {floor}",
+  "@chargingFloor": {
+    "placeholders": {
+      "floor": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingPowerUnknown": "Power not available",
+  "chargingFormatCable": "attached cable",
+  "chargingFormatSocket": "socket (bring your cable)",
+  "chargingPhases": "{count, plural, =1{single-phase} other{{count}-phase}}",
+  "@chargingPhases": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingQuantity": "×{count}",
+  "@chargingQuantity": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingConnectorCompatible": "Compatible",
+  "chargingConnectorCompatibleUpTo": "Compatible up to {power}",
+  "@chargingConnectorCompatibleUpTo": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingConnectorNotCompatible": "Not compatible",
+  "chargingHoursSection": "Opening hours",
+  "chargingToday": "today",
+  "chargingDayMon": "Monday",
+  "chargingDayTue": "Tuesday",
+  "chargingDayWed": "Wednesday",
+  "chargingDayThu": "Thursday",
+  "chargingDayFri": "Friday",
+  "chargingDaySat": "Saturday",
+  "chargingDaySun": "Sunday",
+  "chargingDayClosed": "Closed",
+  "chargingDayUnknown": "Unknown",
+  "chargingHoursAsPublished": "As published by the source: {text}",
+  "@chargingHoursAsPublished": {
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingHoursTimezoneNote": "Times are in the station's time zone ({zone}).",
+  "@chargingHoursTimezoneNote": {
+    "placeholders": {
+      "zone": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingAccessSection": "Access",
+  "chargingAccessType": "Access",
+  "chargingAccessRestrictions": "Restrictions",
+  "chargingNoneStated": "None stated by the source",
+  "chargingEntrance": "Entrance",
+  "chargingParking": "Parking",
+  "chargingPricesSection": "Prices",
+  "chargingPriceNotAvailable": "Prices are not available for this station.",
+  "chargingUsageCostTitle": "Price as published by the source",
+  "chargingUsageCostNote": "Shown as published; not verified or converted.",
+  "chargingTariffUnnamed": "Tariff",
+  "chargingTariffNotCurrent": "Not current",
+  "chargingTariffAppliesTo": "Applies to: {connector}",
+  "@chargingTariffAppliesTo": {
+    "placeholders": {
+      "connector": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingTaxIncluded": "Taxes included",
+  "chargingTaxIncludedPct": "Taxes included ({percent}%)",
+  "@chargingTaxIncludedPct": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingTaxExcluded": "Taxes not included",
+  "chargingTaxExcludedPct": "Taxes not included ({percent}%)",
+  "@chargingTaxExcludedPct": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingTaxUnknown": "Taxes: not stated",
+  "chargingValidFrom": "From {date}",
+  "@chargingValidFrom": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingValidTo": "until {date}",
+  "@chargingValidTo": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingGraceMinutes": "after {minutes} min grace",
+  "@chargingGraceMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingStepSize": "billed in steps of {step}",
+  "@chargingStepSize": {
+    "placeholders": {
+      "step": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingPowerRange": "{min}–{max}",
+  "@chargingPowerRange": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingServicesSection": "Payment and services",
+  "chargingStartMethods": "How to start charging",
+  "chargingPaymentMethods": "Payment",
+  "chargingAmenities": "Nearby amenities",
+  "chargingContactSection": "Contact",
+  "chargingPhone": "Phone",
+  "chargingEmail": "Email",
+  "chargingWebsite": "Website",
+  "chargingCommunitySection": "Community reports and check-ins",
+  "chargingCommunityDisclaimer": "Check-ins and reports are dated community data, not an official live status.",
+  "chargingCheckins30d": "Check-ins (30 days)",
+  "chargingSuccessRate": "Charged successfully",
+  "chargingSuccessRateNeedsMore": "A success rate is shown after at least 3 check-ins.",
+  "chargingOpenReports": "Open reports",
+  "chargingRecentCheckins": "Recent check-ins",
+  "chargingRecentReports": "Reports (last 90 days)",
+  "chargingCommunityEmpty": "No check-ins or reports yet. Tell others how your visit went.",
+  "chargingObservedPower": "{power} observed",
+  "@chargingObservedPower": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingWaited": "waited {time}",
+  "@chargingWaited": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingReportStatusOpen": "Open",
+  "chargingReportStatusInReview": "In review",
+  "chargingReportStatusResolved": "Resolved",
+  "chargingReportStatusRejected": "Rejected",
+  "chargingSourceSection": "Data source and licence",
+  "chargingDataSource": "Source",
+  "chargingAttribution": "Attribution",
+  "chargingLicense": "Licence",
+  "chargingLastVerified": "Last verified",
+  "chargingSourceUpdated": "Updated at source",
+  "chargingLastSynced": "Last synced",
+  "chargingOpenSource": "Open the source",
+  "chargingFetchedAt": "Loaded {time}",
+  "@chargingFetchedAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingSourceManual": "Added by the editorial team",
+  "chargingSourceOcm": "Open Charge Map",
+  "chargingSourceCsv": "Imported file",
+  "chargingSourcePartner": "Partner data",
+  "chargingSourceUserSuggestion": "Suggested by a user, reviewed",
+  "chargingOptional": "optional",
+  "chargingSend": "Send",
+  "chargingNotSure": "Not sure",
+  "chargingRemove": "Remove",
+  "chargingSignInAgain": "Your session ended. Sign in again to send this.",
+  "chargingReportSignIn": "Sign in to report a problem, so moderators can review it and prevent abuse.",
+  "chargingReportIntro": "Tell us what is wrong. Moderators review every report; it does not change the station by itself.",
+  "chargingReportWhat": "What is the problem?",
+  "chargingReportWhichConnector": "Which connector?",
+  "chargingWholeStation": "The whole station",
+  "chargingReportSeenConnector": "Connector you found on site",
+  "chargingReportNewPrice": "Price you saw",
+  "chargingReportNewPriceHint": "e.g. price per kWh as shown at the charger",
+  "chargingReportDetails": "Details",
+  "chargingReportDetailsHint": "What did you see? When?",
+  "chargingReportDetailsRequired": "Please describe the problem.",
+  "chargingReportModeration": "Reports are anonymous on the station page (type, status and date only).",
+  "chargingReportSentTitle": "Thanks for your report",
+  "chargingReportSentMessage": "Moderators will review it. You can follow it under your reports.",
+  "chargingCheckInSignIn": "Sign in to check in, so others can trust community data.",
+  "chargingCheckInIntro": "Share how charging went. It appears with its date as community data, not as live status.",
+  "chargingCheckInHowWasIt": "How did it go?",
+  "chargingCheckInConnector": "Connector used",
+  "chargingCheckInCar": "Your car",
+  "chargingCheckInNoCar": "Don't add a car",
+  "chargingCheckInPower": "Power you saw",
+  "chargingCheckInWait": "Waiting time",
+  "chargingMinutesUnit": "min",
+  "chargingCheckInComment": "Comment",
+  "chargingCheckInPublicNote": "Your check-in is shown without your name. Comments with links are reviewed first.",
+  "chargingInvalidPower": "Enter a power between 0 and 1000 kW.",
+  "chargingInvalidWait": "Enter minutes between 0 and 1440.",
+  "chargingCheckInSentTitle": "Check-in saved",
+  "chargingCheckInSentMessage": "Thanks! It now appears on the station page with today's date.",
+  "chargingCheckInPending": "Thanks! Your comment will appear after review.",
+  "chargingSuggestSignIn": "Sign in to suggest a station. Suggestions are reviewed before they appear.",
+  "chargingSuggestIntro": "Know a station that is missing? Add what you know — a moderator checks it before it appears on the map.",
+  "chargingSuggestName": "Station name",
+  "chargingSuggestNameRequired": "Enter the station name.",
+  "chargingSuggestOperator": "Operator",
+  "chargingSuggestLocation": "Location of the station",
+  "chargingSuggestLocationHelp": "Use your location while you are at the station, pick it on the map, or type coordinates.",
+  "chargingSuggestUseMyLocation": "I'm at the station",
+  "chargingSuggestPickTitle": "Pick on the map",
+  "chargingSuggestUsePoint": "Use this point",
+  "chargingLatitude": "Latitude",
+  "chargingLongitude": "Longitude",
+  "chargingSuggestCoordRequired": "Required",
+  "chargingSuggestCoordInvalid": "Out of range",
+  "chargingSuggestCountry": "Country",
+  "chargingSuggestCity": "City",
+  "chargingSuggestAddress": "Address or landmark",
+  "chargingSuggestConnectors": "Connectors",
+  "chargingSuggestAddConnector": "Add a connector",
+  "chargingSuggestConnectorN": "Connector {number}",
+  "@chargingSuggestConnectorN": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingConnectorType": "Connector type",
+  "chargingSuggestConnectorTypeRequired": "Choose a type or remove this connector.",
+  "chargingSuggestQuantity": "How many",
+  "chargingSuggestHours": "Opening hours",
+  "chargingSuggestHoursHint": "e.g. every day 08:00–22:00",
+  "chargingSuggestNotes": "Notes for the reviewer",
+  "chargingSuggestReviewNote": "Nothing is published until a moderator reviews it.",
+  "chargingSuggestSentTitle": "Suggestion sent",
+  "chargingSuggestSentMessage": "Thanks! A moderator will review it before it appears on the map.",
+  "chargingSuggestMayExist": "These nearby stations may be the same one:"
 }

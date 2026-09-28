@@ -1,5 +1,48 @@
 {
   "@@locale": "en",
   "favoritesTitle": "Favorites",
-  "favoritesSavedOfflineTitle": "Saved for offline reading"
+  "favoritesSavedOfflineTitle": "Saved for offline reading",
+  "favoritesTabArticles": "Articles",
+  "favoritesTabCars": "Cars",
+  "favoritesTabComparisons": "Comparisons",
+  "favoritesTabStations": "Stations",
+  "favoritesGuestHint": "Saved on this device. Sign in to keep them in your account on every device.",
+  "favoritesDeviceOnly": "Favorites are saved on this device only.",
+  "favoritesSyncing": "Syncing with your account…",
+  "favoritesSyncFailed": "Couldn't sync with your account.",
+  "favoritesLocalOnly": "On this device only",
+  "favoritesUnavailable": "No longer available",
+  "favoritesSavedAt": "Saved {time}",
+  "@favoritesSavedAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "favoritesRemoved": "Removed “{title}”",
+  "@favoritesRemoved": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "favoritesUndo": "Undo",
+  "favoritesEmptyArticlesTitle": "No favorite articles yet",
+  "favoritesEmptyArticlesMessage": "Tap the heart on any article to find it here later.",
+  "favoritesEmptyCarsTitle": "No favorite cars yet",
+  "favoritesEmptyCarsMessage": "Save models, trims and 360° tours with the heart button.",
+  "favoritesEmptyComparisonsTitle": "No favorite comparisons yet",
+  "favoritesEmptyComparisonsMessage": "Save a comparison to come back to it quickly.",
+  "favoritesEmptyStationsTitle": "No favorite stations yet",
+  "favoritesEmptyStationsMessage": "Save the stations you use often.",
+  "favoritesBrowseNews": "Browse news",
+  "favoritesBrowseCars": "Browse cars",
+  "favoritesBrowseComparisons": "Compare cars",
+  "favoritesBrowseStations": "Find stations",
+  "favoritesSavedOfflineIntro": "Content you saved to read without a connection, with the date it was saved. It may have changed since.",
+  "favoritesSavedSpecsTitle": "Spec sheets",
+  "favoritesSavedArticlesTitle": "Articles",
+  "favoritesDeleteOffline": "Delete offline copy"
 }

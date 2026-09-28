@@ -1,0 +1,50 @@
+{
+    "data": [
+        {
+            "id": "d0000000-0000-4000-8000-000000000053",
+            "slug": "demo-ev-one-2025-standard-bev-eg-demo-grey",
+            "title": "[DEMO] Synthetic 360\u00b0 test panorama \u2014 not a real car interior",
+            "variantId": "d0000000-0000-4000-8000-000000000014",
+            "variantSlug": "demo-ev-one-2025-standard-bev",
+            "variantName": "Standard (demo)",
+            "carName": "Demo Motors Demo EV One Standard (demo)",
+            "brandName": "Demo Motors",
+            "modelName": "Demo EV One",
+            "modelSlug": "demo-motors-ev-one",
+            "modelYearId": "d0000000-0000-4000-8000-000000000013",
+            "modelYear": 2025,
+            "marketCode": "EG",
+            "driveSide": "lhd",
+            "interiorColorName": "Demo grey (fictional)",
+            "interiorColorHex": "#8A8F98",
+            "seatScenes": [
+                {
+                    "id": "d0000000-0000-4000-8000-000000000054",
+                    "key": "driver",
+                    "position": "driver",
+                    "title": "Driver seat (demo)"
+                },
+                {
+                    "id": "d0000000-0000-4000-8000-000000000055",
+                    "key": "rear",
+                    "position": "rear",
+                    "title": "Rear seats (demo)"
+                }
+            ],
+            "sceneCount": 2,
+            "isReferenceForSimilarTrim": false,
+            "differenceNote": null,
+            "referenceVariantName": null,
+            "previewUrl": "http://localhost:3108/media/demo/panoramas/d0000000-0000-4000-8000-000000000051/preview-1024.jpg",
+            "isDemo": true,
+            "demoLabel": "Demo \u2014 not a real car interior",
+            "publishedAt": "2025-01-01T00:00:00.000Z"
+        }
+    ],
+    "meta": {
+        "page": 1,
+        "pageSize": 20,
+        "total": 1,
+        "totalPages": 1
+    }
+}

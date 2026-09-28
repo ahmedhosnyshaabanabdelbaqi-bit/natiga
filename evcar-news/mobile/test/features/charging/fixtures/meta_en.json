@@ -1,0 +1,377 @@
+{
+    "data": {
+        "connectorTypes": [
+            {
+                "code": "type2",
+                "name": "Type 2 (Mennekes)",
+                "nameAr": "النوع 2 (منيكس)",
+                "nameEn": "Type 2 (Mennekes)",
+                "supportsAc": true,
+                "supportsDc": false,
+                "iconKey": "type2",
+                "standard": "IEC 62196-2 Type 2"
+            },
+            {
+                "code": "ccs2",
+                "name": "CCS2 (Combo 2)",
+                "nameAr": "CCS2 (كومبو 2)",
+                "nameEn": "CCS2 (Combo 2)",
+                "supportsAc": false,
+                "supportsDc": true,
+                "iconKey": "ccs2",
+                "standard": "IEC 62196-3 Combo 2"
+            },
+            {
+                "code": "gbt_ac",
+                "name": "GB/T AC",
+                "nameAr": "GB/T تيار متردد",
+                "nameEn": "GB/T AC",
+                "supportsAc": true,
+                "supportsDc": false,
+                "iconKey": "gbt_ac",
+                "standard": "GB/T 20234.2"
+            },
+            {
+                "code": "gbt_dc",
+                "name": "GB/T DC",
+                "nameAr": "GB/T تيار مستمر",
+                "nameEn": "GB/T DC",
+                "supportsAc": false,
+                "supportsDc": true,
+                "iconKey": "gbt_dc",
+                "standard": "GB/T 20234.3"
+            },
+            {
+                "code": "chademo",
+                "name": "CHAdeMO",
+                "nameAr": "تشاديمو (CHAdeMO)",
+                "nameEn": "CHAdeMO",
+                "supportsAc": false,
+                "supportsDc": true,
+                "iconKey": "chademo",
+                "standard": "CHAdeMO / IEC 62196-3 AA"
+            },
+            {
+                "code": "chaoji",
+                "name": "ChaoJi (CHAdeMO 3.0)",
+                "nameAr": "تشاوجي (CHAdeMO 3.0)",
+                "nameEn": "ChaoJi (CHAdeMO 3.0)",
+                "supportsAc": false,
+                "supportsDc": true,
+                "iconKey": "chaoji",
+                "standard": "CHAdeMO 3.0 / GB/T 20234.4 (ChaoJi)"
+            },
+            {
+                "code": "ccs1",
+                "name": "CCS1 (Combo 1)",
+                "nameAr": "CCS1 (كومبو 1)",
+                "nameEn": "CCS1 (Combo 1)",
+                "supportsAc": false,
+                "supportsDc": true,
+                "iconKey": "ccs1",
+                "standard": "SAE J1772 Combo 1"
+            },
+            {
+                "code": "type1",
+                "name": "Type 1 (J1772)",
+                "nameAr": "النوع 1 (J1772)",
+                "nameEn": "Type 1 (J1772)",
+                "supportsAc": true,
+                "supportsDc": false,
+                "iconKey": "type1",
+                "standard": "SAE J1772 / IEC 62196-2 Type 1"
+            },
+            {
+                "code": "nacs",
+                "name": "NACS (SAE J3400)",
+                "nameAr": "NACS (تسلا / SAE J3400)",
+                "nameEn": "NACS (SAE J3400)",
+                "supportsAc": true,
+                "supportsDc": true,
+                "iconKey": "nacs",
+                "standard": "SAE J3400"
+            },
+            {
+                "code": "schuko",
+                "name": "Schuko (CEE 7/4, Type F)",
+                "nameAr": "مقبس منزلي شوكو (CEE 7/4)",
+                "nameEn": "Schuko (CEE 7/4, Type F)",
+                "supportsAc": true,
+                "supportsDc": false,
+                "iconKey": "schuko",
+                "standard": "CEE 7/3 socket, CEE 7/4 plug (Type F)"
+            },
+            {
+                "code": "bs1363",
+                "name": "BS 1363 (Type G, 13 A)",
+                "nameAr": "مقبس منزلي BS 1363 (النوع G)",
+                "nameEn": "BS 1363 (Type G, 13 A)",
+                "supportsAc": true,
+                "supportsDc": false,
+                "iconKey": "bs1363",
+                "standard": "BS 1363 (Type G)"
+            },
+            {
+                "code": "iec60309",
+                "name": "IEC 60309 (industrial / CEE)",
+                "nameAr": "مقبس صناعي IEC 60309 (CEE)",
+                "nameEn": "IEC 60309 (industrial / CEE)",
+                "supportsAc": true,
+                "supportsDc": false,
+                "iconKey": "iec60309",
+                "standard": "IEC 60309-2 (blue 1-phase / red 3-phase)"
+            }
+        ],
+        "amenities": [
+            {
+                "code": "restroom",
+                "label": "Restrooms"
+            },
+            {
+                "code": "cafe",
+                "label": "Café"
+            },
+            {
+                "code": "restaurant",
+                "label": "Restaurant"
+            },
+            {
+                "code": "shopping",
+                "label": "Shopping"
+            },
+            {
+                "code": "supermarket",
+                "label": "Supermarket"
+            },
+            {
+                "code": "wifi",
+                "label": "Wi-Fi"
+            },
+            {
+                "code": "mosque",
+                "label": "Mosque / prayer room"
+            },
+            {
+                "code": "hotel",
+                "label": "Hotel"
+            },
+            {
+                "code": "parking",
+                "label": "Parking"
+            },
+            {
+                "code": "covered_parking",
+                "label": "Covered parking"
+            },
+            {
+                "code": "fuel_station",
+                "label": "Fuel station"
+            },
+            {
+                "code": "car_wash",
+                "label": "Car wash"
+            },
+            {
+                "code": "lounge",
+                "label": "Lounge"
+            },
+            {
+                "code": "playground",
+                "label": "Playground"
+            },
+            {
+                "code": "atm",
+                "label": "ATM"
+            },
+            {
+                "code": "pharmacy",
+                "label": "Pharmacy"
+            },
+            {
+                "code": "accessible",
+                "label": "Wheelchair accessible"
+            },
+            {
+                "code": "lighting",
+                "label": "Lit at night"
+            },
+            {
+                "code": "security",
+                "label": "Security / CCTV"
+            }
+        ],
+        "paymentMethods": [
+            {
+                "code": "app",
+                "label": "Operator app"
+            },
+            {
+                "code": "rfid",
+                "label": "RFID card"
+            },
+            {
+                "code": "bank_card",
+                "label": "Bank card"
+            },
+            {
+                "code": "contactless",
+                "label": "Contactless"
+            },
+            {
+                "code": "cash",
+                "label": "Cash"
+            },
+            {
+                "code": "free",
+                "label": "Free of charge"
+            },
+            {
+                "code": "plug_and_charge",
+                "label": "Plug & Charge"
+            },
+            {
+                "code": "subscription",
+                "label": "Subscription"
+            },
+            {
+                "code": "qr_code",
+                "label": "QR code"
+            }
+        ],
+        "startMethods": [
+            {
+                "code": "app",
+                "label": "Operator app"
+            },
+            {
+                "code": "rfid",
+                "label": "RFID card"
+            },
+            {
+                "code": "plug_and_charge",
+                "label": "Plug & Charge"
+            },
+            {
+                "code": "card",
+                "label": "Card at the charger"
+            },
+            {
+                "code": "qr_code",
+                "label": "QR code"
+            },
+            {
+                "code": "staff",
+                "label": "Staff-assisted"
+            },
+            {
+                "code": "plug_in",
+                "label": "Starts when plugged in"
+            }
+        ],
+        "accessTypes": [
+            {
+                "code": "public",
+                "label": "Public"
+            },
+            {
+                "code": "customers_only",
+                "label": "Customers only"
+            },
+            {
+                "code": "restricted",
+                "label": "Restricted access"
+            },
+            {
+                "code": "private",
+                "label": "Private"
+            },
+            {
+                "code": "unknown",
+                "label": "Unknown"
+            }
+        ],
+        "operationalStatuses": [
+            {
+                "code": "operational",
+                "label": "Operational"
+            },
+            {
+                "code": "planned",
+                "label": "Planned"
+            },
+            {
+                "code": "temporarily_unavailable",
+                "label": "Temporarily unavailable"
+            },
+            {
+                "code": "permanently_closed",
+                "label": "Permanently closed"
+            },
+            {
+                "code": "unknown",
+                "label": "Unknown"
+            }
+        ],
+        "checkinOutcomes": [
+            {
+                "code": "charged_successfully",
+                "label": "Charged successfully"
+            },
+            {
+                "code": "waited_then_charged",
+                "label": "Waited, then charged"
+            },
+            {
+                "code": "could_not_charge",
+                "label": "Could not charge"
+            },
+            {
+                "code": "other",
+                "label": "Other"
+            }
+        ],
+        "reportTypes": [
+            {
+                "code": "not_working",
+                "label": "Not working",
+                "help": "The charger or one of its connectors does not work.",
+                "requiresDetails": false
+            },
+            {
+                "code": "wrong_location",
+                "label": "Wrong location",
+                "help": "The map position or the address is wrong.",
+                "requiresDetails": false
+            },
+            {
+                "code": "different_connector",
+                "label": "Different connector",
+                "help": "The connector on site differs from the listed one.",
+                "requiresDetails": false
+            },
+            {
+                "code": "price_changed",
+                "label": "Price changed",
+                "help": "The listed tariff is no longer correct.",
+                "requiresDetails": false
+            },
+            {
+                "code": "access_restricted",
+                "label": "Access restricted",
+                "help": "Not open to the public, or needs a permit or membership.",
+                "requiresDetails": false
+            },
+            {
+                "code": "other",
+                "label": "Other problem",
+                "help": "Describe the problem.",
+                "requiresDetails": true
+            }
+        ],
+        "liveAvailability": {
+            "configured": false,
+            "provider": null
+        },
+        "notAvailableLabel": "Not available"
+    }
+}

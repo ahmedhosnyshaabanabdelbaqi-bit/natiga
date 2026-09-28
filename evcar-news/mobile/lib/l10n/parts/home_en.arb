@@ -1,4 +1,41 @@
 {
   "@@locale": "en",
-  "homeTitle": "Home"
+  "homeTitle": "Home",
+  "homeSearchHint": "Search news, cars, stations…",
+  "homeTopStory": "Top story",
+  "homeForYou": "For you",
+  "homeLatestNews": "Latest news",
+  "homeReviews": "Reviews",
+  "homeNewCars": "New cars",
+  "homeFeaturedComparisons": "Featured comparisons",
+  "homeInteriorTours": "360° interior tours",
+  "homeNearbyStations": "Charging stations nearby",
+  "homeChargingGuides": "Charging & maintenance guides",
+  "homeToursIntro": "Step inside the cabin and look around, seat by seat.",
+  "homeAllTours": "All 360° tours",
+  "homeSectionUnavailable": "This section couldn't load right now.",
+  "homeRefreshFailed": "Couldn't refresh. Showing the last loaded content.",
+  "homeNearbyPromptTitle": "See charging stations near you",
+  "homeNearbyPromptMessage": "Allow location access or choose a city. Your location is only used for this search and is never stored.",
+  "homeUseMyLocation": "Use my location",
+  "homeChooseCity": "Choose a city",
+  "homeNearbyAround": "Around: {place}",
+  "@homeNearbyAround": {
+    "placeholders": {
+      "place": {
+        "type": "String"
+      }
+    }
+  },
+  "homeChangePlace": "Change",
+  "homeNearbyEmpty": "No published stations within 25 km of this place yet.",
+  "homeEmptyTitle": "Content is on its way",
+  "homeEmptyMessage": "Nothing has been published for your country and language yet. Pull to refresh later.",
+  "homeExploreTitle": "Explore",
+  "homeExploreNews": "All news",
+  "homeExploreBrands": "Brands",
+  "homeExploreTours": "360° tours",
+  "homeExploreEncyclopedia": "EV encyclopedia",
+  "homeExploreServices": "Services directory",
+  "homeExploreCalculators": "Calculators"
 }

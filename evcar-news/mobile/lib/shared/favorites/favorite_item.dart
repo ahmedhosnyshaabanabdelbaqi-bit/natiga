@@ -55,6 +55,8 @@ class FavoriteItem {
     this.route,
     this.savedAt,
     this.localOnly = true,
+    this.available = true,
+    this.isDemo = false,
   });
 
   final FavoriteKey key;
@@ -69,14 +71,23 @@ class FavoriteItem {
   /// Saved on this device only (guest, or not yet pushed to the account).
   final bool localOnly;
 
-  FavoriteItem copyWith({bool? localOnly, DateTime? savedAt}) => FavoriteItem(
+  /// False when the server says the target was unpublished / hidden since it
+  /// was saved (the favorite is kept and shown with a note).
+  final bool available;
+
+  /// Demo content (shown with the demo label).
+  final bool isDemo;
+
+  FavoriteItem copyWith({bool? localOnly, DateTime? savedAt, String? route}) => FavoriteItem(
     key: key,
     title: title,
     subtitle: subtitle,
     imageUrl: imageUrl,
-    route: route,
+    route: route ?? this.route,
     savedAt: savedAt ?? this.savedAt,
     localOnly: localOnly ?? this.localOnly,
+    available: available,
+    isDemo: isDemo,
   );
 
   Map<String, Object?> toJson() => {
@@ -88,6 +99,8 @@ class FavoriteItem {
     'route': route,
     'savedAt': savedAt?.toUtc().toIso8601String(),
     'localOnly': localOnly,
+    'available': available,
+    'isDemo': isDemo,
   };
 
   /// Null for malformed entries (dropped, never crash).
@@ -106,6 +119,8 @@ class FavoriteItem {
       route: str('route'),
       savedAt: DateTime.tryParse(str('savedAt') ?? ''),
       localOnly: json['localOnly'] != false,
+      available: json['available'] != false,
+      isDemo: json['isDemo'] == true,
     );
   }
 }

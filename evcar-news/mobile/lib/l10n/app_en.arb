@@ -130,23 +130,1274 @@
   "authVerifyTokenLabel": "Verification code",
   "calculatorsCalculatorTitle": "Calculator",
   "calculatorsTitle": "Charging & running-cost calculators",
+  "carsAbout": "About {name}",
+  "@carsAbout": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "carsAllReviews": "All reviews",
+  "carsArticleBuyingGuide": "Buying guide",
+  "carsArticleExplainer": "Explainer",
+  "carsArticleNews": "News",
+  "carsArticleOpinion": "Opinion",
+  "carsArticleReview": "Review",
+  "carsArticleTestDrive": "Test drive",
+  "carsAvailabilityAvailable": "Available",
+  "carsAvailabilityComingSoon": "Coming soon",
+  "carsAvailabilityDiscontinued": "Discontinued",
+  "carsAvailabilityNotListed": "Not sold in this market",
+  "carsAvailabilityUnknown": "Availability unknown",
+  "carsAveragePower": "average {power}",
+  "@carsAveragePower": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      }
+    }
+  },
+  "carsBatteryTemp": "battery at {temp} °C",
+  "@carsBatteryTemp": {
+    "placeholders": {
+      "temp": {
+        "type": "String"
+      }
+    }
+  },
+  "carsBodyConvertible": "Convertible",
+  "carsBodyCoupe": "Coupe",
+  "carsBodyCrossover": "Crossover",
+  "carsBodyHatchback": "Hatchback",
+  "carsBodyMpv": "MPV",
+  "carsBodyOther": "Other body",
+  "carsBodyPickup": "Pickup",
+  "carsBodySedan": "Sedan",
+  "carsBodySuv": "SUV",
+  "carsBodyVan": "Van",
+  "carsBodyWagon": "Wagon",
+  "carsBrandCountry": "Origin: {country}",
+  "@carsBrandCountry": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "carsBrandModelsIn": "Models in {market}",
+  "@carsBrandModelsIn": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsBrandNoCarsInMarket": "No models in this market",
+  "carsBrandNoCarsMessage": "This brand has no models on sale in the selected market. Try another market.",
+  "carsBrandNoCarsTitle": "No models listed in {market}",
+  "@carsBrandNoCarsTitle": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsBrandNotInMarketHint": "Shown for reference; prices and availability belong to other markets.",
+  "carsBrandNotInMarketTitle": "Not sold in {market}",
+  "@carsBrandNotInMarketTitle": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
   "carsBrandTitle": "Brand",
+  "carsBrandWebsite": "Official website",
+  "carsBrandsEmptyMessage": "Brands appear here once they are added to the catalog.",
+  "carsBrandsEmptyTitle": "No brands yet",
+  "carsBrandsNoMatchMessage": "Check the spelling or try another name.",
+  "carsBrandsNoMatchTitle": "No brand found",
+  "carsBrandsNotInMarket": "Not sold in your market",
+  "carsBrandsNotInMarketHint": "These brands have no models listed in the selected market.",
+  "carsBrandsSearchHint": "Search brands",
   "carsBrandsTitle": "Brands",
   "carsCatalogTitle": "Car catalog",
+  "carsChangeMarket": "Change market",
+  "carsChargingCurve": "Charging curve",
+  "carsChargingInlets": "Charging ports",
+  "carsChargingNotPlugIn": "This is a self-charging hybrid without a charging port, so it has no charging data.",
+  "carsChargingTimeLabel": "{current} charging ({window})",
+  "@carsChargingTimeLabel": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "window": {
+        "type": "String"
+      }
+    }
+  },
+  "carsChargingTimes": "Charging times",
+  "carsChargingTitle": "Charging",
+  "carsChooseVersion": "Choose the exact version",
+  "carsChooseVersionHint": "Specs, prices and tours below belong only to this market, year and trim.",
+  "carsCompareNeedsMarket": "Not sold in {market} — cannot be compared there",
+  "@carsCompareNeedsMarket": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsConsumptionElectric": "Electricity consumption",
+  "carsConsumptionFuel": "Fuel consumption",
+  "carsCurrentAc": "AC",
+  "carsCurrentDc": "DC",
+  "carsCurveHideTable": "Hide table",
+  "carsCurvePower": "Power",
+  "carsCurveShowTable": "Show as a table",
+  "carsCurveSoc": "State of charge",
+  "carsCurveSummary": "{current} charging curve: peak {peak}, measured from {from} to {to} state of charge.",
+  "@carsCurveSummary": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "peak": {
+        "type": "String"
+      },
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "carsDerivedValue": "Calculated from another published value",
   "carsDetailTitle": "Car details",
+  "carsDoors": "{count, plural, =1{1 door} other{{count} doors}}",
+  "@carsDoors": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsDriveAwd": "All-wheel drive",
+  "carsDriveFwd": "Front-wheel drive",
+  "carsDriveRwd": "Rear-wheel drive",
+  "carsEmptyMessage": "No cars are listed in {market} yet. You can choose another market.",
+  "@carsEmptyMessage": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsEmptyTitle": "No cars listed yet",
+  "carsEndOfList": "You have reached the end of the list",
+  "carsFilterAny": "Any",
+  "carsFilterAtLeast": "At least {value}",
+  "@carsFilterAtLeast": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "carsFilterBody": "Body type",
+  "carsFilterClear": "Clear filters",
+  "carsFilterCycle": "Test cycle",
+  "carsFilterMinRange": "Minimum electric range",
+  "carsFilterMinRangeHint": "Ranges are only compared within the same test cycle.",
+  "carsFilterPowertrain": "Powertrain",
+  "carsFilterPrice": "Local price",
+  "carsFilterPriceHint": "In {currency} for {market}. Only local prices are compared; trims without a local price are hidden while this filter is on.",
+  "@carsFilterPriceHint": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      },
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsFilterPriceHintNoCurrency": "In the local currency of {market}.",
+  "@carsFilterPriceHintNoCurrency": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsFilterPriceInvalid": "The minimum price is higher than the maximum.",
+  "carsFilterPriceMax": "Maximum",
+  "carsFilterPriceMin": "Minimum",
+  "carsFilterRemove": "Remove filter",
+  "carsFilterSeats": "Seats",
+  "carsFilterSeatsAtLeast": "{count}+ seats",
+  "@carsFilterSeatsAtLeast": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsGalleryEmptyMessage": "Only licensed photos are published; none are available for this car yet.",
+  "carsGalleryEmptyTitle": "No photos yet",
+  "carsGalleryOf": "Photos: {car}",
+  "@carsGalleryOf": {
+    "placeholders": {
+      "car": {
+        "type": "String"
+      }
+    }
+  },
+  "carsGalleryPhoto": "Photo {index} of {total}",
+  "@carsGalleryPhoto": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "carsGalleryTitle": "Photos",
+  "carsInletsNeedMarket": "Ports depend on the market; this trim is not listed in {market}.",
+  "@carsInletsNeedMarket": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsLocalName": "Local name: {name}",
+  "@carsLocalName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "carsMarket": "Market",
+  "carsMarketLine": "Prices and availability for {market} ({currency})",
+  "@carsMarketLine": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      },
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "carsMarketLineNoCurrency": "Prices and availability for {market}",
+  "@carsMarketLineNoCurrency": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsMarketSpecific": "Specific to {market}",
+  "@carsMarketSpecific": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsMaxPower": "up to {power}",
+  "@carsMaxPower": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      }
+    }
+  },
+  "carsMeasuredCycle": "{cycle} cycle",
+  "@carsMeasuredCycle": {
+    "placeholders": {
+      "cycle": {
+        "type": "String"
+      }
+    }
+  },
+  "carsModeCity": "City",
+  "carsModeCombined": "Combined",
+  "carsModeHighway": "Highway",
+  "carsModelCount": "{count, plural, =1{1 model} other{{count} models}}",
+  "@carsModelCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsModelYear": "Model year",
+  "carsNo": "No",
+  "carsNoArticlesMessage": "News, reviews and guides about this car will appear here.",
+  "carsNoArticlesTitle": "No related articles yet",
+  "carsNoCompetitorsMessage": "Our editors have not linked competitors sold in this market yet.",
+  "carsNoCompetitorsTitle": "No competitors listed",
+  "carsNoLocalPrice": "No local price has been published for {market} yet.",
+  "@carsNoLocalPrice": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsNoMatchMessage": "Try removing a filter or widening the price or range.",
+  "carsNoMatchTitle": "No cars match these filters",
+  "carsNotOfferedInMarket": "This trim is not sold in {market}, so there is no local price.",
+  "@carsNotOfferedInMarket": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsNotPreconditioned": "battery not preconditioned",
+  "carsNotSoldAnywhere": "Not listed in any market",
+  "carsNotSoldAnywhereMessage": "This car is not listed in any market yet.",
+  "carsNotSoldInMarketMessage": "This car is listed in: {markets}. Choose one of them to see its trims and prices.",
+  "@carsNotSoldInMarketMessage": {
+    "placeholders": {
+      "markets": {
+        "type": "String"
+      }
+    }
+  },
+  "carsNotSoldInMarketTitle": "Not sold in this market",
+  "carsNotSoldShort": "not sold",
+  "carsOnCharger": "on a {power} charger",
+  "@carsOnCharger": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      }
+    }
+  },
+  "carsOnboardLimit": "on-board limit {power}",
+  "@carsOnboardLimit": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      }
+    }
+  },
+  "carsOpenFullSheet": "Open the full spec sheet",
+  "carsOpenModelPage": "All versions of {model}",
+  "@carsOpenModelPage": {
+    "placeholders": {
+      "model": {
+        "type": "String"
+      }
+    }
+  },
+  "carsOwnerReviewsEmptyMessage": "Own this car? Share your real experience to help others.",
+  "carsOwnerReviewsEmptyTitle": "No owner reviews for this trim yet",
+  "carsOwnerReviewsUnavailableMessage": "This section opens once community reviews are enabled.",
+  "carsOwnerReviewsUnavailableTitle": "Owner reviews are not available yet",
+  "carsPeakPower": "peak {power}",
+  "@carsPeakPower": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      }
+    }
+  },
+  "carsPreconditioned": "battery preconditioned",
+  "carsPriceCurrent": "Current",
+  "carsPriceFrom": "From {price}",
+  "@carsPriceFrom": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "carsPriceHistory": "{count, plural, =1{Price history (1 entry)} other{Price history ({count} entries)}}",
+  "@carsPriceHistory": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsPriceIn": "Price in {market}",
+  "@carsPriceIn": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsPricePeriod": "{from} – {to}",
+  "@carsPricePeriod": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "carsPriceSince": "Since {date}",
+  "@carsPriceSince": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "carsRangeAndConsumption": "Range & consumption",
+  "carsRangeCycleExplainer": "Each figure is shown with its test cycle (WLTP, EPA, CLTC…). Cycles are never converted into one another; real-world range is usually lower.",
+  "carsRatingOutOfFive": "{rating} out of 5",
+  "@carsRatingOutOfFive": {
+    "placeholders": {
+      "rating": {
+        "type": "String"
+      }
+    }
+  },
+  "carsResultCount": "{count, plural, =1{1 car} other{{count} cars}}",
+  "@carsResultCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsReviewCount": "{count, plural, =1{1 review} other{{count} reviews}}",
+  "@carsReviewCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsSearchHint": "Search brand, model or trim",
+  "carsSeatDriver": "Driver seat",
+  "carsSeatPassenger": "Front passenger",
+  "carsSeatRear": "Rear seats",
+  "carsSeatThirdRow": "Third row",
+  "carsSeatTrunk": "Trunk",
+  "carsSeats": "{count, plural, =1{1 seat} other{{count} seats}}",
+  "@carsSeats": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsShareFailed": "Could not open sharing.",
+  "carsSoldIn": "Sold in: {markets}",
+  "@carsSoldIn": {
+    "placeholders": {
+      "markets": {
+        "type": "String"
+      }
+    }
+  },
+  "carsSortName": "Name",
+  "carsSortNewest": "Newest",
+  "carsSortPriceAsc": "Price: low to high",
+  "carsSortPriceDesc": "Price: high to low",
+  "carsSortRange": "Longest range",
+  "carsSourceAccessedAt": "Accessed on",
+  "carsSourceDocumentDate": "Document date",
+  "carsSourceOpen": "Open source",
+  "carsSourcePublisher": "Publisher",
+  "carsSourceTitle": "Data source",
+  "carsSourceVerifiedAt": "Verified on",
+  "carsSourcesTitle": "Sources",
+  "carsSpecsOnlyAvailable": "Hide unavailable values",
+  "carsSpecsOnlyAvailableHint": "Missing values are shown as “Not available”, never as 0.",
+  "carsSpecsRemoveOffline": "Remove offline copy",
+  "carsSpecsRemovedOffline": "Offline copy removed",
+  "carsSpecsSaveOffline": "Save specs offline",
+  "carsSpecsSavedOffline": "Specs saved for offline reading",
+  "carsSpecsSavedOn": "Saved on {time}",
+  "@carsSpecsSavedOn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "carsStarsCount": "{stars} stars: {count}",
+  "@carsStarsCount": {
+    "placeholders": {
+      "stars": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsStatAcMax": "AC charging",
+  "carsStatAccel": "0–100 km/h",
+  "carsStatBattery": "Battery",
+  "carsStatDcPeak": "DC peak",
+  "carsStatElectricRange": "Electric range",
+  "carsStatPower": "Power",
+  "carsStatRange": "Range",
+  "carsStatUsableBattery": "Usable battery",
+  "carsTabCompetitors": "Competitors",
+  "carsTabNews": "News & reviews",
+  "carsTabOverview": "Overview",
+  "carsTabOwners": "Owner reviews",
+  "carsTabSpecs": "Specifications",
+  "carsTabTours": "360° tour",
+  "carsTableReliability": "Reliability",
+  "carsTableSource": "Source",
+  "carsTableSpec": "Specification",
+  "carsTableValue": "Value",
+  "carsTourInterior": "Interior: {color}",
+  "@carsTourInterior": {
+    "placeholders": {
+      "color": {
+        "type": "String"
+      }
+    }
+  },
+  "carsTourOpen": "Start the tour",
+  "carsTourReference": "Photographed in a similar trim: {trim}",
+  "@carsTourReference": {
+    "placeholders": {
+      "trim": {
+        "type": "String"
+      }
+    }
+  },
+  "carsTourSeats": "Views: {seats}",
+  "@carsTourSeats": {
+    "placeholders": {
+      "seats": {
+        "type": "String"
+      }
+    }
+  },
+  "carsTourTitle": "360° interior tour",
+  "carsTourUnavailable": "The interior tour is not available for this trim",
+  "carsTourUnavailableHint": "We only publish tours photographed in real cars. You can browse the licensed photos instead.",
+  "carsToursDisabled": "Interior tours are not available right now",
+  "carsTrim": "Trim",
+  "carsTrimCode": "Code {code}",
+  "@carsTrimCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "carsTrimCount": "{count, plural, =1{1 trim} other{{count} trims}}",
+  "@carsTrimCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsUnitInch": "in",
+  "carsUnitLitersPer100": "L/100 km",
   "carsVariantTitle": "Trim details",
+  "carsVerifiedOwner": "Verified owner",
+  "carsVerifiedOwners": "{count, plural, =1{1 verified owner} other{{count} verified owners}}",
+  "@carsVerifiedOwners": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsViewingTrim": "Showing {trim} in {market}",
+  "@carsViewingTrim": {
+    "placeholders": {
+      "trim": {
+        "type": "String"
+      },
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsWheelSize": "{size} wheels",
+  "@carsWheelSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "carsWriteReview": "Write a review",
+  "carsYears": "{count, plural, =1{1 year} other{{count} years}}",
+  "@carsYears": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsYes": "Yes",
+  "chargingAccessRestrictions": "Restrictions",
+  "chargingAccessSection": "Access",
+  "chargingAccessType": "Access",
+  "chargingAddressUnknown": "Address not available",
+  "chargingAmenities": "Nearby amenities",
+  "chargingAreaAround": "Around {place} · {radius}",
+  "@chargingAreaAround": {
+    "placeholders": {
+      "place": {
+        "type": "String"
+      },
+      "radius": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingAreaVisibleMap": "Visible map area",
+  "chargingAttribution": "Attribution",
+  "chargingAvailAvailable": "Connector free now",
+  "chargingAvailCounts": "Free: {available} · In use: {occupied} · Out of order: {outOfOrder} · Unknown: {unknown}",
+  "@chargingAvailCounts": {
+    "placeholders": {
+      "available": {
+        "type": "String"
+      },
+      "occupied": {
+        "type": "String"
+      },
+      "outOfOrder": {
+        "type": "String"
+      },
+      "unknown": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingAvailExpiredExplain": "The last live reading has expired, so it is not shown as available.",
+  "chargingAvailLastReading": "Last reading {time} — expired, so the current state is uncertain.",
+  "@chargingAvailLastReading": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingAvailNotLiveOffline": "No live status (saved data)",
+  "chargingAvailObserved": "Reading from {time}",
+  "@chargingAvailObserved": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingAvailOccupied": "All in use",
+  "chargingAvailOutOfOrder": "Out of order",
+  "chargingAvailSource": "Source: {source}",
+  "@chargingAvailSource": {
+    "placeholders": {
+      "source": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingAvailUncertain": "Uncertain (reading expired)",
+  "chargingAvailUnknown": "Availability unknown",
+  "chargingAvailValidUntil": "valid until {time}",
+  "@chargingAvailValidUntil": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingCheckInCar": "Your car",
+  "chargingCheckInComment": "Comment",
+  "chargingCheckInConnector": "Connector used",
+  "chargingCheckInHowWasIt": "How did it go?",
+  "chargingCheckInIntro": "Share how charging went. It appears with its date as community data, not as live status.",
+  "chargingCheckInNoCar": "Don't add a car",
+  "chargingCheckInPending": "Thanks! Your comment will appear after review.",
+  "chargingCheckInPower": "Power you saw",
+  "chargingCheckInPublicNote": "Your check-in is shown without your name. Comments with links are reviewed first.",
+  "chargingCheckInSentMessage": "Thanks! It now appears on the station page with today's date.",
+  "chargingCheckInSentTitle": "Check-in saved",
+  "chargingCheckInShort": "Check in",
+  "chargingCheckInSignIn": "Sign in to check in, so others can trust community data.",
   "chargingCheckInTitle": "Check in",
+  "chargingCheckInWait": "Waiting time",
+  "chargingCheckins30d": "Check-ins (30 days)",
+  "chargingChoosePlace": "Choose a place",
+  "chargingCityListNote": "Cities set only the centre of the search. Which stations exist comes from the station database.",
+  "chargingCitySearchHint": "Search cities",
+  "chargingClearFilters": "Clear filters",
+  "chargingClosedNow": "Closed now",
+  "chargingClosesAt": "Closes at {time} (station time)",
+  "@chargingClosesAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingClusterSemantics": "{count} stations here, tap to zoom in",
+  "@chargingClusterSemantics": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingCommunityDisclaimer": "Check-ins and reports are dated community data, not an official live status.",
+  "chargingCommunityEmpty": "No check-ins or reports yet. Tell others how your visit went.",
+  "chargingCommunitySection": "Community reports and check-ins",
+  "chargingCompatBestPower": "Up to {power} with your car",
+  "@chargingCompatBestPower": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingCompatIgnored": "{count, plural, =1{1 unverified inlet record was not used.} other{{count} unverified inlet records were not used.}}",
+  "@chargingCompatIgnored": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingCompatNoAdapters": "Based on the same plug type and current only. No adapter is recommended.",
+  "chargingCompatNoGuess": "The station is shown without a compatibility guess.",
+  "chargingCompatNone": "No connector here matches the verified charging inlets of {car}.",
+  "@chargingCompatNone": {
+    "placeholders": {
+      "car": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingCompatNotice": "Showing connectors compatible with {car}, based on verified inlet data only.",
+  "@chargingCompatNotice": {
+    "placeholders": {
+      "car": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingCompatSection": "Compatibility with your car",
+  "chargingCompatSome": "{count, plural, =1{1 connector matches {car}.} other{{count} connectors match {car}.}}",
+  "@chargingCompatSome": {
+    "placeholders": {
+      "car": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingCompatUnknownShort": "No verified charging data for this car",
+  "chargingCompatUnknownTitle": "Compatibility can't be checked",
+  "chargingCompatibleConnectors": "{count, plural, =1{1 compatible connector} other{{count} compatible connectors}}",
+  "@chargingCompatibleConnectors": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingConnectorCompatible": "Compatible",
+  "chargingConnectorCompatibleUpTo": "Compatible up to {power}",
+  "@chargingConnectorCompatibleUpTo": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingConnectorNotCompatible": "Not compatible",
+  "chargingConnectorType": "Connector type",
+  "chargingConnectorsSection": "Chargers and connectors",
+  "chargingContactSection": "Contact",
+  "chargingCurrentAc": "AC",
+  "chargingCurrentDc": "DC",
+  "chargingCurrentTypes": "Current",
+  "chargingDataSource": "Source",
+  "chargingDayClosed": "Closed",
+  "chargingDayFri": "Friday",
+  "chargingDayMon": "Monday",
+  "chargingDaySat": "Saturday",
+  "chargingDaySun": "Sunday",
+  "chargingDayThu": "Thursday",
+  "chargingDayTue": "Tuesday",
+  "chargingDayUnknown": "Unknown",
+  "chargingDayWed": "Wednesday",
+  "chargingDefaultPlaceHint": "Showing the default city of your country. Use your location or choose another place.",
+  "chargingDemoNoDirections": "This is a demo station, not a real place.",
+  "chargingDemoNotRealPlace": "Demo station for testing — not a real place. Do not drive here.",
+  "chargingDirections": "Directions",
+  "chargingDirectionsNote": "Opens a navigation app with the station's coordinates. Check access and opening hours before you go.",
+  "chargingDistance": "Distance",
+  "chargingDistanceAway": "{distance} away",
+  "@chargingDistanceAway": {
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingDistanceMeters": "{meters} m",
+  "@chargingDistanceMeters": {
+    "placeholders": {
+      "meters": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingEmail": "Email",
+  "chargingEmptyFilteredMessage": "No station matches these filters here. Try clearing some filters or searching a wider area.",
+  "chargingEmptyMessage": "No published stations were found in this area. Coverage of any country is not complete — you can suggest a station you know.",
+  "chargingEmptyTitle": "No stations here",
+  "chargingEndOfResults": "{count, plural, =1{1 station in total} other{{count} stations in total}}",
+  "@chargingEndOfResults": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingEntrance": "Entrance",
+  "chargingFetchedAt": "Loaded {time}",
+  "@chargingFetchedAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingFilterAmenities": "Nearby amenities",
+  "chargingFilterAmenitiesHelp": "Stations must have all selected amenities.",
+  "chargingFilterAny": "Any",
+  "chargingFilterAvailability": "Hours and access",
+  "chargingFilterConnectors": "Connector types",
+  "chargingFilterConnectorsHelp": "One connector must match the type, current and power together.",
+  "chargingFilterCurrent": "Current type",
+  "chargingFilterMetaUnavailable": "Connector list is not available right now.",
+  "chargingFilterMinPower": "Minimum power",
+  "chargingFilterMinPowerHelp": "Connectors with unknown power are not included.",
+  "chargingFilterOpenNow": "Open now",
+  "chargingFilterOpenNowHelp": "By published opening hours. Stations with unknown hours are hidden.",
+  "chargingFilterOperator": "Operator",
+  "chargingFilterOperatorHelp": "From the stations loaded in this area.",
+  "chargingFilterPowerAtLeast": "{power}+",
+  "@chargingFilterPowerAtLeast": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingFilterPublicOnly": "Public access only",
+  "chargingFilterVehicle": "Compatible with my car",
+  "chargingFilterVehicleAddCar": "Add a car to my garage",
+  "chargingFilterVehicleHelp": "Uses verified charging-inlet data of your car in its market. Plug shape alone is never treated as compatible, and adapters are never assumed.",
+  "chargingFilterVehicleNone": "Any car",
+  "chargingFilterVehicleNotInMarket": "Not listed in this car's market — compatibility may be unknown",
+  "chargingFilterVehicleSignIn": "Sign in to use a car from your garage",
   "chargingFiltersTitle": "Station filters",
+  "chargingFloor": "Floor {floor}",
+  "@chargingFloor": {
+    "placeholders": {
+      "floor": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingFormatCable": "attached cable",
+  "chargingFormatSocket": "socket (bring your cable)",
+  "chargingGraceMinutes": "after {minutes} min grace",
+  "@chargingGraceMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingHoursAsPublished": "As published by the source: {text}",
+  "@chargingHoursAsPublished": {
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingHoursNotPublished": "Opening hours are not published.",
+  "chargingHoursSection": "Opening hours",
+  "chargingHoursTextOnly": "Hours are published as text only — see below.",
+  "chargingHoursTimezoneNote": "Times are in the station's time zone ({zone}).",
+  "@chargingHoursTimezoneNote": {
+    "placeholders": {
+      "zone": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingHoursUnknown": "Hours unknown",
+  "chargingInvalidPower": "Enter a power between 0 and 1000 kW.",
+  "chargingInvalidWait": "Enter minutes between 0 and 1440.",
+  "chargingLastSynced": "Last synced",
+  "chargingLastVerified": "Last verified",
+  "chargingLatitude": "Latitude",
+  "chargingLicense": "Licence",
+  "chargingLocationDenied": "Location permission was not given. You can choose a place instead.",
+  "chargingLocationDeniedForever": "Location access is turned off for this app. Turn it on in settings, or choose a city or a point instead.",
+  "chargingLocationPrivacy": "Asked only now, used while you use the app, never saved.",
+  "chargingLocationServiceOff": "Location services are off on this device. Turn them on, or choose a city or a point instead.",
   "chargingLocationTitle": "Choose a place",
+  "chargingLocationUnavailable": "Your location could not be determined. Choose a place instead.",
   "chargingLogsEditTitle": "Edit charging session",
   "chargingLogsNewTitle": "New charging session",
   "chargingLogsReportsTitle": "Spending & consumption",
   "chargingLogsTitle": "Charging log",
+  "chargingLongitude": "Longitude",
+  "chargingMapNotConfigured": "The map is not configured yet, so stations are shown as a list.",
+  "chargingMapSemantics": "Charging stations map, {count} stations",
+  "@chargingMapSemantics": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingMaxPower": "Max power",
+  "chargingMergedMessage": "It was a duplicate of another station and its details now live there.",
+  "chargingMergedTitle": "This station was merged",
+  "chargingMinutesUnit": "min",
+  "chargingNavApple": "Apple Maps",
+  "chargingNavFailed": "No app could open the directions.",
+  "chargingNavGoogle": "Google Maps",
+  "chargingNavSystem": "Choose a navigation app",
+  "chargingNavWaze": "Waze",
+  "chargingNavWeb": "Open in web map",
+  "chargingNearMe": "Near me",
+  "chargingNoCityMatch": "No city matches",
+  "chargingNoConnectorData": "No connector data is available.",
+  "chargingNoLiveProvider": "Live availability is shown only from a connected live source. None is connected yet, so it shows as unknown.",
+  "chargingNoLiveSourceForStation": "No live data source is connected for this station, so availability is unknown. Community check-ins below are not live.",
+  "chargingNoStationsHere": "No stations found in this area",
+  "chargingNoneStated": "None stated by the source",
+  "chargingNotCompatible": "No compatible connector",
+  "chargingNotSure": "Not sure",
+  "chargingObservedPower": "{power} observed",
+  "@chargingObservedPower": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingOfflineNoLive": "This is saved data. Live status is never shown from saved data.",
+  "chargingOpOperational": "Operational",
+  "chargingOpPermanentlyClosed": "Permanently closed",
+  "chargingOpPlanned": "Planned",
+  "chargingOpTemporarilyUnavailable": "Temporarily unavailable",
+  "chargingOpUnknown": "Operation status unknown",
+  "chargingOpen24h": "Open 24 hours",
+  "chargingOpenMerged": "Open the station",
+  "chargingOpenNow": "Open now",
+  "chargingOpenNowFromSaved": "Worked out on this device from the saved opening hours.",
+  "chargingOpenReports": "Open reports",
+  "chargingOpenSource": "Open the source",
+  "chargingOpensAt": "Opens {time} (station time)",
+  "@chargingOpensAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingOptional": "optional",
+  "chargingParking": "Parking",
+  "chargingPaymentMethods": "Payment",
+  "chargingPhases": "{count, plural, =1{single-phase} other{{count}-phase}}",
+  "@chargingPhases": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingPhone": "Phone",
+  "chargingPhoto": "Station photo",
+  "chargingPickPointHint": "Pin at {lat}, {lng}. Move the map to adjust.",
+  "@chargingPickPointHint": {
+    "placeholders": {
+      "lat": {
+        "type": "String"
+      },
+      "lng": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingPickPointSubtitle": "Move the map to place the pin, then search around it.",
+  "chargingPickPointTitle": "Pick a point on the map",
+  "chargingPlaceDefaultCity": "{city} (default)",
+  "@chargingPlaceDefaultCity": {
+    "placeholders": {
+      "city": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingPlaceMapPoint": "Chosen point",
+  "chargingPlaceMarker": "Chosen search point",
+  "chargingPlaceNearYou": "Near you",
+  "chargingPlugCount": "{count, plural, =1{1 connector} other{{count} connectors}}",
+  "@chargingPlugCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingPlugsNotCars": "The number of connectors is not the number of cars that can charge at the same time.",
+  "chargingPointCount": "{count, plural, =1{1 charger} other{{count} chargers}}",
+  "@chargingPointCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingPointCountUnknown": "Number of chargers not available",
+  "chargingPointUnnamed": "Charger",
+  "chargingPowerRange": "{min}–{max}",
+  "@chargingPowerRange": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingPowerUnknown": "Power not available",
+  "chargingPriceNotAvailable": "Prices are not available for this station.",
+  "chargingPricesSection": "Prices",
+  "chargingQuantity": "×{count}",
+  "@chargingQuantity": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingQuickDc": "Fast DC",
+  "chargingQuickMyCar": "Fits my car",
+  "chargingQuickMyCarNamed": "Fits {name}",
+  "@chargingQuickMyCarNamed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingRecentCheckins": "Recent check-ins",
+  "chargingRecentReports": "Reports (last 90 days)",
+  "chargingRemove": "Remove",
+  "chargingRemoveCarFilter": "Remove car filter",
+  "chargingReportDetails": "Details",
+  "chargingReportDetailsHint": "What did you see? When?",
+  "chargingReportDetailsRequired": "Please describe the problem.",
+  "chargingReportIntro": "Tell us what is wrong. Moderators review every report; it does not change the station by itself.",
+  "chargingReportModeration": "Reports are anonymous on the station page (type, status and date only).",
+  "chargingReportNewPrice": "Price you saw",
+  "chargingReportNewPriceHint": "e.g. price per kWh as shown at the charger",
+  "chargingReportSeenConnector": "Connector you found on site",
+  "chargingReportSentMessage": "Moderators will review it. You can follow it under your reports.",
+  "chargingReportSentTitle": "Thanks for your report",
+  "chargingReportShort": "Report",
+  "chargingReportSignIn": "Sign in to report a problem, so moderators can review it and prevent abuse.",
+  "chargingReportStatusInReview": "In review",
+  "chargingReportStatusOpen": "Open",
+  "chargingReportStatusRejected": "Rejected",
+  "chargingReportStatusResolved": "Resolved",
   "chargingReportTitle": "Report a problem",
+  "chargingReportWhat": "What is the problem?",
+  "chargingReportWhichConnector": "Which connector?",
+  "chargingResultsCount": "{count, plural, =1{1 station} other{{count} stations}}",
+  "@chargingResultsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingResultsTruncated": "{count} stations shown — zoom in to see all",
+  "@chargingResultsTruncated": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingSavedCopy": "Saved",
+  "chargingSearchHereAction": "Search here",
+  "chargingSearchHereMessage": "Stations will be listed around the point you picked, with distances from it.",
+  "chargingSearchHereTitle": "Search around this point?",
+  "chargingSearchHint": "Search stations, operators or cities",
+  "chargingSearchThisArea": "Search this area",
+  "chargingSearching": "Searching for stations…",
+  "chargingSend": "Send",
+  "chargingServicesSection": "Payment and services",
+  "chargingSignInAgain": "Your session ended. Sign in again to send this.",
+  "chargingSourceCsv": "Imported file",
+  "chargingSourceManual": "Added by the editorial team",
+  "chargingSourceOcm": "Open Charge Map",
+  "chargingSourcePartner": "Partner data",
+  "chargingSourceSection": "Data source and licence",
+  "chargingSourceUpdated": "Updated at source",
+  "chargingSourceUserSuggestion": "Suggested by a user, reviewed",
+  "chargingStartMethods": "How to start charging",
+  "chargingStationTimezone": "Station time zone: {zone}",
+  "@chargingStationTimezone": {
+    "placeholders": {
+      "zone": {
+        "type": "String"
+      }
+    }
+  },
   "chargingStationTitle": "Station details",
+  "chargingStatusLive": "Live availability",
+  "chargingStatusOpenNow": "Opening hours now",
+  "chargingStatusOperational": "Operation",
+  "chargingStatusSection": "Status now",
+  "chargingStepSize": "billed in steps of {step}",
+  "@chargingStepSize": {
+    "placeholders": {
+      "step": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingSuccessRate": "Charged successfully",
+  "chargingSuccessRateNeedsMore": "A success rate is shown after at least 3 check-ins.",
+  "chargingSuggestAddConnector": "Add a connector",
+  "chargingSuggestAddress": "Address or landmark",
+  "chargingSuggestCity": "City",
+  "chargingSuggestConnectorN": "Connector {number}",
+  "@chargingSuggestConnectorN": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingSuggestConnectorTypeRequired": "Choose a type or remove this connector.",
+  "chargingSuggestConnectors": "Connectors",
+  "chargingSuggestCoordInvalid": "Out of range",
+  "chargingSuggestCoordRequired": "Required",
+  "chargingSuggestCountry": "Country",
+  "chargingSuggestHours": "Opening hours",
+  "chargingSuggestHoursHint": "e.g. every day 08:00–22:00",
+  "chargingSuggestIntro": "Know a station that is missing? Add what you know — a moderator checks it before it appears on the map.",
+  "chargingSuggestLocation": "Location of the station",
+  "chargingSuggestLocationHelp": "Use your location while you are at the station, pick it on the map, or type coordinates.",
+  "chargingSuggestMayExist": "These nearby stations may be the same one:",
+  "chargingSuggestName": "Station name",
+  "chargingSuggestNameRequired": "Enter the station name.",
+  "chargingSuggestNotes": "Notes for the reviewer",
+  "chargingSuggestOperator": "Operator",
+  "chargingSuggestPickTitle": "Pick on the map",
+  "chargingSuggestQuantity": "How many",
+  "chargingSuggestReviewNote": "Nothing is published until a moderator reviews it.",
+  "chargingSuggestSentMessage": "Thanks! A moderator will review it before it appears on the map.",
+  "chargingSuggestSentTitle": "Suggestion sent",
+  "chargingSuggestSignIn": "Sign in to suggest a station. Suggestions are reviewed before they appear.",
   "chargingSuggestTitle": "Suggest a station",
+  "chargingSuggestUseMyLocation": "I'm at the station",
+  "chargingSuggestUsePoint": "Use this point",
+  "chargingTariffAppliesTo": "Applies to: {connector}",
+  "@chargingTariffAppliesTo": {
+    "placeholders": {
+      "connector": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingTariffNotCurrent": "Not current",
+  "chargingTariffUnnamed": "Tariff",
+  "chargingTaxExcluded": "Taxes not included",
+  "chargingTaxExcludedPct": "Taxes not included ({percent}%)",
+  "@chargingTaxExcludedPct": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingTaxIncluded": "Taxes included",
+  "chargingTaxIncludedPct": "Taxes included ({percent}%)",
+  "@chargingTaxIncludedPct": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingTaxUnknown": "Taxes: not stated",
   "chargingTitle": "Charging stations",
+  "chargingToday": "today",
+  "chargingTruncatedHint": "Many stations match here. Zoom in or add filters to see them all.",
+  "chargingUnassignedConnectors": "Connectors",
+  "chargingUnassignedConnectorsHelp": "The source does not say which charger each connector belongs to.",
+  "chargingUsageCostNote": "Shown as published; not verified or converted.",
+  "chargingUsageCostTitle": "Price as published by the source",
+  "chargingUseMyLocation": "Use my location",
+  "chargingValidFrom": "From {date}",
+  "@chargingValidFrom": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingValidTo": "until {date}",
+  "@chargingValidTo": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingViewList": "List",
+  "chargingViewMap": "Map",
+  "chargingWaited": "waited {time}",
+  "@chargingWaited": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingWebsite": "Website",
+  "chargingWholeStation": "The whole station",
+  "chargingWidenSearch": "Search within 100 km",
   "commonAdLabel": "Ad",
   "commonApply": "Apply",
   "commonCachedDataNotice": "Saved copy from {time}; it may not be up to date.",
@@ -409,31 +1660,1266 @@
   "communityQuestionTitle": "Question",
   "communityQuestionsTitle": "Questions & answers",
   "communityWriteReviewTitle": "Write a review",
+  "compareAboutRow": "About “{label}”",
+  "@compareAboutRow": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "compareAddCarCount": "Add a car ({count} of {max})",
+  "@compareAddCarCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "compareAddCarHint": "Brand, model, year, trim and market",
+  "compareAddCarSlot": "Add car {number}",
+  "@compareAddCarSlot": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "compareAlreadySaved": "This comparison is already saved in your account",
+  "compareAlternativesCount": "{count, plural, =1{+1 other value} other{+{count} other values}}",
+  "@compareAlternativesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "compareAlternativesExplainer": "Values on other cycles, charge windows or wheel sizes are listed for reference and never mixed into the comparison.",
+  "compareAvailabilityAvailable": "Available",
+  "compareAvailabilityComingSoon": "Coming soon",
+  "compareAvailabilityDiscontinued": "Discontinued",
+  "compareAvailabilityUnknown": "Availability not available",
+  "compareBest": "Best",
+  "compareBestInRow": "Best in this row",
+  "compareBodyCoupe": "Coupe",
+  "compareBodyCrossover": "Crossover",
+  "compareBodyHatchback": "Hatchback",
+  "compareBodyMpv": "MPV",
+  "compareBodyPickup": "Pickup",
+  "compareBodySedan": "Sedan",
+  "compareBodySuv": "SUV",
+  "compareBodyVan": "Van",
+  "compareBodyWagon": "Wagon",
+  "compareCarActions": "Options for {car}",
+  "@compareCarActions": {
+    "placeholders": {
+      "car": {
+        "type": "String"
+      }
+    }
+  },
+  "compareCarNumbered": "Car {number}: {car}",
+  "@compareCarNumbered": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      },
+      "car": {
+        "type": "String"
+      }
+    }
+  },
+  "compareChangeCar": "Change trim, year or market",
+  "compareChargerPower": "{power} charger",
+  "@compareChargerPower": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      }
+    }
+  },
+  "compareComparedOn": "Compared on: {basis}",
+  "@compareComparedOn": {
+    "placeholders": {
+      "basis": {
+        "type": "String"
+      }
+    }
+  },
+  "compareConvertedEstimate": "Estimate after conversion",
+  "compareCopiedToTray": "{count} cars copied to Compare",
+  "@compareCopiedToTray": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "compareCurrentAc": "AC",
+  "compareCurrentDc": "DC",
+  "compareDecidedRows": "Rows with a winner: {decided} of {total}",
+  "@compareDecidedRows": {
+    "placeholders": {
+      "decided": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "compareDeleteSaved": "Delete",
+  "compareDeleteSavedMessage": "“{title}” will be removed from your account. Links you shared will stop working.",
+  "@compareDeleteSavedMessage": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "compareDeleteSavedTitle": "Delete this comparison?",
+  "compareDeleted": "Comparison deleted",
+  "compareDerived": "Calculated from another published value",
+  "compareDetailsAlternatives": "Other published values",
+  "compareDetailsBasis": "Measured on",
+  "compareDetailsCar": "Car",
+  "compareDetailsConditions": "Test conditions",
+  "compareDetailsDerivation": "How it was obtained",
+  "compareDetailsDocumentDate": "Document date",
+  "compareDetailsNote": "Note",
+  "compareDetailsPublished": "Published value",
+  "compareDetailsValue": "Value",
+  "compareDifferencesOnly": "Differences only",
+  "compareDifferencesOnlyHint": "Hide rows where every car has the same value",
+  "compareDirectionHigher": "Higher is better",
+  "compareDirectionLower": "Lower is better",
+  "compareDirectionNone": "No “better” value — depends on your needs",
+  "compareDisclosureFallback": "Results are computed from catalog data only. Ads and sponsorships never change them.",
+  "compareEditCars": "Cars ({count})",
+  "@compareEditCars": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "compareEditCarsTitle": "Cars in this comparison",
+  "compareEditInCompare": "Edit in Compare",
+  "compareFactorAc": "AC charging",
+  "compareFactorDc": "DC fast charging",
+  "compareFactorEfficiency": "Energy efficiency",
+  "compareFactorPerformance": "Acceleration",
+  "compareFactorPrice": "Price",
+  "compareFactorRange": "Electric range",
+  "compareFactorSpace": "Trunk space",
+  "compareFavoriteSubtitle": "{count, plural, =1{1 car} other{{count} cars}}",
+  "@compareFavoriteSubtitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "compareFeaturedTitle": "Curated comparisons",
+  "compareGeneratedAt": "Calculated {time}",
+  "@compareGeneratedAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "compareGoToCompare": "Start a new comparison",
+  "compareHeaderSpec": "Specification",
+  "compareIntroMessage": "Pick each car by model year, trim and market. Figures are compared only when they were measured the same way.",
+  "compareIntroRuleCycles": "Ranges are compared on the same test cycle only (WLTP, EPA, CLTC or NEDC), never converted.",
+  "compareIntroRuleMandatory": "Year, trim and market are required for every car.",
+  "compareIntroRuleMissing": "A missing value is shown as “Not available”, never as 0 or a win.",
+  "compareIntroTitle": "Compare 2 to 4 cars side by side",
+  "compareKindCurated": "Curated by the editors",
+  "compareKindMine": "Saved in your account",
+  "compareKindSaved": "Saved comparison",
+  "compareKindShared": "Shared link",
+  "compareLegendBest": "Shown only when every value is available and measured the same way.",
+  "compareLegendButton": "What do the labels mean?",
+  "compareLegendTitle": "How cars are compared",
+  "compareLoading": "Loading the comparison…",
+  "compareMissingRows": "Missing data: {count}",
+  "@compareMissingRows": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "compareModeChargeDepleting": "Charge depleting",
+  "compareModeChargeSustaining": "Charge sustaining",
+  "compareModeCity": "City",
+  "compareModeCombined": "Combined",
+  "compareModeHighway": "Highway",
+  "compareModeWeighted": "Weighted",
+  "compareMoveDown": "Move down",
+  "compareMoveUp": "Move up",
+  "compareNo": "No",
+  "compareNoDifferencesMessage": "These cars show the same values in this view. Turn off “Differences only” to see every row.",
+  "compareNoRowsMessage": "There is no data for this view yet.",
+  "compareNoRowsTitle": "No rows to show",
+  "compareNotApplicable": "Not applicable",
+  "compareNotComparableRows": "Not comparable: {count}",
+  "@compareNotComparableRows": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "compareOpenCar": "Open car page",
+  "compareOpenSource": "Open source",
+  "compareOriginalValue": "Published as {value}",
+  "@compareOriginalValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "compareOutcomeTie": "Equal — no winner",
+  "comparePickerAdded": "{car} added to the comparison",
+  "@comparePickerAdded": {
+    "placeholders": {
+      "car": {
+        "type": "String"
+      }
+    }
+  },
+  "comparePickerAllMarkets": "Include trims from other markets",
+  "comparePickerAllMarketsHint": "Useful to compare the same car across countries. Prices stay in each market's currency.",
+  "comparePickerAlreadyIn": "This trim and market are already in the comparison",
+  "comparePickerBack": "Back",
+  "comparePickerBrowseMarket": "Browse cars sold in",
+  "comparePickerChooseBrand": "Choose the brand",
+  "comparePickerChooseMarket": "Choose the market",
+  "comparePickerChooseModel": "Choose the model",
+  "comparePickerChooseTrim": "Choose the trim",
+  "comparePickerChooseYear": "Choose the model year",
+  "comparePickerCurrency": "Prices in {currency}",
+  "@comparePickerCurrency": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "comparePickerEmptyMessage": "No published cars match in this market yet. Try including other markets or go back.",
+  "comparePickerEmptyMessageAll": "No published cars match yet. Go back and choose again.",
+  "comparePickerEmptyTitle": "Nothing to choose here",
+  "comparePickerMarketHint": "Price, availability and charging inlets are taken from this market.",
+  "comparePickerNoMatch": "No match for your search",
+  "comparePickerProgress": "Step {step} of {total}",
+  "@comparePickerProgress": {
+    "placeholders": {
+      "step": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "comparePickerReplaceTitle": "Change car",
+  "comparePickerReplaced": "Replaced with {car}",
+  "@comparePickerReplaced": {
+    "placeholders": {
+      "car": {
+        "type": "String"
+      }
+    }
+  },
+  "comparePickerSearchBrand": "Search brands",
+  "comparePickerSearchModel": "Search models",
+  "comparePickerShowAllMarkets": "Include other markets",
+  "comparePickerSoldIn": "Listed in: {markets}",
+  "@comparePickerSoldIn": {
+    "placeholders": {
+      "markets": {
+        "type": "String"
+      }
+    }
+  },
+  "comparePickerStepBrand": "Brand",
+  "comparePickerStepCurrent": "current step",
+  "comparePickerStepDone": "chosen",
+  "comparePickerStepEditHint": "Change this choice",
+  "comparePickerStepMarket": "Market",
+  "comparePickerStepModel": "Model",
+  "comparePickerStepTodo": "not chosen yet",
+  "comparePickerStepTrim": "Trim",
+  "comparePickerStepYear": "Year",
   "comparePickerTitle": "Choose a car",
+  "comparePickerTrimCount": "{count, plural, =1{1 trim} other{{formatted} trims}}",
+  "@comparePickerTrimCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "formatted": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecBack": "Back",
+  "compareRecBasis": "Ranges and consumption compared on {cycle}; prices in {currency}.",
+  "@compareRecBasis": {
+    "placeholders": {
+      "cycle": {
+        "type": "String"
+      },
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecBasisPeak": "peak",
+  "compareRecBodyTypes": "Body types",
+  "compareRecBodyTypesAny": "Any body type",
+  "compareRecBodyTypesSome": "{count, plural, =1{1 body type selected} other{{count} body types selected}}",
+  "@compareRecBodyTypesSome": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "compareRecBreakdown": "How the score was calculated",
+  "compareRecBudgetError": "Enter a budget greater than zero",
+  "compareRecBudgetHelper": "Prices in {market} ({currency}). Prices in other currencies are never converted.",
+  "@compareRecBudgetHelper": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      },
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecBudgetLabel": "Maximum price ({currency})",
+  "@compareRecBudgetLabel": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecBudgetMessage": "We only consider cars whose current local price is within your budget.",
+  "compareRecBudgetTitle": "What is your budget?",
+  "compareRecCycleMismatch": "measured on a different test cycle",
+  "compareRecDailyKm": "Daily distance",
+  "compareRecDecrease": "Decrease {label}",
+  "@compareRecDecrease": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecEditAnswers": "Edit answers",
+  "compareRecExcludedBody": "Other body type: {count}",
+  "@compareRecExcludedBody": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecExcludedBudget": "Over budget: {count}",
+  "@compareRecExcludedBudget": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecExcludedPowertrain": "Other powertrain: {count}",
+  "@compareRecExcludedPowertrain": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecExcludedSeats": "Too few seats: {count}",
+  "@compareRecExcludedSeats": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecExcludedTitle": "{count, plural, =1{1 car did not fit} other{{formatted} cars did not fit}}",
+  "@compareRecExcludedTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "formatted": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecHomeCharging": "Can you charge at home or at work?",
+  "compareRecHomeChargingNo": "Public charging only",
+  "compareRecHomeChargingRequired": "Choose whether you can charge at home",
+  "compareRecHomeChargingYes": "I can charge at home",
+  "compareRecIgnoreFactor": "Rank without “{factor}”",
+  "@compareRecIgnoreFactor": {
+    "placeholders": {
+      "factor": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecIncrease": "Increase {label}",
+  "@compareRecIncrease": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecInvalidTitle": "Some answers need changes",
+  "compareRecLongTrips": "Long trips per month",
+  "compareRecLongTripsHint": "Trips longer than one full charge",
+  "compareRecMissingTitle": "Missing data",
+  "compareRecNeedsMessage": "Cars that do not fit are excluded, and we show how many.",
+  "compareRecNeedsTitle": "What do you need?",
+  "compareRecNext": "Next",
+  "compareRecNoDecision": "No decisive recommendation",
+  "compareRecNotRankedComparable": "Data not comparable",
+  "compareRecNotRankedMissing": "Missing data",
+  "compareRecNotRankedPrice": "Price not available",
+  "compareRecNotRankedSeats": "Seats not available",
+  "compareRecNotRankedSubtitle": "Missing values are never counted as 0",
+  "compareRecNotRankedTitle": "Could not be ranked",
+  "compareRecNotesTitle": "Good to know",
+  "compareRecPoints": "{points} points",
+  "@compareRecPoints": {
+    "placeholders": {
+      "points": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecPowertrainRequired": "Choose at least one powertrain",
+  "compareRecPowertrains": "Powertrains",
+  "compareRecPowertrainsHint": "Choose at least one",
+  "compareRecPrioritiesMessage": "Weights decide how much each factor counts. They are shown with the results.",
+  "compareRecPrioritiesTitle": "What matters most?",
+  "compareRecRank": "Rank {rank}",
+  "@compareRecRank": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "compareRecRankedTitle": "Ranked cars",
+  "compareRecReasonFewer": "Only one car has complete, comparable data, so there is nothing to rank it against.",
+  "compareRecReasonNoCandidates": "No car matches your budget and needs. Try a higher budget or fewer filters.",
+  "compareRecReasonNoComparable": "The matching cars lack data or their data is not comparable, so we will not guess.",
+  "compareRecReasonTooClose": "The top cars score too close to call one of them the best.",
+  "compareRecResultsTitle": "Your recommendations",
+  "compareRecScore": "Match score: {score} / 100",
+  "@compareRecScore": {
+    "placeholders": {
+      "score": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecScoreUnknown": "Match score: not available",
+  "compareRecSeats": "Seats needed",
+  "compareRecSentimentNegative": "Watch out",
+  "compareRecSentimentNeutral": "Note",
+  "compareRecSentimentPositive": "Plus",
+  "compareRecShowResults": "Show recommendations",
+  "compareRecStepBudget": "Budget",
+  "compareRecStepNeeds": "Needs",
+  "compareRecStepOf": "Step {step} of {total}: {title}",
+  "@compareRecStepOf": {
+    "placeholders": {
+      "step": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      },
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecStepPriorities": "Priorities",
+  "compareRecStepUsage": "Driving",
+  "compareRecSuggestedWeights": "Use weights suggested from my driving",
+  "compareRecSuggestedWeightsHint": "Turn off to set every weight yourself (0 = ignore)",
+  "compareRecSummaryBudget": "Up to {budget}",
+  "@compareRecSummaryBudget": {
+    "placeholders": {
+      "budget": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecSummaryDaily": "{distance} a day",
+  "@compareRecSummaryDaily": {
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecSummarySeats": "{seats} seats",
+  "@compareRecSummarySeats": {
+    "placeholders": {
+      "seats": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecSummaryTrips": "{count, plural, =0{No long trips} =1{1 long trip a month} other{{formatted} long trips a month}}",
+  "@compareRecSummaryTrips": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "formatted": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecTopPick": "Top pick for you",
+  "compareRecUsageMessage": "Your daily distance and long trips decide how much range and fast charging matter.",
+  "compareRecUsageTitle": "How do you drive?",
+  "compareRecWeightDefault": "Default weight",
+  "compareRecWeightIgnored": "Ignored",
+  "compareRecWeightShare": "weight {percent}",
+  "@compareRecWeightShare": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRecWeightUsage": "Adjusted to your driving",
+  "compareRecWeightUser": "Your choice",
+  "compareRecWeightsAllZero": "At least one priority must be above 0",
+  "compareRecWeightsTitle": "Weights used",
+  "compareRecommendCtaMessage": "Answer a few questions about your budget and driving to get an explained recommendation.",
+  "compareRecommendCtaTitle": "Not sure which car suits you?",
   "compareRecommendationsTitle": "Find the right car",
+  "compareRemoveCar": "Remove from comparison",
+  "compareRemoved": "{car} removed from the comparison",
+  "@compareRemoved": {
+    "placeholders": {
+      "car": {
+        "type": "String"
+      }
+    }
+  },
+  "compareReplaceTrayConfirm": "Replace",
+  "compareReplaceTrayMessage": "{count, plural, =1{The car you are comparing now will be replaced by the cars of this comparison.} other{The {count} cars you are comparing now will be replaced by the cars of this comparison.}}",
+  "@compareReplaceTrayMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "compareReplaceTrayTitle": "Replace your current cars?",
+  "compareRowsWon": "{count, plural, =0{Better in no row} =1{Better in 1 row} other{Better in {formatted} rows}}",
+  "@compareRowsWon": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "formatted": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRowsWonUnknown": "Not available",
+  "compareRulesText": "Units are unified before comparing and the published values are kept. Ranges are compared only on the same test cycle and never converted; electric and total range are separate. DC peak and average charging power are separate rows. Charging times are compared only for the same charge window (10–80% is not 30–80%). Prices are compared only in the same currency. A bigger battery is not automatically better. A missing value is never treated as 0.",
+  "compareSave": "Save",
+  "compareSaveGuestMessage": "Saving to an account needs sign-in. Without an account you can still create a share link and keep it.",
+  "compareSaveGuestTitle": "Save this comparison",
+  "compareSaveLimitReached": "You have reached the limit of saved comparisons. Delete an old one to save more.",
+  "compareSaved": "Comparison saved to your account",
+  "compareSavedEmptyMessage": "Compare cars, then tap Save to keep the comparison here.",
+  "compareSavedEmptyTitle": "No saved comparisons yet",
+  "compareSavedGuestHint": "Sign in to keep comparisons in your account and open them on any device.",
+  "compareSavedTitle": "Saved comparisons",
+  "compareShare": "Share link",
+  "compareShareLinkInstead": "Create a share link instead",
+  "compareSharedNoResultMessage": "Fewer than two of its cars are still available in the catalog.",
+  "compareSharedNoResultTitle": "This comparison can no longer be shown",
+  "compareSharedNotFoundMessage": "This link is invalid, or the comparison was deleted or unpublished.",
+  "compareSharedNotFoundTitle": "Comparison not found",
   "compareSharedTitle": "Shared comparison",
+  "compareShowAllRows": "Show all rows",
+  "compareSlotFacts": "{year} · {market}",
+  "@compareSlotFacts": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      },
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "compareSocWindow": "{window} charge",
+  "@compareSocWindow": {
+    "placeholders": {
+      "window": {
+        "type": "String"
+      }
+    }
+  },
+  "compareSomeUnavailable": "Some cars are no longer available",
+  "compareSponsoredWarning": "This result was not confirmed as free of sponsorship. Treat it with caution.",
+  "compareStars": "{stars} stars",
+  "@compareStars": {
+    "placeholders": {
+      "stars": {
+        "type": "String"
+      }
+    }
+  },
+  "compareStatusComparable": "Comparable",
+  "compareStatusConditions": "Different test conditions — no winner",
+  "compareStatusCurrency": "Different currencies — no winner",
+  "compareStatusCycles": "Different test cycles — no winner",
+  "compareStatusMissing": "Missing data — no winner",
+  "compareStatusNotApplicable": "Not applicable to every car",
+  "compareStatusSocWindow": "Different charge windows — no winner",
+  "compareStatusUnknown": "Not decided",
+  "compareSummaryTitle": "At a glance",
   "compareTitle": "Comparisons",
+  "compareTrayFull": "The comparison is full ({max} cars). Remove a car to add another.",
+  "@compareTrayFull": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "compareUnavailableTitle": "{count, plural, =1{1 car is no longer available} other{{count} cars are no longer available}}",
+  "@compareUnavailableTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "compareUnitInch": "in",
+  "compareUnitLitersPer100": "L/100 km",
+  "compareValueDetailsHint": "Shows the source and measuring conditions",
+  "compareViewDetailed": "Detailed",
+  "compareViewLabel": "Comparison view",
+  "compareViewSummary": "Summary",
+  "compareWheelSize": "{size}-inch wheels",
+  "@compareWheelSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "compareYears": "{count, plural, =1{1 year} other{{count} years}}",
+  "@compareYears": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "compareYes": "Yes",
+  "encyclopediaAllCategories": "All",
+  "encyclopediaClearFilters": "Clear filters",
+  "encyclopediaEmptyMessage": "Guides appear here after a technical specialist has reviewed them.",
+  "encyclopediaEmptyTitle": "No guides yet",
   "encyclopediaEntryTitle": "Encyclopedia entry",
+  "encyclopediaIntro": "Beginner guides to car types, connectors, batteries, range standards, home and fast charging, warranty and used-car checks.",
+  "encyclopediaLanguageAr": "Arabic",
+  "encyclopediaLanguageEn": "English",
+  "encyclopediaNoMatchesMessage": "Try another word or category.",
+  "encyclopediaNoMatchesTitle": "No matching guides",
+  "encyclopediaNotReviewedExplain": "This guide has no technical review information.",
+  "encyclopediaReadingMinutes": "{minutes, plural, =1{1 min read} other{{formatted} min read}}",
+  "@encyclopediaReadingMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "formatted": {
+        "type": "String"
+      }
+    }
+  },
+  "encyclopediaRelated": "Related guides",
+  "encyclopediaReviewPolicy": "Only guides that passed a technical review are published. For any electrical work, use a qualified electrician.",
+  "encyclopediaReviewed": "Technically reviewed",
+  "encyclopediaReviewedExplain": "A technical specialist checked this guide against a safety checklist before it was published. It is general information, not a substitute for a qualified electrician or the manufacturer.",
+  "encyclopediaReviewedOn": "{label} · {date}",
+  "@encyclopediaReviewedOn": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "encyclopediaSafetyTitle": "Electrical safety",
+  "encyclopediaSearchHint": "Search the encyclopedia",
+  "encyclopediaShownInLanguage": "Shown in {language}",
+  "@encyclopediaShownInLanguage": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
   "encyclopediaTitle": "EV encyclopedia",
+  "favoritesBrowseCars": "Browse cars",
+  "favoritesBrowseComparisons": "Compare cars",
+  "favoritesBrowseNews": "Browse news",
+  "favoritesBrowseStations": "Find stations",
+  "favoritesDeleteOffline": "Delete offline copy",
+  "favoritesDeviceOnly": "Favorites are saved on this device only.",
+  "favoritesEmptyArticlesMessage": "Tap the heart on any article to find it here later.",
+  "favoritesEmptyArticlesTitle": "No favorite articles yet",
+  "favoritesEmptyCarsMessage": "Save models, trims and 360° tours with the heart button.",
+  "favoritesEmptyCarsTitle": "No favorite cars yet",
+  "favoritesEmptyComparisonsMessage": "Save a comparison to come back to it quickly.",
+  "favoritesEmptyComparisonsTitle": "No favorite comparisons yet",
+  "favoritesEmptyStationsMessage": "Save the stations you use often.",
+  "favoritesEmptyStationsTitle": "No favorite stations yet",
+  "favoritesGuestHint": "Saved on this device. Sign in to keep them in your account on every device.",
+  "favoritesLocalOnly": "On this device only",
+  "favoritesRemoved": "Removed “{title}”",
+  "@favoritesRemoved": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "favoritesSavedArticlesTitle": "Articles",
+  "favoritesSavedAt": "Saved {time}",
+  "@favoritesSavedAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "favoritesSavedOfflineIntro": "Content you saved to read without a connection, with the date it was saved. It may have changed since.",
   "favoritesSavedOfflineTitle": "Saved for offline reading",
+  "favoritesSavedSpecsTitle": "Spec sheets",
+  "favoritesSyncFailed": "Couldn't sync with your account.",
+  "favoritesSyncing": "Syncing with your account…",
+  "favoritesTabArticles": "Articles",
+  "favoritesTabCars": "Cars",
+  "favoritesTabComparisons": "Comparisons",
+  "favoritesTabStations": "Stations",
   "favoritesTitle": "Favorites",
+  "favoritesUnavailable": "No longer available",
+  "favoritesUndo": "Undo",
   "garageAddTitle": "Add a car",
   "garageEditTitle": "Edit car",
   "garageTitle": "My garage",
   "garageVehicleTitle": "My car",
+  "homeAllTours": "All 360° tours",
+  "homeChangePlace": "Change",
+  "homeChargingGuides": "Charging & maintenance guides",
+  "homeChooseCity": "Choose a city",
+  "homeEmptyMessage": "Nothing has been published for your country and language yet. Pull to refresh later.",
+  "homeEmptyTitle": "Content is on its way",
+  "homeExploreBrands": "Brands",
+  "homeExploreCalculators": "Calculators",
+  "homeExploreEncyclopedia": "EV encyclopedia",
+  "homeExploreNews": "All news",
+  "homeExploreServices": "Services directory",
+  "homeExploreTitle": "Explore",
+  "homeExploreTours": "360° tours",
+  "homeFeaturedComparisons": "Featured comparisons",
+  "homeForYou": "For you",
+  "homeInteriorTours": "360° interior tours",
+  "homeLatestNews": "Latest news",
+  "homeNearbyAround": "Around: {place}",
+  "@homeNearbyAround": {
+    "placeholders": {
+      "place": {
+        "type": "String"
+      }
+    }
+  },
+  "homeNearbyEmpty": "No published stations within 25 km of this place yet.",
+  "homeNearbyPromptMessage": "Allow location access or choose a city. Your location is only used for this search and is never stored.",
+  "homeNearbyPromptTitle": "See charging stations near you",
+  "homeNearbyStations": "Charging stations nearby",
+  "homeNewCars": "New cars",
+  "homeRefreshFailed": "Couldn't refresh. Showing the last loaded content.",
+  "homeReviews": "Reviews",
+  "homeSearchHint": "Search news, cars, stations…",
+  "homeSectionUnavailable": "This section couldn't load right now.",
   "homeTitle": "Home",
+  "homeTopStory": "Top story",
+  "homeToursIntro": "Step inside the cabin and look around, seat by seat.",
+  "homeUseMyLocation": "Use my location",
+  "newsAllMarkets": "News from all markets",
+  "newsAllMarketsHint": "Off: only news for {market} and news for every market.",
+  "@newsAllMarketsHint": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
   "newsArticleTitle": "Article",
+  "newsArticlesInCategory": "{count, plural, =1{1 article} other{{count} articles}}",
+  "@newsArticlesInCategory": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "newsBackToTop": "Back to top",
+  "newsBrowseAll": "Browse all news",
+  "newsByAuthor": "By {name}",
+  "@newsByAuthor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "newsCategoriesLabel": "News categories",
   "newsCategoryTitle": "Category",
+  "newsClearFilters": "Clear filters",
+  "newsComments": "Comments",
+  "newsCorrectionKindClarification": "Clarification",
+  "newsCorrectionKindCorrection": "Correction",
+  "newsCorrectionKindUpdate": "Update",
+  "newsCorrectionsTitle": "Corrections and updates",
+  "newsCoverCaption": "Cover image",
+  "newsEmptyFilteredMessage": "No articles match these filters.",
+  "newsEmptyMessage": "Nothing has been published here yet. Check back later.",
+  "newsEmptyTitle": "No articles yet",
+  "newsEndOfFeed": "You're all caught up",
+  "newsEventDate": "Event date: {date}",
+  "@newsEventDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "newsExternalLinkInsecure": "This link is not encrypted (http).",
+  "newsExternalLinkMessage": "You're leaving EV Car News to open {host}.",
+  "@newsExternalLinkMessage": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "newsExternalLinkTitle": "Open an external link?",
+  "newsFallbackNotice": "Not available in {requested} yet, so it is shown in {served}.",
+  "@newsFallbackNotice": {
+    "placeholders": {
+      "requested": {
+        "type": "String"
+      },
+      "served": {
+        "type": "String"
+      }
+    }
+  },
+  "newsFilterAll": "All",
+  "newsFilterSaved": "Saved offline",
+  "newsFiltersTitle": "Filter news",
+  "newsFontLarger": "Larger text",
+  "newsFontScaleValue": "Text size {percent}",
+  "@newsFontScaleValue": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "newsFontSize": "Text size",
+  "newsFontSmaller": "Smaller text",
+  "newsImageLicense": "Licence",
+  "newsImageOpen": "Open image",
+  "newsImageSource": "Image source",
+  "newsImageViewerHint": "Pinch or double-tap to zoom.",
+  "newsLanguageAr": "Arabic",
+  "newsLanguageEn": "English",
+  "newsLineSpacing": "Line spacing",
+  "newsLineSpacingComfortable": "Comfortable",
+  "newsLineSpacingCompact": "Compact",
+  "newsLineSpacingRelaxed": "Relaxed",
   "newsListTitle": "News",
+  "newsLoadMoreFailed": "Couldn't load more articles.",
+  "newsLoadingMore": "Loading more articles",
+  "newsMachineTranslated": "Machine translation reviewed by an editor.",
+  "newsMarketMismatch": "This article is aimed at other markets; details may not apply in {market}.",
+  "@newsMarketMismatch": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "newsNotFoundMessage": "It may have been removed or is not published yet.",
+  "newsNotFoundTitle": "Article not available",
+  "newsOfflineNoCopyMessage": "This article isn't saved on your device. Connect to the internet to read it.",
+  "newsOnlyMyLanguage": "Only articles in my language",
+  "newsOnlyMyLanguageHint": "Off: articles not translated yet are shown in their original language, with a label.",
+  "newsOpenLink": "Open",
+  "newsOpenSaved": "Open saved articles",
+  "newsPublishedOn": "Published {date}",
+  "@newsPublishedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "newsReaderPreview": "This is how article text will look while you read.",
+  "newsReaderSettings": "Reading settings",
+  "newsReaderTheme": "Reading theme",
+  "newsReaderThemeApp": "Like the app",
+  "newsReaderThemeDark": "Dark",
+  "newsReaderThemeLight": "Light",
+  "newsReadingTime": "{minutes, plural, =1{1 min read} other{{minutes} min read}}",
+  "@newsReadingTime": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "newsRelatedArticlesTitle": "Related articles",
+  "newsRelatedCarsTitle": "Cars in this article",
+  "newsRemoveSaved": "Remove from saved",
+  "newsRemoveSavedConfirmMessage": "It will no longer be available without internet.",
+  "newsRemoveSavedConfirmTitle": "Remove this article?",
+  "newsRemovedSnack": "Removed from saved articles.",
+  "newsSaveFailed": "Couldn't save the article. Please try again.",
+  "newsSaveOffline": "Save for offline reading",
+  "newsSavedCopyNotice": "Offline copy saved {time}. It may have changed since.",
+  "@newsSavedCopyNotice": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "newsSavedCount": "{count, plural, =1{1 article on this device} other{{count} articles on this device}}",
+  "@newsSavedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "newsSavedEmptyMessage": "Open an article and tap the download button to read it later without internet.",
+  "newsSavedEmptyTitle": "No saved articles",
+  "newsSavedImagesPartial": "Some images weren't saved",
+  "newsSavedOfflineState": "Saved for offline reading",
+  "newsSavedOn": "Saved {date}",
+  "@newsSavedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "newsSavedSnack": "Saved. You can read it without internet.",
+  "newsSavedSnackPartial": "{count, plural, =1{Saved, but 1 image couldn't be downloaded.} other{Saved, but {count} images couldn't be downloaded.}}",
+  "@newsSavedSnackPartial": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "newsSavingOffline": "Saving for offline reading…",
+  "newsSearch": "Search news",
+  "newsShownInLanguage": "In {language}",
+  "@newsShownInLanguage": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "newsSortLatest": "Latest",
+  "newsSortOldest": "Oldest",
+  "newsSortPopular": "Most read",
+  "newsSourceOpen": "Open the original source",
+  "newsSourceTitle": "Source",
+  "newsTagHeader": "#{name}",
+  "@newsTagHeader": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "newsTagTitle": "Topic",
+  "newsTagsTitle": "Topics",
+  "newsTypeAny": "All types",
+  "newsTypeBuyingGuide": "Buying guides",
+  "newsTypeExplainer": "Explainers",
+  "newsTypeLabel": "Content type",
+  "newsTypeNews": "News",
+  "newsTypeOpinion": "Opinion",
+  "newsTypeReview": "Reviews",
+  "newsTypeTestDrive": "Test drives",
+  "newsUpdatedOn": "Updated {date}",
+  "@newsUpdatedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "newsVehicleBrand": "Brand",
+  "newsVehicleModel": "Model",
+  "newsVehicleModelYear": "Model year {year}",
+  "@newsVehicleModelYear": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "newsVideoGeneric": "the video site",
+  "newsVideoOpensIn": "Opens in {provider}",
+  "@newsVideoOpensIn": {
+    "placeholders": {
+      "provider": {
+        "type": "String"
+      }
+    }
+  },
+  "newsVideoPrivacy": "Nothing is loaded from {provider} until you tap.",
+  "@newsVideoPrivacy": {
+    "placeholders": {
+      "provider": {
+        "type": "String"
+      }
+    }
+  },
+  "newsWatchVideo": "Watch the video",
   "notificationsPreferencesTitle": "Notification preferences",
   "notificationsTitle": "Notifications",
   "remindersEditTitle": "Edit reminder",
   "remindersNewTitle": "New reminder",
   "remindersTitle": "Reminders",
+  "searchAllGroups": "All results",
+  "searchAlsoMatched": "Also matched: {terms}",
+  "@searchAlsoMatched": {
+    "placeholders": {
+      "terms": {
+        "type": "String"
+      }
+    }
+  },
+  "searchBrowseBrands": "Brands",
+  "searchBrowseEncyclopedia": "Encyclopedia",
+  "searchBrowseServices": "Services",
+  "searchClearRecent": "Clear all",
+  "searchClearRecentMessage": "They are stored on this device only.",
+  "searchClearRecentTitle": "Clear recent searches?",
+  "searchContactVerified": "Contact verified",
+  "searchFor": "Search for “{query}”",
+  "@searchFor": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "searchGroupArticles": "News & articles",
+  "searchGroupBrands": "Brands",
+  "searchGroupEncyclopedia": "Encyclopedia",
+  "searchGroupModels": "Models",
+  "searchGroupServices": "Services",
+  "searchGroupStations": "Charging stations",
+  "searchGroupVariants": "Trims",
+  "searchHint": "Search in Arabic or English",
+  "searchInvalidQuery": "Type at least one letter or number.",
+  "searchLoadMoreFailed": "Couldn't load more results.",
+  "searchMatchedSpelling": "Matched another spelling",
+  "searchNoResultsMessage": "Nothing matched “{query}”. Check the spelling or try a shorter word.",
+  "@searchNoResultsMessage": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "searchNoResultsTitle": "No results",
+  "searchRecentPrivacy": "Recent searches stay on this device and are never sent to your account.",
+  "searchRecentTitle": "Recent searches",
+  "searchRemoveRecent": "Remove “{query}”",
+  "@searchRemoveRecent": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "searchResultCount": "{count, plural, =0{No results} =1{1 result} other{{formatted} results}}",
+  "@searchResultCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "formatted": {
+        "type": "String"
+      }
+    }
+  },
+  "searchReviewed": "Technically reviewed",
+  "searchSeeAllCount": "See all {count}",
+  "@searchSeeAllCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "searchShownInArabic": "Shown in Arabic",
+  "searchShownInEnglish": "Shown in English",
+  "searchStartMessage": "News, brands, models, trims, charging stations, the encyclopedia and services. Alternative spellings like “تسلا” or “Tesla” both work.",
+  "searchStartTitle": "Search everything",
   "searchTitle": "Search",
+  "searchTypeArticle": "Article",
+  "searchTypeBrand": "Brand",
+  "searchTypeEncyclopedia": "Encyclopedia",
+  "searchTypeModel": "Model",
+  "searchTypeQuery": "Search suggestion",
+  "searchTypeService": "Service",
+  "searchTypeStation": "Station",
+  "searchTypeVariant": "Trim",
+  "servicesDirectoryAddress": "Address",
+  "servicesDirectoryAllTypes": "All",
+  "servicesDirectoryAlwaysOpen": "Open 24/7",
+  "servicesDirectoryAnyCity": "Any city",
+  "servicesDirectoryBrandsTitle": "Brands served",
+  "servicesDirectoryCall": "Call",
+  "servicesDirectoryCheckBeforeVisit": "Call ahead to confirm before you visit.",
+  "servicesDirectoryChooseCity": "Choose a city",
+  "servicesDirectoryCity": "City",
+  "servicesDirectoryCityField": "City name",
+  "servicesDirectoryClosedDay": "Closed",
+  "servicesDirectoryClosedNow": "Closed now",
+  "servicesDirectoryContactTitle": "Contact",
+  "servicesDirectoryDayFri": "Friday",
+  "servicesDirectoryDayMon": "Monday",
+  "servicesDirectoryDaySat": "Saturday",
+  "servicesDirectoryDaySun": "Sunday",
+  "servicesDirectoryDayThu": "Thursday",
+  "servicesDirectoryDayTue": "Tuesday",
+  "servicesDirectoryDayWed": "Wednesday",
+  "servicesDirectoryDemoNoContact": "Demo listing: contact actions are disabled.",
+  "servicesDirectoryDirections": "Directions",
+  "servicesDirectoryDistance": "Distance",
+  "servicesDirectoryDistanceAway": "{distance} away",
+  "@servicesDirectoryDistanceAway": {
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "servicesDirectoryEmail": "Email",
+  "servicesDirectoryEmptyMessage": "Nothing has been published for your country yet.",
+  "servicesDirectoryEmptyTitle": "No providers yet",
+  "servicesDirectoryHoursNotAvailable": "Opening hours not available.",
+  "servicesDirectoryHoursTitle": "Opening hours",
+  "servicesDirectoryHoursUnknown": "Hours not available",
+  "servicesDirectoryHoursUnknownDay": "Not available",
+  "servicesDirectoryIntro": "Service centres, dealers, charger installers and emergency services. Contact details show when they were last verified.",
+  "servicesDirectoryLocationDenied": "Location access was not allowed. You can choose a city instead.",
+  "servicesDirectoryLocationDeniedForever": "Location access is off for this app. Turn it on in Settings, or choose a city.",
+  "servicesDirectoryLocationServiceOff": "Location services are off on this device. Turn them on, or choose a city.",
+  "servicesDirectoryLocationTitle": "Location",
+  "servicesDirectoryLocationUnavailable": "Couldn't get your location. You can choose a city instead.",
+  "servicesDirectoryNearMe": "Near me",
+  "servicesDirectoryNoContact": "No contact details published.",
+  "servicesDirectoryNoMatchesMessage": "Try another type or city, or turn off “Open now”.",
+  "servicesDirectoryNoMatchesTitle": "No matching providers",
+  "servicesDirectoryNotVerified": "Contact details not verified",
+  "servicesDirectoryOpenNow": "Open now",
+  "servicesDirectoryOrderDistance": "Nearest first. Sponsorship never changes this order.",
+  "servicesDirectoryOrderVerified": "Ordered by verified contact details first, then name. Sponsorship never changes this order.",
+  "servicesDirectoryPhone": "Phone",
   "servicesDirectoryProviderTitle": "Service provider",
+  "servicesDirectoryResults": "Directory",
+  "servicesDirectorySearchHint": "Search by name",
+  "servicesDirectoryServicesTitle": "Services",
+  "servicesDirectorySponsoredDetailNote": "This listing is sponsored. Sponsorship does not mean the provider is recommended or verified.",
+  "servicesDirectorySponsoredSlotNote": "Paid placements, shown separately. They keep their normal place in the directory below.",
+  "servicesDirectorySponsoredSlotTitle": "Sponsored listings",
+  "servicesDirectoryTimezone": "Times in {zone}",
+  "@servicesDirectoryTimezone": {
+    "placeholders": {
+      "zone": {
+        "type": "String"
+      }
+    }
+  },
   "servicesDirectoryTitle": "Services directory",
+  "servicesDirectoryTruncated": "Many results: narrow the search to see the most relevant.",
+  "servicesDirectoryTypeBattery": "Battery services",
+  "servicesDirectoryTypeChargerInstaller": "Charger installers",
+  "servicesDirectoryTypeDealer": "Dealers",
+  "servicesDirectoryTypeEmergency": "Emergency",
+  "servicesDirectoryTypeOther": "Other",
+  "servicesDirectoryTypeServiceCenter": "Service centres",
+  "servicesDirectoryVerified": "Contact verified",
+  "servicesDirectoryVerifiedLongAgo": "Verified over a year ago",
+  "servicesDirectoryVerifiedOn": "Verified on {date}",
+  "@servicesDirectoryVerifiedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "servicesDirectoryVerifiedStale": "Last verified {date} (over a year ago)",
+  "@servicesDirectoryVerifiedStale": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "servicesDirectoryWebsite": "Website",
+  "servicesDirectoryWhatsApp": "WhatsApp",
   "settingsAboutSection": "About",
   "settingsClearCache": "Clear cached data",
   "settingsClearCacheConfirm": "Clear cached data?",
@@ -521,7 +3007,189 @@
   "shellRouteNotFoundTitle": "Page not found",
   "shellSearchTooltip": "Search",
   "shellSessionExpired": "Your session has ended. Please sign in again.",
+  "toursAbout": "About",
+  "toursAttributionTitle": "Photo credits & licence",
+  "toursBrowseCars": "Browse cars",
+  "toursCar": "Car",
+  "toursCredit": "© {credit}",
+  "@toursCredit": {
+    "placeholders": {
+      "credit": {
+        "type": "String"
+      }
+    }
+  },
+  "toursDemoFallback": "Demo — not a real car interior",
+  "toursDetails": "Tour details",
+  "toursDragHint": "Drag to look around · pinch to zoom",
+  "toursDriveLhd": "Left-hand drive",
+  "toursDriveRhd": "Right-hand drive",
+  "toursDriveUnknown": "Drive side: not available",
+  "toursFullscreenEnter": "Full screen",
+  "toursFullscreenExit": "Exit full screen",
+  "toursGoBack": "Go back",
+  "toursHdFailed": "Couldn't load high quality. Showing the preview.",
+  "toursHotspotImage": "Detail photo",
+  "toursHotspotInfo": "Information",
+  "toursHotspotScene": "Go to another seat",
+  "toursHotspotSpec": "Specification",
+  "toursHotspotVideo": "Video",
+  "toursImageZoomHint": "Tap the photo to zoom",
+  "toursImageZoomTitle": "Detail photo",
+  "toursInfo": "About this tour",
+  "toursInterior": "Interior: {color}",
+  "@toursInterior": {
+    "placeholders": {
+      "color": {
+        "type": "String"
+      }
+    }
+  },
+  "toursLicense": "Licence: {license}",
+  "@toursLicense": {
+    "placeholders": {
+      "license": {
+        "type": "String"
+      }
+    }
+  },
+  "toursLicenseCc0": "CC0 (public domain)",
+  "toursLicenseCcBy": "CC BY",
+  "toursLicenseCcBySa": "CC BY-SA",
+  "toursLicenseCommissioned": "Commissioned",
+  "toursLicenseLicensed": "Licensed",
+  "toursLicenseOther": "Other licence",
+  "toursLicenseOwned": "Owned",
+  "toursLicensePermission": "Used with permission",
+  "toursLicensePressKit": "Press kit",
+  "toursLicenseTerms": "Licence terms",
+  "toursListEmptyMessage": "We only publish tours made from licensed photos of the exact trim. New tours will appear here as soon as they are ready.",
+  "toursListEmptyTitle": "No 360° tours yet",
+  "toursListIntro": "Sit inside the car and look around, seat by seat. Every tour is made from licensed interior photos of the stated trim.",
   "toursListTitle": "360° interior tours",
+  "toursLoadFailedMessage": "Check your connection and try again. You can also browse the regular photos.",
+  "toursLoadFailedTitle": "The 360° view couldn't be loaded",
+  "toursLoadMoreFailed": "Couldn't load more tours.",
+  "toursLoading": "Loading the 360° view…",
+  "toursLoadingHd": "Loading high quality… {percent}",
+  "@toursLoadingHd": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "toursLoadingHdUnknown": "Loading high quality…",
+  "toursMarket": "Market: {market}",
+  "@toursMarket": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "toursMarketMismatch": "This tour was made for the {market} market, not the market you selected.",
+  "@toursMarketMismatch": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "toursModelYear": "Model year {year}",
+  "@toursModelYear": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "toursMotionEnabled": "Motion control on. Move your phone to look around.",
+  "toursMotionOff": "Look around by moving the phone",
+  "toursMotionOn": "Turn off motion control",
+  "toursMotionUnavailable": "Motion control isn't available on this device. Drag to look around.",
+  "toursNoImageMessage": "Its images are larger than this device can display.",
+  "toursNoImageTitle": "This tour can't be shown on this device",
+  "toursOpen": "Open 360° tour",
+  "toursOpenGallery": "Open photo gallery",
+  "toursPoints": "Points of interest",
+  "toursPointsEmpty": "This view has no points of interest.",
+  "toursPublished": "Published {date}",
+  "@toursPublished": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "toursQualityHd": "HD",
+  "toursQualityHdSemantics": "Showing high quality",
+  "toursQualityPreview": "Preview",
+  "toursQualityPreviewSemantics": "Showing a low-resolution preview",
+  "toursReferenceBadge": "Similar trim",
+  "toursReferenceBody": "These photos show the {trim} trim, not exactly the selected one.",
+  "@toursReferenceBody": {
+    "placeholders": {
+      "trim": {
+        "type": "String"
+      }
+    }
+  },
+  "toursReferenceTitle": "Photographed in a similar trim",
+  "toursResetView": "Reset view",
+  "toursSceneCount": "{count, plural, =1{1 view} other{{count} views}}",
+  "@toursSceneCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "toursSeatCargo": "Cargo area",
+  "toursSeatDriver": "Driver seat",
+  "toursSeatFrontPassenger": "Front passenger",
+  "toursSeatOther": "Other view",
+  "toursSeatPicker": "Choose a seat",
+  "toursSeatRear": "Rear seats",
+  "toursSeatThirdRow": "Third row",
+  "toursSourceLink": "Source",
+  "toursSpecOpen": "See all specifications",
+  "toursStillPreview": "Still preview (not the 360° tour)",
+  "toursTrim": "Trim: {trim}",
+  "@toursTrim": {
+    "placeholders": {
+      "trim": {
+        "type": "String"
+      }
+    }
+  },
+  "toursUnavailableMessage": "There is no licensed 360° interior for this tour. You can browse the regular photos instead.",
+  "toursUnavailableTitle": "Tour not available for this trim",
+  "toursVideoBlocked": "This video link isn't allowed.",
+  "toursVideoOpen": "Watch video",
+  "toursVideoProvider": "Opens on {provider}",
+  "@toursVideoProvider": {
+    "placeholders": {
+      "provider": {
+        "type": "String"
+      }
+    }
+  },
+  "toursVideoSelf": "EV Car News",
+  "toursViewCar": "View car page",
+  "toursViewerSemantics": "360° view of {car}. Drag to look around, or use the buttons.",
+  "@toursViewerSemantics": {
+    "placeholders": {
+      "car": {
+        "type": "String"
+      }
+    }
+  },
   "toursViewerTitle": "360° interior tour",
+  "toursWebPreviewMessage": "The 360° viewer runs in the Android and iOS apps. The image below is only a still preview, not the tour.",
+  "toursWebglMessage": "3D graphics (WebGL) aren't available on this device. You can browse the regular photos instead.",
+  "toursWebglTitle": "This device can't display 360° views",
+  "toursZoomIn": "Zoom in",
+  "toursZoomOut": "Zoom out",
   "tripsTitle": "Trip planner"
 }

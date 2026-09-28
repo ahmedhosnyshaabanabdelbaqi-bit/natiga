@@ -3,5 +3,250 @@
   "newsListTitle": "الأخبار",
   "newsArticleTitle": "الخبر",
   "newsCategoryTitle": "التصنيف",
-  "newsTagTitle": "الموضوع"
+  "newsTagTitle": "الموضوع",
+  "newsFilterAll": "الكل",
+  "newsFilterSaved": "المحفوظة",
+  "newsCategoriesLabel": "تصنيفات الأخبار",
+  "newsFiltersTitle": "تصفية الأخبار",
+  "newsSortLatest": "الأحدث",
+  "newsSortPopular": "الأكثر قراءة",
+  "newsSortOldest": "الأقدم",
+  "newsTypeLabel": "نوع المحتوى",
+  "newsTypeAny": "كل الأنواع",
+  "newsTypeNews": "أخبار",
+  "newsTypeReview": "مراجعات",
+  "newsTypeTestDrive": "تجارب قيادة",
+  "newsTypeBuyingGuide": "أدلة شراء",
+  "newsTypeExplainer": "شروحات",
+  "newsTypeOpinion": "رأي",
+  "newsAllMarkets": "أخبار كل الأسواق",
+  "newsAllMarketsHint": "عند الإيقاف: أخبار {market} والأخبار العامة لكل الأسواق فقط.",
+  "@newsAllMarketsHint": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "newsOnlyMyLanguage": "المقالات المتاحة بلغتي فقط",
+  "newsOnlyMyLanguageHint": "عند الإيقاف: تظهر المقالات غير المترجمة بلغتها الأصلية مع توضيح ذلك.",
+  "newsEmptyTitle": "لا توجد مقالات بعد",
+  "newsEmptyMessage": "لم يُنشر شيء هنا بعد. عد لاحقًا.",
+  "newsEmptyFilteredMessage": "لا توجد مقالات تطابق هذه الفلاتر.",
+  "newsClearFilters": "مسح الفلاتر",
+  "newsBrowseAll": "تصفح كل الأخبار",
+  "newsEndOfFeed": "وصلت إلى آخر المقالات",
+  "newsLoadMoreFailed": "تعذّر تحميل المزيد من المقالات.",
+  "newsLoadingMore": "جارٍ تحميل المزيد من المقالات",
+  "newsOpenSaved": "افتح المقالات المحفوظة",
+  "newsLanguageAr": "العربية",
+  "newsLanguageEn": "الإنجليزية",
+  "newsShownInLanguage": "بـ{language}",
+  "@newsShownInLanguage": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "newsSavedEmptyTitle": "لا توجد مقالات محفوظة",
+  "newsSavedEmptyMessage": "افتح أي مقال واضغط زر التنزيل لتقرأه لاحقًا دون إنترنت.",
+  "newsSavedCount": "{count, plural, =0{لا مقالات على هذا الجهاز} =1{مقال واحد على هذا الجهاز} =2{مقالان على هذا الجهاز} few{{count} مقالات على هذا الجهاز} many{{count} مقالًا على هذا الجهاز} other{{count} مقال على هذا الجهاز}}",
+  "@newsSavedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "newsSavedOn": "حُفظ {date}",
+  "@newsSavedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "newsSavedImagesPartial": "لم تُحفظ بعض الصور",
+  "newsRemoveSaved": "إزالة من المحفوظات",
+  "newsRemoveSavedConfirmTitle": "إزالة هذا المقال؟",
+  "newsRemoveSavedConfirmMessage": "لن يعود متاحًا دون إنترنت.",
+  "newsSaveOffline": "احفظ للقراءة دون إنترنت",
+  "newsSavedOfflineState": "محفوظ للقراءة دون إنترنت",
+  "newsSavingOffline": "جارٍ الحفظ للقراءة دون إنترنت…",
+  "newsSavedSnack": "تم الحفظ. يمكنك قراءته دون إنترنت.",
+  "newsSavedSnackPartial": "{count, plural, =1{تم الحفظ، لكن تعذّر تنزيل صورة واحدة.} =2{تم الحفظ، لكن تعذّر تنزيل صورتين.} few{تم الحفظ، لكن تعذّر تنزيل {count} صور.} many{تم الحفظ، لكن تعذّر تنزيل {count} صورة.} other{تم الحفظ، لكن تعذّر تنزيل {count} صورة.}}",
+  "@newsSavedSnackPartial": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "newsRemovedSnack": "أُزيل من المقالات المحفوظة.",
+  "newsSaveFailed": "تعذّر حفظ المقال. حاول مرة أخرى.",
+  "newsReaderSettings": "إعدادات القراءة",
+  "newsFontSize": "حجم النص",
+  "newsFontSmaller": "نص أصغر",
+  "newsFontLarger": "نص أكبر",
+  "newsFontScaleValue": "حجم النص {percent}",
+  "@newsFontScaleValue": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "newsLineSpacing": "تباعد الأسطر",
+  "newsLineSpacingCompact": "متقارب",
+  "newsLineSpacingComfortable": "مريح",
+  "newsLineSpacingRelaxed": "واسع",
+  "newsReaderTheme": "مظهر القراءة",
+  "newsReaderThemeApp": "مثل التطبيق",
+  "newsReaderThemeLight": "فاتح",
+  "newsReaderThemeDark": "داكن",
+  "newsReaderPreview": "هكذا سيظهر نص المقال أثناء القراءة.",
+  "newsByAuthor": "بقلم {name}",
+  "@newsByAuthor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "newsPublishedOn": "نُشر {date}",
+  "@newsPublishedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "newsUpdatedOn": "حُدّث {date}",
+  "@newsUpdatedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "newsEventDate": "تاريخ الحدث: {date}",
+  "@newsEventDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "newsReadingTime": "{minutes, plural, =1{قراءة في دقيقة} =2{قراءة في دقيقتين} few{قراءة في {minutes} دقائق} many{قراءة في {minutes} دقيقة} other{قراءة في {minutes} دقيقة}}",
+  "@newsReadingTime": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "newsMachineTranslated": "ترجمة آلية راجعها محرر.",
+  "newsFallbackNotice": "غير متاح بـ{requested} بعد، لذا يُعرض بـ{served}.",
+  "@newsFallbackNotice": {
+    "placeholders": {
+      "requested": {
+        "type": "String"
+      },
+      "served": {
+        "type": "String"
+      }
+    }
+  },
+  "newsMarketMismatch": "هذا المقال موجّه لأسواق أخرى؛ قد لا تنطبق تفاصيله على {market}.",
+  "@newsMarketMismatch": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "newsSourceTitle": "المصدر",
+  "newsSourceOpen": "فتح المصدر الأصلي",
+  "newsCorrectionsTitle": "التصحيحات والتحديثات",
+  "newsCorrectionKindCorrection": "تصحيح",
+  "newsCorrectionKindClarification": "توضيح",
+  "newsCorrectionKindUpdate": "تحديث",
+  "newsTagsTitle": "المواضيع",
+  "newsRelatedCarsTitle": "السيارات في هذا المقال",
+  "newsRelatedArticlesTitle": "مقالات ذات صلة",
+  "newsVehicleBrand": "علامة تجارية",
+  "newsVehicleModel": "طراز",
+  "newsVehicleModelYear": "موديل {year}",
+  "@newsVehicleModelYear": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "newsComments": "التعليقات",
+  "newsWatchVideo": "شاهد الفيديو",
+  "newsVideoOpensIn": "يُفتح في {provider}",
+  "@newsVideoOpensIn": {
+    "placeholders": {
+      "provider": {
+        "type": "String"
+      }
+    }
+  },
+  "newsVideoPrivacy": "لا يُحمَّل أي شيء من {provider} قبل أن تضغط.",
+  "@newsVideoPrivacy": {
+    "placeholders": {
+      "provider": {
+        "type": "String"
+      }
+    }
+  },
+  "newsVideoGeneric": "موقع الفيديو",
+  "newsImageOpen": "فتح الصورة",
+  "newsImageViewerHint": "قرّب بإصبعين أو بالنقر المزدوج.",
+  "newsImageLicense": "الترخيص",
+  "newsImageSource": "مصدر الصورة",
+  "newsExternalLinkTitle": "فتح رابط خارجي؟",
+  "newsExternalLinkMessage": "ستغادر EV Car News لفتح {host}.",
+  "@newsExternalLinkMessage": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "newsExternalLinkInsecure": "هذا الرابط غير مشفّر (http).",
+  "newsOpenLink": "فتح",
+  "newsNotFoundTitle": "المقال غير متاح",
+  "newsNotFoundMessage": "ربما حُذف أو لم يُنشر بعد.",
+  "newsOfflineNoCopyMessage": "هذا المقال غير محفوظ على جهازك. اتصل بالإنترنت لقراءته.",
+  "newsSavedCopyNotice": "نسخة محفوظة {time}. ربما تغيّر المقال منذ ذلك الحين.",
+  "@newsSavedCopyNotice": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "newsSearch": "البحث في الأخبار",
+  "newsTagHeader": "#{name}",
+  "@newsTagHeader": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "newsArticlesInCategory": "{count, plural, =0{لا مقالات} =1{مقال واحد} =2{مقالان} few{{count} مقالات} many{{count} مقالًا} other{{count} مقال}}",
+  "@newsArticlesInCategory": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "newsCoverCaption": "صورة الغلاف",
+  "newsBackToTop": "العودة إلى الأعلى"
 }

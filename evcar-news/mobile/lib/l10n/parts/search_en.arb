@@ -1,4 +1,90 @@
 {
   "@@locale": "en",
-  "searchTitle": "Search"
+  "searchTitle": "Search",
+  "searchHint": "Search in Arabic or English",
+  "searchInvalidQuery": "Type at least one letter or number.",
+  "searchFor": "Search for “{query}”",
+  "@searchFor": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "searchRecentTitle": "Recent searches",
+  "searchClearRecent": "Clear all",
+  "searchClearRecentTitle": "Clear recent searches?",
+  "searchClearRecentMessage": "They are stored on this device only.",
+  "searchRemoveRecent": "Remove “{query}”",
+  "@searchRemoveRecent": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "searchRecentPrivacy": "Recent searches stay on this device and are never sent to your account.",
+  "searchStartTitle": "Search everything",
+  "searchStartMessage": "News, brands, models, trims, charging stations, the encyclopedia and services. Alternative spellings like “تسلا” or “Tesla” both work.",
+  "searchBrowseEncyclopedia": "Encyclopedia",
+  "searchBrowseServices": "Services",
+  "searchBrowseBrands": "Brands",
+  "searchNoResultsTitle": "No results",
+  "searchNoResultsMessage": "Nothing matched “{query}”. Check the spelling or try a shorter word.",
+  "@searchNoResultsMessage": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "searchResultCount": "{count, plural, =0{No results} =1{1 result} other{{formatted} results}}",
+  "@searchResultCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "formatted": {
+        "type": "String"
+      }
+    }
+  },
+  "searchSeeAllCount": "See all {count}",
+  "@searchSeeAllCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "searchAllGroups": "All results",
+  "searchAlsoMatched": "Also matched: {terms}",
+  "@searchAlsoMatched": {
+    "placeholders": {
+      "terms": {
+        "type": "String"
+      }
+    }
+  },
+  "searchLoadMoreFailed": "Couldn't load more results.",
+  "searchGroupArticles": "News & articles",
+  "searchGroupBrands": "Brands",
+  "searchGroupModels": "Models",
+  "searchGroupVariants": "Trims",
+  "searchGroupStations": "Charging stations",
+  "searchGroupEncyclopedia": "Encyclopedia",
+  "searchGroupServices": "Services",
+  "searchTypeArticle": "Article",
+  "searchTypeBrand": "Brand",
+  "searchTypeModel": "Model",
+  "searchTypeVariant": "Trim",
+  "searchTypeStation": "Station",
+  "searchTypeEncyclopedia": "Encyclopedia",
+  "searchTypeService": "Service",
+  "searchTypeQuery": "Search suggestion",
+  "searchReviewed": "Technically reviewed",
+  "searchContactVerified": "Contact verified",
+  "searchShownInArabic": "Shown in Arabic",
+  "searchShownInEnglish": "Shown in English",
+  "searchMatchedSpelling": "Matched another spelling"
 }

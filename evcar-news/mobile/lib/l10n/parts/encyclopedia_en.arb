@@ -1,5 +1,51 @@
 {
   "@@locale": "en",
   "encyclopediaTitle": "EV encyclopedia",
-  "encyclopediaEntryTitle": "Encyclopedia entry"
+  "encyclopediaEntryTitle": "Encyclopedia entry",
+  "encyclopediaIntro": "Beginner guides to car types, connectors, batteries, range standards, home and fast charging, warranty and used-car checks.",
+  "encyclopediaSearchHint": "Search the encyclopedia",
+  "encyclopediaAllCategories": "All",
+  "encyclopediaEmptyTitle": "No guides yet",
+  "encyclopediaEmptyMessage": "Guides appear here after a technical specialist has reviewed them.",
+  "encyclopediaNoMatchesTitle": "No matching guides",
+  "encyclopediaNoMatchesMessage": "Try another word or category.",
+  "encyclopediaClearFilters": "Clear filters",
+  "encyclopediaReviewed": "Technically reviewed",
+  "encyclopediaReviewedOn": "{label} · {date}",
+  "@encyclopediaReviewedOn": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "encyclopediaReviewedExplain": "A technical specialist checked this guide against a safety checklist before it was published. It is general information, not a substitute for a qualified electrician or the manufacturer.",
+  "encyclopediaNotReviewedExplain": "This guide has no technical review information.",
+  "encyclopediaReviewPolicy": "Only guides that passed a technical review are published. For any electrical work, use a qualified electrician.",
+  "encyclopediaReadingMinutes": "{minutes, plural, =1{1 min read} other{{formatted} min read}}",
+  "@encyclopediaReadingMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "formatted": {
+        "type": "String"
+      }
+    }
+  },
+  "encyclopediaShownInLanguage": "Shown in {language}",
+  "@encyclopediaShownInLanguage": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "encyclopediaLanguageAr": "Arabic",
+  "encyclopediaLanguageEn": "English",
+  "encyclopediaSafetyTitle": "Electrical safety",
+  "encyclopediaRelated": "Related guides"
 }

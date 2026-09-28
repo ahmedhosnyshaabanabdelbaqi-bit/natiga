@@ -1,5 +1,99 @@
 {
   "@@locale": "en",
   "servicesDirectoryTitle": "Services directory",
-  "servicesDirectoryProviderTitle": "Service provider"
+  "servicesDirectoryProviderTitle": "Service provider",
+  "servicesDirectoryIntro": "Service centres, dealers, charger installers and emergency services. Contact details show when they were last verified.",
+  "servicesDirectorySearchHint": "Search by name",
+  "servicesDirectoryAllTypes": "All",
+  "servicesDirectoryTypeServiceCenter": "Service centres",
+  "servicesDirectoryTypeDealer": "Dealers",
+  "servicesDirectoryTypeChargerInstaller": "Charger installers",
+  "servicesDirectoryTypeEmergency": "Emergency",
+  "servicesDirectoryTypeBattery": "Battery services",
+  "servicesDirectoryTypeOther": "Other",
+  "servicesDirectoryNearMe": "Near me",
+  "servicesDirectoryCity": "City",
+  "servicesDirectoryCityField": "City name",
+  "servicesDirectoryChooseCity": "Choose a city",
+  "servicesDirectoryAnyCity": "Any city",
+  "servicesDirectoryOpenNow": "Open now",
+  "servicesDirectoryClosedNow": "Closed now",
+  "servicesDirectoryHoursUnknown": "Hours not available",
+  "servicesDirectoryAlwaysOpen": "Open 24/7",
+  "servicesDirectoryResults": "Directory",
+  "servicesDirectoryOrderVerified": "Ordered by verified contact details first, then name. Sponsorship never changes this order.",
+  "servicesDirectoryOrderDistance": "Nearest first. Sponsorship never changes this order.",
+  "servicesDirectoryTruncated": "Many results: narrow the search to see the most relevant.",
+  "servicesDirectorySponsoredSlotTitle": "Sponsored listings",
+  "servicesDirectorySponsoredSlotNote": "Paid placements, shown separately. They keep their normal place in the directory below.",
+  "servicesDirectorySponsoredDetailNote": "This listing is sponsored. Sponsorship does not mean the provider is recommended or verified.",
+  "servicesDirectoryEmptyTitle": "No providers yet",
+  "servicesDirectoryEmptyMessage": "Nothing has been published for your country yet.",
+  "servicesDirectoryNoMatchesTitle": "No matching providers",
+  "servicesDirectoryNoMatchesMessage": "Try another type or city, or turn off “Open now”.",
+  "servicesDirectoryVerified": "Contact verified",
+  "servicesDirectoryVerifiedOn": "Verified on {date}",
+  "@servicesDirectoryVerifiedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "servicesDirectoryVerifiedStale": "Last verified {date} (over a year ago)",
+  "@servicesDirectoryVerifiedStale": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "servicesDirectoryVerifiedLongAgo": "Verified over a year ago",
+  "servicesDirectoryNotVerified": "Contact details not verified",
+  "servicesDirectoryCheckBeforeVisit": "Call ahead to confirm before you visit.",
+  "servicesDirectoryCall": "Call",
+  "servicesDirectoryWhatsApp": "WhatsApp",
+  "servicesDirectoryEmail": "Email",
+  "servicesDirectoryWebsite": "Website",
+  "servicesDirectoryDirections": "Directions",
+  "servicesDirectoryPhone": "Phone",
+  "servicesDirectoryNoContact": "No contact details published.",
+  "servicesDirectoryDemoNoContact": "Demo listing: contact actions are disabled.",
+  "servicesDirectoryDistanceAway": "{distance} away",
+  "@servicesDirectoryDistanceAway": {
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "servicesDirectoryDistance": "Distance",
+  "servicesDirectoryContactTitle": "Contact",
+  "servicesDirectoryLocationTitle": "Location",
+  "servicesDirectoryAddress": "Address",
+  "servicesDirectoryHoursTitle": "Opening hours",
+  "servicesDirectoryHoursNotAvailable": "Opening hours not available.",
+  "servicesDirectoryHoursUnknownDay": "Not available",
+  "servicesDirectoryClosedDay": "Closed",
+  "servicesDirectoryTimezone": "Times in {zone}",
+  "@servicesDirectoryTimezone": {
+    "placeholders": {
+      "zone": {
+        "type": "String"
+      }
+    }
+  },
+  "servicesDirectoryServicesTitle": "Services",
+  "servicesDirectoryBrandsTitle": "Brands served",
+  "servicesDirectoryDayMon": "Monday",
+  "servicesDirectoryDayTue": "Tuesday",
+  "servicesDirectoryDayWed": "Wednesday",
+  "servicesDirectoryDayThu": "Thursday",
+  "servicesDirectoryDayFri": "Friday",
+  "servicesDirectoryDaySat": "Saturday",
+  "servicesDirectoryDaySun": "Sunday",
+  "servicesDirectoryLocationDenied": "Location access was not allowed. You can choose a city instead.",
+  "servicesDirectoryLocationUnavailable": "Couldn't get your location. You can choose a city instead.",
+  "servicesDirectoryLocationDeniedForever": "Location access is off for this app. Turn it on in Settings, or choose a city.",
+  "servicesDirectoryLocationServiceOff": "Location services are off on this device. Turn them on, or choose a city."
 }

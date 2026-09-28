@@ -5,5 +5,618 @@
   "carsBrandTitle": "Brand",
   "carsBrandsTitle": "Brands",
   "carsVariantTitle": "Trim details",
-  "carsGalleryTitle": "Photos"
+  "carsGalleryTitle": "Photos",
+  "carsBodySedan": "Sedan",
+  "carsBodyHatchback": "Hatchback",
+  "carsBodySuv": "SUV",
+  "carsBodyCrossover": "Crossover",
+  "carsBodyCoupe": "Coupe",
+  "carsBodyConvertible": "Convertible",
+  "carsBodyWagon": "Wagon",
+  "carsBodyPickup": "Pickup",
+  "carsBodyVan": "Van",
+  "carsBodyMpv": "MPV",
+  "carsBodyOther": "Other body",
+  "carsDriveFwd": "Front-wheel drive",
+  "carsDriveRwd": "Rear-wheel drive",
+  "carsDriveAwd": "All-wheel drive",
+  "carsAvailabilityAvailable": "Available",
+  "carsAvailabilityComingSoon": "Coming soon",
+  "carsAvailabilityDiscontinued": "Discontinued",
+  "carsAvailabilityNotListed": "Not sold in this market",
+  "carsAvailabilityUnknown": "Availability unknown",
+  "carsCurrentAc": "AC",
+  "carsCurrentDc": "DC",
+  "carsYes": "Yes",
+  "carsNo": "No",
+  "carsYears": "{count, plural, =1{1 year} other{{count} years}}",
+  "@carsYears": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsUnitInch": "in",
+  "carsUnitLitersPer100": "L/100 km",
+  "carsArticleNews": "News",
+  "carsArticleReview": "Review",
+  "carsArticleTestDrive": "Test drive",
+  "carsArticleBuyingGuide": "Buying guide",
+  "carsArticleExplainer": "Explainer",
+  "carsArticleOpinion": "Opinion",
+  "carsSeatDriver": "Driver seat",
+  "carsSeatPassenger": "Front passenger",
+  "carsSeatRear": "Rear seats",
+  "carsSeatThirdRow": "Third row",
+  "carsSeatTrunk": "Trunk",
+  "carsSourceTitle": "Data source",
+  "carsSourcePublisher": "Publisher",
+  "carsSourceVerifiedAt": "Verified on",
+  "carsSourceDocumentDate": "Document date",
+  "carsSourceAccessedAt": "Accessed on",
+  "carsSourceOpen": "Open source",
+  "carsSourcesTitle": "Sources",
+  "carsTrimCount": "{count, plural, =1{1 trim} other{{count} trims}}",
+  "@carsTrimCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsStatRange": "Range",
+  "carsStatBattery": "Battery",
+  "carsStatDcPeak": "DC peak",
+  "carsStatElectricRange": "Electric range",
+  "carsStatUsableBattery": "Usable battery",
+  "carsStatAcMax": "AC charging",
+  "carsStatPower": "Power",
+  "carsStatAccel": "0–100 km/h",
+  "carsPriceFrom": "From {price}",
+  "@carsPriceFrom": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "carsBrandNoCarsInMarket": "No models in this market",
+  "carsModelCount": "{count, plural, =1{1 model} other{{count} models}}",
+  "@carsModelCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsSortNewest": "Newest",
+  "carsSortPriceAsc": "Price: low to high",
+  "carsSortPriceDesc": "Price: high to low",
+  "carsSortRange": "Longest range",
+  "carsSortName": "Name",
+  "carsFilterPowertrain": "Powertrain",
+  "carsFilterBody": "Body type",
+  "carsFilterPrice": "Local price",
+  "carsFilterPriceHint": "In {currency} for {market}. Only local prices are compared; trims without a local price are hidden while this filter is on.",
+  "@carsFilterPriceHint": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      },
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsFilterPriceHintNoCurrency": "In the local currency of {market}.",
+  "@carsFilterPriceHintNoCurrency": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsFilterPriceMin": "Minimum",
+  "carsFilterPriceMax": "Maximum",
+  "carsFilterPriceInvalid": "The minimum price is higher than the maximum.",
+  "carsFilterMinRange": "Minimum electric range",
+  "carsFilterMinRangeHint": "Ranges are only compared within the same test cycle.",
+  "carsFilterAny": "Any",
+  "carsFilterAtLeast": "At least {value}",
+  "@carsFilterAtLeast": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "carsFilterCycle": "Test cycle",
+  "carsFilterSeats": "Seats",
+  "carsFilterSeatsAtLeast": "{count}+ seats",
+  "@carsFilterSeatsAtLeast": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsFilterRemove": "Remove filter",
+  "carsFilterClear": "Clear filters",
+  "carsSearchHint": "Search brand, model or trim",
+  "carsMarketLine": "Prices and availability for {market} ({currency})",
+  "@carsMarketLine": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      },
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "carsMarketLineNoCurrency": "Prices and availability for {market}",
+  "@carsMarketLineNoCurrency": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsChangeMarket": "Change market",
+  "carsResultCount": "{count, plural, =1{1 car} other{{count} cars}}",
+  "@carsResultCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsNoMatchTitle": "No cars match these filters",
+  "carsNoMatchMessage": "Try removing a filter or widening the price or range.",
+  "carsEmptyTitle": "No cars listed yet",
+  "carsEmptyMessage": "No cars are listed in {market} yet. You can choose another market.",
+  "@carsEmptyMessage": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsEndOfList": "You have reached the end of the list",
+  "carsBrandsSearchHint": "Search brands",
+  "carsBrandsEmptyTitle": "No brands yet",
+  "carsBrandsEmptyMessage": "Brands appear here once they are added to the catalog.",
+  "carsBrandsNoMatchTitle": "No brand found",
+  "carsBrandsNoMatchMessage": "Check the spelling or try another name.",
+  "carsBrandsNotInMarket": "Not sold in your market",
+  "carsBrandsNotInMarketHint": "These brands have no models listed in the selected market.",
+  "carsBrandModelsIn": "Models in {market}",
+  "@carsBrandModelsIn": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsBrandNoCarsTitle": "No models listed in {market}",
+  "@carsBrandNoCarsTitle": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsBrandNoCarsMessage": "This brand has no models on sale in the selected market. Try another market.",
+  "carsBrandNotInMarketTitle": "Not sold in {market}",
+  "@carsBrandNotInMarketTitle": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsBrandNotInMarketHint": "Shown for reference; prices and availability belong to other markets.",
+  "carsBrandCountry": "Origin: {country}",
+  "@carsBrandCountry": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "carsBrandWebsite": "Official website",
+  "carsNotSoldAnywhere": "Not listed in any market",
+  "carsSoldIn": "Sold in: {markets}",
+  "@carsSoldIn": {
+    "placeholders": {
+      "markets": {
+        "type": "String"
+      }
+    }
+  },
+  "carsTabOverview": "Overview",
+  "carsTabSpecs": "Specifications",
+  "carsTabNews": "News & reviews",
+  "carsTabOwners": "Owner reviews",
+  "carsTabTours": "360° tour",
+  "carsTabCompetitors": "Competitors",
+  "carsChooseVersion": "Choose the exact version",
+  "carsChooseVersionHint": "Specs, prices and tours below belong only to this market, year and trim.",
+  "carsMarket": "Market",
+  "carsModelYear": "Model year",
+  "carsTrim": "Trim",
+  "carsNotSoldShort": "not sold",
+  "carsNotSoldInMarketTitle": "Not sold in this market",
+  "carsNotSoldInMarketMessage": "This car is listed in: {markets}. Choose one of them to see its trims and prices.",
+  "@carsNotSoldInMarketMessage": {
+    "placeholders": {
+      "markets": {
+        "type": "String"
+      }
+    }
+  },
+  "carsNotSoldAnywhereMessage": "This car is not listed in any market yet.",
+  "carsViewingTrim": "Showing {trim} in {market}",
+  "@carsViewingTrim": {
+    "placeholders": {
+      "trim": {
+        "type": "String"
+      },
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsAbout": "About {name}",
+  "@carsAbout": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "carsOpenFullSheet": "Open the full spec sheet",
+  "carsOpenModelPage": "All versions of {model}",
+  "@carsOpenModelPage": {
+    "placeholders": {
+      "model": {
+        "type": "String"
+      }
+    }
+  },
+  "carsSeats": "{count, plural, =1{1 seat} other{{count} seats}}",
+  "@carsSeats": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsDoors": "{count, plural, =1{1 door} other{{count} doors}}",
+  "@carsDoors": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsLocalName": "Local name: {name}",
+  "@carsLocalName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "carsTrimCode": "Code {code}",
+  "@carsTrimCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "carsMeasuredCycle": "{cycle} cycle",
+  "@carsMeasuredCycle": {
+    "placeholders": {
+      "cycle": {
+        "type": "String"
+      }
+    }
+  },
+  "carsRangeAndConsumption": "Range & consumption",
+  "carsConsumptionElectric": "Electricity consumption",
+  "carsConsumptionFuel": "Fuel consumption",
+  "carsModeCombined": "Combined",
+  "carsModeCity": "City",
+  "carsModeHighway": "Highway",
+  "carsWheelSize": "{size} wheels",
+  "@carsWheelSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "carsRangeCycleExplainer": "Each figure is shown with its test cycle (WLTP, EPA, CLTC…). Cycles are never converted into one another; real-world range is usually lower.",
+  "carsSpecsOnlyAvailable": "Hide unavailable values",
+  "carsSpecsOnlyAvailableHint": "Missing values are shown as “Not available”, never as 0.",
+  "carsDerivedValue": "Calculated from another published value",
+  "carsMarketSpecific": "Specific to {market}",
+  "@carsMarketSpecific": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsTableSpec": "Specification",
+  "carsTableValue": "Value",
+  "carsTableReliability": "Reliability",
+  "carsTableSource": "Source",
+  "carsChargingTitle": "Charging",
+  "carsChargingInlets": "Charging ports",
+  "carsChargingTimes": "Charging times",
+  "carsChargingCurve": "Charging curve",
+  "carsChargingNotPlugIn": "This is a self-charging hybrid without a charging port, so it has no charging data.",
+  "carsInletsNeedMarket": "Ports depend on the market; this trim is not listed in {market}.",
+  "@carsInletsNeedMarket": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsMaxPower": "up to {power}",
+  "@carsMaxPower": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      }
+    }
+  },
+  "carsChargingTimeLabel": "{current} charging ({window})",
+  "@carsChargingTimeLabel": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "window": {
+        "type": "String"
+      }
+    }
+  },
+  "carsOnCharger": "on a {power} charger",
+  "@carsOnCharger": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      }
+    }
+  },
+  "carsPeakPower": "peak {power}",
+  "@carsPeakPower": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      }
+    }
+  },
+  "carsAveragePower": "average {power}",
+  "@carsAveragePower": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      }
+    }
+  },
+  "carsOnboardLimit": "on-board limit {power}",
+  "@carsOnboardLimit": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      }
+    }
+  },
+  "carsBatteryTemp": "battery at {temp} °C",
+  "@carsBatteryTemp": {
+    "placeholders": {
+      "temp": {
+        "type": "String"
+      }
+    }
+  },
+  "carsPreconditioned": "battery preconditioned",
+  "carsNotPreconditioned": "battery not preconditioned",
+  "carsCurveSummary": "{current} charging curve: peak {peak}, measured from {from} to {to} state of charge.",
+  "@carsCurveSummary": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "peak": {
+        "type": "String"
+      },
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "carsCurveShowTable": "Show as a table",
+  "carsCurveHideTable": "Hide table",
+  "carsCurveSoc": "State of charge",
+  "carsCurvePower": "Power",
+  "carsPriceIn": "Price in {market}",
+  "@carsPriceIn": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsNoLocalPrice": "No local price has been published for {market} yet.",
+  "@carsNoLocalPrice": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsNotOfferedInMarket": "This trim is not sold in {market}, so there is no local price.",
+  "@carsNotOfferedInMarket": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsPriceHistory": "{count, plural, =1{Price history (1 entry)} other{Price history ({count} entries)}}",
+  "@carsPriceHistory": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsPriceCurrent": "Current",
+  "carsPriceSince": "Since {date}",
+  "@carsPriceSince": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "carsPricePeriod": "{from} – {to}",
+  "@carsPricePeriod": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "carsTourTitle": "360° interior tour",
+  "carsTourOpen": "Start the tour",
+  "carsTourInterior": "Interior: {color}",
+  "@carsTourInterior": {
+    "placeholders": {
+      "color": {
+        "type": "String"
+      }
+    }
+  },
+  "carsTourSeats": "Views: {seats}",
+  "@carsTourSeats": {
+    "placeholders": {
+      "seats": {
+        "type": "String"
+      }
+    }
+  },
+  "carsTourReference": "Photographed in a similar trim: {trim}",
+  "@carsTourReference": {
+    "placeholders": {
+      "trim": {
+        "type": "String"
+      }
+    }
+  },
+  "carsTourUnavailable": "The interior tour is not available for this trim",
+  "carsTourUnavailableHint": "We only publish tours photographed in real cars. You can browse the licensed photos instead.",
+  "carsToursDisabled": "Interior tours are not available right now",
+  "carsGalleryEmptyTitle": "No photos yet",
+  "carsGalleryEmptyMessage": "Only licensed photos are published; none are available for this car yet.",
+  "carsGalleryOf": "Photos: {car}",
+  "@carsGalleryOf": {
+    "placeholders": {
+      "car": {
+        "type": "String"
+      }
+    }
+  },
+  "carsGalleryPhoto": "Photo {index} of {total}",
+  "@carsGalleryPhoto": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "carsShareFailed": "Could not open sharing.",
+  "carsSpecsSaveOffline": "Save specs offline",
+  "carsSpecsRemoveOffline": "Remove offline copy",
+  "carsSpecsSavedOffline": "Specs saved for offline reading",
+  "carsSpecsRemovedOffline": "Offline copy removed",
+  "carsSpecsSavedOn": "Saved on {time}",
+  "@carsSpecsSavedOn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "carsCompareNeedsMarket": "Not sold in {market} — cannot be compared there",
+  "@carsCompareNeedsMarket": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsNoArticlesTitle": "No related articles yet",
+  "carsNoArticlesMessage": "News, reviews and guides about this car will appear here.",
+  "carsOwnerReviewsUnavailableTitle": "Owner reviews are not available yet",
+  "carsOwnerReviewsUnavailableMessage": "This section opens once community reviews are enabled.",
+  "carsOwnerReviewsEmptyTitle": "No owner reviews for this trim yet",
+  "carsOwnerReviewsEmptyMessage": "Own this car? Share your real experience to help others.",
+  "carsWriteReview": "Write a review",
+  "carsAllReviews": "All reviews",
+  "carsRatingOutOfFive": "{rating} out of 5",
+  "@carsRatingOutOfFive": {
+    "placeholders": {
+      "rating": {
+        "type": "String"
+      }
+    }
+  },
+  "carsReviewCount": "{count, plural, =1{1 review} other{{count} reviews}}",
+  "@carsReviewCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsVerifiedOwners": "{count, plural, =1{1 verified owner} other{{count} verified owners}}",
+  "@carsVerifiedOwners": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsVerifiedOwner": "Verified owner",
+  "carsStarsCount": "{stars} stars: {count}",
+  "@carsStarsCount": {
+    "placeholders": {
+      "stars": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsNoCompetitorsTitle": "No competitors listed",
+  "carsNoCompetitorsMessage": "Our editors have not linked competitors sold in this market yet."
 }

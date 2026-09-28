@@ -1,5 +1,187 @@
 {
   "@@locale": "en",
   "toursViewerTitle": "360° interior tour",
-  "toursListTitle": "360° interior tours"
+  "toursListTitle": "360° interior tours",
+  "toursListIntro": "Sit inside the car and look around, seat by seat. Every tour is made from licensed interior photos of the stated trim.",
+  "toursListEmptyTitle": "No 360° tours yet",
+  "toursListEmptyMessage": "We only publish tours made from licensed photos of the exact trim. New tours will appear here as soon as they are ready.",
+  "toursBrowseCars": "Browse cars",
+  "toursLoadMoreFailed": "Couldn't load more tours.",
+  "toursSceneCount": "{count, plural, =1{1 view} other{{count} views}}",
+  "@toursSceneCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "toursModelYear": "Model year {year}",
+  "@toursModelYear": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "toursMarket": "Market: {market}",
+  "@toursMarket": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "toursInterior": "Interior: {color}",
+  "@toursInterior": {
+    "placeholders": {
+      "color": {
+        "type": "String"
+      }
+    }
+  },
+  "toursDriveLhd": "Left-hand drive",
+  "toursDriveRhd": "Right-hand drive",
+  "toursDriveUnknown": "Drive side: not available",
+  "toursTrim": "Trim: {trim}",
+  "@toursTrim": {
+    "placeholders": {
+      "trim": {
+        "type": "String"
+      }
+    }
+  },
+  "toursReferenceBadge": "Similar trim",
+  "toursReferenceTitle": "Photographed in a similar trim",
+  "toursReferenceBody": "These photos show the {trim} trim, not exactly the selected one.",
+  "@toursReferenceBody": {
+    "placeholders": {
+      "trim": {
+        "type": "String"
+      }
+    }
+  },
+  "toursDemoFallback": "Demo — not a real car interior",
+  "toursOpen": "Open 360° tour",
+  "toursUnavailableTitle": "Tour not available for this trim",
+  "toursUnavailableMessage": "There is no licensed 360° interior for this tour. You can browse the regular photos instead.",
+  "toursOpenGallery": "Open photo gallery",
+  "toursGoBack": "Go back",
+  "toursLoading": "Loading the 360° view…",
+  "toursQualityPreview": "Preview",
+  "toursQualityHd": "HD",
+  "toursQualityPreviewSemantics": "Showing a low-resolution preview",
+  "toursQualityHdSemantics": "Showing high quality",
+  "toursLoadingHd": "Loading high quality… {percent}",
+  "@toursLoadingHd": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "toursLoadingHdUnknown": "Loading high quality…",
+  "toursHdFailed": "Couldn't load high quality. Showing the preview.",
+  "toursLoadFailedTitle": "The 360° view couldn't be loaded",
+  "toursLoadFailedMessage": "Check your connection and try again. You can also browse the regular photos.",
+  "toursWebglTitle": "This device can't display 360° views",
+  "toursWebglMessage": "3D graphics (WebGL) aren't available on this device. You can browse the regular photos instead.",
+  "toursNoImageTitle": "This tour can't be shown on this device",
+  "toursNoImageMessage": "Its images are larger than this device can display.",
+  "toursResetView": "Reset view",
+  "toursZoomIn": "Zoom in",
+  "toursZoomOut": "Zoom out",
+  "toursMotionOn": "Turn off motion control",
+  "toursMotionOff": "Look around by moving the phone",
+  "toursMotionEnabled": "Motion control on. Move your phone to look around.",
+  "toursMotionUnavailable": "Motion control isn't available on this device. Drag to look around.",
+  "toursFullscreenEnter": "Full screen",
+  "toursFullscreenExit": "Exit full screen",
+  "toursInfo": "About this tour",
+  "toursPoints": "Points of interest",
+  "toursPointsEmpty": "This view has no points of interest.",
+  "toursSeatPicker": "Choose a seat",
+  "toursSeatDriver": "Driver seat",
+  "toursSeatFrontPassenger": "Front passenger",
+  "toursSeatRear": "Rear seats",
+  "toursSeatThirdRow": "Third row",
+  "toursSeatCargo": "Cargo area",
+  "toursSeatOther": "Other view",
+  "toursDragHint": "Drag to look around · pinch to zoom",
+  "toursViewerSemantics": "360° view of {car}. Drag to look around, or use the buttons.",
+  "@toursViewerSemantics": {
+    "placeholders": {
+      "car": {
+        "type": "String"
+      }
+    }
+  },
+  "toursHotspotInfo": "Information",
+  "toursHotspotImage": "Detail photo",
+  "toursHotspotVideo": "Video",
+  "toursHotspotSpec": "Specification",
+  "toursHotspotScene": "Go to another seat",
+  "toursImageZoomHint": "Tap the photo to zoom",
+  "toursImageZoomTitle": "Detail photo",
+  "toursVideoOpen": "Watch video",
+  "toursVideoProvider": "Opens on {provider}",
+  "@toursVideoProvider": {
+    "placeholders": {
+      "provider": {
+        "type": "String"
+      }
+    }
+  },
+  "toursVideoSelf": "EV Car News",
+  "toursVideoBlocked": "This video link isn't allowed.",
+  "toursSpecOpen": "See all specifications",
+  "toursAttributionTitle": "Photo credits & licence",
+  "toursLicense": "Licence: {license}",
+  "@toursLicense": {
+    "placeholders": {
+      "license": {
+        "type": "String"
+      }
+    }
+  },
+  "toursLicenseOwned": "Owned",
+  "toursLicenseCommissioned": "Commissioned",
+  "toursLicensePressKit": "Press kit",
+  "toursLicenseLicensed": "Licensed",
+  "toursLicenseCc0": "CC0 (public domain)",
+  "toursLicenseCcBy": "CC BY",
+  "toursLicenseCcBySa": "CC BY-SA",
+  "toursLicensePermission": "Used with permission",
+  "toursLicenseOther": "Other licence",
+  "toursLicenseTerms": "Licence terms",
+  "toursSourceLink": "Source",
+  "toursCredit": "© {credit}",
+  "@toursCredit": {
+    "placeholders": {
+      "credit": {
+        "type": "String"
+      }
+    }
+  },
+  "toursMarketMismatch": "This tour was made for the {market} market, not the market you selected.",
+  "@toursMarketMismatch": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "toursAbout": "About",
+  "toursPublished": "Published {date}",
+  "@toursPublished": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "toursWebPreviewMessage": "The 360° viewer runs in the Android and iOS apps. The image below is only a still preview, not the tour.",
+  "toursStillPreview": "Still preview (not the 360° tour)",
+  "toursDetails": "Tour details",
+  "toursCar": "Car",
+  "toursViewCar": "View car page"
 }

@@ -1,0 +1,1164 @@
+{
+    "data": {
+        "id": "d0000000-0000-4000-8000-000000000014",
+        "slug": "demo-ev-one-2025-standard-bev",
+        "name": "Standard (demo)",
+        "nameAr": "ستاندرد (تجريبي)",
+        "nameEn": "Standard (demo)",
+        "title": "Demo Motors Demo EV One 2025 Standard (demo)",
+        "trimCode": null,
+        "powertrainType": "BEV",
+        "bodyType": "crossover",
+        "driveType": "fwd",
+        "seats": 5,
+        "doors": 5,
+        "modelYear": 2025,
+        "publishedAt": "2025-01-01T00:00:00.000Z",
+        "isDemo": true,
+        "brand": {
+            "id": "d0000000-0000-4000-8000-000000000010",
+            "slug": "demo-motors",
+            "name": "Demo Motors",
+            "logo": null
+        },
+        "model": {
+            "id": "d0000000-0000-4000-8000-000000000011",
+            "slug": "demo-motors-ev-one",
+            "name": "Demo EV One"
+        },
+        "generation": {
+            "id": "d0000000-0000-4000-8000-000000000012",
+            "slug": "gen-1",
+            "name": "First generation (demo)",
+            "code": null,
+            "startYear": 2025,
+            "endYear": null
+        },
+        "market": {
+            "code": "EG",
+            "name": "Egypt",
+            "currencyCode": "EGP",
+            "offered": true,
+            "availability": "available",
+            "localName": null,
+            "launchDate": null,
+            "discontinuedAt": null,
+            "driveSide": "lhd",
+            "source": null,
+            "verifiedAt": null
+        },
+        "availableMarkets": [
+            {
+                "code": "EG",
+                "name": "Egypt",
+                "availability": "available"
+            }
+        ],
+        "images": [],
+        "price": {
+            "current": {
+                "id": "01a0d96f-73ec-75de-a271-72b141242774",
+                "marketCode": "EG",
+                "amount": {
+                    "amount": "1500000.00",
+                    "currency": "EGP"
+                },
+                "priceType": "official_msrp",
+                "priceTypeLabel": "Official price (MSRP)",
+                "effectiveFrom": "2025-01-01",
+                "effectiveTo": null,
+                "isCurrent": true,
+                "inMarketCurrency": true,
+                "notes": "FICTIONAL demo data for testing layouts — not a real product, price or place.",
+                "reliability": "unverified",
+                "verifiedAt": null,
+                "source": {
+                    "id": "d0000000-0000-4000-8000-000000000001",
+                    "type": "other",
+                    "title": "Demo data (fictional)",
+                    "publisher": null,
+                    "url": null,
+                    "documentDate": null,
+                    "accessedAt": null,
+                    "marketCode": null
+                }
+            },
+            "history": [
+                {
+                    "id": "01a0d96f-73ec-75de-a271-72b141242774",
+                    "marketCode": "EG",
+                    "amount": {
+                        "amount": "1500000.00",
+                        "currency": "EGP"
+                    },
+                    "priceType": "official_msrp",
+                    "priceTypeLabel": "Official price (MSRP)",
+                    "effectiveFrom": "2025-01-01",
+                    "effectiveTo": null,
+                    "isCurrent": true,
+                    "inMarketCurrency": true,
+                    "notes": "FICTIONAL demo data for testing layouts — not a real product, price or place.",
+                    "reliability": "unverified",
+                    "verifiedAt": null,
+                    "source": {
+                        "id": "d0000000-0000-4000-8000-000000000001",
+                        "type": "other",
+                        "title": "Demo data (fictional)",
+                        "publisher": null,
+                        "url": null,
+                        "documentDate": null,
+                        "accessedAt": null,
+                        "marketCode": null
+                    }
+                }
+            ]
+        },
+        "keyFacts": {
+            "usableBatteryKwh": {
+                "value": 60,
+                "unit": "kWh",
+                "originalValue": null,
+                "originalUnit": null,
+                "marketCode": null,
+                "derived": false,
+                "reliability": "unverified",
+                "verifiedAt": null,
+                "source": {
+                    "id": "d0000000-0000-4000-8000-000000000001",
+                    "type": "other",
+                    "title": "Demo data (fictional)",
+                    "publisher": null,
+                    "url": null,
+                    "documentDate": null,
+                    "accessedAt": null,
+                    "marketCode": null
+                }
+            },
+            "grossBatteryKwh": {
+                "value": 64,
+                "unit": "kWh",
+                "originalValue": null,
+                "originalUnit": null,
+                "marketCode": null,
+                "derived": false,
+                "reliability": "unverified",
+                "verifiedAt": null,
+                "source": {
+                    "id": "d0000000-0000-4000-8000-000000000001",
+                    "type": "other",
+                    "title": "Demo data (fictional)",
+                    "publisher": null,
+                    "url": null,
+                    "documentDate": null,
+                    "accessedAt": null,
+                    "marketCode": null
+                }
+            },
+            "powerKw": {
+                "value": 150,
+                "unit": "kW",
+                "originalValue": null,
+                "originalUnit": null,
+                "marketCode": null,
+                "derived": false,
+                "reliability": "unverified",
+                "verifiedAt": null,
+                "source": {
+                    "id": "d0000000-0000-4000-8000-000000000001",
+                    "type": "other",
+                    "title": "Demo data (fictional)",
+                    "publisher": null,
+                    "url": null,
+                    "documentDate": null,
+                    "accessedAt": null,
+                    "marketCode": null
+                }
+            },
+            "powerHp": {
+                "value": 201,
+                "unit": "hp",
+                "originalValue": "150",
+                "originalUnit": "kW",
+                "marketCode": null,
+                "derived": true,
+                "reliability": "unverified",
+                "verifiedAt": null,
+                "source": {
+                    "id": "d0000000-0000-4000-8000-000000000001",
+                    "type": "other",
+                    "title": "Demo data (fictional)",
+                    "publisher": null,
+                    "url": null,
+                    "documentDate": null,
+                    "accessedAt": null,
+                    "marketCode": null
+                }
+            },
+            "torqueNm": null,
+            "accel0100S": null,
+            "acMaxKw": {
+                "value": 11,
+                "unit": "kW",
+                "originalValue": null,
+                "originalUnit": null,
+                "marketCode": null,
+                "derived": false,
+                "reliability": "unverified",
+                "verifiedAt": null,
+                "source": {
+                    "id": "d0000000-0000-4000-8000-000000000001",
+                    "type": "other",
+                    "title": "Demo data (fictional)",
+                    "publisher": null,
+                    "url": null,
+                    "documentDate": null,
+                    "accessedAt": null,
+                    "marketCode": null
+                }
+            },
+            "dcPeakKw": {
+                "value": 150,
+                "unit": "kW",
+                "originalValue": null,
+                "originalUnit": null,
+                "marketCode": null,
+                "derived": false,
+                "reliability": "unverified",
+                "verifiedAt": null,
+                "source": {
+                    "id": "d0000000-0000-4000-8000-000000000001",
+                    "type": "other",
+                    "title": "Demo data (fictional)",
+                    "publisher": null,
+                    "url": null,
+                    "documentDate": null,
+                    "accessedAt": null,
+                    "marketCode": null
+                }
+            },
+            "electricRanges": [
+                {
+                    "id": "01a0d96f-73cf-75a6-b80b-597940cdd729",
+                    "cycle": "WLTP",
+                    "cycleNote": null,
+                    "rangeType": "electric",
+                    "valueKm": 420,
+                    "originalValue": null,
+                    "originalUnit": null,
+                    "wheelSizeInch": null,
+                    "conditions": null,
+                    "marketCode": null,
+                    "reliability": "unverified",
+                    "verifiedAt": null,
+                    "source": {
+                        "id": "d0000000-0000-4000-8000-000000000001",
+                        "type": "other",
+                        "title": "Demo data (fictional)",
+                        "publisher": null,
+                        "url": null,
+                        "documentDate": null,
+                        "accessedAt": null,
+                        "marketCode": null
+                    }
+                }
+            ]
+        },
+        "specGroups": [
+            {
+                "key": "battery",
+                "label": "Battery",
+                "items": [
+                    {
+                        "key": "battery.gross_kwh",
+                        "label": "Battery capacity (gross)",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "kWh",
+                        "betterDirection": "none",
+                        "isKeySpec": true,
+                        "point": {
+                            "value": 64,
+                            "unit": "kWh",
+                            "originalValue": null,
+                            "originalUnit": null,
+                            "marketCode": null,
+                            "derived": false,
+                            "reliability": "unverified",
+                            "verifiedAt": null,
+                            "source": {
+                                "id": "d0000000-0000-4000-8000-000000000001",
+                                "type": "other",
+                                "title": "Demo data (fictional)",
+                                "publisher": null,
+                                "url": null,
+                                "documentDate": null,
+                                "accessedAt": null,
+                                "marketCode": null
+                            }
+                        }
+                    },
+                    {
+                        "key": "battery.usable_kwh",
+                        "label": "Battery capacity (usable)",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "kWh",
+                        "betterDirection": "none",
+                        "isKeySpec": true,
+                        "point": {
+                            "value": 60,
+                            "unit": "kWh",
+                            "originalValue": null,
+                            "originalUnit": null,
+                            "marketCode": null,
+                            "derived": false,
+                            "reliability": "unverified",
+                            "verifiedAt": null,
+                            "source": {
+                                "id": "d0000000-0000-4000-8000-000000000001",
+                                "type": "other",
+                                "title": "Demo data (fictional)",
+                                "publisher": null,
+                                "url": null,
+                                "documentDate": null,
+                                "accessedAt": null,
+                                "marketCode": null
+                            }
+                        }
+                    },
+                    {
+                        "key": "battery.chemistry",
+                        "label": "Battery chemistry",
+                        "description": null,
+                        "dataType": "text",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "battery.voltage_v",
+                        "label": "System voltage",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "V",
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "battery.warranty_years",
+                        "label": "Battery warranty (years)",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "year",
+                        "betterDirection": "higher",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "battery.warranty_km",
+                        "label": "Battery warranty (distance)",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "km",
+                        "betterDirection": "higher",
+                        "isKeySpec": false,
+                        "point": null
+                    }
+                ]
+            },
+            {
+                "key": "charging",
+                "label": "Charging",
+                "items": [
+                    {
+                        "key": "charging.ac_max_kw",
+                        "label": "Max AC charging power",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "kW",
+                        "betterDirection": "higher",
+                        "isKeySpec": true,
+                        "point": {
+                            "value": 11,
+                            "unit": "kW",
+                            "originalValue": null,
+                            "originalUnit": null,
+                            "marketCode": null,
+                            "derived": false,
+                            "reliability": "unverified",
+                            "verifiedAt": null,
+                            "source": {
+                                "id": "d0000000-0000-4000-8000-000000000001",
+                                "type": "other",
+                                "title": "Demo data (fictional)",
+                                "publisher": null,
+                                "url": null,
+                                "documentDate": null,
+                                "accessedAt": null,
+                                "marketCode": null
+                            }
+                        }
+                    },
+                    {
+                        "key": "charging.dc_peak_kw",
+                        "label": "Peak DC charging power",
+                        "description": "Peak, not average power. Use charging curves/times for realistic durations.",
+                        "dataType": "number",
+                        "unit": "kW",
+                        "betterDirection": "higher",
+                        "isKeySpec": true,
+                        "point": {
+                            "value": 150,
+                            "unit": "kW",
+                            "originalValue": null,
+                            "originalUnit": null,
+                            "marketCode": null,
+                            "derived": false,
+                            "reliability": "unverified",
+                            "verifiedAt": null,
+                            "source": {
+                                "id": "d0000000-0000-4000-8000-000000000001",
+                                "type": "other",
+                                "title": "Demo data (fictional)",
+                                "publisher": null,
+                                "url": null,
+                                "documentDate": null,
+                                "accessedAt": null,
+                                "marketCode": null
+                            }
+                        }
+                    },
+                    {
+                        "key": "charging.ac_phases",
+                        "label": "On-board charger phases",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "charging.v2l",
+                        "label": "Vehicle-to-load (V2L)",
+                        "description": null,
+                        "dataType": "boolean",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": {
+                            "value": true,
+                            "unit": null,
+                            "originalValue": null,
+                            "originalUnit": null,
+                            "marketCode": null,
+                            "derived": false,
+                            "reliability": "unverified",
+                            "verifiedAt": null,
+                            "source": {
+                                "id": "d0000000-0000-4000-8000-000000000001",
+                                "type": "other",
+                                "title": "Demo data (fictional)",
+                                "publisher": null,
+                                "url": null,
+                                "documentDate": null,
+                                "accessedAt": null,
+                                "marketCode": null
+                            }
+                        }
+                    },
+                    {
+                        "key": "charging.v2l_max_kw",
+                        "label": "V2L max power",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "kW",
+                        "betterDirection": "higher",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "charging.battery_preconditioning",
+                        "label": "Battery preconditioning",
+                        "description": null,
+                        "dataType": "boolean",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "charging.plug_and_charge",
+                        "label": "Plug & Charge",
+                        "description": null,
+                        "dataType": "boolean",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    }
+                ]
+            },
+            {
+                "key": "performance",
+                "label": "Performance",
+                "items": [
+                    {
+                        "key": "performance.power_kw",
+                        "label": "System power (kW)",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "kW",
+                        "betterDirection": "higher",
+                        "isKeySpec": true,
+                        "point": {
+                            "value": 150,
+                            "unit": "kW",
+                            "originalValue": null,
+                            "originalUnit": null,
+                            "marketCode": null,
+                            "derived": false,
+                            "reliability": "unverified",
+                            "verifiedAt": null,
+                            "source": {
+                                "id": "d0000000-0000-4000-8000-000000000001",
+                                "type": "other",
+                                "title": "Demo data (fictional)",
+                                "publisher": null,
+                                "url": null,
+                                "documentDate": null,
+                                "accessedAt": null,
+                                "marketCode": null
+                            }
+                        }
+                    },
+                    {
+                        "key": "performance.power_hp",
+                        "label": "System power (hp)",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "hp",
+                        "betterDirection": "higher",
+                        "isKeySpec": false,
+                        "point": {
+                            "value": 201,
+                            "unit": "hp",
+                            "originalValue": "150",
+                            "originalUnit": "kW",
+                            "marketCode": null,
+                            "derived": true,
+                            "reliability": "unverified",
+                            "verifiedAt": null,
+                            "source": {
+                                "id": "d0000000-0000-4000-8000-000000000001",
+                                "type": "other",
+                                "title": "Demo data (fictional)",
+                                "publisher": null,
+                                "url": null,
+                                "documentDate": null,
+                                "accessedAt": null,
+                                "marketCode": null
+                            }
+                        }
+                    },
+                    {
+                        "key": "performance.torque_nm",
+                        "label": "Torque",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "Nm",
+                        "betterDirection": "higher",
+                        "isKeySpec": true,
+                        "point": null
+                    },
+                    {
+                        "key": "performance.accel_0_100_s",
+                        "label": "0–100 km/h",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "s",
+                        "betterDirection": "lower",
+                        "isKeySpec": true,
+                        "point": null
+                    },
+                    {
+                        "key": "performance.top_speed_kmh",
+                        "label": "Top speed",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "km/h",
+                        "betterDirection": "higher",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "performance.motors",
+                        "label": "Number of electric motors",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "performance.engine_displacement_l",
+                        "label": "Engine displacement (hybrids)",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "l",
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    }
+                ]
+            },
+            {
+                "key": "dimensions",
+                "label": "Dimensions & weight",
+                "items": [
+                    {
+                        "key": "dimensions.length_mm",
+                        "label": "Length",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "mm",
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "dimensions.width_mm",
+                        "label": "Width",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "mm",
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "dimensions.height_mm",
+                        "label": "Height",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "mm",
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "dimensions.wheelbase_mm",
+                        "label": "Wheelbase",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "mm",
+                        "betterDirection": "higher",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "dimensions.ground_clearance_mm",
+                        "label": "Ground clearance",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "mm",
+                        "betterDirection": "higher",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "dimensions.curb_weight_kg",
+                        "label": "Curb weight",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "kg",
+                        "betterDirection": "lower",
+                        "isKeySpec": false,
+                        "point": null
+                    }
+                ]
+            },
+            {
+                "key": "practicality",
+                "label": "Space & cargo",
+                "items": [
+                    {
+                        "key": "practicality.trunk_l",
+                        "label": "Trunk volume",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "l",
+                        "betterDirection": "higher",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "practicality.trunk_max_l",
+                        "label": "Max cargo volume (seats folded)",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "l",
+                        "betterDirection": "higher",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "practicality.frunk_l",
+                        "label": "Front trunk (frunk)",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "l",
+                        "betterDirection": "higher",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "practicality.towing_braked_kg",
+                        "label": "Towing capacity (braked)",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "kg",
+                        "betterDirection": "higher",
+                        "isKeySpec": false,
+                        "point": null
+                    }
+                ]
+            },
+            {
+                "key": "safety",
+                "label": "Safety",
+                "items": [
+                    {
+                        "key": "safety.airbags",
+                        "label": "Airbags",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": null,
+                        "betterDirection": "higher",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "safety.ncap_rating",
+                        "label": "Crash test rating",
+                        "description": null,
+                        "dataType": "text",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "safety.aeb",
+                        "label": "Automatic emergency braking",
+                        "description": null,
+                        "dataType": "boolean",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "safety.lane_keeping",
+                        "label": "Lane keeping assist",
+                        "description": null,
+                        "dataType": "boolean",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "safety.blind_spot",
+                        "label": "Blind-spot monitoring",
+                        "description": null,
+                        "dataType": "boolean",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "safety.adaptive_cruise",
+                        "label": "Adaptive cruise control",
+                        "description": null,
+                        "dataType": "boolean",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "safety.camera_360",
+                        "label": "360° camera",
+                        "description": null,
+                        "dataType": "boolean",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    }
+                ]
+            },
+            {
+                "key": "comfort",
+                "label": "Comfort",
+                "items": [
+                    {
+                        "key": "comfort.heat_pump",
+                        "label": "Heat pump",
+                        "description": null,
+                        "dataType": "boolean",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "comfort.panoramic_roof",
+                        "label": "Panoramic roof",
+                        "description": null,
+                        "dataType": "boolean",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "comfort.ventilated_seats",
+                        "label": "Ventilated front seats",
+                        "description": null,
+                        "dataType": "boolean",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "comfort.heated_seats",
+                        "label": "Heated front seats",
+                        "description": null,
+                        "dataType": "boolean",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    }
+                ]
+            },
+            {
+                "key": "tech",
+                "label": "Technology & software",
+                "items": [
+                    {
+                        "key": "tech.screen_in",
+                        "label": "Central screen size",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "in",
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "tech.apple_carplay",
+                        "label": "Apple CarPlay",
+                        "description": null,
+                        "dataType": "boolean",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "tech.android_auto",
+                        "label": "Android Auto",
+                        "description": null,
+                        "dataType": "boolean",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "tech.ota_updates",
+                        "label": "Over-the-air updates",
+                        "description": null,
+                        "dataType": "boolean",
+                        "unit": null,
+                        "betterDirection": "none",
+                        "isKeySpec": false,
+                        "point": null
+                    }
+                ]
+            },
+            {
+                "key": "warranty",
+                "label": "Warranty",
+                "items": [
+                    {
+                        "key": "warranty.vehicle_years",
+                        "label": "Vehicle warranty (years)",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "year",
+                        "betterDirection": "higher",
+                        "isKeySpec": false,
+                        "point": null
+                    },
+                    {
+                        "key": "warranty.vehicle_km",
+                        "label": "Vehicle warranty (distance)",
+                        "description": null,
+                        "dataType": "number",
+                        "unit": "km",
+                        "betterDirection": "higher",
+                        "isKeySpec": false,
+                        "point": null
+                    }
+                ]
+            }
+        ],
+        "ranges": [
+            {
+                "id": "01a0d96f-73cf-75a6-b80b-597940cdd729",
+                "cycle": "WLTP",
+                "cycleNote": null,
+                "rangeType": "electric",
+                "valueKm": 420,
+                "originalValue": null,
+                "originalUnit": null,
+                "wheelSizeInch": null,
+                "conditions": null,
+                "marketCode": null,
+                "reliability": "unverified",
+                "verifiedAt": null,
+                "source": {
+                    "id": "d0000000-0000-4000-8000-000000000001",
+                    "type": "other",
+                    "title": "Demo data (fictional)",
+                    "publisher": null,
+                    "url": null,
+                    "documentDate": null,
+                    "accessedAt": null,
+                    "marketCode": null
+                }
+            }
+        ],
+        "consumption": [
+            {
+                "id": "01a0d96f-73b6-7239-9a3b-f2fcf0604270",
+                "cycle": "WLTP",
+                "cycleNote": null,
+                "kind": "electricity",
+                "mode": "combined",
+                "value": 160,
+                "unit": "Wh/km",
+                "originalValue": null,
+                "originalUnit": null,
+                "conditions": "FICTIONAL demo data for testing layouts — not a real product, price or place.",
+                "marketCode": null,
+                "reliability": "unverified",
+                "verifiedAt": null,
+                "source": {
+                    "id": "d0000000-0000-4000-8000-000000000001",
+                    "type": "other",
+                    "title": "Demo data (fictional)",
+                    "publisher": null,
+                    "url": null,
+                    "documentDate": null,
+                    "accessedAt": null,
+                    "marketCode": null
+                }
+            }
+        ],
+        "charging": {
+            "inlets": [
+                {
+                    "id": "01a0d96f-73c7-7323-9595-6d3b4d179c29",
+                    "connectorType": {
+                        "code": "type2",
+                        "name": "Type 2 (Mennekes)"
+                    },
+                    "currentType": "AC",
+                    "maxPowerKw": 11,
+                    "notes": "FICTIONAL demo data for testing layouts — not a real product, price or place.",
+                    "reliability": "unverified",
+                    "verifiedAt": null,
+                    "source": {
+                        "id": "d0000000-0000-4000-8000-000000000001",
+                        "type": "other",
+                        "title": "Demo data (fictional)",
+                        "publisher": null,
+                        "url": null,
+                        "documentDate": null,
+                        "accessedAt": null,
+                        "marketCode": null
+                    }
+                },
+                {
+                    "id": "01a0d96f-73bc-7578-8c6c-9d5e75a85390",
+                    "connectorType": {
+                        "code": "ccs2",
+                        "name": "CCS2 (Combo 2)"
+                    },
+                    "currentType": "DC",
+                    "maxPowerKw": 150,
+                    "notes": "FICTIONAL demo data for testing layouts — not a real product, price or place.",
+                    "reliability": "unverified",
+                    "verifiedAt": null,
+                    "source": {
+                        "id": "d0000000-0000-4000-8000-000000000001",
+                        "type": "other",
+                        "title": "Demo data (fictional)",
+                        "publisher": null,
+                        "url": null,
+                        "documentDate": null,
+                        "accessedAt": null,
+                        "marketCode": null
+                    }
+                }
+            ],
+            "times": [
+                {
+                    "id": "01a0d96f-73d2-715f-95f2-1f5bf03103d4",
+                    "currentType": "DC",
+                    "fromSoc": 10,
+                    "toSoc": 80,
+                    "socWindow": "10–80%",
+                    "durationMinutes": 30,
+                    "chargerPowerKw": 150,
+                    "peakPowerKw": 150,
+                    "averagePowerKw": null,
+                    "onboardChargerLimitKw": null,
+                    "conditions": "FICTIONAL demo data for testing layouts — not a real product, price or place.",
+                    "reliability": "unverified",
+                    "verifiedAt": null,
+                    "source": {
+                        "id": "d0000000-0000-4000-8000-000000000001",
+                        "type": "other",
+                        "title": "Demo data (fictional)",
+                        "publisher": null,
+                        "url": null,
+                        "documentDate": null,
+                        "accessedAt": null,
+                        "marketCode": null
+                    }
+                }
+            ],
+            "curves": [
+                {
+                    "id": "d0000000-0000-4000-8000-000000000016",
+                    "currentType": "DC",
+                    "label": "Demo curve (fictional)",
+                    "chargerMaxPowerKw": 150,
+                    "batteryTempC": null,
+                    "preconditioned": null,
+                    "conditions": null,
+                    "points": [
+                        {
+                            "socPercent": 10,
+                            "powerKw": 140
+                        },
+                        {
+                            "socPercent": 30,
+                            "powerKw": 150
+                        },
+                        {
+                            "socPercent": 50,
+                            "powerKw": 120
+                        },
+                        {
+                            "socPercent": 80,
+                            "powerKw": 60
+                        },
+                        {
+                            "socPercent": 100,
+                            "powerKw": 10
+                        }
+                    ],
+                    "peakPowerKw": 150,
+                    "reliability": "unverified",
+                    "verifiedAt": null,
+                    "source": {
+                        "id": "d0000000-0000-4000-8000-000000000001",
+                        "type": "other",
+                        "title": "Demo data (fictional)",
+                        "publisher": null,
+                        "url": null,
+                        "documentDate": null,
+                        "accessedAt": null,
+                        "marketCode": null
+                    }
+                }
+            ]
+        },
+        "tours": {
+            "available": true,
+            "tours": [
+                {
+                    "id": "d0000000-0000-4000-8000-000000000053",
+                    "slug": "demo-ev-one-2025-standard-bev-eg-demo-grey",
+                    "title": "[DEMO] Synthetic 360° test panorama — not a real car interior",
+                    "variantId": "d0000000-0000-4000-8000-000000000014",
+                    "marketCode": "EG",
+                    "driveSide": "lhd",
+                    "interiorColorName": "Demo grey (fictional)",
+                    "interiorColorHex": "#8A8F98",
+                    "seatScenes": [
+                        {
+                            "id": "d0000000-0000-4000-8000-000000000054",
+                            "key": "driver",
+                            "position": "driver",
+                            "title": "Driver seat (demo)"
+                        },
+                        {
+                            "id": "d0000000-0000-4000-8000-000000000055",
+                            "key": "rear",
+                            "position": "rear",
+                            "title": "Rear seats (demo)"
+                        }
+                    ],
+                    "isReferenceForSimilarTrim": false,
+                    "differenceNote": null,
+                    "referenceVariantName": null,
+                    "previewUrl": "http://localhost:3000/media/demo/panoramas/d0000000-0000-4000-8000-000000000051/preview-1024.jpg",
+                    "isDemo": true
+                }
+            ],
+            "unavailableLabel": "The interior tour is not available for this trim"
+        },
+        "relatedArticles": [
+            {
+                "id": "d0000000-0000-4000-8000-000000000021",
+                "slug": "demo-sample-article",
+                "type": "news",
+                "title": "[DEMO] Sample article for testing the news layout",
+                "summary": "Fictional placeholder text for layout testing only. Not real news.",
+                "language": "en",
+                "coverImage": null,
+                "publishedAt": "2025-01-01T00:00:00.000Z",
+                "isSponsored": false,
+                "sponsorName": null,
+                "isDemo": true
+            }
+        ],
+        "competitors": [],
+        "sources": [
+            {
+                "id": "d0000000-0000-4000-8000-000000000001",
+                "type": "other",
+                "title": "Demo data (fictional)",
+                "publisher": null,
+                "url": null,
+                "documentDate": null,
+                "accessedAt": null,
+                "marketCode": null
+            }
+        ],
+        "notAvailableLabel": "Not available"
+    }
+}

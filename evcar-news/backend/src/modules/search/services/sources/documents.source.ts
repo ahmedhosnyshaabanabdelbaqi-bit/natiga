@@ -18,7 +18,6 @@ import {
   titleScore,
   weighted,
   greatest,
-  uuidList,
 } from '../../common/sql-scoring';
 
 const POWERTRAINS = ['BEV', 'PHEV', 'EREV', 'HEV'];
@@ -66,7 +65,9 @@ export class DocumentsSource {
         pinnedPairs.map((x) => Prisma.sql`(${x.type}, ${x.id}::uuid)`),
       )})`;
       matches.push(pinned);
-      scores.push(Prisma.sql`(CASE WHEN ${pinned} THEN ${SCORE.pinned}::float8 ELSE 0::float8 END)`);
+      scores.push(
+        Prisma.sql`(CASE WHEN ${pinned} THEN ${SCORE.pinned}::float8 ELSE 0::float8 END)`,
+      );
     }
     const market = ctx.market
       ? Prisma.sql`AND (cardinality(d."market_codes") = 0 OR ${ctx.market} = ANY(d."market_codes"))`
@@ -89,29 +90,19 @@ export class DocumentsSource {
                row_number() OVER (PARTITION BY grp ORDER BY score DESC, "entity_id") AS rn
           FROM m
       )
-      SELECT grp, "entity_id"::text AS id, score::float8 AS score, total::int AS total
+      SELECT grp, "entity_id"::text AS id, score::float8 AS score, total::int AS total, rn
         FROM r
        WHERE rn > ${ctx.offset} AND rn <= ${ctx.offset + ctx.limit}
-       ORDER BY grp, rn`;
+      UNION ALL
+      SELECT grp, NULL, NULL, count(*)::int, NULL FROM m GROUP BY grp
+       ORDER BY grp, rn NULLS LAST`;
   }
 
-  /** SQL rows → ranked rows of the groups (entity type → group key). */
-  toRanked(rows: { grp: string; id: string; score: number; total: number }[]): RankedRow[] {
-    const groupOf: Record<string, SearchGroupKey> = {
-      article: 'articles',
-      brand: 'brands',
-      model: 'models',
-      variant: 'variants',
-    };
-    return rows.map((r) => ({
-      group: groupOf[r.grp],
-      id: r.id,
-      score: Number(r.score),
-      total: Number(r.total),
-    }));
-  }
-
-  async hydrate(group: SearchGroupKey, rows: RankedRow[], ctx: SourceContext): Promise<SearchHit[]> {
+  async hydrate(
+    group: SearchGroupKey,
+    rows: RankedRow[],
+    ctx: SourceContext,
+  ): Promise<SearchHit[]> {
     if (rows.length === 0) return [];
     const entityType = INDEX_ENTITY_OF[group] as SearchEntityType;
     const ids = rows.map((r) => r.id);
@@ -128,13 +119,12 @@ export class DocumentsSource {
         imageUrl: true,
       },
     });
-    const details = await this.details(group, ids);
+    const details = await this.details(group, ids, ctx.lang);
     const pinned = new Set(ctx.pinned[group] ?? []);
     const out: SearchHit[] = [];
     for (const r of rows) {
       const own = docs.filter((d) => d.entityId === r.id);
-      const doc =
-        own.find((d) => d.locale === ctx.lang) ?? own.find((d) => d.locale !== ctx.lang);
+      const doc = own.find((d) => d.locale === ctx.lang) ?? own.find((d) => d.locale !== ctx.lang);
       if (!doc) continue;
       const info = details.get(r.id);
       if (!info) continue; // no longer visible
@@ -154,6 +144,7 @@ export class DocumentsSource {
           pinned: pinned.has(r.id),
           isDemo: info.isDemo,
           details: info.details,
+          matchTexts: own.flatMap((d) => [d.title, d.keywords]),
         }),
       );
     }
@@ -163,6 +154,7 @@ export class DocumentsSource {
   private async details(
     group: SearchGroupKey,
     ids: string[],
+    lang: SupportedLanguage,
   ): Promise<Map<string, { isDemo: boolean; details: Record<string, unknown> }>> {
     const out = new Map<string, { isDemo: boolean; details: Record<string, unknown> }>();
     if (group === 'articles') {
@@ -190,7 +182,7 @@ export class DocumentsSource {
       for (const m of rows) {
         out.set(m.id, {
           isDemo: m.isDemo,
-          details: { brandNameAr: m.brand.nameAr, brandNameEn: m.brand.nameEn },
+          details: { brandName: (lang === 'ar' ? m.brand.nameAr : m.brand.nameEn) ?? null },
         });
       }
     } else if (group === 'variants') {
@@ -200,7 +192,9 @@ export class DocumentsSource {
           id: true,
           isDemo: true,
           powertrainType: true,
-          modelYear: { select: { year: true, generation: { select: { model: { select: { slug: true } } } } } },
+          modelYear: {
+            select: { year: true, generation: { select: { model: { select: { slug: true } } } } },
+          },
         },
       });
       for (const v of rows) {
@@ -251,5 +245,3 @@ const VISIBLE_SQL = Prisma.sql`(
         AND g."deleted_at" IS NULL AND m."status" = 'published' AND m."deleted_at" IS NULL
         AND b."status" = 'published' AND b."deleted_at" IS NULL))
 )`;
-
-export { uuidList };

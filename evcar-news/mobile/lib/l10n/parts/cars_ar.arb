@@ -2,8 +2,621 @@
   "@@locale": "ar",
   "carsCatalogTitle": "دليل السيارات",
   "carsDetailTitle": "تفاصيل السيارة",
-  "carsBrandTitle": "الماركة",
-  "carsBrandsTitle": "الماركات",
+  "carsBrandTitle": "العلامة التجارية",
+  "carsBrandsTitle": "العلامات التجارية",
   "carsVariantTitle": "تفاصيل الفئة",
-  "carsGalleryTitle": "الصور"
+  "carsGalleryTitle": "الصور",
+  "carsBodySedan": "سيدان",
+  "carsBodyHatchback": "هاتشباك",
+  "carsBodySuv": "دفع رباعي (SUV)",
+  "carsBodyCrossover": "كروس أوفر",
+  "carsBodyCoupe": "كوبيه",
+  "carsBodyConvertible": "مكشوفة",
+  "carsBodyWagon": "ستيشن",
+  "carsBodyPickup": "بيك أب",
+  "carsBodyVan": "فان",
+  "carsBodyMpv": "عائلية (MPV)",
+  "carsBodyOther": "هيكل آخر",
+  "carsDriveFwd": "دفع أمامي",
+  "carsDriveRwd": "دفع خلفي",
+  "carsDriveAwd": "دفع رباعي",
+  "carsAvailabilityAvailable": "متوفرة",
+  "carsAvailabilityComingSoon": "قريبًا",
+  "carsAvailabilityDiscontinued": "متوقفة",
+  "carsAvailabilityNotListed": "غير مطروحة في هذا السوق",
+  "carsAvailabilityUnknown": "التوفر غير معروف",
+  "carsCurrentAc": "تيار متردد AC",
+  "carsCurrentDc": "تيار مستمر DC",
+  "carsYes": "نعم",
+  "carsNo": "لا",
+  "carsYears": "{count, plural, =0{0 سنة} =1{سنة واحدة} =2{سنتان} few{{count} سنوات} many{{count} سنة} other{{count} سنة}}",
+  "@carsYears": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsUnitInch": "بوصة",
+  "carsUnitLitersPer100": "لتر/100 كم",
+  "carsArticleNews": "خبر",
+  "carsArticleReview": "مراجعة",
+  "carsArticleTestDrive": "تجربة قيادة",
+  "carsArticleBuyingGuide": "دليل شراء",
+  "carsArticleExplainer": "شرح",
+  "carsArticleOpinion": "رأي",
+  "carsSeatDriver": "مقعد السائق",
+  "carsSeatPassenger": "مقعد الراكب الأمامي",
+  "carsSeatRear": "المقاعد الخلفية",
+  "carsSeatThirdRow": "الصف الثالث",
+  "carsSeatTrunk": "صندوق الأمتعة",
+  "carsSourceTitle": "مصدر البيانات",
+  "carsSourcePublisher": "الناشر",
+  "carsSourceVerifiedAt": "تاريخ التحقق",
+  "carsSourceDocumentDate": "تاريخ المستند",
+  "carsSourceAccessedAt": "تاريخ الاطلاع",
+  "carsSourceOpen": "فتح المصدر",
+  "carsSourcesTitle": "المصادر",
+  "carsTrimCount": "{count, plural, =0{لا فئات} =1{فئة واحدة} =2{فئتان} few{{count} فئات} many{{count} فئة} other{{count} فئة}}",
+  "@carsTrimCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsStatRange": "المدى",
+  "carsStatBattery": "البطارية",
+  "carsStatDcPeak": "أقصى شحن DC",
+  "carsStatElectricRange": "المدى الكهربائي",
+  "carsStatUsableBattery": "البطارية الصافية",
+  "carsStatAcMax": "شحن AC",
+  "carsStatPower": "القوة",
+  "carsStatAccel": "0–100 كم/س",
+  "carsPriceFrom": "ابتداءً من {price}",
+  "@carsPriceFrom": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "carsBrandNoCarsInMarket": "لا طرازات في هذا السوق",
+  "carsModelCount": "{count, plural, =0{لا طرازات} =1{طراز واحد} =2{طرازان} few{{count} طرازات} many{{count} طرازًا} other{{count} طراز}}",
+  "@carsModelCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsSortNewest": "الأحدث",
+  "carsSortPriceAsc": "السعر: من الأقل",
+  "carsSortPriceDesc": "السعر: من الأعلى",
+  "carsSortRange": "الأطول مدى",
+  "carsSortName": "الاسم",
+  "carsFilterPowertrain": "نوع المحرك",
+  "carsFilterBody": "نوع الهيكل",
+  "carsFilterPrice": "السعر المحلي",
+  "carsFilterPriceHint": "بعملة {currency} لسوق {market}. تُقارن الأسعار المحلية فقط؛ وتُخفى الفئات التي لا سعر محلي لها أثناء تفعيل هذا الفلتر.",
+  "@carsFilterPriceHint": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      },
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsFilterPriceHintNoCurrency": "بالعملة المحلية لسوق {market}.",
+  "@carsFilterPriceHintNoCurrency": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsFilterPriceMin": "الحد الأدنى",
+  "carsFilterPriceMax": "الحد الأقصى",
+  "carsFilterPriceInvalid": "الحد الأدنى للسعر أعلى من الحد الأقصى.",
+  "carsFilterMinRange": "الحد الأدنى للمدى الكهربائي",
+  "carsFilterMinRangeHint": "لا يُقارن المدى إلا ضمن دورة الاختبار نفسها.",
+  "carsFilterAny": "أي",
+  "carsFilterAtLeast": "{value} على الأقل",
+  "@carsFilterAtLeast": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "carsFilterCycle": "دورة الاختبار",
+  "carsFilterSeats": "المقاعد",
+  "carsFilterSeatsAtLeast": "{count}+ مقاعد",
+  "@carsFilterSeatsAtLeast": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsFilterRemove": "إزالة الفلتر",
+  "carsFilterClear": "مسح الفلاتر",
+  "carsSearchHint": "ابحث عن علامة أو طراز أو فئة",
+  "carsMarketLine": "الأسعار والتوفر لسوق {market} ({currency})",
+  "@carsMarketLine": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      },
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "carsMarketLineNoCurrency": "الأسعار والتوفر لسوق {market}",
+  "@carsMarketLineNoCurrency": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsChangeMarket": "تغيير السوق",
+  "carsResultCount": "{count, plural, =0{لا سيارات} =1{سيارة واحدة} =2{سيارتان} few{{count} سيارات} many{{count} سيارة} other{{count} سيارة}}",
+  "@carsResultCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsNoMatchTitle": "لا توجد سيارات تطابق هذه الفلاتر",
+  "carsNoMatchMessage": "جرّب إزالة أحد الفلاتر أو توسيع نطاق السعر أو المدى.",
+  "carsEmptyTitle": "لا توجد سيارات مدرجة بعد",
+  "carsEmptyMessage": "لم تُدرج سيارات في سوق {market} بعد. يمكنك اختيار سوق آخر.",
+  "@carsEmptyMessage": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsEndOfList": "وصلت إلى نهاية القائمة",
+  "carsBrandsSearchHint": "ابحث في العلامات",
+  "carsBrandsEmptyTitle": "لا توجد علامات بعد",
+  "carsBrandsEmptyMessage": "تظهر العلامات هنا بعد إضافتها إلى الدليل.",
+  "carsBrandsNoMatchTitle": "لم يتم العثور على علامة",
+  "carsBrandsNoMatchMessage": "تحقق من الكتابة أو جرّب اسمًا آخر.",
+  "carsBrandsNotInMarket": "غير مطروحة في سوقك",
+  "carsBrandsNotInMarketHint": "ليس لهذه العلامات طرازات مدرجة في السوق المختار.",
+  "carsBrandModelsIn": "الطرازات في {market}",
+  "@carsBrandModelsIn": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsBrandNoCarsTitle": "لا طرازات مدرجة في {market}",
+  "@carsBrandNoCarsTitle": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsBrandNoCarsMessage": "لا توجد طرازات معروضة لهذه العلامة في السوق المختار. جرّب سوقًا آخر.",
+  "carsBrandNotInMarketTitle": "غير مطروحة في {market}",
+  "@carsBrandNotInMarketTitle": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsBrandNotInMarketHint": "معروضة للاطلاع فقط؛ الأسعار والتوفر تخص أسواقًا أخرى.",
+  "carsBrandCountry": "المنشأ: {country}",
+  "@carsBrandCountry": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "carsBrandWebsite": "الموقع الرسمي",
+  "carsNotSoldAnywhere": "غير مدرجة في أي سوق",
+  "carsSoldIn": "متوفرة في: {markets}",
+  "@carsSoldIn": {
+    "placeholders": {
+      "markets": {
+        "type": "String"
+      }
+    }
+  },
+  "carsTabOverview": "نظرة عامة",
+  "carsTabSpecs": "المواصفات",
+  "carsTabNews": "الأخبار والمراجعات",
+  "carsTabOwners": "آراء الملاك",
+  "carsTabTours": "جولة 360°",
+  "carsTabCompetitors": "المنافسون",
+  "carsChooseVersion": "اختر النسخة بدقة",
+  "carsChooseVersionHint": "المواصفات والأسعار والجولات أدناه تخص هذا السوق وسنة الطراز والفئة فقط.",
+  "carsMarket": "السوق",
+  "carsModelYear": "سنة الطراز",
+  "carsTrim": "الفئة",
+  "carsNotSoldShort": "غير مطروحة",
+  "carsNotSoldInMarketTitle": "غير مطروحة في هذا السوق",
+  "carsNotSoldInMarketMessage": "هذه السيارة مدرجة في: {markets}. اختر أحدها لعرض الفئات والأسعار.",
+  "@carsNotSoldInMarketMessage": {
+    "placeholders": {
+      "markets": {
+        "type": "String"
+      }
+    }
+  },
+  "carsNotSoldAnywhereMessage": "هذه السيارة غير مدرجة في أي سوق بعد.",
+  "carsViewingTrim": "المعروض: {trim} في {market}",
+  "@carsViewingTrim": {
+    "placeholders": {
+      "trim": {
+        "type": "String"
+      },
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsAbout": "عن {name}",
+  "@carsAbout": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "carsOpenFullSheet": "فتح صفحة المواصفات الكاملة",
+  "carsOpenModelPage": "كل نسخ {model}",
+  "@carsOpenModelPage": {
+    "placeholders": {
+      "model": {
+        "type": "String"
+      }
+    }
+  },
+  "carsSeats": "{count, plural, =0{لا مقاعد} =1{مقعد واحد} =2{مقعدان} few{{count} مقاعد} many{{count} مقعدًا} other{{count} مقعد}}",
+  "@carsSeats": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsDoors": "{count, plural, =0{لا أبواب} =1{باب واحد} =2{بابان} few{{count} أبواب} many{{count} بابًا} other{{count} باب}}",
+  "@carsDoors": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsLocalName": "الاسم المحلي: {name}",
+  "@carsLocalName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "carsTrimCode": "الرمز {code}",
+  "@carsTrimCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "carsMeasuredCycle": "دورة {cycle}",
+  "@carsMeasuredCycle": {
+    "placeholders": {
+      "cycle": {
+        "type": "String"
+      }
+    }
+  },
+  "carsRangeAndConsumption": "المدى والاستهلاك",
+  "carsConsumptionElectric": "استهلاك الكهرباء",
+  "carsConsumptionFuel": "استهلاك الوقود",
+  "carsModeCombined": "مختلط",
+  "carsModeCity": "المدينة",
+  "carsModeHighway": "الطريق السريع",
+  "carsWheelSize": "عجلات {size}",
+  "@carsWheelSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "carsRangeCycleExplainer": "يُعرض كل رقم مع دورة اختباره (WLTP وEPA وCLTC…). لا تُحوَّل الدورات إلى بعضها، والمدى الفعلي غالبًا أقل.",
+  "carsSpecsOnlyAvailable": "إخفاء القيم غير المتوفرة",
+  "carsSpecsOnlyAvailableHint": "تظهر القيم الناقصة بعبارة «غير متوفر» وليس صفرًا.",
+  "carsDerivedValue": "محسوبة من قيمة منشورة أخرى",
+  "carsMarketSpecific": "خاص بسوق {market}",
+  "@carsMarketSpecific": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsTableSpec": "المواصفة",
+  "carsTableValue": "القيمة",
+  "carsTableReliability": "الموثوقية",
+  "carsTableSource": "المصدر",
+  "carsChargingTitle": "الشحن",
+  "carsChargingInlets": "منافذ الشحن",
+  "carsChargingTimes": "أزمنة الشحن",
+  "carsChargingCurve": "منحنى الشحن",
+  "carsChargingNotPlugIn": "هذه سيارة هجينة ذاتية الشحن بلا منفذ شحن، لذلك لا توجد لها بيانات شحن.",
+  "carsInletsNeedMarket": "تختلف المنافذ حسب السوق، وهذه الفئة غير مدرجة في {market}.",
+  "@carsInletsNeedMarket": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsMaxPower": "حتى {power}",
+  "@carsMaxPower": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      }
+    }
+  },
+  "carsChargingTimeLabel": "شحن {current} ({window})",
+  "@carsChargingTimeLabel": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "window": {
+        "type": "String"
+      }
+    }
+  },
+  "carsOnCharger": "على شاحن {power}",
+  "@carsOnCharger": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      }
+    }
+  },
+  "carsPeakPower": "الذروة {power}",
+  "@carsPeakPower": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      }
+    }
+  },
+  "carsAveragePower": "المتوسط {power}",
+  "@carsAveragePower": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      }
+    }
+  },
+  "carsOnboardLimit": "حد الشاحن الداخلي {power}",
+  "@carsOnboardLimit": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      }
+    }
+  },
+  "carsBatteryTemp": "البطارية عند {temp} °م",
+  "@carsBatteryTemp": {
+    "placeholders": {
+      "temp": {
+        "type": "String"
+      }
+    }
+  },
+  "carsPreconditioned": "البطارية مهيأة مسبقًا",
+  "carsNotPreconditioned": "البطارية غير مهيأة مسبقًا",
+  "carsCurveSummary": "منحنى شحن {current}: الذروة {peak}، مقاس من {from} إلى {to} من نسبة الشحن.",
+  "@carsCurveSummary": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "peak": {
+        "type": "String"
+      },
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "carsCurveShowTable": "عرض كجدول",
+  "carsCurveHideTable": "إخفاء الجدول",
+  "carsCurveSoc": "نسبة الشحن",
+  "carsCurvePower": "القدرة",
+  "carsPriceIn": "السعر في {market}",
+  "@carsPriceIn": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsNoLocalPrice": "لم يُنشر سعر محلي لسوق {market} بعد.",
+  "@carsNoLocalPrice": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsNotOfferedInMarket": "هذه الفئة غير مطروحة في {market}، لذلك لا يوجد سعر محلي.",
+  "@carsNotOfferedInMarket": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsPriceHistory": "{count, plural, =0{سجل الأسعار} =1{سجل الأسعار (سعر واحد)} =2{سجل الأسعار (سعران)} few{سجل الأسعار ({count} أسعار)} many{سجل الأسعار ({count} سعرًا)} other{سجل الأسعار ({count} سعر)}}",
+  "@carsPriceHistory": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsPriceCurrent": "الحالي",
+  "carsPriceSince": "منذ {date}",
+  "@carsPriceSince": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "carsPricePeriod": "{from} – {to}",
+  "@carsPricePeriod": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "carsTourTitle": "جولة داخلية 360°",
+  "carsTourOpen": "ابدأ الجولة",
+  "carsTourInterior": "المقصورة: {color}",
+  "@carsTourInterior": {
+    "placeholders": {
+      "color": {
+        "type": "String"
+      }
+    }
+  },
+  "carsTourSeats": "الزوايا: {seats}",
+  "@carsTourSeats": {
+    "placeholders": {
+      "seats": {
+        "type": "String"
+      }
+    }
+  },
+  "carsTourReference": "مصوّرة في فئة مشابهة: {trim}",
+  "@carsTourReference": {
+    "placeholders": {
+      "trim": {
+        "type": "String"
+      }
+    }
+  },
+  "carsTourUnavailable": "الجولة غير متاحة لهذه الفئة",
+  "carsTourUnavailableHint": "ننشر فقط جولات مصوّرة داخل سيارات حقيقية. يمكنك تصفح الصور المرخّصة بدلًا منها.",
+  "carsToursDisabled": "الجولات الداخلية غير متاحة حاليًا",
+  "carsGalleryEmptyTitle": "لا توجد صور بعد",
+  "carsGalleryEmptyMessage": "ننشر الصور المرخّصة فقط، ولا تتوفر صور لهذه السيارة بعد.",
+  "carsGalleryOf": "صور: {car}",
+  "@carsGalleryOf": {
+    "placeholders": {
+      "car": {
+        "type": "String"
+      }
+    }
+  },
+  "carsGalleryPhoto": "الصورة {index} من {total}",
+  "@carsGalleryPhoto": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "carsShareFailed": "تعذّر فتح المشاركة.",
+  "carsSpecsSaveOffline": "حفظ المواصفات للقراءة دون اتصال",
+  "carsSpecsRemoveOffline": "حذف النسخة المحفوظة",
+  "carsSpecsSavedOffline": "حُفظت المواصفات للقراءة دون اتصال",
+  "carsSpecsRemovedOffline": "حُذفت النسخة المحفوظة",
+  "carsSpecsSavedOn": "حُفظت في {time}",
+  "@carsSpecsSavedOn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "carsCompareNeedsMarket": "غير مطروحة في {market} — لا يمكن مقارنتها هناك",
+  "@carsCompareNeedsMarket": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsNoArticlesTitle": "لا توجد مقالات مرتبطة بعد",
+  "carsNoArticlesMessage": "ستظهر هنا الأخبار والمراجعات والأدلة الخاصة بهذه السيارة.",
+  "carsOwnerReviewsUnavailableTitle": "آراء الملاك غير متاحة بعد",
+  "carsOwnerReviewsUnavailableMessage": "سيُفتح هذا القسم عند تفعيل مراجعات المجتمع.",
+  "carsOwnerReviewsEmptyTitle": "لا توجد آراء ملاك لهذه الفئة بعد",
+  "carsOwnerReviewsEmptyMessage": "هل تملك هذه السيارة؟ شارك تجربتك الحقيقية لتساعد غيرك.",
+  "carsWriteReview": "اكتب مراجعة",
+  "carsAllReviews": "كل المراجعات",
+  "carsRatingOutOfFive": "{rating} من 5",
+  "@carsRatingOutOfFive": {
+    "placeholders": {
+      "rating": {
+        "type": "String"
+      }
+    }
+  },
+  "carsReviewCount": "{count, plural, =0{لا مراجعات} =1{مراجعة واحدة} =2{مراجعتان} few{{count} مراجعات} many{{count} مراجعة} other{{count} مراجعة}}",
+  "@carsReviewCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsVerifiedOwners": "{count, plural, =0{لا ملاك موثّقين} =1{مالك موثّق واحد} =2{مالكان موثّقان} few{{count} ملاك موثّقين} many{{count} مالكًا موثّقًا} other{{count} مالك موثّق}}",
+  "@carsVerifiedOwners": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsVerifiedOwner": "مالك موثّق",
+  "carsStarsCount": "{stars} نجوم: {count}",
+  "@carsStarsCount": {
+    "placeholders": {
+      "stars": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsNoCompetitorsTitle": "لا منافسين مدرجين",
+  "carsNoCompetitorsMessage": "لم يربط المحررون بعد منافسين مطروحين في هذا السوق."
 }

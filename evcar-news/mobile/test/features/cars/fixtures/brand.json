@@ -1,0 +1,85 @@
+{
+    "data": {
+        "id": "d0000000-0000-4000-8000-000000000010",
+        "slug": "demo-motors",
+        "name": "Demo Motors",
+        "logo": null,
+        "nameAr": "ديمو موتورز (تجريبي)",
+        "nameEn": "Demo Motors",
+        "countryCode": null,
+        "carCount": 1,
+        "isDemo": true,
+        "description": "FICTIONAL demo data for testing layouts — not a real product, price or place.",
+        "websiteUrl": null,
+        "cars": [
+            {
+                "id": "d0000000-0000-4000-8000-000000000011",
+                "slug": "demo-motors-ev-one",
+                "title": "Demo Motors Demo EV One",
+                "name": "Demo EV One",
+                "nameAr": "ديمو EV ون (تجريبي)",
+                "nameEn": "Demo EV One",
+                "brand": {
+                    "id": "d0000000-0000-4000-8000-000000000010",
+                    "slug": "demo-motors",
+                    "name": "Demo Motors",
+                    "logo": null
+                },
+                "bodyType": "crossover",
+                "segment": null,
+                "image": null,
+                "powertrainTypes": [
+                    "BEV",
+                    "PHEV"
+                ],
+                "modelYears": [
+                    2025
+                ],
+                "variantCount": 2,
+                "priceFrom": {
+                    "amount": {
+                        "amount": "1500000.00",
+                        "currency": "EGP"
+                    },
+                    "priceType": "official_msrp",
+                    "priceTypeLabel": "Official price (MSRP)",
+                    "effectiveFrom": "2025-01-01",
+                    "variantId": "d0000000-0000-4000-8000-000000000014"
+                },
+                "priceTo": {
+                    "amount": {
+                        "amount": "1500000.00",
+                        "currency": "EGP"
+                    },
+                    "priceType": "official_msrp",
+                    "priceTypeLabel": "Official price (MSRP)",
+                    "effectiveFrom": "2025-01-01",
+                    "variantId": "d0000000-0000-4000-8000-000000000014"
+                },
+                "ranges": [
+                    {
+                        "cycle": "WLTP",
+                        "rangeType": "electric",
+                        "minKm": 90,
+                        "maxKm": 420
+                    },
+                    {
+                        "cycle": "WLTP",
+                        "rangeType": "total",
+                        "minKm": 900,
+                        "maxKm": 900
+                    }
+                ],
+                "usableBatteryKwh": {
+                    "min": 18,
+                    "max": 60
+                },
+                "maxDcPeakKw": 150,
+                "hasTour": true,
+                "availability": "available",
+                "isDemo": true
+            }
+        ],
+        "notInMarket": []
+    }
+}

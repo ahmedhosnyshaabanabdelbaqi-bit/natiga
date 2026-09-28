@@ -1,11 +1,21 @@
 import { Module } from '@nestjs/common';
+import { VehiclesModule } from '../vehicles/vehicles.module';
+import {
+  AdminEncyclopediaController,
+  PublicEncyclopediaController,
+} from './controllers/encyclopedia.controller';
+import { EncyclopediaAdminService } from './services/encyclopedia-admin.service';
+import { EncyclopediaPublicService } from './services/encyclopedia-public.service';
 
 /**
- * Beginner encyclopedia (+translations), technical review before publishing.
- *
- * Skeleton created by the backend foundation and registered in AppModule.
- * NOT IMPLEMENTED YET: controllers/providers are added by the owning team
- * inside src/modules/encyclopedia/ only.
+ * Beginner encyclopedia (REQUIREMENTS §15, docs/decisions/backend-discovery.md §4):
+ *   GET /api/v1/encyclopedia[/categories|/:slug] (public, reviewed entries only)
+ *   /api/v1/admin/encyclopedia/… entries CRUD + technical review workflow, categories
  */
-@Module({})
+@Module({
+  imports: [VehiclesModule],
+  controllers: [PublicEncyclopediaController, AdminEncyclopediaController],
+  providers: [EncyclopediaPublicService, EncyclopediaAdminService],
+  exports: [EncyclopediaPublicService],
+})
 export class EncyclopediaModule {}

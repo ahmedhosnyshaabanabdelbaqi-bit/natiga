@@ -78,23 +78,931 @@
   "authVerifyTokenLabel": "رمز التأكيد",
   "calculatorsCalculatorTitle": "الحاسبة",
   "calculatorsTitle": "حاسبات الشحن والتشغيل",
-  "carsBrandTitle": "الماركة",
-  "carsBrandsTitle": "الماركات",
+  "carsAbout": "عن {name}",
+  "@carsAbout": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "carsAllReviews": "كل المراجعات",
+  "carsArticleBuyingGuide": "دليل شراء",
+  "carsArticleExplainer": "شرح",
+  "carsArticleNews": "خبر",
+  "carsArticleOpinion": "رأي",
+  "carsArticleReview": "مراجعة",
+  "carsArticleTestDrive": "تجربة قيادة",
+  "carsAvailabilityAvailable": "متوفرة",
+  "carsAvailabilityComingSoon": "قريبًا",
+  "carsAvailabilityDiscontinued": "متوقفة",
+  "carsAvailabilityNotListed": "غير مطروحة في هذا السوق",
+  "carsAvailabilityUnknown": "التوفر غير معروف",
+  "carsAveragePower": "المتوسط {power}",
+  "@carsAveragePower": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      }
+    }
+  },
+  "carsBatteryTemp": "البطارية عند {temp} °م",
+  "@carsBatteryTemp": {
+    "placeholders": {
+      "temp": {
+        "type": "String"
+      }
+    }
+  },
+  "carsBodyConvertible": "مكشوفة",
+  "carsBodyCoupe": "كوبيه",
+  "carsBodyCrossover": "كروس أوفر",
+  "carsBodyHatchback": "هاتشباك",
+  "carsBodyMpv": "عائلية (MPV)",
+  "carsBodyOther": "هيكل آخر",
+  "carsBodyPickup": "بيك أب",
+  "carsBodySedan": "سيدان",
+  "carsBodySuv": "دفع رباعي (SUV)",
+  "carsBodyVan": "فان",
+  "carsBodyWagon": "ستيشن",
+  "carsBrandCountry": "المنشأ: {country}",
+  "@carsBrandCountry": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "carsBrandModelsIn": "الطرازات في {market}",
+  "@carsBrandModelsIn": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsBrandNoCarsInMarket": "لا طرازات في هذا السوق",
+  "carsBrandNoCarsMessage": "لا توجد طرازات معروضة لهذه العلامة في السوق المختار. جرّب سوقًا آخر.",
+  "carsBrandNoCarsTitle": "لا طرازات مدرجة في {market}",
+  "@carsBrandNoCarsTitle": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsBrandNotInMarketHint": "معروضة للاطلاع فقط؛ الأسعار والتوفر تخص أسواقًا أخرى.",
+  "carsBrandNotInMarketTitle": "غير مطروحة في {market}",
+  "@carsBrandNotInMarketTitle": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsBrandTitle": "العلامة التجارية",
+  "carsBrandWebsite": "الموقع الرسمي",
+  "carsBrandsEmptyMessage": "تظهر العلامات هنا بعد إضافتها إلى الدليل.",
+  "carsBrandsEmptyTitle": "لا توجد علامات بعد",
+  "carsBrandsNoMatchMessage": "تحقق من الكتابة أو جرّب اسمًا آخر.",
+  "carsBrandsNoMatchTitle": "لم يتم العثور على علامة",
+  "carsBrandsNotInMarket": "غير مطروحة في سوقك",
+  "carsBrandsNotInMarketHint": "ليس لهذه العلامات طرازات مدرجة في السوق المختار.",
+  "carsBrandsSearchHint": "ابحث في العلامات",
+  "carsBrandsTitle": "العلامات التجارية",
   "carsCatalogTitle": "دليل السيارات",
+  "carsChangeMarket": "تغيير السوق",
+  "carsChargingCurve": "منحنى الشحن",
+  "carsChargingInlets": "منافذ الشحن",
+  "carsChargingNotPlugIn": "هذه سيارة هجينة ذاتية الشحن بلا منفذ شحن، لذلك لا توجد لها بيانات شحن.",
+  "carsChargingTimeLabel": "شحن {current} ({window})",
+  "@carsChargingTimeLabel": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "window": {
+        "type": "String"
+      }
+    }
+  },
+  "carsChargingTimes": "أزمنة الشحن",
+  "carsChargingTitle": "الشحن",
+  "carsChooseVersion": "اختر النسخة بدقة",
+  "carsChooseVersionHint": "المواصفات والأسعار والجولات أدناه تخص هذا السوق وسنة الطراز والفئة فقط.",
+  "carsCompareNeedsMarket": "غير مطروحة في {market} — لا يمكن مقارنتها هناك",
+  "@carsCompareNeedsMarket": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsConsumptionElectric": "استهلاك الكهرباء",
+  "carsConsumptionFuel": "استهلاك الوقود",
+  "carsCurrentAc": "تيار متردد AC",
+  "carsCurrentDc": "تيار مستمر DC",
+  "carsCurveHideTable": "إخفاء الجدول",
+  "carsCurvePower": "القدرة",
+  "carsCurveShowTable": "عرض كجدول",
+  "carsCurveSoc": "نسبة الشحن",
+  "carsCurveSummary": "منحنى شحن {current}: الذروة {peak}، مقاس من {from} إلى {to} من نسبة الشحن.",
+  "@carsCurveSummary": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "peak": {
+        "type": "String"
+      },
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "carsDerivedValue": "محسوبة من قيمة منشورة أخرى",
   "carsDetailTitle": "تفاصيل السيارة",
+  "carsDoors": "{count, plural, =0{لا أبواب} =1{باب واحد} =2{بابان} few{{count} أبواب} many{{count} بابًا} other{{count} باب}}",
+  "@carsDoors": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsDriveAwd": "دفع رباعي",
+  "carsDriveFwd": "دفع أمامي",
+  "carsDriveRwd": "دفع خلفي",
+  "carsEmptyMessage": "لم تُدرج سيارات في سوق {market} بعد. يمكنك اختيار سوق آخر.",
+  "@carsEmptyMessage": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsEmptyTitle": "لا توجد سيارات مدرجة بعد",
+  "carsEndOfList": "وصلت إلى نهاية القائمة",
+  "carsFilterAny": "أي",
+  "carsFilterAtLeast": "{value} على الأقل",
+  "@carsFilterAtLeast": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "carsFilterBody": "نوع الهيكل",
+  "carsFilterClear": "مسح الفلاتر",
+  "carsFilterCycle": "دورة الاختبار",
+  "carsFilterMinRange": "الحد الأدنى للمدى الكهربائي",
+  "carsFilterMinRangeHint": "لا يُقارن المدى إلا ضمن دورة الاختبار نفسها.",
+  "carsFilterPowertrain": "نوع المحرك",
+  "carsFilterPrice": "السعر المحلي",
+  "carsFilterPriceHint": "بعملة {currency} لسوق {market}. تُقارن الأسعار المحلية فقط؛ وتُخفى الفئات التي لا سعر محلي لها أثناء تفعيل هذا الفلتر.",
+  "@carsFilterPriceHint": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      },
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsFilterPriceHintNoCurrency": "بالعملة المحلية لسوق {market}.",
+  "@carsFilterPriceHintNoCurrency": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsFilterPriceInvalid": "الحد الأدنى للسعر أعلى من الحد الأقصى.",
+  "carsFilterPriceMax": "الحد الأقصى",
+  "carsFilterPriceMin": "الحد الأدنى",
+  "carsFilterRemove": "إزالة الفلتر",
+  "carsFilterSeats": "المقاعد",
+  "carsFilterSeatsAtLeast": "{count}+ مقاعد",
+  "@carsFilterSeatsAtLeast": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsGalleryEmptyMessage": "ننشر الصور المرخّصة فقط، ولا تتوفر صور لهذه السيارة بعد.",
+  "carsGalleryEmptyTitle": "لا توجد صور بعد",
+  "carsGalleryOf": "صور: {car}",
+  "@carsGalleryOf": {
+    "placeholders": {
+      "car": {
+        "type": "String"
+      }
+    }
+  },
+  "carsGalleryPhoto": "الصورة {index} من {total}",
+  "@carsGalleryPhoto": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "carsGalleryTitle": "الصور",
+  "carsInletsNeedMarket": "تختلف المنافذ حسب السوق، وهذه الفئة غير مدرجة في {market}.",
+  "@carsInletsNeedMarket": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsLocalName": "الاسم المحلي: {name}",
+  "@carsLocalName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "carsMarket": "السوق",
+  "carsMarketLine": "الأسعار والتوفر لسوق {market} ({currency})",
+  "@carsMarketLine": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      },
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "carsMarketLineNoCurrency": "الأسعار والتوفر لسوق {market}",
+  "@carsMarketLineNoCurrency": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsMarketSpecific": "خاص بسوق {market}",
+  "@carsMarketSpecific": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsMaxPower": "حتى {power}",
+  "@carsMaxPower": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      }
+    }
+  },
+  "carsMeasuredCycle": "دورة {cycle}",
+  "@carsMeasuredCycle": {
+    "placeholders": {
+      "cycle": {
+        "type": "String"
+      }
+    }
+  },
+  "carsModeCity": "المدينة",
+  "carsModeCombined": "مختلط",
+  "carsModeHighway": "الطريق السريع",
+  "carsModelCount": "{count, plural, =0{لا طرازات} =1{طراز واحد} =2{طرازان} few{{count} طرازات} many{{count} طرازًا} other{{count} طراز}}",
+  "@carsModelCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsModelYear": "سنة الطراز",
+  "carsNo": "لا",
+  "carsNoArticlesMessage": "ستظهر هنا الأخبار والمراجعات والأدلة الخاصة بهذه السيارة.",
+  "carsNoArticlesTitle": "لا توجد مقالات مرتبطة بعد",
+  "carsNoCompetitorsMessage": "لم يربط المحررون بعد منافسين مطروحين في هذا السوق.",
+  "carsNoCompetitorsTitle": "لا منافسين مدرجين",
+  "carsNoLocalPrice": "لم يُنشر سعر محلي لسوق {market} بعد.",
+  "@carsNoLocalPrice": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsNoMatchMessage": "جرّب إزالة أحد الفلاتر أو توسيع نطاق السعر أو المدى.",
+  "carsNoMatchTitle": "لا توجد سيارات تطابق هذه الفلاتر",
+  "carsNotOfferedInMarket": "هذه الفئة غير مطروحة في {market}، لذلك لا يوجد سعر محلي.",
+  "@carsNotOfferedInMarket": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsNotPreconditioned": "البطارية غير مهيأة مسبقًا",
+  "carsNotSoldAnywhere": "غير مدرجة في أي سوق",
+  "carsNotSoldAnywhereMessage": "هذه السيارة غير مدرجة في أي سوق بعد.",
+  "carsNotSoldInMarketMessage": "هذه السيارة مدرجة في: {markets}. اختر أحدها لعرض الفئات والأسعار.",
+  "@carsNotSoldInMarketMessage": {
+    "placeholders": {
+      "markets": {
+        "type": "String"
+      }
+    }
+  },
+  "carsNotSoldInMarketTitle": "غير مطروحة في هذا السوق",
+  "carsNotSoldShort": "غير مطروحة",
+  "carsOnCharger": "على شاحن {power}",
+  "@carsOnCharger": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      }
+    }
+  },
+  "carsOnboardLimit": "حد الشاحن الداخلي {power}",
+  "@carsOnboardLimit": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      }
+    }
+  },
+  "carsOpenFullSheet": "فتح صفحة المواصفات الكاملة",
+  "carsOpenModelPage": "كل نسخ {model}",
+  "@carsOpenModelPage": {
+    "placeholders": {
+      "model": {
+        "type": "String"
+      }
+    }
+  },
+  "carsOwnerReviewsEmptyMessage": "هل تملك هذه السيارة؟ شارك تجربتك الحقيقية لتساعد غيرك.",
+  "carsOwnerReviewsEmptyTitle": "لا توجد آراء ملاك لهذه الفئة بعد",
+  "carsOwnerReviewsUnavailableMessage": "سيُفتح هذا القسم عند تفعيل مراجعات المجتمع.",
+  "carsOwnerReviewsUnavailableTitle": "آراء الملاك غير متاحة بعد",
+  "carsPeakPower": "الذروة {power}",
+  "@carsPeakPower": {
+    "placeholders": {
+      "power": {
+        "type": "String"
+      }
+    }
+  },
+  "carsPreconditioned": "البطارية مهيأة مسبقًا",
+  "carsPriceCurrent": "الحالي",
+  "carsPriceFrom": "ابتداءً من {price}",
+  "@carsPriceFrom": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "carsPriceHistory": "{count, plural, =0{سجل الأسعار} =1{سجل الأسعار (سعر واحد)} =2{سجل الأسعار (سعران)} few{سجل الأسعار ({count} أسعار)} many{سجل الأسعار ({count} سعرًا)} other{سجل الأسعار ({count} سعر)}}",
+  "@carsPriceHistory": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsPriceIn": "السعر في {market}",
+  "@carsPriceIn": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsPricePeriod": "{from} – {to}",
+  "@carsPricePeriod": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "carsPriceSince": "منذ {date}",
+  "@carsPriceSince": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "carsRangeAndConsumption": "المدى والاستهلاك",
+  "carsRangeCycleExplainer": "يُعرض كل رقم مع دورة اختباره (WLTP وEPA وCLTC…). لا تُحوَّل الدورات إلى بعضها، والمدى الفعلي غالبًا أقل.",
+  "carsRatingOutOfFive": "{rating} من 5",
+  "@carsRatingOutOfFive": {
+    "placeholders": {
+      "rating": {
+        "type": "String"
+      }
+    }
+  },
+  "carsResultCount": "{count, plural, =0{لا سيارات} =1{سيارة واحدة} =2{سيارتان} few{{count} سيارات} many{{count} سيارة} other{{count} سيارة}}",
+  "@carsResultCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsReviewCount": "{count, plural, =0{لا مراجعات} =1{مراجعة واحدة} =2{مراجعتان} few{{count} مراجعات} many{{count} مراجعة} other{{count} مراجعة}}",
+  "@carsReviewCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsSearchHint": "ابحث عن علامة أو طراز أو فئة",
+  "carsSeatDriver": "مقعد السائق",
+  "carsSeatPassenger": "مقعد الراكب الأمامي",
+  "carsSeatRear": "المقاعد الخلفية",
+  "carsSeatThirdRow": "الصف الثالث",
+  "carsSeatTrunk": "صندوق الأمتعة",
+  "carsSeats": "{count, plural, =0{لا مقاعد} =1{مقعد واحد} =2{مقعدان} few{{count} مقاعد} many{{count} مقعدًا} other{{count} مقعد}}",
+  "@carsSeats": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsShareFailed": "تعذّر فتح المشاركة.",
+  "carsSoldIn": "متوفرة في: {markets}",
+  "@carsSoldIn": {
+    "placeholders": {
+      "markets": {
+        "type": "String"
+      }
+    }
+  },
+  "carsSortName": "الاسم",
+  "carsSortNewest": "الأحدث",
+  "carsSortPriceAsc": "السعر: من الأقل",
+  "carsSortPriceDesc": "السعر: من الأعلى",
+  "carsSortRange": "الأطول مدى",
+  "carsSourceAccessedAt": "تاريخ الاطلاع",
+  "carsSourceDocumentDate": "تاريخ المستند",
+  "carsSourceOpen": "فتح المصدر",
+  "carsSourcePublisher": "الناشر",
+  "carsSourceTitle": "مصدر البيانات",
+  "carsSourceVerifiedAt": "تاريخ التحقق",
+  "carsSourcesTitle": "المصادر",
+  "carsSpecsOnlyAvailable": "إخفاء القيم غير المتوفرة",
+  "carsSpecsOnlyAvailableHint": "تظهر القيم الناقصة بعبارة «غير متوفر» وليس صفرًا.",
+  "carsSpecsRemoveOffline": "حذف النسخة المحفوظة",
+  "carsSpecsRemovedOffline": "حُذفت النسخة المحفوظة",
+  "carsSpecsSaveOffline": "حفظ المواصفات للقراءة دون اتصال",
+  "carsSpecsSavedOffline": "حُفظت المواصفات للقراءة دون اتصال",
+  "carsSpecsSavedOn": "حُفظت في {time}",
+  "@carsSpecsSavedOn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "carsStarsCount": "{stars} نجوم: {count}",
+  "@carsStarsCount": {
+    "placeholders": {
+      "stars": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsStatAcMax": "شحن AC",
+  "carsStatAccel": "0–100 كم/س",
+  "carsStatBattery": "البطارية",
+  "carsStatDcPeak": "أقصى شحن DC",
+  "carsStatElectricRange": "المدى الكهربائي",
+  "carsStatPower": "القوة",
+  "carsStatRange": "المدى",
+  "carsStatUsableBattery": "البطارية الصافية",
+  "carsTabCompetitors": "المنافسون",
+  "carsTabNews": "الأخبار والمراجعات",
+  "carsTabOverview": "نظرة عامة",
+  "carsTabOwners": "آراء الملاك",
+  "carsTabSpecs": "المواصفات",
+  "carsTabTours": "جولة 360°",
+  "carsTableReliability": "الموثوقية",
+  "carsTableSource": "المصدر",
+  "carsTableSpec": "المواصفة",
+  "carsTableValue": "القيمة",
+  "carsTourInterior": "المقصورة: {color}",
+  "@carsTourInterior": {
+    "placeholders": {
+      "color": {
+        "type": "String"
+      }
+    }
+  },
+  "carsTourOpen": "ابدأ الجولة",
+  "carsTourReference": "مصوّرة في فئة مشابهة: {trim}",
+  "@carsTourReference": {
+    "placeholders": {
+      "trim": {
+        "type": "String"
+      }
+    }
+  },
+  "carsTourSeats": "الزوايا: {seats}",
+  "@carsTourSeats": {
+    "placeholders": {
+      "seats": {
+        "type": "String"
+      }
+    }
+  },
+  "carsTourTitle": "جولة داخلية 360°",
+  "carsTourUnavailable": "الجولة غير متاحة لهذه الفئة",
+  "carsTourUnavailableHint": "ننشر فقط جولات مصوّرة داخل سيارات حقيقية. يمكنك تصفح الصور المرخّصة بدلًا منها.",
+  "carsToursDisabled": "الجولات الداخلية غير متاحة حاليًا",
+  "carsTrim": "الفئة",
+  "carsTrimCode": "الرمز {code}",
+  "@carsTrimCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "carsTrimCount": "{count, plural, =0{لا فئات} =1{فئة واحدة} =2{فئتان} few{{count} فئات} many{{count} فئة} other{{count} فئة}}",
+  "@carsTrimCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsUnitInch": "بوصة",
+  "carsUnitLitersPer100": "لتر/100 كم",
   "carsVariantTitle": "تفاصيل الفئة",
+  "carsVerifiedOwner": "مالك موثّق",
+  "carsVerifiedOwners": "{count, plural, =0{لا ملاك موثّقين} =1{مالك موثّق واحد} =2{مالكان موثّقان} few{{count} ملاك موثّقين} many{{count} مالكًا موثّقًا} other{{count} مالك موثّق}}",
+  "@carsVerifiedOwners": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsViewingTrim": "المعروض: {trim} في {market}",
+  "@carsViewingTrim": {
+    "placeholders": {
+      "trim": {
+        "type": "String"
+      },
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "carsWheelSize": "عجلات {size}",
+  "@carsWheelSize": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "carsWriteReview": "اكتب مراجعة",
+  "carsYears": "{count, plural, =0{0 سنة} =1{سنة واحدة} =2{سنتان} few{{count} سنوات} many{{count} سنة} other{{count} سنة}}",
+  "@carsYears": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carsYes": "نعم",
+  "chargingAccessRestrictions": "القيود",
+  "chargingAccessSection": "الدخول",
+  "chargingAccessType": "نوع الدخول",
+  "chargingAddressUnknown": "العنوان غير متوفر",
+  "chargingAmenities": "خدمات قريبة",
+  "chargingAreaAround": "حول {place} · {radius}",
+  "chargingAreaVisibleMap": "منطقة الخريطة الظاهرة",
+  "chargingAttribution": "الإسناد",
+  "chargingAvailAvailable": "منفذ متاح الآن",
+  "chargingAvailCounts": "متاح: {available} · مشغول: {occupied} · معطّل: {outOfOrder} · غير معروف: {unknown}",
+  "chargingAvailExpiredExplain": "انتهت صلاحية آخر قراءة لحظية، لذا لا تُعرض كمتاحة.",
+  "chargingAvailLastReading": "آخر قراءة {time} — انتهت صلاحيتها، لذا الحالة الحالية غير مؤكدة.",
+  "chargingAvailNotLiveOffline": "لا حالة لحظية (بيانات محفوظة)",
+  "chargingAvailObserved": "قراءة بتاريخ {time}",
+  "chargingAvailOccupied": "كل المنافذ مشغولة",
+  "chargingAvailOutOfOrder": "معطّلة",
+  "chargingAvailSource": "المصدر: {source}",
+  "chargingAvailUncertain": "غير مؤكدة (انتهت صلاحية القراءة)",
+  "chargingAvailUnknown": "التوافر غير معروف",
+  "chargingAvailValidUntil": "صالحة حتى {time}",
+  "chargingCheckInCar": "سيارتك",
+  "chargingCheckInComment": "تعليق",
+  "chargingCheckInConnector": "المنفذ المستخدم",
+  "chargingCheckInHowWasIt": "كيف سارت الأمور؟",
+  "chargingCheckInIntro": "شارك كيف سار الشحن. تظهر مشاركتك بتاريخها كبيانات مجتمعية وليست حالة لحظية.",
+  "chargingCheckInNoCar": "بدون سيارة",
+  "chargingCheckInPending": "شكرًا! سيظهر تعليقك بعد المراجعة.",
+  "chargingCheckInPower": "القدرة التي لاحظتها",
+  "chargingCheckInPublicNote": "تظهر زيارتك دون اسمك. التعليقات التي تحتوي على روابط تُراجع أولًا.",
+  "chargingCheckInSentMessage": "شكرًا! تظهر الآن في صفحة المحطة بتاريخ اليوم.",
+  "chargingCheckInSentTitle": "تم حفظ الزيارة",
+  "chargingCheckInShort": "تسجيل زيارة",
+  "chargingCheckInSignIn": "سجّل الدخول لتسجيل زيارة حتى يثق الآخرون ببيانات المجتمع.",
   "chargingCheckInTitle": "تسجيل زيارة",
+  "chargingCheckInWait": "مدة الانتظار",
+  "chargingCheckins30d": "زيارات (30 يومًا)",
+  "chargingChoosePlace": "اختر مكانًا",
+  "chargingCityListNote": "تحدد المدن مركز البحث فقط. أما المحطات الموجودة فتأتي من قاعدة بيانات المحطات.",
+  "chargingCitySearchHint": "ابحث عن مدينة",
+  "chargingClearFilters": "مسح الفلاتر",
+  "chargingClosedNow": "مغلقة الآن",
+  "chargingClosesAt": "تغلق الساعة {time} (بتوقيت المحطة)",
+  "chargingClusterSemantics": "{count} محطة هنا، انقر للتقريب",
+  "chargingCommunityDisclaimer": "تسجيلات الزيارة والبلاغات بيانات مجتمعية مؤرخة، وليست حالة لحظية رسمية.",
+  "chargingCommunityEmpty": "لا توجد زيارات أو بلاغات بعد. أخبر الآخرين كيف كانت زيارتك.",
+  "chargingCommunitySection": "بلاغات وتسجيلات المجتمع",
+  "chargingCompatBestPower": "حتى {power} مع سيارتك",
+  "chargingCompatIgnored": "{count, plural, =1{لم يُستخدم سجل مدخل واحد غير موثّق.} =2{لم يُستخدم سجلان غير موثّقين.} few{لم تُستخدم {count} سجلات غير موثّقة.} other{لم يُستخدم {count} سجلًا غير موثّق.}}",
+  "chargingCompatNoAdapters": "بناءً على تطابق نوع القابس والتيار فقط. لا يُنصح بأي محوّل.",
+  "chargingCompatNoGuess": "تُعرض المحطة دون تخمين للتوافق.",
+  "chargingCompatNone": "لا يطابق أي منفذ هنا مداخل الشحن الموثّقة لـ {car}.",
+  "chargingCompatNotice": "تُعرض المنافذ المتوافقة مع {car} بناءً على بيانات المداخل الموثّقة فقط.",
+  "chargingCompatSection": "التوافق مع سيارتك",
+  "chargingCompatSome": "{count, plural, =1{منفذ واحد يطابق {car}.} =2{منفذان يطابقان {car}.} few{{count} منافذ تطابق {car}.} other{{count} منفذًا يطابق {car}.}}",
+  "chargingCompatUnknownShort": "لا توجد بيانات شحن موثقة لهذه السيارة",
+  "chargingCompatUnknownTitle": "تعذر التحقق من التوافق",
+  "chargingCompatibleConnectors": "{count, plural, =1{منفذ متوافق واحد} =2{منفذان متوافقان} few{{count} منافذ متوافقة} other{{count} منفذًا متوافقًا}}",
+  "chargingConnectorCompatible": "متوافق",
+  "chargingConnectorCompatibleUpTo": "متوافق حتى {power}",
+  "chargingConnectorNotCompatible": "غير متوافق",
+  "chargingConnectorType": "نوع المنفذ",
+  "chargingConnectorsSection": "الشواحن والمنافذ",
+  "chargingContactSection": "التواصل",
+  "chargingCurrentAc": "AC (متردد)",
+  "chargingCurrentDc": "DC (مستمر)",
+  "chargingCurrentTypes": "التيار",
+  "chargingDataSource": "المصدر",
+  "chargingDayClosed": "مغلقة",
+  "chargingDayFri": "الجمعة",
+  "chargingDayMon": "الاثنين",
+  "chargingDaySat": "السبت",
+  "chargingDaySun": "الأحد",
+  "chargingDayThu": "الخميس",
+  "chargingDayTue": "الثلاثاء",
+  "chargingDayUnknown": "غير معروف",
+  "chargingDayWed": "الأربعاء",
+  "chargingDefaultPlaceHint": "يُعرض المدينة الافتراضية لبلدك. استخدم موقعك أو اختر مكانًا آخر.",
+  "chargingDemoNoDirections": "هذه محطة تجريبية وليست مكانًا حقيقيًا.",
+  "chargingDemoNotRealPlace": "محطة تجريبية للاختبار — ليست مكانًا حقيقيًا. لا تتوجه إليها.",
+  "chargingDirections": "الاتجاهات",
+  "chargingDirectionsNote": "يفتح تطبيق ملاحة بإحداثيات المحطة. تحقق من الدخول ومواعيد العمل قبل التوجه.",
+  "chargingDistance": "المسافة",
+  "chargingDistanceAway": "على بعد {distance}",
+  "chargingDistanceMeters": "{meters} م",
+  "chargingEmail": "البريد الإلكتروني",
+  "chargingEmptyFilteredMessage": "لا توجد محطة تطابق هذه الفلاتر هنا. جرّب إزالة بعض الفلاتر أو البحث في منطقة أوسع.",
+  "chargingEmptyMessage": "لم تُعثر على محطات منشورة في هذه المنطقة. التغطية غير مكتملة في أي بلد — يمكنك اقتراح محطة تعرفها.",
+  "chargingEmptyTitle": "لا توجد محطات هنا",
+  "chargingEndOfResults": "{count, plural, =0{لا محطات} =1{محطة واحدة إجمالًا} =2{محطتان إجمالًا} few{{count} محطات إجمالًا} other{{count} محطة إجمالًا}}",
+  "chargingEntrance": "المدخل",
+  "chargingFetchedAt": "حُمّلت {time}",
+  "chargingFilterAmenities": "خدمات قريبة",
+  "chargingFilterAmenitiesHelp": "يجب أن تتوفر كل الخدمات المختارة.",
+  "chargingFilterAny": "الكل",
+  "chargingFilterAvailability": "المواعيد والدخول",
+  "chargingFilterConnectors": "أنواع المنافذ",
+  "chargingFilterConnectorsHelp": "يجب أن يطابق منفذ واحد النوع والتيار والقدرة معًا.",
+  "chargingFilterCurrent": "نوع التيار",
+  "chargingFilterMetaUnavailable": "قائمة المنافذ غير متاحة حاليًا.",
+  "chargingFilterMinPower": "أدنى قدرة",
+  "chargingFilterMinPowerHelp": "لا تُحتسب المنافذ مجهولة القدرة.",
+  "chargingFilterOpenNow": "مفتوحة الآن",
+  "chargingFilterOpenNowHelp": "حسب مواعيد العمل المنشورة. تُخفى المحطات مجهولة المواعيد.",
+  "chargingFilterOperator": "المشغّل",
+  "chargingFilterOperatorHelp": "من المحطات المحمّلة في هذه المنطقة.",
+  "chargingFilterPowerAtLeast": "{power}+",
+  "chargingFilterPublicOnly": "الدخول العام فقط",
+  "chargingFilterVehicle": "متوافقة مع سيارتي",
+  "chargingFilterVehicleAddCar": "أضف سيارة إلى جراجي",
+  "chargingFilterVehicleHelp": "يستخدم بيانات مداخل الشحن الموثّقة لسيارتك في سوقها. لا يُعدّ تطابق شكل القابس وحده توافقًا، ولا تُفترض محوّلات.",
+  "chargingFilterVehicleNone": "أي سيارة",
+  "chargingFilterVehicleNotInMarket": "غير مدرجة في سوق هذه السيارة — قد يكون التوافق غير معروف",
+  "chargingFilterVehicleSignIn": "سجّل الدخول لاستخدام سيارة من جراجك",
   "chargingFiltersTitle": "فلاتر المحطات",
+  "chargingFloor": "الطابق {floor}",
+  "chargingFormatCable": "كابل مثبت",
+  "chargingFormatSocket": "مقبس (أحضر الكابل)",
+  "chargingGraceMinutes": "بعد مهلة {minutes} دقيقة",
+  "chargingHoursAsPublished": "كما نشرها المصدر: {text}",
+  "chargingHoursNotPublished": "مواعيد العمل غير منشورة.",
+  "chargingHoursSection": "مواعيد العمل",
+  "chargingHoursTextOnly": "المواعيد منشورة كنص فقط — انظر أدناه.",
+  "chargingHoursTimezoneNote": "الأوقات بتوقيت المحطة ({zone}).",
+  "chargingHoursUnknown": "المواعيد غير معروفة",
+  "chargingInvalidPower": "أدخل قدرة بين 0 و1000 كيلوواط.",
+  "chargingInvalidWait": "أدخل دقائق بين 0 و1440.",
+  "chargingLastSynced": "آخر مزامنة",
+  "chargingLastVerified": "آخر تحقق",
+  "chargingLatitude": "خط العرض",
+  "chargingLicense": "الترخيص",
+  "chargingLocationDenied": "لم يُمنح إذن الموقع. يمكنك اختيار مكان بدلًا من ذلك.",
+  "chargingLocationDeniedForever": "الوصول إلى الموقع متوقف لهذا التطبيق. فعّله من الإعدادات، أو اختر مدينة أو نقطة بدلًا من ذلك.",
+  "chargingLocationPrivacy": "يُطلب الآن فقط، ويُستخدم أثناء استخدام التطبيق، ولا يُحفظ أبدًا.",
+  "chargingLocationServiceOff": "خدمات الموقع متوقفة على هذا الجهاز. فعّلها، أو اختر مدينة أو نقطة بدلًا من ذلك.",
   "chargingLocationTitle": "اختر مكانًا",
+  "chargingLocationUnavailable": "تعذر تحديد موقعك. اختر مكانًا بدلًا من ذلك.",
   "chargingLogsEditTitle": "تعديل جلسة الشحن",
   "chargingLogsNewTitle": "جلسة شحن جديدة",
   "chargingLogsReportsTitle": "الإنفاق والاستهلاك",
   "chargingLogsTitle": "سجل الشحن",
+  "chargingLongitude": "خط الطول",
+  "chargingMapNotConfigured": "لم تُهيأ الخريطة بعد، لذا تُعرض المحطات كقائمة.",
+  "chargingMapSemantics": "خريطة محطات الشحن، {count} محطة",
+  "chargingMaxPower": "أقصى قدرة",
+  "chargingMergedMessage": "كانت مكررة لمحطة أخرى وأصبحت تفاصيلها هناك.",
+  "chargingMergedTitle": "تم دمج هذه المحطة",
+  "chargingMinutesUnit": "دقيقة",
+  "chargingNavApple": "خرائط Apple",
+  "chargingNavFailed": "لم يتمكن أي تطبيق من فتح الاتجاهات.",
+  "chargingNavGoogle": "خرائط Google",
+  "chargingNavSystem": "اختر تطبيق ملاحة",
+  "chargingNavWaze": "Waze",
+  "chargingNavWeb": "افتح في خريطة الويب",
+  "chargingNearMe": "بالقرب مني",
+  "chargingNoCityMatch": "لا توجد مدينة مطابقة",
+  "chargingNoConnectorData": "لا تتوفر بيانات عن المنافذ.",
+  "chargingNoLiveProvider": "يُعرض التوافر اللحظي فقط من مصدر لحظي مرتبط. لا يوجد مصدر مرتبط حاليًا، لذا يظهر غير معروف.",
+  "chargingNoLiveSourceForStation": "لا يوجد مصدر بيانات لحظية مرتبط بهذه المحطة، لذا التوافر غير معروف. تسجيلات الزيارة أدناه ليست لحظية.",
+  "chargingNoStationsHere": "لم يُعثر على محطات في هذه المنطقة",
+  "chargingNoneStated": "لم يذكر المصدر أي قيود",
+  "chargingNotCompatible": "لا يوجد منفذ متوافق",
+  "chargingNotSure": "لست متأكدًا",
+  "chargingObservedPower": "{power} مُلاحظة",
+  "chargingOfflineNoLive": "هذه بيانات محفوظة، ولا تُعرض الحالة اللحظية من بيانات محفوظة أبدًا.",
+  "chargingOpOperational": "تعمل",
+  "chargingOpPermanentlyClosed": "مغلقة نهائيًا",
+  "chargingOpPlanned": "مخطط لها",
+  "chargingOpTemporarilyUnavailable": "متوقفة مؤقتًا",
+  "chargingOpUnknown": "حالة التشغيل غير معروفة",
+  "chargingOpen24h": "مفتوحة 24 ساعة",
+  "chargingOpenMerged": "افتح المحطة",
+  "chargingOpenNow": "مفتوحة الآن",
+  "chargingOpenNowFromSaved": "محسوبة على هذا الجهاز من مواعيد العمل المحفوظة.",
+  "chargingOpenReports": "بلاغات مفتوحة",
+  "chargingOpenSource": "افتح المصدر",
+  "chargingOpensAt": "تفتح {time} (بتوقيت المحطة)",
+  "chargingOptional": "اختياري",
+  "chargingParking": "الوقوف",
+  "chargingPaymentMethods": "الدفع",
+  "chargingPhases": "{count, plural, =1{أحادي الطور} other{{count} أطوار}}",
+  "chargingPhone": "الهاتف",
+  "chargingPhoto": "صورة المحطة",
+  "chargingPickPointHint": "الدبوس عند {lat}، {lng}. حرّك الخريطة للتعديل.",
+  "chargingPickPointSubtitle": "حرّك الخريطة لوضع الدبوس ثم ابحث حوله.",
+  "chargingPickPointTitle": "اختر نقطة على الخريطة",
+  "chargingPlaceDefaultCity": "{city} (افتراضي)",
+  "chargingPlaceMapPoint": "النقطة المختارة",
+  "chargingPlaceMarker": "نقطة البحث المختارة",
+  "chargingPlaceNearYou": "بالقرب منك",
+  "chargingPlugCount": "{count, plural, =1{منفذ واحد} =2{منفذان} few{{count} منافذ} other{{count} منفذًا}}",
+  "chargingPlugsNotCars": "عدد المنافذ لا يساوي عدد السيارات التي يمكن شحنها في الوقت نفسه.",
+  "chargingPointCount": "{count, plural, =1{شاحن واحد} =2{شاحنان} few{{count} شواحن} other{{count} شاحنًا}}",
+  "chargingPointCountUnknown": "عدد الشواحن غير متوفر",
+  "chargingPointUnnamed": "شاحن",
+  "chargingPowerRange": "{min}–{max}",
+  "chargingPowerUnknown": "القدرة غير متوفرة",
+  "chargingPriceNotAvailable": "الأسعار غير متوفرة لهذه المحطة.",
+  "chargingPricesSection": "الأسعار",
+  "chargingQuantity": "×{count}",
+  "chargingQuickDc": "شحن سريع DC",
+  "chargingQuickMyCar": "يناسب سيارتي",
+  "chargingQuickMyCarNamed": "يناسب {name}",
+  "chargingRecentCheckins": "أحدث تسجيلات الزيارة",
+  "chargingRecentReports": "البلاغات (آخر 90 يومًا)",
+  "chargingRemove": "إزالة",
+  "chargingRemoveCarFilter": "إزالة فلتر السيارة",
+  "chargingReportDetails": "التفاصيل",
+  "chargingReportDetailsHint": "ماذا رأيت؟ ومتى؟",
+  "chargingReportDetailsRequired": "يُرجى وصف المشكلة.",
+  "chargingReportIntro": "أخبرنا بما هو خطأ. يراجع المشرفون كل بلاغ، ولا يغيّر المحطة بمفرده.",
+  "chargingReportModeration": "تظهر البلاغات في صفحة المحطة دون اسمك (النوع والحالة والتاريخ فقط).",
+  "chargingReportNewPrice": "السعر الذي رأيته",
+  "chargingReportNewPriceHint": "مثال: سعر الكيلوواط ساعة كما يظهر على الشاحن",
+  "chargingReportSeenConnector": "المنفذ الموجود في الموقع",
+  "chargingReportSentMessage": "سيراجعه المشرفون. يمكنك متابعته ضمن بلاغاتك.",
+  "chargingReportSentTitle": "شكرًا على بلاغك",
+  "chargingReportShort": "إبلاغ",
+  "chargingReportSignIn": "سجّل الدخول للإبلاغ عن مشكلة حتى يراجعها المشرفون ونمنع الإساءة.",
+  "chargingReportStatusInReview": "قيد المراجعة",
+  "chargingReportStatusOpen": "مفتوح",
+  "chargingReportStatusRejected": "مرفوض",
+  "chargingReportStatusResolved": "تم الحل",
   "chargingReportTitle": "الإبلاغ عن مشكلة",
+  "chargingReportWhat": "ما المشكلة؟",
+  "chargingReportWhichConnector": "أي منفذ؟",
+  "chargingResultsCount": "{count, plural, =0{لا محطات} =1{محطة واحدة} =2{محطتان} few{{count} محطات} other{{count} محطة}}",
+  "chargingResultsTruncated": "تُعرض {count} محطة — قرّب الخريطة لرؤية الكل",
+  "chargingSavedCopy": "محفوظة",
+  "chargingSearchHereAction": "ابحث هنا",
+  "chargingSearchHereMessage": "ستُعرض المحطات حول النقطة التي اخترتها مع المسافات منها.",
+  "chargingSearchHereTitle": "البحث حول هذه النقطة؟",
+  "chargingSearchHint": "ابحث عن محطة أو مشغل أو مدينة",
+  "chargingSearchThisArea": "ابحث في هذه المنطقة",
+  "chargingSearching": "جارٍ البحث عن المحطات…",
+  "chargingSend": "إرسال",
+  "chargingServicesSection": "الدفع والخدمات",
+  "chargingSignInAgain": "انتهت جلستك. سجّل الدخول مجددًا للإرسال.",
+  "chargingSourceCsv": "ملف مستورد",
+  "chargingSourceManual": "أضافها فريق التحرير",
+  "chargingSourceOcm": "Open Charge Map",
+  "chargingSourcePartner": "بيانات شريك",
+  "chargingSourceSection": "مصدر البيانات والترخيص",
+  "chargingSourceUpdated": "التحديث لدى المصدر",
+  "chargingSourceUserSuggestion": "اقتراح مستخدم بعد المراجعة",
+  "chargingStartMethods": "طريقة بدء الشحن",
+  "chargingStationTimezone": "المنطقة الزمنية للمحطة: {zone}",
   "chargingStationTitle": "تفاصيل المحطة",
+  "chargingStatusLive": "التوافر اللحظي",
+  "chargingStatusOpenNow": "مواعيد العمل الآن",
+  "chargingStatusOperational": "التشغيل",
+  "chargingStatusSection": "الحالة الآن",
+  "chargingStepSize": "تُحتسب بخطوات {step}",
+  "chargingSuccessRate": "نجاح الشحن",
+  "chargingSuccessRateNeedsMore": "تظهر نسبة النجاح بعد 3 تسجيلات زيارة على الأقل.",
+  "chargingSuggestAddConnector": "أضف منفذًا",
+  "chargingSuggestAddress": "العنوان أو معلم قريب",
+  "chargingSuggestCity": "المدينة",
+  "chargingSuggestConnectorN": "المنفذ {number}",
+  "chargingSuggestConnectorTypeRequired": "اختر نوعًا أو احذف هذا المنفذ.",
+  "chargingSuggestConnectors": "المنافذ",
+  "chargingSuggestCoordInvalid": "خارج النطاق",
+  "chargingSuggestCoordRequired": "مطلوب",
+  "chargingSuggestCountry": "الدولة",
+  "chargingSuggestHours": "مواعيد العمل",
+  "chargingSuggestHoursHint": "مثال: يوميًا 08:00–22:00",
+  "chargingSuggestIntro": "تعرف محطة غير موجودة؟ أضف ما تعرفه — يتحقق منها مشرف قبل ظهورها على الخريطة.",
+  "chargingSuggestLocation": "موقع المحطة",
+  "chargingSuggestLocationHelp": "استخدم موقعك أثناء وجودك في المحطة، أو اخترها على الخريطة، أو اكتب الإحداثيات.",
+  "chargingSuggestMayExist": "قد تكون هذه المحطات القريبة هي نفسها:",
+  "chargingSuggestName": "اسم المحطة",
+  "chargingSuggestNameRequired": "أدخل اسم المحطة.",
+  "chargingSuggestNotes": "ملاحظات للمراجع",
+  "chargingSuggestOperator": "المشغّل",
+  "chargingSuggestPickTitle": "اختر على الخريطة",
+  "chargingSuggestQuantity": "العدد",
+  "chargingSuggestReviewNote": "لا يُنشر شيء قبل مراجعة المشرف.",
+  "chargingSuggestSentMessage": "شكرًا! سيراجعه مشرف قبل ظهوره على الخريطة.",
+  "chargingSuggestSentTitle": "تم إرسال الاقتراح",
+  "chargingSuggestSignIn": "سجّل الدخول لاقتراح محطة. تُراجع الاقتراحات قبل ظهورها.",
   "chargingSuggestTitle": "اقترح محطة",
+  "chargingSuggestUseMyLocation": "أنا في المحطة",
+  "chargingSuggestUsePoint": "استخدم هذه النقطة",
+  "chargingTariffAppliesTo": "تنطبق على: {connector}",
+  "chargingTariffNotCurrent": "غير سارية",
+  "chargingTariffUnnamed": "التعرفة",
+  "chargingTaxExcluded": "غير شاملة الضرائب",
+  "chargingTaxExcludedPct": "غير شاملة الضرائب ({percent}٪)",
+  "chargingTaxIncluded": "شاملة الضرائب",
+  "chargingTaxIncludedPct": "شاملة الضرائب ({percent}٪)",
+  "chargingTaxUnknown": "الضرائب: غير مذكورة",
   "chargingTitle": "محطات الشحن",
+  "chargingToday": "اليوم",
+  "chargingTruncatedHint": "محطات كثيرة تطابق هنا. قرّب الخريطة أو أضف فلاتر لرؤيتها كلها.",
+  "chargingUnassignedConnectors": "المنافذ",
+  "chargingUnassignedConnectorsHelp": "لا يحدد المصدر الشاحن الذي ينتمي إليه كل منفذ.",
+  "chargingUsageCostNote": "معروض كما نُشر؛ غير موثّق ولا محوّل.",
+  "chargingUsageCostTitle": "السعر كما نشره المصدر",
+  "chargingUseMyLocation": "استخدم موقعي",
+  "chargingValidFrom": "من {date}",
+  "chargingValidTo": "حتى {date}",
+  "chargingViewList": "القائمة",
+  "chargingViewMap": "الخريطة",
+  "chargingWaited": "انتظار {time}",
+  "chargingWebsite": "الموقع الإلكتروني",
+  "chargingWholeStation": "المحطة كلها",
+  "chargingWidenSearch": "ابحث ضمن 100 كم",
   "commonAdLabel": "إعلان",
   "commonApply": "تطبيق",
   "commonCachedDataNotice": "نسخة محفوظة من {time}، وقد لا تكون أحدث البيانات.",
@@ -216,31 +1124,728 @@
   "communityQuestionTitle": "سؤال",
   "communityQuestionsTitle": "أسئلة وأجوبة",
   "communityWriteReviewTitle": "اكتب تقييمًا",
+  "compareAboutRow": "عن «{label}»",
+  "compareAddCarCount": "أضف سيارة ({count} من {max})",
+  "compareAddCarHint": "العلامة والطراز والسنة والفئة والسوق",
+  "compareAddCarSlot": "أضف السيارة {number}",
+  "compareAlreadySaved": "هذه المقارنة محفوظة في حسابك بالفعل",
+  "compareAlternativesCount": "{count, plural, =1{+ قيمة أخرى} =2{+ قيمتان أخريان} few{+ {count} قيم أخرى} many{+ {count} قيمة أخرى} other{+ {count} قيمة أخرى}}",
+  "compareAlternativesExplainer": "تُعرض القيم على دورات أو نطاقات شحن أو مقاسات جنوط أخرى للاطلاع فقط ولا تُخلط بالمقارنة.",
+  "compareAvailabilityAvailable": "متاحة",
+  "compareAvailabilityComingSoon": "قريبًا",
+  "compareAvailabilityDiscontinued": "متوقفة",
+  "compareAvailabilityUnknown": "التوفر غير متوفر",
+  "compareBest": "الأفضل",
+  "compareBestInRow": "الأفضل في هذا الصف",
+  "compareBodyCoupe": "كوبيه",
+  "compareBodyCrossover": "كروس أوفر",
+  "compareBodyHatchback": "هاتشباك",
+  "compareBodyMpv": "عائلية MPV",
+  "compareBodyPickup": "بيك أب",
+  "compareBodySedan": "سيدان",
+  "compareBodySuv": "SUV رياضية متعددة الاستخدامات",
+  "compareBodyVan": "فان",
+  "compareBodyWagon": "ستيشن واجن",
+  "compareCarActions": "خيارات {car}",
+  "compareCarNumbered": "السيارة {number}: {car}",
+  "compareChangeCar": "تغيير الفئة أو السنة أو السوق",
+  "compareChargerPower": "شاحن {power}",
+  "compareComparedOn": "المقارنة على أساس: {basis}",
+  "compareConvertedEstimate": "تقديري بعد التحويل",
+  "compareCopiedToTray": "نُسخت {count} سيارات إلى المقارنات",
+  "compareCurrentAc": "تيار متردد AC",
+  "compareCurrentDc": "تيار مستمر DC",
+  "compareDecidedRows": "صفوف لها أفضل: {decided} من {total}",
+  "compareDeleteSaved": "حذف",
+  "compareDeleteSavedMessage": "ستُحذف «{title}» من حسابك وستتوقف الروابط التي شاركتها.",
+  "compareDeleteSavedTitle": "حذف هذه المقارنة؟",
+  "compareDeleted": "حُذفت المقارنة",
+  "compareDerived": "محسوبة من قيمة منشورة أخرى",
+  "compareDetailsAlternatives": "قيم منشورة أخرى",
+  "compareDetailsBasis": "أساس القياس",
+  "compareDetailsCar": "السيارة",
+  "compareDetailsConditions": "ظروف الاختبار",
+  "compareDetailsDerivation": "طريقة الحصول عليها",
+  "compareDetailsDocumentDate": "تاريخ الوثيقة",
+  "compareDetailsNote": "ملاحظة",
+  "compareDetailsPublished": "القيمة المنشورة",
+  "compareDetailsValue": "القيمة",
+  "compareDifferencesOnly": "الاختلافات فقط",
+  "compareDifferencesOnlyHint": "إخفاء الصفوف التي تتساوى فيها كل السيارات",
+  "compareDirectionHigher": "الأعلى أفضل",
+  "compareDirectionLower": "الأقل أفضل",
+  "compareDirectionNone": "لا توجد قيمة «أفضل» — حسب احتياجك",
+  "compareDisclosureFallback": "تُحسب النتائج من بيانات الدليل فقط، ولا تغيّرها الإعلانات أو الرعايات أبدًا.",
+  "compareEditCars": "السيارات ({count})",
+  "compareEditCarsTitle": "السيارات في هذه المقارنة",
+  "compareEditInCompare": "تعديل في المقارنات",
+  "compareFactorAc": "الشحن المتردد AC",
+  "compareFactorDc": "الشحن السريع DC",
+  "compareFactorEfficiency": "كفاءة الطاقة",
+  "compareFactorPerformance": "التسارع",
+  "compareFactorPrice": "السعر",
+  "compareFactorRange": "المدى الكهربائي",
+  "compareFactorSpace": "مساحة الصندوق",
+  "compareFavoriteSubtitle": "{count, plural, =1{سيارة واحدة} =2{سيارتان} few{{count} سيارات} many{{count} سيارة} other{{count} سيارة}}",
+  "compareFeaturedTitle": "مقارنات مختارة",
+  "compareGeneratedAt": "حُسبت في {time}",
+  "compareGoToCompare": "ابدأ مقارنة جديدة",
+  "compareHeaderSpec": "المواصفة",
+  "compareIntroMessage": "اختر كل سيارة بسنة الطراز والفئة والسوق. لا تُقارن الأرقام إلا إذا قيست بالطريقة نفسها.",
+  "compareIntroRuleCycles": "يُقارن المدى على دورة الاختبار نفسها فقط (WLTP أو EPA أو CLTC أو NEDC) دون أي تحويل.",
+  "compareIntroRuleMandatory": "السنة والفئة والسوق إلزامية لكل سيارة.",
+  "compareIntroRuleMissing": "تظهر القيمة الناقصة «غير متوفر»، ولا تُحسب صفرًا أو فوزًا أبدًا.",
+  "compareIntroTitle": "قارن من سيارتين إلى أربع سيارات جنبًا إلى جنب",
+  "compareKindCurated": "مختارة من المحررين",
+  "compareKindMine": "محفوظة في حسابك",
+  "compareKindSaved": "مقارنة محفوظة",
+  "compareKindShared": "رابط مشترك",
+  "compareLegendBest": "تظهر فقط عندما تتوفر كل القيم وتُقاس بالطريقة نفسها.",
+  "compareLegendButton": "ماذا تعني العلامات؟",
+  "compareLegendTitle": "كيف تتم المقارنة",
+  "compareLoading": "جارٍ تحميل المقارنة…",
+  "compareMissingRows": "بيانات ناقصة: {count}",
+  "compareModeChargeDepleting": "استنزاف الشحن",
+  "compareModeChargeSustaining": "الحفاظ على الشحن",
+  "compareModeCity": "داخل المدينة",
+  "compareModeCombined": "مختلط",
+  "compareModeHighway": "طريق سريع",
+  "compareModeWeighted": "مرجّح",
+  "compareMoveDown": "تحريك لأسفل",
+  "compareMoveUp": "تحريك لأعلى",
+  "compareNo": "لا",
+  "compareNoDifferencesMessage": "تتساوى هذه السيارات في هذا العرض. أوقف «الاختلافات فقط» لرؤية كل الصفوف.",
+  "compareNoRowsMessage": "لا توجد بيانات لهذا العرض بعد.",
+  "compareNoRowsTitle": "لا توجد صفوف لعرضها",
+  "compareNotApplicable": "لا ينطبق",
+  "compareNotComparableRows": "غير قابلة للمقارنة: {count}",
+  "compareOpenCar": "فتح صفحة السيارة",
+  "compareOpenSource": "فتح المصدر",
+  "compareOriginalValue": "منشورة بقيمة {value}",
+  "compareOutcomeTie": "متساوية — لا فائز",
+  "comparePickerAdded": "أُضيفت {car} إلى المقارنة",
+  "comparePickerAllMarkets": "تضمين فئات من أسواق أخرى",
+  "comparePickerAllMarketsHint": "مفيد لمقارنة السيارة نفسها بين الدول. تبقى الأسعار بعملة كل سوق.",
+  "comparePickerAlreadyIn": "هذه الفئة وهذا السوق موجودان في المقارنة بالفعل",
+  "comparePickerBack": "رجوع",
+  "comparePickerBrowseMarket": "تصفح السيارات المباعة في",
+  "comparePickerChooseBrand": "اختر العلامة التجارية",
+  "comparePickerChooseMarket": "اختر السوق",
+  "comparePickerChooseModel": "اختر الطراز",
+  "comparePickerChooseTrim": "اختر الفئة",
+  "comparePickerChooseYear": "اختر سنة الطراز",
+  "comparePickerCurrency": "الأسعار بـ{currency}",
+  "comparePickerEmptyMessage": "لا توجد سيارات منشورة مطابقة في هذا السوق بعد. جرّب تضمين أسواق أخرى أو ارجع.",
+  "comparePickerEmptyMessageAll": "لا توجد سيارات منشورة مطابقة بعد. ارجع واختر من جديد.",
+  "comparePickerEmptyTitle": "لا توجد خيارات هنا",
+  "comparePickerMarketHint": "يؤخذ السعر والتوفر ومنافذ الشحن من هذا السوق.",
+  "comparePickerNoMatch": "لا نتائج مطابقة لبحثك",
+  "comparePickerProgress": "الخطوة {step} من {total}",
+  "comparePickerReplaceTitle": "تغيير السيارة",
+  "comparePickerReplaced": "استُبدلت بـ{car}",
+  "comparePickerSearchBrand": "ابحث في العلامات",
+  "comparePickerSearchModel": "ابحث في الطرازات",
+  "comparePickerShowAllMarkets": "تضمين أسواق أخرى",
+  "comparePickerSoldIn": "مدرجة في: {markets}",
+  "comparePickerStepBrand": "العلامة",
+  "comparePickerStepCurrent": "الخطوة الحالية",
+  "comparePickerStepDone": "مختار",
+  "comparePickerStepEditHint": "تغيير هذا الاختيار",
+  "comparePickerStepMarket": "السوق",
+  "comparePickerStepModel": "الطراز",
+  "comparePickerStepTodo": "لم يُختر بعد",
+  "comparePickerStepTrim": "الفئة",
+  "comparePickerStepYear": "السنة",
   "comparePickerTitle": "اختر سيارة",
-  "compareRecommendationsTitle": "ترشيح سيارة مناسبة",
+  "comparePickerTrimCount": "{count, plural, =1{فئة واحدة} =2{فئتان} few{{formatted} فئات} many{{formatted} فئة} other{{formatted} فئة}}",
+  "compareRecBack": "السابق",
+  "compareRecBasis": "المدى والاستهلاك مقارنان على {cycle}؛ الأسعار بـ{currency}.",
+  "compareRecBasisPeak": "القدرة القصوى",
+  "compareRecBodyTypes": "أنواع الهيكل",
+  "compareRecBodyTypesAny": "أي نوع هيكل",
+  "compareRecBodyTypesSome": "{count, plural, =1{نوع هيكل واحد مختار} =2{نوعا هيكل مختاران} few{{count} أنواع مختارة} many{{count} نوعًا مختارًا} other{{count} نوع مختار}}",
+  "compareRecBreakdown": "كيف حُسبت الدرجة",
+  "compareRecBudgetError": "أدخل ميزانية أكبر من صفر",
+  "compareRecBudgetHelper": "الأسعار في {market} ({currency}). لا تُحوَّل الأسعار بعملات أخرى أبدًا.",
+  "compareRecBudgetLabel": "أقصى سعر ({currency})",
+  "compareRecBudgetMessage": "نأخذ في الحسبان فقط السيارات التي يقع سعرها المحلي الحالي ضمن ميزانيتك.",
+  "compareRecBudgetTitle": "ما ميزانيتك؟",
+  "compareRecCycleMismatch": "مقيس على دورة اختبار مختلفة",
+  "compareRecDailyKm": "المسافة اليومية",
+  "compareRecDecrease": "إنقاص {label}",
+  "compareRecEditAnswers": "تعديل الإجابات",
+  "compareRecExcludedBody": "نوع هيكل آخر: {count}",
+  "compareRecExcludedBudget": "فوق الميزانية: {count}",
+  "compareRecExcludedPowertrain": "نوع دفع آخر: {count}",
+  "compareRecExcludedSeats": "مقاعد أقل من المطلوب: {count}",
+  "compareRecExcludedTitle": "{count, plural, =1{سيارة واحدة غير مناسبة} =2{سيارتان غير مناسبتين} few{{formatted} سيارات غير مناسبة} many{{formatted} سيارة غير مناسبة} other{{formatted} سيارة غير مناسبة}}",
+  "compareRecHomeCharging": "هل يمكنك الشحن في المنزل أو العمل؟",
+  "compareRecHomeChargingNo": "الشحن العام فقط",
+  "compareRecHomeChargingRequired": "اختر هل يمكنك الشحن في المنزل",
+  "compareRecHomeChargingYes": "يمكنني الشحن في المنزل",
+  "compareRecIgnoreFactor": "رتّب دون «{factor}»",
+  "compareRecIncrease": "زيادة {label}",
+  "compareRecInvalidTitle": "بعض الإجابات تحتاج إلى تعديل",
+  "compareRecLongTrips": "الرحلات الطويلة شهريًا",
+  "compareRecLongTripsHint": "رحلات أطول من شحنة كاملة",
+  "compareRecMissingTitle": "البيانات الناقصة",
+  "compareRecNeedsMessage": "تُستبعد السيارات غير المناسبة، ونعرض عددها.",
+  "compareRecNeedsTitle": "ما الذي تحتاجه؟",
+  "compareRecNext": "التالي",
+  "compareRecNoDecision": "لا يمكن الحسم",
+  "compareRecNotRankedComparable": "بيانات غير قابلة للمقارنة",
+  "compareRecNotRankedMissing": "بيانات ناقصة",
+  "compareRecNotRankedPrice": "السعر غير متوفر",
+  "compareRecNotRankedSeats": "عدد المقاعد غير متوفر",
+  "compareRecNotRankedSubtitle": "القيم الناقصة لا تُحسب صفرًا أبدًا",
+  "compareRecNotRankedTitle": "تعذّر ترتيبها",
+  "compareRecNotesTitle": "معلومات مفيدة",
+  "compareRecPoints": "{points} نقطة",
+  "compareRecPowertrainRequired": "اختر نوع دفع واحدًا على الأقل",
+  "compareRecPowertrains": "أنواع الدفع",
+  "compareRecPowertrainsHint": "اختر نوعًا واحدًا على الأقل",
+  "compareRecPrioritiesMessage": "تحدد الأوزان مقدار أهمية كل عامل، وتظهر مع النتائج.",
+  "compareRecPrioritiesTitle": "ما الأهم لك؟",
+  "compareRecRank": "الترتيب {rank}",
+  "compareRecRankedTitle": "السيارات المرتبة",
+  "compareRecReasonFewer": "سيارة واحدة فقط لديها بيانات كاملة وقابلة للمقارنة، فلا يوجد ما تُرتَّب أمامه.",
+  "compareRecReasonNoCandidates": "لا توجد سيارة تطابق ميزانيتك واحتياجاتك. جرّب ميزانية أعلى أو شروطًا أقل.",
+  "compareRecReasonNoComparable": "السيارات المطابقة تنقصها بيانات أو بياناتها غير قابلة للمقارنة، لذا لن نخمّن.",
+  "compareRecReasonTooClose": "نتائج السيارات الأولى متقاربة جدًا بحيث لا يمكن اعتبار إحداها الأفضل.",
+  "compareRecResultsTitle": "ترشيحاتك",
+  "compareRecScore": "درجة التطابق: {score} من 100",
+  "compareRecScoreUnknown": "درجة التطابق: غير متوفرة",
+  "compareRecSeats": "عدد المقاعد المطلوبة",
+  "compareRecSentimentNegative": "انتبه",
+  "compareRecSentimentNeutral": "ملاحظة",
+  "compareRecSentimentPositive": "ميزة",
+  "compareRecShowResults": "عرض الترشيحات",
+  "compareRecStepBudget": "الميزانية",
+  "compareRecStepNeeds": "الاحتياجات",
+  "compareRecStepOf": "الخطوة {step} من {total}: {title}",
+  "compareRecStepPriorities": "الأولويات",
+  "compareRecStepUsage": "القيادة",
+  "compareRecSuggestedWeights": "استخدام أوزان مقترحة حسب قيادتي",
+  "compareRecSuggestedWeightsHint": "أوقفه لتحديد كل وزن بنفسك (0 = تجاهل)",
+  "compareRecSummaryBudget": "حتى {budget}",
+  "compareRecSummaryDaily": "{distance} يوميًا",
+  "compareRecSummarySeats": "{seats} مقاعد",
+  "compareRecSummaryTrips": "{count, plural, =0{بلا رحلات طويلة} =1{رحلة طويلة شهريًا} =2{رحلتان طويلتان شهريًا} few{{formatted} رحلات طويلة شهريًا} many{{formatted} رحلة طويلة شهريًا} other{{formatted} رحلة طويلة شهريًا}}",
+  "compareRecTopPick": "الترشيح الأول لك",
+  "compareRecUsageMessage": "المسافة اليومية والرحلات الطويلة تحدد أهمية المدى والشحن السريع.",
+  "compareRecUsageTitle": "كيف تقود؟",
+  "compareRecWeightDefault": "وزن افتراضي",
+  "compareRecWeightIgnored": "متجاهَل",
+  "compareRecWeightShare": "الوزن {percent}",
+  "compareRecWeightUsage": "معدّل حسب قيادتك",
+  "compareRecWeightUser": "اختيارك",
+  "compareRecWeightsAllZero": "يجب أن تكون أولوية واحدة على الأقل أكبر من 0",
+  "compareRecWeightsTitle": "الأوزان المستخدمة",
+  "compareRecommendCtaMessage": "أجب عن أسئلة قليلة عن ميزانيتك وقيادتك لتحصل على ترشيح مشروح.",
+  "compareRecommendCtaTitle": "لست متأكدًا أي سيارة تناسبك؟",
+  "compareRecommendationsTitle": "اعثر على السيارة المناسبة",
+  "compareRemoveCar": "إزالة من المقارنة",
+  "compareRemoved": "أُزيلت {car} من المقارنة",
+  "compareReplaceTrayConfirm": "استبدال",
+  "compareReplaceTrayMessage": "{count, plural, =1{ستُستبدل السيارة التي تقارنها الآن بسيارات هذه المقارنة.} =2{ستُستبدل السيارتان اللتان تقارنهما الآن بسيارات هذه المقارنة.} other{ستُستبدل السيارات الـ{count} التي تقارنها الآن بسيارات هذه المقارنة.}}",
+  "compareReplaceTrayTitle": "استبدال السيارات الحالية؟",
+  "compareRowsWon": "{count, plural, =0{غير متفوقة في أي صف} =1{متفوقة في صف واحد} =2{متفوقة في صفين} few{متفوقة في {formatted} صفوف} many{متفوقة في {formatted} صفًا} other{متفوقة في {formatted} صف}}",
+  "compareRowsWonUnknown": "غير متوفر",
+  "compareRulesText": "توحَّد الوحدات قبل المقارنة مع الاحتفاظ بالقيم المنشورة. لا يُقارن المدى إلا على دورة الاختبار نفسها ولا يُحوَّل، والمدى الكهربائي منفصل عن المدى الإجمالي. القدرة القصوى ومتوسط قدرة الشحن السريع صفّان منفصلان. لا تُقارن أزمنة الشحن إلا لنطاق الشحن نفسه (10–80% ليست 30–80%). لا تُقارن الأسعار إلا بالعملة نفسها. البطارية الأكبر ليست أفضل تلقائيًا. القيمة الناقصة لا تُعامل صفرًا أبدًا.",
+  "compareSave": "حفظ",
+  "compareSaveGuestMessage": "الحفظ في الحساب يتطلب تسجيل الدخول. يمكنك دون حساب إنشاء رابط مشاركة والاحتفاظ به.",
+  "compareSaveGuestTitle": "احفظ هذه المقارنة",
+  "compareSaveLimitReached": "وصلت إلى الحد الأقصى للمقارنات المحفوظة. احذف مقارنة قديمة لحفظ المزيد.",
+  "compareSaved": "حُفظت المقارنة في حسابك",
+  "compareSavedEmptyMessage": "قارن السيارات ثم اضغط «حفظ» لتظهر المقارنة هنا.",
+  "compareSavedEmptyTitle": "لا توجد مقارنات محفوظة بعد",
+  "compareSavedGuestHint": "سجّل الدخول لحفظ المقارنات في حسابك وفتحها من أي جهاز.",
+  "compareSavedTitle": "المقارنات المحفوظة",
+  "compareShare": "مشاركة الرابط",
+  "compareShareLinkInstead": "إنشاء رابط مشاركة بدلًا من ذلك",
+  "compareSharedNoResultMessage": "بقيت أقل من سيارتين منها متاحة في الدليل.",
+  "compareSharedNoResultTitle": "لم يعد من الممكن عرض هذه المقارنة",
+  "compareSharedNotFoundMessage": "الرابط غير صالح، أو حُذفت المقارنة أو أُلغي نشرها.",
+  "compareSharedNotFoundTitle": "المقارنة غير موجودة",
   "compareSharedTitle": "مقارنة مشتركة",
+  "compareShowAllRows": "عرض كل الصفوف",
+  "compareSlotFacts": "{year} · {market}",
+  "compareSocWindow": "شحن {window}",
+  "compareSomeUnavailable": "بعض السيارات لم تعد متاحة",
+  "compareSponsoredWarning": "لم يتأكد خلو هذه النتيجة من الرعاية. تعامل معها بحذر.",
+  "compareStars": "{stars} نجوم",
+  "compareStatusComparable": "قابلة للمقارنة",
+  "compareStatusConditions": "ظروف اختبار مختلفة — لا فائز",
+  "compareStatusCurrency": "عملات مختلفة — لا فائز",
+  "compareStatusCycles": "دورات اختبار مختلفة — لا فائز",
+  "compareStatusMissing": "بيانات ناقصة — لا فائز",
+  "compareStatusNotApplicable": "لا ينطبق على كل السيارات",
+  "compareStatusSocWindow": "نطاقات شحن مختلفة — لا فائز",
+  "compareStatusUnknown": "غير محسوم",
+  "compareSummaryTitle": "نظرة سريعة",
   "compareTitle": "المقارنات",
-  "encyclopediaEntryTitle": "مقال الموسوعة",
+  "compareTrayFull": "المقارنة ممتلئة ({max} سيارات). احذف سيارة لإضافة أخرى.",
+  "compareUnavailableTitle": "{count, plural, =1{سيارة واحدة لم تعد متاحة} =2{سيارتان لم تعودا متاحتين} few{{count} سيارات لم تعد متاحة} many{{count} سيارة لم تعد متاحة} other{{count} سيارة لم تعد متاحة}}",
+  "compareUnitInch": "بوصة",
+  "compareUnitLitersPer100": "لتر/100 كم",
+  "compareValueDetailsHint": "يعرض المصدر وظروف القياس",
+  "compareViewDetailed": "تفصيلية",
+  "compareViewLabel": "طريقة عرض المقارنة",
+  "compareViewSummary": "مختصرة",
+  "compareWheelSize": "جنوط {size} بوصة",
+  "compareYears": "{count, plural, =1{سنة واحدة} =2{سنتان} few{{count} سنوات} many{{count} سنة} other{{count} سنة}}",
+  "compareYes": "نعم",
+  "encyclopediaAllCategories": "الكل",
+  "encyclopediaClearFilters": "مسح عوامل التصفية",
+  "encyclopediaEmptyMessage": "تظهر الأدلة هنا بعد أن يراجعها مختص تقني.",
+  "encyclopediaEmptyTitle": "لا أدلة بعد",
+  "encyclopediaEntryTitle": "موضوع في الموسوعة",
+  "encyclopediaIntro": "أدلة للمبتدئين عن أنواع السيارات والمنافذ والبطاريات ومعايير المدى والشحن المنزلي والسريع والضمان وفحص السيارة المستعملة.",
+  "encyclopediaLanguageAr": "العربية",
+  "encyclopediaLanguageEn": "الإنجليزية",
+  "encyclopediaNoMatchesMessage": "جرّب كلمة أو تصنيفًا آخر.",
+  "encyclopediaNoMatchesTitle": "لا أدلة مطابقة",
+  "encyclopediaNotReviewedExplain": "لا تتوفر معلومات مراجعة تقنية لهذا الدليل.",
+  "encyclopediaReadingMinutes": "{minutes, plural, =1{قراءة في دقيقة} =2{قراءة في دقيقتين} few{قراءة في {formatted} دقائق} other{قراءة في {formatted} دقيقة}}",
+  "encyclopediaRelated": "أدلة ذات صلة",
+  "encyclopediaReviewPolicy": "لا تُنشر إلا الأدلة التي اجتازت المراجعة التقنية. لأي عمل كهربائي استعن بكهربائي مؤهل.",
+  "encyclopediaReviewed": "مراجَع تقنيًا",
+  "encyclopediaReviewedExplain": "راجع مختص تقني هذا الدليل وفق قائمة تحقق للسلامة قبل نشره. إنه معلومات عامة ولا يغني عن كهربائي مؤهل أو عن الشركة المصنعة.",
+  "encyclopediaReviewedOn": "{label} · {date}",
+  "encyclopediaSafetyTitle": "السلامة الكهربائية",
+  "encyclopediaSearchHint": "ابحث في الموسوعة",
+  "encyclopediaShownInLanguage": "معروض بـ{language}",
   "encyclopediaTitle": "موسوعة السيارات الكهربائية",
-  "favoritesSavedOfflineTitle": "المحفوظ للقراءة دون إنترنت",
+  "favoritesBrowseCars": "تصفّح السيارات",
+  "favoritesBrowseComparisons": "قارن السيارات",
+  "favoritesBrowseNews": "تصفّح الأخبار",
+  "favoritesBrowseStations": "ابحث عن محطات",
+  "favoritesDeleteOffline": "حذف النسخة المحفوظة",
+  "favoritesDeviceOnly": "المفضلة محفوظة على هذا الجهاز فقط.",
+  "favoritesEmptyArticlesMessage": "اضغط على القلب في أي مقال لتجده هنا لاحقًا.",
+  "favoritesEmptyArticlesTitle": "لا مقالات مفضلة بعد",
+  "favoritesEmptyCarsMessage": "احفظ الموديلات والفئات والجولات 360° بزر القلب.",
+  "favoritesEmptyCarsTitle": "لا سيارات مفضلة بعد",
+  "favoritesEmptyComparisonsMessage": "احفظ مقارنة لتعود إليها بسرعة.",
+  "favoritesEmptyComparisonsTitle": "لا مقارنات مفضلة بعد",
+  "favoritesEmptyStationsMessage": "احفظ المحطات التي تستخدمها كثيرًا.",
+  "favoritesEmptyStationsTitle": "لا محطات مفضلة بعد",
+  "favoritesGuestHint": "محفوظة على هذا الجهاز. سجّل الدخول لتحتفظ بها في حسابك على كل أجهزتك.",
+  "favoritesLocalOnly": "على هذا الجهاز فقط",
+  "favoritesRemoved": "أُزيل «{title}»",
+  "favoritesSavedArticlesTitle": "المقالات",
+  "favoritesSavedAt": "حُفظ {time}",
+  "favoritesSavedOfflineIntro": "المحتوى الذي حفظته لقراءته دون اتصال، مع تاريخ الحفظ. ربما تغيّر منذ ذلك الحين.",
+  "favoritesSavedOfflineTitle": "محفوظ للقراءة دون اتصال",
+  "favoritesSavedSpecsTitle": "جداول المواصفات",
+  "favoritesSyncFailed": "تعذّرت المزامنة مع حسابك.",
+  "favoritesSyncing": "جارٍ المزامنة مع حسابك…",
+  "favoritesTabArticles": "المقالات",
+  "favoritesTabCars": "السيارات",
+  "favoritesTabComparisons": "المقارنات",
+  "favoritesTabStations": "المحطات",
   "favoritesTitle": "المفضلة",
+  "favoritesUnavailable": "لم يعد متاحًا",
+  "favoritesUndo": "تراجع",
   "garageAddTitle": "إضافة سيارة",
   "garageEditTitle": "تعديل السيارة",
   "garageTitle": "جراجي",
   "garageVehicleTitle": "سيارتي",
+  "homeAllTours": "كل الجولات 360°",
+  "homeChangePlace": "تغيير",
+  "homeChargingGuides": "أدلة الشحن والصيانة",
+  "homeChooseCity": "اختر مدينة",
+  "homeEmptyMessage": "لم يُنشر محتوى لبلدك ولغتك بعد. اسحب للتحديث لاحقًا.",
+  "homeEmptyTitle": "المحتوى في الطريق",
+  "homeExploreBrands": "الماركات",
+  "homeExploreCalculators": "الحاسبات",
+  "homeExploreEncyclopedia": "موسوعة السيارات الكهربائية",
+  "homeExploreNews": "كل الأخبار",
+  "homeExploreServices": "دليل الخدمات",
+  "homeExploreTitle": "استكشف",
+  "homeExploreTours": "جولات 360°",
+  "homeFeaturedComparisons": "مقارنات مختارة",
+  "homeForYou": "مختارات لك",
+  "homeInteriorTours": "جولات داخلية 360°",
+  "homeLatestNews": "آخر الأخبار",
+  "homeNearbyAround": "حول: {place}",
+  "homeNearbyEmpty": "لا توجد محطات منشورة في نطاق 25 كم من هذا المكان بعد.",
+  "homeNearbyPromptMessage": "اسمح بالوصول إلى الموقع أو اختر مدينة. يُستخدم موقعك لهذا البحث فقط ولا يُحفظ.",
+  "homeNearbyPromptTitle": "اعرض محطات الشحن القريبة منك",
+  "homeNearbyStations": "محطات شحن قريبة",
+  "homeNewCars": "سيارات أضيفت حديثًا",
+  "homeRefreshFailed": "تعذّر التحديث. يُعرض آخر محتوى تم تحميله.",
+  "homeReviews": "المراجعات",
+  "homeSearchHint": "ابحث في الأخبار والسيارات والمحطات…",
+  "homeSectionUnavailable": "تعذّر تحميل هذا القسم الآن.",
   "homeTitle": "الرئيسية",
+  "homeTopStory": "الخبر الرئيسي",
+  "homeToursIntro": "ادخل المقصورة وتجوّل فيها مقعدًا مقعدًا.",
+  "homeUseMyLocation": "استخدم موقعي",
+  "newsAllMarkets": "أخبار كل الأسواق",
+  "newsAllMarketsHint": "عند الإيقاف: أخبار {market} والأخبار العامة لكل الأسواق فقط.",
+  "@newsAllMarketsHint": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
   "newsArticleTitle": "الخبر",
+  "newsArticlesInCategory": "{count, plural, =0{لا مقالات} =1{مقال واحد} =2{مقالان} few{{count} مقالات} many{{count} مقالًا} other{{count} مقال}}",
+  "@newsArticlesInCategory": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "newsBackToTop": "العودة إلى الأعلى",
+  "newsBrowseAll": "تصفح كل الأخبار",
+  "newsByAuthor": "بقلم {name}",
+  "@newsByAuthor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "newsCategoriesLabel": "تصنيفات الأخبار",
   "newsCategoryTitle": "التصنيف",
+  "newsClearFilters": "مسح الفلاتر",
+  "newsComments": "التعليقات",
+  "newsCorrectionKindClarification": "توضيح",
+  "newsCorrectionKindCorrection": "تصحيح",
+  "newsCorrectionKindUpdate": "تحديث",
+  "newsCorrectionsTitle": "التصحيحات والتحديثات",
+  "newsCoverCaption": "صورة الغلاف",
+  "newsEmptyFilteredMessage": "لا توجد مقالات تطابق هذه الفلاتر.",
+  "newsEmptyMessage": "لم يُنشر شيء هنا بعد. عد لاحقًا.",
+  "newsEmptyTitle": "لا توجد مقالات بعد",
+  "newsEndOfFeed": "وصلت إلى آخر المقالات",
+  "newsEventDate": "تاريخ الحدث: {date}",
+  "@newsEventDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "newsExternalLinkInsecure": "هذا الرابط غير مشفّر (http).",
+  "newsExternalLinkMessage": "ستغادر EV Car News لفتح {host}.",
+  "@newsExternalLinkMessage": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "newsExternalLinkTitle": "فتح رابط خارجي؟",
+  "newsFallbackNotice": "غير متاح بـ{requested} بعد، لذا يُعرض بـ{served}.",
+  "@newsFallbackNotice": {
+    "placeholders": {
+      "requested": {
+        "type": "String"
+      },
+      "served": {
+        "type": "String"
+      }
+    }
+  },
+  "newsFilterAll": "الكل",
+  "newsFilterSaved": "المحفوظة",
+  "newsFiltersTitle": "تصفية الأخبار",
+  "newsFontLarger": "نص أكبر",
+  "newsFontScaleValue": "حجم النص {percent}",
+  "@newsFontScaleValue": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "newsFontSize": "حجم النص",
+  "newsFontSmaller": "نص أصغر",
+  "newsImageLicense": "الترخيص",
+  "newsImageOpen": "فتح الصورة",
+  "newsImageSource": "مصدر الصورة",
+  "newsImageViewerHint": "قرّب بإصبعين أو بالنقر المزدوج.",
+  "newsLanguageAr": "العربية",
+  "newsLanguageEn": "الإنجليزية",
+  "newsLineSpacing": "تباعد الأسطر",
+  "newsLineSpacingComfortable": "مريح",
+  "newsLineSpacingCompact": "متقارب",
+  "newsLineSpacingRelaxed": "واسع",
   "newsListTitle": "الأخبار",
+  "newsLoadMoreFailed": "تعذّر تحميل المزيد من المقالات.",
+  "newsLoadingMore": "جارٍ تحميل المزيد من المقالات",
+  "newsMachineTranslated": "ترجمة آلية راجعها محرر.",
+  "newsMarketMismatch": "هذا المقال موجّه لأسواق أخرى؛ قد لا تنطبق تفاصيله على {market}.",
+  "@newsMarketMismatch": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "newsNotFoundMessage": "ربما حُذف أو لم يُنشر بعد.",
+  "newsNotFoundTitle": "المقال غير متاح",
+  "newsOfflineNoCopyMessage": "هذا المقال غير محفوظ على جهازك. اتصل بالإنترنت لقراءته.",
+  "newsOnlyMyLanguage": "المقالات المتاحة بلغتي فقط",
+  "newsOnlyMyLanguageHint": "عند الإيقاف: تظهر المقالات غير المترجمة بلغتها الأصلية مع توضيح ذلك.",
+  "newsOpenLink": "فتح",
+  "newsOpenSaved": "افتح المقالات المحفوظة",
+  "newsPublishedOn": "نُشر {date}",
+  "@newsPublishedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "newsReaderPreview": "هكذا سيظهر نص المقال أثناء القراءة.",
+  "newsReaderSettings": "إعدادات القراءة",
+  "newsReaderTheme": "مظهر القراءة",
+  "newsReaderThemeApp": "مثل التطبيق",
+  "newsReaderThemeDark": "داكن",
+  "newsReaderThemeLight": "فاتح",
+  "newsReadingTime": "{minutes, plural, =1{قراءة في دقيقة} =2{قراءة في دقيقتين} few{قراءة في {minutes} دقائق} many{قراءة في {minutes} دقيقة} other{قراءة في {minutes} دقيقة}}",
+  "@newsReadingTime": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "newsRelatedArticlesTitle": "مقالات ذات صلة",
+  "newsRelatedCarsTitle": "السيارات في هذا المقال",
+  "newsRemoveSaved": "إزالة من المحفوظات",
+  "newsRemoveSavedConfirmMessage": "لن يعود متاحًا دون إنترنت.",
+  "newsRemoveSavedConfirmTitle": "إزالة هذا المقال؟",
+  "newsRemovedSnack": "أُزيل من المقالات المحفوظة.",
+  "newsSaveFailed": "تعذّر حفظ المقال. حاول مرة أخرى.",
+  "newsSaveOffline": "احفظ للقراءة دون إنترنت",
+  "newsSavedCopyNotice": "نسخة محفوظة {time}. ربما تغيّر المقال منذ ذلك الحين.",
+  "@newsSavedCopyNotice": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "newsSavedCount": "{count, plural, =0{لا مقالات على هذا الجهاز} =1{مقال واحد على هذا الجهاز} =2{مقالان على هذا الجهاز} few{{count} مقالات على هذا الجهاز} many{{count} مقالًا على هذا الجهاز} other{{count} مقال على هذا الجهاز}}",
+  "@newsSavedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "newsSavedEmptyMessage": "افتح أي مقال واضغط زر التنزيل لتقرأه لاحقًا دون إنترنت.",
+  "newsSavedEmptyTitle": "لا توجد مقالات محفوظة",
+  "newsSavedImagesPartial": "لم تُحفظ بعض الصور",
+  "newsSavedOfflineState": "محفوظ للقراءة دون إنترنت",
+  "newsSavedOn": "حُفظ {date}",
+  "@newsSavedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "newsSavedSnack": "تم الحفظ. يمكنك قراءته دون إنترنت.",
+  "newsSavedSnackPartial": "{count, plural, =1{تم الحفظ، لكن تعذّر تنزيل صورة واحدة.} =2{تم الحفظ، لكن تعذّر تنزيل صورتين.} few{تم الحفظ، لكن تعذّر تنزيل {count} صور.} many{تم الحفظ، لكن تعذّر تنزيل {count} صورة.} other{تم الحفظ، لكن تعذّر تنزيل {count} صورة.}}",
+  "@newsSavedSnackPartial": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "newsSavingOffline": "جارٍ الحفظ للقراءة دون إنترنت…",
+  "newsSearch": "البحث في الأخبار",
+  "newsShownInLanguage": "بـ{language}",
+  "@newsShownInLanguage": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "newsSortLatest": "الأحدث",
+  "newsSortOldest": "الأقدم",
+  "newsSortPopular": "الأكثر قراءة",
+  "newsSourceOpen": "فتح المصدر الأصلي",
+  "newsSourceTitle": "المصدر",
+  "newsTagHeader": "#{name}",
+  "@newsTagHeader": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "newsTagTitle": "الموضوع",
+  "newsTagsTitle": "المواضيع",
+  "newsTypeAny": "كل الأنواع",
+  "newsTypeBuyingGuide": "أدلة شراء",
+  "newsTypeExplainer": "شروحات",
+  "newsTypeLabel": "نوع المحتوى",
+  "newsTypeNews": "أخبار",
+  "newsTypeOpinion": "رأي",
+  "newsTypeReview": "مراجعات",
+  "newsTypeTestDrive": "تجارب قيادة",
+  "newsUpdatedOn": "حُدّث {date}",
+  "@newsUpdatedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "newsVehicleBrand": "علامة تجارية",
+  "newsVehicleModel": "طراز",
+  "newsVehicleModelYear": "موديل {year}",
+  "@newsVehicleModelYear": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "newsVideoGeneric": "موقع الفيديو",
+  "newsVideoOpensIn": "يُفتح في {provider}",
+  "@newsVideoOpensIn": {
+    "placeholders": {
+      "provider": {
+        "type": "String"
+      }
+    }
+  },
+  "newsVideoPrivacy": "لا يُحمَّل أي شيء من {provider} قبل أن تضغط.",
+  "@newsVideoPrivacy": {
+    "placeholders": {
+      "provider": {
+        "type": "String"
+      }
+    }
+  },
+  "newsWatchVideo": "شاهد الفيديو",
   "notificationsPreferencesTitle": "تفضيلات الإشعارات",
   "notificationsTitle": "الإشعارات",
   "remindersEditTitle": "تعديل التذكير",
   "remindersNewTitle": "تذكير جديد",
   "remindersTitle": "التذكيرات",
-  "searchTitle": "بحث",
-  "servicesDirectoryProviderTitle": "مقدم الخدمة",
+  "searchAllGroups": "كل النتائج",
+  "searchAlsoMatched": "شمل البحث أيضًا: {terms}",
+  "searchBrowseBrands": "الماركات",
+  "searchBrowseEncyclopedia": "الموسوعة",
+  "searchBrowseServices": "الخدمات",
+  "searchClearRecent": "مسح الكل",
+  "searchClearRecentMessage": "هي محفوظة على هذا الجهاز فقط.",
+  "searchClearRecentTitle": "مسح عمليات البحث الأخيرة؟",
+  "searchContactVerified": "بيانات التواصل موثّقة",
+  "searchFor": "ابحث عن «{query}»",
+  "searchGroupArticles": "الأخبار والمقالات",
+  "searchGroupBrands": "الماركات",
+  "searchGroupEncyclopedia": "الموسوعة",
+  "searchGroupModels": "الموديلات",
+  "searchGroupServices": "الخدمات",
+  "searchGroupStations": "محطات الشحن",
+  "searchGroupVariants": "الفئات",
+  "searchHint": "ابحث بالعربية أو الإنجليزية",
+  "searchInvalidQuery": "اكتب حرفًا أو رقمًا واحدًا على الأقل.",
+  "searchLoadMoreFailed": "تعذّر تحميل المزيد.",
+  "searchMatchedSpelling": "طابق تهجئة أخرى",
+  "searchNoResultsMessage": "لا شيء يطابق «{query}». تحقّق من الإملاء أو جرّب كلمة أقصر.",
+  "searchNoResultsTitle": "لا توجد نتائج",
+  "searchRecentPrivacy": "تبقى عمليات البحث الأخيرة على هذا الجهاز ولا تُرسل إلى حسابك.",
+  "searchRecentTitle": "عمليات البحث الأخيرة",
+  "searchRemoveRecent": "إزالة «{query}»",
+  "searchResultCount": "{count, plural, =0{لا نتائج} =1{نتيجة واحدة} =2{نتيجتان} few{{formatted} نتائج} other{{formatted} نتيجة}}",
+  "searchReviewed": "مراجَع تقنيًا",
+  "searchSeeAllCount": "عرض الكل ({count})",
+  "searchShownInArabic": "معروض بالعربية",
+  "searchShownInEnglish": "معروض بالإنجليزية",
+  "searchStartMessage": "الأخبار والماركات والموديلات والفئات ومحطات الشحن والموسوعة والخدمات. التهجئات البديلة مثل «تسلا» و«Tesla» تعمل كلها.",
+  "searchStartTitle": "ابحث في كل شيء",
+  "searchTitle": "البحث",
+  "searchTypeArticle": "مقال",
+  "searchTypeBrand": "ماركة",
+  "searchTypeEncyclopedia": "الموسوعة",
+  "searchTypeModel": "موديل",
+  "searchTypeQuery": "اقتراح بحث",
+  "searchTypeService": "خدمة",
+  "searchTypeStation": "محطة",
+  "searchTypeVariant": "فئة",
+  "servicesDirectoryAddress": "العنوان",
+  "servicesDirectoryAllTypes": "الكل",
+  "servicesDirectoryAlwaysOpen": "مفتوح على مدار الساعة",
+  "servicesDirectoryAnyCity": "أي مدينة",
+  "servicesDirectoryBrandsTitle": "الماركات المخدومة",
+  "servicesDirectoryCall": "اتصال",
+  "servicesDirectoryCheckBeforeVisit": "اتصل للتأكد قبل الزيارة.",
+  "servicesDirectoryChooseCity": "اختر مدينة",
+  "servicesDirectoryCity": "المدينة",
+  "servicesDirectoryCityField": "اسم المدينة",
+  "servicesDirectoryClosedDay": "مغلق",
+  "servicesDirectoryClosedNow": "مغلق الآن",
+  "servicesDirectoryContactTitle": "التواصل",
+  "servicesDirectoryDayFri": "الجمعة",
+  "servicesDirectoryDayMon": "الاثنين",
+  "servicesDirectoryDaySat": "السبت",
+  "servicesDirectoryDaySun": "الأحد",
+  "servicesDirectoryDayThu": "الخميس",
+  "servicesDirectoryDayTue": "الثلاثاء",
+  "servicesDirectoryDayWed": "الأربعاء",
+  "servicesDirectoryDemoNoContact": "قائمة تجريبية: أزرار التواصل معطّلة.",
+  "servicesDirectoryDirections": "الاتجاهات",
+  "servicesDirectoryDistance": "المسافة",
+  "servicesDirectoryDistanceAway": "على بعد {distance}",
+  "servicesDirectoryEmail": "البريد الإلكتروني",
+  "servicesDirectoryEmptyMessage": "لم يُنشر شيء لبلدك بعد.",
+  "servicesDirectoryEmptyTitle": "لا مقدّمي خدمة بعد",
+  "servicesDirectoryHoursNotAvailable": "مواعيد العمل غير متوفرة.",
+  "servicesDirectoryHoursTitle": "مواعيد العمل",
+  "servicesDirectoryHoursUnknown": "المواعيد غير متوفرة",
+  "servicesDirectoryHoursUnknownDay": "غير متوفر",
+  "servicesDirectoryIntro": "مراكز الخدمة والوكلاء وتركيب الشواحن وخدمات الطوارئ. تظهر بيانات التواصل مع تاريخ آخر تحقق منها.",
+  "servicesDirectoryLocationDenied": "لم يُسمح بالوصول إلى الموقع. يمكنك اختيار مدينة بدلًا من ذلك.",
+  "servicesDirectoryLocationDeniedForever": "الوصول إلى الموقع متوقف لهذا التطبيق. فعّله من الإعدادات أو اختر مدينة.",
+  "servicesDirectoryLocationServiceOff": "خدمات الموقع متوقفة على هذا الجهاز. فعّلها أو اختر مدينة.",
+  "servicesDirectoryLocationTitle": "الموقع",
+  "servicesDirectoryLocationUnavailable": "تعذّر تحديد موقعك. يمكنك اختيار مدينة بدلًا من ذلك.",
+  "servicesDirectoryNearMe": "بالقرب مني",
+  "servicesDirectoryNoContact": "لا توجد بيانات تواصل منشورة.",
+  "servicesDirectoryNoMatchesMessage": "جرّب نوعًا أو مدينة أخرى، أو أوقف «مفتوح الآن».",
+  "servicesDirectoryNoMatchesTitle": "لا نتائج مطابقة",
+  "servicesDirectoryNotVerified": "لم يتم التحقق من بيانات التواصل",
+  "servicesDirectoryOpenNow": "مفتوح الآن",
+  "servicesDirectoryOrderDistance": "الأقرب أولًا. الرعاية لا تغيّر هذا الترتيب.",
+  "servicesDirectoryOrderVerified": "الترتيب: بيانات التواصل الموثّقة أولًا ثم الاسم. الرعاية لا تغيّر هذا الترتيب.",
+  "servicesDirectoryPhone": "الهاتف",
+  "servicesDirectoryProviderTitle": "مقدّم خدمة",
+  "servicesDirectoryResults": "الدليل",
+  "servicesDirectorySearchHint": "ابحث بالاسم",
+  "servicesDirectoryServicesTitle": "الخدمات",
+  "servicesDirectorySponsoredDetailNote": "هذه القائمة مموّلة. الرعاية لا تعني أن مقدّم الخدمة موصى به أو موثّق.",
+  "servicesDirectorySponsoredSlotNote": "مواضع مدفوعة تُعرض منفصلة، وتحتفظ بمكانها المعتاد في الدليل أدناه.",
+  "servicesDirectorySponsoredSlotTitle": "قوائم مموّلة",
+  "servicesDirectoryTimezone": "المواعيد بتوقيت {zone}",
   "servicesDirectoryTitle": "دليل الخدمات",
+  "servicesDirectoryTruncated": "النتائج كثيرة: ضيّق البحث لتظهر الأنسب.",
+  "servicesDirectoryTypeBattery": "خدمات البطاريات",
+  "servicesDirectoryTypeChargerInstaller": "تركيب الشواحن",
+  "servicesDirectoryTypeDealer": "الوكلاء",
+  "servicesDirectoryTypeEmergency": "الطوارئ",
+  "servicesDirectoryTypeOther": "أخرى",
+  "servicesDirectoryTypeServiceCenter": "مراكز الخدمة",
+  "servicesDirectoryVerified": "بيانات التواصل موثّقة",
+  "servicesDirectoryVerifiedLongAgo": "تم التحقق منذ أكثر من سنة",
+  "servicesDirectoryVerifiedOn": "تم التحقق في {date}",
+  "servicesDirectoryVerifiedStale": "آخر تحقق {date} (منذ أكثر من سنة)",
+  "servicesDirectoryWebsite": "الموقع الإلكتروني",
+  "servicesDirectoryWhatsApp": "واتساب",
   "settingsAboutSection": "حول التطبيق",
   "settingsClearCache": "مسح البيانات المؤقتة",
   "settingsClearCacheConfirm": "هل تريد مسح البيانات المؤقتة؟",
@@ -290,7 +1895,189 @@
   "shellRouteNotFoundTitle": "الصفحة غير موجودة",
   "shellSearchTooltip": "بحث",
   "shellSessionExpired": "انتهت جلستك. سجّل الدخول مرة أخرى.",
+  "toursAbout": "نبذة",
+  "toursAttributionTitle": "حقوق الصور والترخيص",
+  "toursBrowseCars": "تصفّح السيارات",
+  "toursCar": "السيارة",
+  "toursCredit": "© {credit}",
+  "@toursCredit": {
+    "placeholders": {
+      "credit": {
+        "type": "String"
+      }
+    }
+  },
+  "toursDemoFallback": "تجريبي — ليست مقصورة سيارة حقيقية",
+  "toursDetails": "تفاصيل الجولة",
+  "toursDragHint": "اسحب لتنظر حولك · قرّب بإصبعين للتكبير",
+  "toursDriveLhd": "مقود على اليسار",
+  "toursDriveRhd": "مقود على اليمين",
+  "toursDriveUnknown": "اتجاه القيادة: غير متوفر",
+  "toursFullscreenEnter": "ملء الشاشة",
+  "toursFullscreenExit": "الخروج من ملء الشاشة",
+  "toursGoBack": "رجوع",
+  "toursHdFailed": "تعذّر تحميل الجودة العالية. تُعرض المعاينة.",
+  "toursHotspotImage": "صورة تفصيلية",
+  "toursHotspotInfo": "معلومة",
+  "toursHotspotScene": "الانتقال إلى مقعد آخر",
+  "toursHotspotSpec": "مواصفة",
+  "toursHotspotVideo": "فيديو",
+  "toursImageZoomHint": "اضغط على الصورة للتكبير",
+  "toursImageZoomTitle": "صورة تفصيلية",
+  "toursInfo": "عن هذه الجولة",
+  "toursInterior": "المقصورة: {color}",
+  "@toursInterior": {
+    "placeholders": {
+      "color": {
+        "type": "String"
+      }
+    }
+  },
+  "toursLicense": "الترخيص: {license}",
+  "@toursLicense": {
+    "placeholders": {
+      "license": {
+        "type": "String"
+      }
+    }
+  },
+  "toursLicenseCc0": "CC0 (ملكية عامة)",
+  "toursLicenseCcBy": "CC BY",
+  "toursLicenseCcBySa": "CC BY-SA",
+  "toursLicenseCommissioned": "بتكليف",
+  "toursLicenseLicensed": "مرخّصة",
+  "toursLicenseOther": "ترخيص آخر",
+  "toursLicenseOwned": "مملوكة",
+  "toursLicensePermission": "بإذن من صاحب الحقوق",
+  "toursLicensePressKit": "مواد صحفية",
+  "toursLicenseTerms": "شروط الترخيص",
+  "toursListEmptyMessage": "ننشر الجولات فقط من صور مرخّصة للفئة نفسها. ستظهر الجولات الجديدة هنا فور جاهزيتها.",
+  "toursListEmptyTitle": "لا توجد جولات 360° بعد",
+  "toursListIntro": "اجلس داخل السيارة وانظر حولك مقعدًا بمقعد. كل جولة مصنوعة من صور داخلية مرخّصة للفئة المذكورة.",
   "toursListTitle": "الجولات الداخلية 360°",
+  "toursLoadFailedMessage": "تحقق من الاتصال وحاول مرة أخرى. يمكنك أيضًا تصفّح الصور العادية.",
+  "toursLoadFailedTitle": "تعذّر تحميل العرض 360°",
+  "toursLoadMoreFailed": "تعذّر تحميل المزيد من الجولات.",
+  "toursLoading": "جارٍ تحميل العرض 360°…",
+  "toursLoadingHd": "جارٍ تحميل الجودة العالية… {percent}",
+  "@toursLoadingHd": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "toursLoadingHdUnknown": "جارٍ تحميل الجودة العالية…",
+  "toursMarket": "السوق: {market}",
+  "@toursMarket": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "toursMarketMismatch": "صُنعت هذه الجولة لسوق {market}، وليس للسوق الذي اخترته.",
+  "@toursMarketMismatch": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "toursModelYear": "موديل {year}",
+  "@toursModelYear": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "toursMotionEnabled": "التحكم بالحركة يعمل. حرّك هاتفك لتنظر حولك.",
+  "toursMotionOff": "انظر حولك بتحريك الهاتف",
+  "toursMotionOn": "إيقاف التحكم بحركة الهاتف",
+  "toursMotionUnavailable": "التحكم بحركة الهاتف غير متاح على هذا الجهاز. اسحب لتنظر حولك.",
+  "toursNoImageMessage": "صورها أكبر مما يستطيع هذا الجهاز عرضه.",
+  "toursNoImageTitle": "لا يمكن عرض هذه الجولة على هذا الجهاز",
+  "toursOpen": "افتح الجولة 360°",
+  "toursOpenGallery": "افتح معرض الصور",
+  "toursPoints": "نقاط الاهتمام",
+  "toursPointsEmpty": "لا توجد نقاط اهتمام في هذا المشهد.",
+  "toursPublished": "نُشرت {date}",
+  "@toursPublished": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "toursQualityHd": "عالية الدقة",
+  "toursQualityHdSemantics": "يُعرض الآن بجودة عالية",
+  "toursQualityPreview": "معاينة",
+  "toursQualityPreviewSemantics": "يُعرض الآن نسخة معاينة منخفضة الدقة",
+  "toursReferenceBadge": "فئة قريبة",
+  "toursReferenceBody": "تعرض هذه الصور الفئة {trim}، وليست الفئة المختارة نفسها.",
+  "@toursReferenceBody": {
+    "placeholders": {
+      "trim": {
+        "type": "String"
+      }
+    }
+  },
+  "toursReferenceTitle": "مصوّرة في فئة قريبة",
+  "toursResetView": "إعادة المنظور",
+  "toursSceneCount": "{count, plural, =0{لا مشاهد} =1{مشهد واحد} =2{مشهدان} few{{count} مشاهد} many{{count} مشهدًا} other{{count} مشهد}}",
+  "@toursSceneCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "toursSeatCargo": "صندوق الأمتعة",
+  "toursSeatDriver": "مقعد السائق",
+  "toursSeatFrontPassenger": "الراكب الأمامي",
+  "toursSeatOther": "منظر آخر",
+  "toursSeatPicker": "اختر المقعد",
+  "toursSeatRear": "المقاعد الخلفية",
+  "toursSeatThirdRow": "الصف الثالث",
+  "toursSourceLink": "المصدر",
+  "toursSpecOpen": "كل المواصفات",
+  "toursStillPreview": "معاينة ثابتة (ليست الجولة 360°)",
+  "toursTrim": "الفئة: {trim}",
+  "@toursTrim": {
+    "placeholders": {
+      "trim": {
+        "type": "String"
+      }
+    }
+  },
+  "toursUnavailableMessage": "لا توجد مقصورة 360° مرخّصة لهذه الجولة. يمكنك تصفّح الصور العادية بدلًا منها.",
+  "toursUnavailableTitle": "الجولة غير متاحة لهذه الفئة",
+  "toursVideoBlocked": "رابط الفيديو هذا غير مسموح.",
+  "toursVideoOpen": "شاهد الفيديو",
+  "toursVideoProvider": "يُفتح على {provider}",
+  "@toursVideoProvider": {
+    "placeholders": {
+      "provider": {
+        "type": "String"
+      }
+    }
+  },
+  "toursVideoSelf": "EV Car News",
+  "toursViewCar": "صفحة السيارة",
+  "toursViewerSemantics": "عرض 360° لسيارة {car}. اسحب لتنظر حولك أو استخدم الأزرار.",
+  "@toursViewerSemantics": {
+    "placeholders": {
+      "car": {
+        "type": "String"
+      }
+    }
+  },
   "toursViewerTitle": "جولة داخلية 360°",
+  "toursWebPreviewMessage": "يعمل عارض 360° في تطبيقي Android وiOS. الصورة أدناه معاينة ثابتة فقط وليست الجولة.",
+  "toursWebglMessage": "رسوميات ثلاثية الأبعاد (WebGL) غير متاحة على هذا الجهاز. يمكنك تصفّح الصور العادية بدلًا منها.",
+  "toursWebglTitle": "هذا الجهاز لا يدعم العرض 360°",
+  "toursZoomIn": "تكبير",
+  "toursZoomOut": "تصغير",
   "tripsTitle": "مخطط الرحلات"
 }

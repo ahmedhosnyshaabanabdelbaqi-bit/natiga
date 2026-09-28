@@ -76,7 +76,9 @@ function findTokenRuns(hay: Tok[], needle: string[]): number[] {
 /** Replaces the character span of tokens [i, i+len) of `normalized` by `replacement`. */
 function replaceRun(normalized: string, toks: Tok[], i: number, len: number, replacement: string) {
   return (
-    normalized.slice(0, toks[i].start) + replacement + normalized.slice(toks[i + len - 1].end)
+    normalized.slice(0, toks[i].start) +
+    replacement +
+    normalized.slice(toks[i + len - 1].end)
   ).trim();
 }
 
@@ -154,7 +156,11 @@ export function buildQueryPlan(query: string, aliases: AliasEntry[]): QueryPlan 
     for (const other of g.members) {
       if (other.normalized === member.normalized) continue;
       if (runs.length > 0) {
-        add(replaceRun(normalized, toks, runs[0], member.tokens.length, other.normalized), weight, via);
+        add(
+          replaceRun(normalized, toks, runs[0], member.tokens.length, other.normalized),
+          weight,
+          via,
+        );
       } else {
         add(other.normalized, weight, via);
       }
@@ -175,10 +181,7 @@ export function buildQueryPlan(query: string, aliases: AliasEntry[]): QueryPlan 
 
   for (const g of groups) {
     for (const member of g.members) {
-      const runs = findTokenRuns(
-        toks,
-        member.tokens,
-      );
+      const runs = findTokenRuns(toks, member.tokens);
       if (runs.length === 0) continue;
       exactHit = true;
       expandGroup(g, member, runs, ALIAS_WEIGHT, 'alias');

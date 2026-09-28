@@ -1,0 +1,260 @@
+{
+    "data": {
+        "id": "d0000000-0000-4000-8000-000000000037",
+        "slug": "demo-charging-station-2",
+        "name": "محطة تجريبية 2 (Demo)",
+        "nameAr": "محطة تجريبية 2 (Demo)",
+        "nameEn": "[DEMO] Demo AC Station 2 (fictional)",
+        "isDemo": true,
+        "operator": {
+            "id": "d0000000-0000-4000-8000-000000000030",
+            "name": "مشغل شحن تجريبي (وهمي)",
+            "websiteUrl": null,
+            "phone": null,
+            "email": null
+        },
+        "latitude": 32.45,
+        "longitude": 31,
+        "distanceM": null,
+        "address": {
+            "line": "عنوان تجريبي — ليس مكانًا حقيقيًا (Demo)",
+            "city": null,
+            "region": null,
+            "postalCode": null,
+            "countryCode": "EG",
+            "marketCode": "EG"
+        },
+        "accessEntranceNote": null,
+        "accessType": "customers_only",
+        "accessTypeLabel": "للعملاء فقط",
+        "accessRestrictions": "Demo: customers of the (fictional) site only.",
+        "hours": {
+            "timezone": "Africa/Cairo",
+            "isAlwaysOpen": false,
+            "openingHoursText": null,
+            "weekly": [
+                {
+                    "day": "mon",
+                    "windows": [
+                        {
+                            "start": "08:00",
+                            "end": "22:00"
+                        }
+                    ]
+                },
+                {
+                    "day": "tue",
+                    "windows": [
+                        {
+                            "start": "08:00",
+                            "end": "22:00"
+                        }
+                    ]
+                },
+                {
+                    "day": "wed",
+                    "windows": [
+                        {
+                            "start": "08:00",
+                            "end": "22:00"
+                        }
+                    ]
+                },
+                {
+                    "day": "thu",
+                    "windows": [
+                        {
+                            "start": "08:00",
+                            "end": "22:00"
+                        }
+                    ]
+                },
+                {
+                    "day": "fri",
+                    "windows": []
+                },
+                {
+                    "day": "sat",
+                    "windows": [
+                        {
+                            "start": "08:00",
+                            "end": "22:00"
+                        }
+                    ]
+                },
+                {
+                    "day": "sun",
+                    "windows": [
+                        {
+                            "start": "08:00",
+                            "end": "22:00"
+                        }
+                    ]
+                }
+            ],
+            "openNow": {
+                "localTime": "20:01",
+                "evaluatedAt": "2026-09-25T17:01:18.547Z",
+                "closesAt": null,
+                "opensAt": "2026-09-26T05:00:00.000Z",
+                "state": "closed",
+                "reason": "schedule"
+            }
+        },
+        "contact": {
+            "phone": null,
+            "email": null,
+            "websiteUrl": null
+        },
+        "photos": [],
+        "amenities": [
+            {
+                "code": "restroom",
+                "label": "دورات مياه"
+            },
+            {
+                "code": "cafe",
+                "label": "مقهى"
+            }
+        ],
+        "paymentMethods": [
+            {
+                "code": "rfid",
+                "label": "بطاقة RFID"
+            },
+            {
+                "code": "app",
+                "label": "تطبيق المشغّل"
+            }
+        ],
+        "startMethods": [
+            {
+                "code": "rfid",
+                "label": "بطاقة RFID"
+            },
+            {
+                "code": "app",
+                "label": "تطبيق المشغّل"
+            }
+        ],
+        "operationalStatus": "operational",
+        "operationalStatusLabel": "تعمل",
+        "points": [
+            {
+                "id": "d0000000-0000-4000-8000-000000000038",
+                "label": "Demo AC 1",
+                "evseId": null,
+                "floorLevel": null,
+                "parkingRestrictions": null,
+                "operationalStatus": "operational",
+                "connectors": [
+                    {
+                        "id": "d0000000-0000-4000-8000-00000000003a",
+                        "chargingPointId": "d0000000-0000-4000-8000-000000000038",
+                        "connectorType": {
+                            "code": "type2",
+                            "name": "النوع 2 (منيكس)"
+                        },
+                        "currentType": "AC",
+                        "maxPowerKw": 22,
+                        "maxVoltage": null,
+                        "maxAmperage": null,
+                        "phases": 3,
+                        "format": "socket",
+                        "quantity": 1,
+                        "operationalStatus": "unknown",
+                        "availability": {
+                            "status": "unknown",
+                            "providerStatus": null,
+                            "freshness": "none",
+                            "source": null,
+                            "observedAt": null,
+                            "expiresAt": null
+                        },
+                        "compatibility": null
+                    }
+                ]
+            },
+            {
+                "id": "d0000000-0000-4000-8000-000000000039",
+                "label": "Demo AC 2",
+                "evseId": null,
+                "floorLevel": null,
+                "parkingRestrictions": null,
+                "operationalStatus": "operational",
+                "connectors": [
+                    {
+                        "id": "d0000000-0000-4000-8000-00000000003b",
+                        "chargingPointId": "d0000000-0000-4000-8000-000000000039",
+                        "connectorType": {
+                            "code": "type2",
+                            "name": "النوع 2 (منيكس)"
+                        },
+                        "currentType": "AC",
+                        "maxPowerKw": 22,
+                        "maxVoltage": null,
+                        "maxAmperage": null,
+                        "phases": 3,
+                        "format": "socket",
+                        "quantity": 1,
+                        "operationalStatus": "unknown",
+                        "availability": {
+                            "status": "unknown",
+                            "providerStatus": null,
+                            "freshness": "none",
+                            "source": null,
+                            "observedAt": null,
+                            "expiresAt": null
+                        },
+                        "compatibility": null
+                    }
+                ]
+            }
+        ],
+        "unassignedConnectors": [],
+        "pointCount": 2,
+        "connectorCount": 2,
+        "tariffs": [],
+        "usageCostText": null,
+        "availability": {
+            "liveProviderConfigured": false,
+            "provider": null,
+            "isLive": false,
+            "status": "unknown",
+            "counts": {
+                "available": 0,
+                "occupied": 0,
+                "outOfOrder": 0,
+                "unknown": 2
+            },
+            "lastObservedAt": null,
+            "disclaimer": "يُعرض التوافر اللحظي فقط من مصدر يقدمه فعليًا وقبل انتهاء صلاحيته؛ غير ذلك تكون الحالة غير معروفة."
+        },
+        "source": {
+            "dataSource": "manual",
+            "license": "Demo data (fictional)",
+            "attribution": "FICTIONAL demo data for testing layouts — not a real product, price or place.",
+            "lastVerifiedAt": null,
+            "sourceUpdatedAt": null,
+            "lastUpdated": "2026-09-25T17:00:27.558Z",
+            "providers": []
+        },
+        "community": {
+            "isLive": false,
+            "disclaimer": "تسجيلات الزيارة والبلاغات بيانات مجتمعية مؤرخة من المستخدمين، وليست حالة لحظية رسمية للمحطة.",
+            "checkins": {
+                "total": 0,
+                "last30Days": 0,
+                "lastAt": null,
+                "successRate30d": null,
+                "recent": []
+            },
+            "reports": {
+                "openCount": 0,
+                "recent": []
+            }
+        },
+        "compatibility": null,
+        "updatedAt": "2026-09-25T17:00:27.558Z"
+    }
+}

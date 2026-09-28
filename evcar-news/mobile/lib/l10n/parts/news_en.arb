@@ -3,5 +3,250 @@
   "newsListTitle": "News",
   "newsArticleTitle": "Article",
   "newsCategoryTitle": "Category",
-  "newsTagTitle": "Topic"
+  "newsTagTitle": "Topic",
+  "newsFilterAll": "All",
+  "newsFilterSaved": "Saved offline",
+  "newsCategoriesLabel": "News categories",
+  "newsFiltersTitle": "Filter news",
+  "newsSortLatest": "Latest",
+  "newsSortPopular": "Most read",
+  "newsSortOldest": "Oldest",
+  "newsTypeLabel": "Content type",
+  "newsTypeAny": "All types",
+  "newsTypeNews": "News",
+  "newsTypeReview": "Reviews",
+  "newsTypeTestDrive": "Test drives",
+  "newsTypeBuyingGuide": "Buying guides",
+  "newsTypeExplainer": "Explainers",
+  "newsTypeOpinion": "Opinion",
+  "newsAllMarkets": "News from all markets",
+  "newsAllMarketsHint": "Off: only news for {market} and news for every market.",
+  "@newsAllMarketsHint": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "newsOnlyMyLanguage": "Only articles in my language",
+  "newsOnlyMyLanguageHint": "Off: articles not translated yet are shown in their original language, with a label.",
+  "newsEmptyTitle": "No articles yet",
+  "newsEmptyMessage": "Nothing has been published here yet. Check back later.",
+  "newsEmptyFilteredMessage": "No articles match these filters.",
+  "newsClearFilters": "Clear filters",
+  "newsBrowseAll": "Browse all news",
+  "newsEndOfFeed": "You're all caught up",
+  "newsLoadMoreFailed": "Couldn't load more articles.",
+  "newsLoadingMore": "Loading more articles",
+  "newsOpenSaved": "Open saved articles",
+  "newsLanguageAr": "Arabic",
+  "newsLanguageEn": "English",
+  "newsShownInLanguage": "In {language}",
+  "@newsShownInLanguage": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "newsSavedEmptyTitle": "No saved articles",
+  "newsSavedEmptyMessage": "Open an article and tap the download button to read it later without internet.",
+  "newsSavedCount": "{count, plural, =1{1 article on this device} other{{count} articles on this device}}",
+  "@newsSavedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "newsSavedOn": "Saved {date}",
+  "@newsSavedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "newsSavedImagesPartial": "Some images weren't saved",
+  "newsRemoveSaved": "Remove from saved",
+  "newsRemoveSavedConfirmTitle": "Remove this article?",
+  "newsRemoveSavedConfirmMessage": "It will no longer be available without internet.",
+  "newsSaveOffline": "Save for offline reading",
+  "newsSavedOfflineState": "Saved for offline reading",
+  "newsSavingOffline": "Saving for offline reading…",
+  "newsSavedSnack": "Saved. You can read it without internet.",
+  "newsSavedSnackPartial": "{count, plural, =1{Saved, but 1 image couldn't be downloaded.} other{Saved, but {count} images couldn't be downloaded.}}",
+  "@newsSavedSnackPartial": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "newsRemovedSnack": "Removed from saved articles.",
+  "newsSaveFailed": "Couldn't save the article. Please try again.",
+  "newsReaderSettings": "Reading settings",
+  "newsFontSize": "Text size",
+  "newsFontSmaller": "Smaller text",
+  "newsFontLarger": "Larger text",
+  "newsFontScaleValue": "Text size {percent}",
+  "@newsFontScaleValue": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "newsLineSpacing": "Line spacing",
+  "newsLineSpacingCompact": "Compact",
+  "newsLineSpacingComfortable": "Comfortable",
+  "newsLineSpacingRelaxed": "Relaxed",
+  "newsReaderTheme": "Reading theme",
+  "newsReaderThemeApp": "Like the app",
+  "newsReaderThemeLight": "Light",
+  "newsReaderThemeDark": "Dark",
+  "newsReaderPreview": "This is how article text will look while you read.",
+  "newsByAuthor": "By {name}",
+  "@newsByAuthor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "newsPublishedOn": "Published {date}",
+  "@newsPublishedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "newsUpdatedOn": "Updated {date}",
+  "@newsUpdatedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "newsEventDate": "Event date: {date}",
+  "@newsEventDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "newsReadingTime": "{minutes, plural, =1{1 min read} other{{minutes} min read}}",
+  "@newsReadingTime": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "newsMachineTranslated": "Machine translation reviewed by an editor.",
+  "newsFallbackNotice": "Not available in {requested} yet, so it is shown in {served}.",
+  "@newsFallbackNotice": {
+    "placeholders": {
+      "requested": {
+        "type": "String"
+      },
+      "served": {
+        "type": "String"
+      }
+    }
+  },
+  "newsMarketMismatch": "This article is aimed at other markets; details may not apply in {market}.",
+  "@newsMarketMismatch": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "newsSourceTitle": "Source",
+  "newsSourceOpen": "Open the original source",
+  "newsCorrectionsTitle": "Corrections and updates",
+  "newsCorrectionKindCorrection": "Correction",
+  "newsCorrectionKindClarification": "Clarification",
+  "newsCorrectionKindUpdate": "Update",
+  "newsTagsTitle": "Topics",
+  "newsRelatedCarsTitle": "Cars in this article",
+  "newsRelatedArticlesTitle": "Related articles",
+  "newsVehicleBrand": "Brand",
+  "newsVehicleModel": "Model",
+  "newsVehicleModelYear": "Model year {year}",
+  "@newsVehicleModelYear": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "newsComments": "Comments",
+  "newsWatchVideo": "Watch the video",
+  "newsVideoOpensIn": "Opens in {provider}",
+  "@newsVideoOpensIn": {
+    "placeholders": {
+      "provider": {
+        "type": "String"
+      }
+    }
+  },
+  "newsVideoPrivacy": "Nothing is loaded from {provider} until you tap.",
+  "@newsVideoPrivacy": {
+    "placeholders": {
+      "provider": {
+        "type": "String"
+      }
+    }
+  },
+  "newsVideoGeneric": "the video site",
+  "newsImageOpen": "Open image",
+  "newsImageViewerHint": "Pinch or double-tap to zoom.",
+  "newsImageLicense": "Licence",
+  "newsImageSource": "Image source",
+  "newsExternalLinkTitle": "Open an external link?",
+  "newsExternalLinkMessage": "You're leaving EV Car News to open {host}.",
+  "@newsExternalLinkMessage": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "newsExternalLinkInsecure": "This link is not encrypted (http).",
+  "newsOpenLink": "Open",
+  "newsNotFoundTitle": "Article not available",
+  "newsNotFoundMessage": "It may have been removed or is not published yet.",
+  "newsOfflineNoCopyMessage": "This article isn't saved on your device. Connect to the internet to read it.",
+  "newsSavedCopyNotice": "Offline copy saved {time}. It may have changed since.",
+  "@newsSavedCopyNotice": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "newsSearch": "Search news",
+  "newsTagHeader": "#{name}",
+  "@newsTagHeader": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "newsArticlesInCategory": "{count, plural, =1{1 article} other{{count} articles}}",
+  "@newsArticlesInCategory": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "newsCoverCaption": "Cover image",
+  "newsBackToTop": "Back to top"
 }

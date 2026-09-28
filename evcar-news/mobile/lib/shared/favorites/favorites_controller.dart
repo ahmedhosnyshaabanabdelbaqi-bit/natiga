@@ -139,13 +139,22 @@ class FavoritesController extends Notifier<FavoritesState> {
     if (remote == null || auth is! AuthSignedIn || state.syncing) return;
     state = state.copyWith(syncing: true, syncError: () => null);
     try {
-      for (final item in state.items.values.where((i) => i.localOnly).toList()) {
-        await remote.add(item);
-      }
+      final before = state.items;
+      final local = before.values.where((i) => i.localOnly).toList();
+      var skipped = const <FavoriteKey, MergeSkipReason>{};
+      if (local.isNotEmpty) skipped = (await remote.merge(local)).skipped;
       final server = await remote.fetchAll();
       if (!ref.mounted) return;
       state = FavoritesState(
-        items: {for (final i in server) i.key.storageKey: i.copyWith(localOnly: false)},
+        items: {
+          for (final i in server)
+            // The server view cannot always build a route (tours): keep the
+            // device snapshot's.
+            i.key.storageKey: i.copyWith(localOnly: false, route: i.route ?? before[i.key.storageKey]?.route),
+          // Refused because the account is full: stays on this device only.
+          for (final i in local)
+            if (skipped[i.key] == MergeSkipReason.limitReached) i.key.storageKey: i,
+        },
         synced: true,
       );
       await _store.setOwner(auth.user.id);

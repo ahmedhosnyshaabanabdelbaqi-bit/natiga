@@ -1,0 +1,39 @@
+{
+    "data": {
+        "stationId": "d0000000-0000-4000-8000-000000000031",
+        "availability": {
+            "liveProviderConfigured": false,
+            "provider": null,
+            "isLive": false,
+            "status": "unknown",
+            "counts": {
+                "available": 0,
+                "occupied": 0,
+                "outOfOrder": 0,
+                "unknown": 2
+            },
+            "lastObservedAt": "2025-01-01T00:00:00.000Z",
+            "disclaimer": "يُعرض التوافر اللحظي فقط من مصدر يقدمه فعليًا وقبل انتهاء صلاحيته؛ غير ذلك تكون الحالة غير معروفة."
+        },
+        "connectors": [
+            {
+                "connectorId": "d0000000-0000-4000-8000-000000000033",
+                "status": "unknown",
+                "providerStatus": "available",
+                "freshness": "expired",
+                "source": "demo",
+                "observedAt": "2025-01-01T00:00:00.000Z",
+                "expiresAt": "2025-01-01T00:10:00.000Z"
+            },
+            {
+                "connectorId": "d0000000-0000-4000-8000-000000000034",
+                "status": "unknown",
+                "providerStatus": null,
+                "freshness": "none",
+                "source": null,
+                "observedAt": null,
+                "expiresAt": null
+            }
+        ]
+    }
+}

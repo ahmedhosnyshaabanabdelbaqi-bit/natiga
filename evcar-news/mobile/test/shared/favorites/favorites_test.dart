@@ -42,6 +42,31 @@ class FakeRemote implements FavoritesRemote {
     if (fail) throw const ApiException(kind: ApiErrorKind.network, code: 'NETWORK_ERROR');
     server.remove(key.storageKey);
   }
+
+  /// Keys the fake server refuses on merge.
+  final refuse = <FavoriteKey, MergeSkipReason>{};
+  int merges = 0;
+
+  @override
+  Future<FavoritesMergeResult> merge(List<FavoriteItem> items) async {
+    if (fail) throw const ApiException(kind: ApiErrorKind.network, code: 'NETWORK_ERROR');
+    merges++;
+    var added = 0;
+    for (final i in items) {
+      if (refuse.containsKey(i.key)) continue;
+      if (server.containsKey(i.key.storageKey)) continue;
+      server[i.key.storageKey] = i;
+      adds++;
+      added++;
+    }
+    return FavoritesMergeResult(
+      added: added,
+      skipped: {
+        for (final i in items)
+          if (refuse.containsKey(i.key)) i.key: refuse[i.key]!,
+      },
+    );
+  }
 }
 
 Map<String, dynamic> userJson(String id) => {
@@ -162,6 +187,39 @@ void main() {
     final c = await containerWith();
     expect(c.read(favoritesProvider).list().map((i) => i.key.id), ['mine']);
     await authSettled(c);
+  });
+
+  test('sign-in merge: gone targets are dropped, a full account keeps them on the device, tour routes survive', () async {
+    const tourKey = FavoriteKey(FavoriteType.tour, 't1');
+    final remote = FakeRemote()
+      ..refuse[const FavoriteKey(FavoriteType.article, 'gone')] = MergeSkipReason.notFound
+      ..refuse[const FavoriteKey(FavoriteType.article, 'full')] = MergeSkipReason.limitReached;
+    final c = await containerWith(remote: remote);
+    c.listen(favoritesProvider, (_, _) {});
+    await authSettled(c);
+    final n = c.read(favoritesProvider.notifier);
+    await n.toggle(fav('gone'));
+    await n.toggle(fav('full'));
+    await n.toggle(fav('ok'));
+    await n.toggle(const FavoriteItem(key: tourKey, title: 'Tour', route: '/cars/demo/tour/t1'));
+    // The server view of a tour has no route (it lacks the car slug).
+    final original = remote.fetchAll;
+    expect(original, isNotNull);
+
+    await c.read(tokenStorageProvider).write(const AuthTokens(accessToken: 'a', refreshToken: 'r'));
+    c.invalidate(authControllerProvider);
+    c.read(authControllerProvider);
+    await until(() => c.read(favoritesProvider).synced);
+
+    expect(remote.merges, 1, reason: 'one bulk merge, not one request per item');
+    final state = c.read(favoritesProvider);
+    expect(state.contains(const FavoriteKey(FavoriteType.article, 'gone')), isFalse);
+    final full = state.items[const FavoriteKey(FavoriteType.article, 'full').storageKey]!;
+    expect(full.localOnly, isTrue, reason: 'refused because the account is full: stays on this device');
+    expect(state.items[const FavoriteKey(FavoriteType.article, 'ok').storageKey]!.localOnly, isFalse);
+    expect(state.items[tourKey.storageKey]!.route, '/cars/demo/tour/t1');
+    await c.read(authControllerProvider.notifier).logout();
+    await settle();
   });
 
   test('malformed stored favorites are ignored', () async {

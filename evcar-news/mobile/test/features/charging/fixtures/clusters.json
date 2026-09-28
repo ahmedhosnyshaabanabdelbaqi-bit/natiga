@@ -1,0 +1,15 @@
+{
+    "data": [
+        {
+            "latitude": 32.475,
+            "longitude": 30.75,
+            "count": 2,
+            "stationId": null
+        }
+    ],
+    "meta": {
+        "cellSizeDeg": 2.8125,
+        "total": 2,
+        "zoom": 5
+    }
+}

@@ -16,13 +16,7 @@ export const SEARCH_GROUPS = [
 export type SearchGroupKey = (typeof SEARCH_GROUPS)[number];
 
 export type HitType =
-  | 'article'
-  | 'brand'
-  | 'model'
-  | 'variant'
-  | 'station'
-  | 'encyclopedia'
-  | 'service';
+  'article' | 'brand' | 'model' | 'variant' | 'station' | 'encyclopedia' | 'service';
 
 export const HIT_TYPE_OF: Record<SearchGroupKey, HitType> = {
   articles: 'article',

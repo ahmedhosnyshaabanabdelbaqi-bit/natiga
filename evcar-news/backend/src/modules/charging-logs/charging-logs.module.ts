@@ -1,11 +1,16 @@
 import { Module } from '@nestjs/common';
+import { GarageModule } from '../garage/garage.module';
+import { ChargingLogsController } from './charging-logs.controller';
+import { ChargingLogsService } from './charging-logs.service';
 
 /**
- * User charging logs and spending/consumption reports.
- *
- * Skeleton created by the backend foundation and registered in AppModule.
- * NOT IMPLEMENTED YET: controllers/providers are added by the owning team
- * inside src/modules/charging-logs/ only.
+ * Charging logs (REQUIREMENTS §14): /api/v1/me/charging-logs CRUD +
+ * /api/v1/me/charging-logs/report (computed from the user's rows only).
+ * See docs/decisions/backend-personal.md §3.
  */
-@Module({})
+@Module({
+  imports: [GarageModule],
+  controllers: [ChargingLogsController],
+  providers: [ChargingLogsService],
+})
 export class ChargingLogsModule {}
