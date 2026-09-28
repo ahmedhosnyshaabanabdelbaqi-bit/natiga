@@ -1,0 +1,16 @@
+node_modules/
+data/
+.runtime/
+output/
+.env
+.env.*
+!.env.example
+*.log
+*.pem
+*.key
+
+release/
+electron/server.mjs
+electron/migrations/
+electron/migration-overrides/
+electron/server.mjs.map

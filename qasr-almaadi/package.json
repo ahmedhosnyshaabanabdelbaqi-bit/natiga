@@ -1,0 +1,93 @@
+{
+  "name": "qasr-almaadi-nicu",
+  "version": "2.0.2",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "tsx server/index.ts",
+    "build": "tsc --noEmit && vite build && node scripts/build-offline.mjs",
+    "start": "tsx server/index.ts",
+    "setup": "tsx scripts/setup.ts",
+    "test": "tsx --test tests/*.test.ts",
+    "backup": "tsx scripts/backup.ts",
+    "restore": "tsx scripts/restore.ts",
+    "check:browser": "tsx scripts/browser-check.ts",
+    "check:roles": "tsx scripts/workspace-browser-check.ts",
+    "format": "prettier --write src server scripts tests docs *.json *.ts README.md",
+    "desktop:bundle": "node scripts/build-desktop.mjs",
+    "desktop:dev": "npm run build && npm run desktop:bundle && electron .",
+    "desktop:dist": "npm run build && npm run desktop:bundle && electron-builder --win --x64 --publish never",
+    "test:desktop": "node scripts/desktop-smoke.mjs"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "latest",
+    "pg": "latest",
+    "@fontsource-variable/cairo": "^5.3.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "latest",
+    "@types/express": "latest",
+    "@types/node": "latest",
+    "@types/pg": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@vitejs/plugin-react": "latest",
+    "agent-browser": "^0.37.1",
+    "bwip-js": "^4.11.4",
+    "electron": "^44.4.5",
+    "electron-builder": "^26.15.3",
+    "esbuild": "^0.28.2",
+    "express": "latest",
+    "lucide-react": "latest",
+    "prettier": "^3.9.6",
+    "react": "latest",
+    "react-dom": "latest",
+    "tsx": "latest",
+    "typescript": "latest",
+    "vite": "latest",
+    "zod": "latest"
+  },
+  "main": "electron/main.mjs",
+  "description": "نظام إدارة مستشفى قصر المعادي — برنامج سطح المكتب (يعمل بدون إنترنت)",
+  "author": "Qasr El Maadi Hospital",
+  "build": {
+    "appId": "eg.qasralmaadi.hospital",
+    "productName": "QasrAlMaadi",
+    "copyright": "Qasr El Maadi Hospital",
+    "asar": false,
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "electron/**",
+      "dist/**",
+      "public/hospital-logo.png",
+      "package.json",
+      "node_modules/**"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "language": "1025",
+      "shortcutName": "نظام مستشفى قصر المعادي",
+      "deleteAppDataOnUninstall": false,
+      "artifactName": "QasrAlMaadi-Setup-${version}.${ext}"
+    }
+  }
+}

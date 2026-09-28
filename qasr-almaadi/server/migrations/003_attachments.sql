@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS attachments(id text PRIMARY KEY,admission_id text NOT NULL REFERENCES admissions(id),name text NOT NULL,mime text NOT NULL,size integer NOT NULL CHECK(size>0 AND size<=5242880),content bytea NOT NULL,actor_id text NOT NULL REFERENCES users(id),created_at timestamptz NOT NULL DEFAULT now());

@@ -1,0 +1,385 @@
+/* Cairo reading hierarchy: body 16, controls/data 14–16, supporting text 12. */
+body {
+  color: var(--text);
+}
+h1,
+h2,
+h3,
+h4,
+strong {
+  font-weight: 800;
+}
+small {
+  font-weight: 600;
+}
+.sidebar nav button,
+.sidebar-bottom > button {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.7;
+}
+.sidebar nav button.active,
+.sidebar-bottom > button.active {
+  font-weight: 800;
+}
+.brand small,
+.department small,
+.nav-label {
+  letter-spacing: 0;
+}
+.brand strong {
+  font-size: 27px;
+}
+.department strong {
+  font-size: 14px;
+}
+.page-heading p,
+.panel-heading p {
+  font-size: 14px;
+  line-height: 1.8;
+}
+.panel-heading h3 {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text);
+}
+.overview-heading h2 {
+  font-size: 21px;
+}
+.button,
+.text-button {
+  font-size: 14px;
+  font-weight: 700;
+}
+.button {
+  min-height: 42px;
+}
+.button.small,
+.button.tiny {
+  font-size: 13px;
+  min-height: 36px;
+}
+.stat-card > div:first-child {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+.stat-card > strong {
+  font-weight: 850;
+  font-variant-numeric: tabular-nums;
+}
+.stat-card > strong small,
+.stat-bottom,
+.stat-bottom small {
+  font-size: 12px;
+  font-weight: 650;
+  color: var(--muted);
+}
+.stat-card.teal > div:first-child,
+.stat-card.teal > strong small,
+.stat-card.teal .stat-bottom {
+  color: #fff;
+}
+.stat-bottom {
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.occupancy-legend,
+.occupancy-ring span {
+  color: var(--muted);
+  font-weight: 650;
+}
+.attention-item strong {
+  font-size: 15px;
+  font-weight: 750;
+  color: var(--text);
+}
+th {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text);
+  padding-block: 15px;
+}
+td {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  padding-block: 18px;
+}
+td small,
+.patient-cell small {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+.patient-cell strong {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text);
+}
+.latin {
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.2px;
+}
+.badge,
+.patient-cell em {
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.7;
+  padding: 3px 8px;
+}
+.badge {
+  color: #3f5948;
+}
+.badge.active,
+.badge.admitted,
+.badge.available,
+.badge.approved,
+.badge.completed,
+.badge.reviewed,
+.badge.acknowledged {
+  color: #276342;
+}
+.badge.occupied {
+  color: #246352;
+}
+.badge.urgent,
+.badge.critical,
+.badge.known,
+.badge.rejected {
+  color: #983e2f;
+}
+.badge.pending,
+.badge.cleaning,
+.badge.reserved,
+.badge.open,
+.badge.draft,
+.badge.suspended {
+  color: #765711;
+}
+.badge.discharged,
+.badge.closed,
+.badge.resulted {
+  color: #60528d;
+}
+.badge.maintenance,
+.badge.out_of_service,
+.badge.cancelled,
+.badge.stopped {
+  color: #535b54;
+}
+.patient-cell em {
+  color: #71548e;
+}
+.tabs button,
+.register-tabs button {
+  font-size: 14px;
+  font-weight: 700;
+}
+.tabs button.active {
+  font-weight: 800;
+}
+.identity-main p,
+.identity-tags,
+.detail-list,
+.detail-grid {
+  font-size: 14px;
+}
+.form-grid label,
+.login-card label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+input,
+select,
+textarea,
+.form-grid input,
+.form-grid select,
+.form-grid textarea,
+.search-input input,
+.table-toolbar select,
+.login-card input {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.7;
+}
+input::placeholder,
+textarea::placeholder {
+  color: var(--muted);
+  opacity: 1;
+  font-weight: 500;
+}
+.form-grid small,
+.time-entry-note,
+.modal-footer small {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.login-card > p,
+.login-hint,
+.login-footer {
+  color: var(--muted);
+}
+.training-strip {
+  min-height: 34px;
+  height: auto;
+  padding-block: 7px;
+  font-weight: 650;
+  color: #705829;
+}
+.panel-heading,
+.panel-foot,
+.table-footer {
+  gap: 12px;
+}
+.table-toolbar {
+  flex-wrap: wrap;
+}
+.sidebar,
+.identity-main,
+.panel-heading > div,
+.page-heading > div {
+  min-width: 0;
+}
+
+[data-theme="dark"] .stat-card > div:first-child,
+[data-theme="dark"] .patient-cell strong,
+[data-theme="dark"] .attention-item strong,
+[data-theme="dark"] .breadcrumb strong {
+  color: var(--text);
+}
+[data-theme="dark"] .stat-card.teal > div:first-child {
+  color: #fff;
+}
+[data-theme="dark"] .badge {
+  color: #e0ece3;
+}
+[data-theme="dark"] .badge.pending,
+[data-theme="dark"] .badge.draft,
+[data-theme="dark"] .badge.reserved {
+  color: #f5d783;
+}
+[data-theme="dark"] .badge.critical,
+[data-theme="dark"] .badge.known,
+[data-theme="dark"] .badge.rejected {
+  color: #ffb9ab;
+}
+
+@media (min-width: 701px) {
+  .sidebar {
+    width: 280px;
+  }
+  .main {
+    margin-inline-start: 280px;
+  }
+}
+@media (min-width: 901px) and (max-width: 1180px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .dashboard-middle {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 700px) {
+  .sidebar {
+    width: min(290px, 88vw);
+    inset-inline-start: -310px;
+  }
+  .sidebar.show {
+    inset-inline-start: 0;
+  }
+  .overview-heading {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .overview-heading h2 {
+    font-size: 19px;
+  }
+  .overview-heading > span {
+    font-size: 12px;
+  }
+  .page-heading h1 {
+    font-size: 27px;
+    line-height: 1.65;
+  }
+  .page-heading p,
+  .panel-heading p {
+    font-size: 13px;
+  }
+  .panel-heading {
+    flex-wrap: wrap;
+  }
+  .panel-heading h3 {
+    font-size: 17px;
+  }
+  .stat-card > div:first-child {
+    font-size: 14px;
+    gap: 6px;
+  }
+  .stat-card {
+    min-height: 180px;
+  }
+  .stat-bottom {
+    line-height: 1.7;
+  }
+  .stat-card > strong small {
+    font-size: 12px;
+  }
+  .occupancy-content {
+    padding-inline: 16px;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .occupancy-legend {
+    min-width: 140px;
+  }
+  .heading-actions .button {
+    font-size: 0;
+    width: 42px;
+    height: 42px;
+  }
+  .table-toolbar .button {
+    font-size: 13px;
+  }
+  .identity-title h2 {
+    font-size: 21px;
+  }
+  .identity-main p,
+  .identity-main p .latin {
+    font-size: 12px;
+  }
+  .table-footer {
+    flex-wrap: wrap;
+    font-size: 12px;
+  }
+  .topbar {
+    height: auto;
+    min-height: 64px;
+    gap: 8px;
+  }
+  .breadcrumb {
+    font-size: 13px;
+    gap: 5px;
+  }
+  .top-actions {
+    gap: 5px;
+  }
+}
+@media print {
+  .print-sheet {
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .print-sheet th {
+    font-size: 12px;
+    font-weight: 800;
+  }
+  .print-sheet td {
+    font-size: 12px;
+    color: #111;
+  }
+}

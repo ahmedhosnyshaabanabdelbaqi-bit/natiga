@@ -1,0 +1,21 @@
+{
+  "at": "2026-09-12T21:44:27.950Z",
+  "url": "http://127.0.0.1:63204",
+  "checks": [
+    "Desktop login and dashboard load with real database values",
+    "Dark mode and Arabic/English direction toggles work",
+    "Urgent admission form saves child, admission and bed; persistent identity updates",
+    "Lost response after server commit retains inputs; same-key retry yields exactly one vital record",
+    "Attachments tab loads scoped server records",
+    "Arabic wristband print renders a real barcode and exports PDF",
+    "Bed map and billing navigate to connected data",
+    "390px mobile layout has navigation and no page overflow",
+    "Offline reload shows help, never cached patient/API data; reconnect restores the server session"
+  ],
+  "synthetic_test_patient": {
+    "id": "2eb20868-d59d-429d-b545-355bf1b8da18",
+    "mrn": "QM-2026-2A780D6A"
+  },
+  "status": "PASS",
+  "javascript_errors": []
+}

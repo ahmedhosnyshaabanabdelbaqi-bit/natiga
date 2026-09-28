@@ -1,0 +1,13 @@
+CREATE TABLE consumable_catalog(id text PRIMARY KEY,sku text UNIQUE NOT NULL,name text NOT NULL,unit text NOT NULL,active boolean NOT NULL DEFAULT true,version integer NOT NULL DEFAULT 1,created_at timestamptz NOT NULL DEFAULT now());
+ALTER TABLE inventory ADD COLUMN consumable_id text REFERENCES consumable_catalog(id);
+INSERT INTO consumable_catalog(id,sku,name,unit) SELECT 'legacy-'||md5(name||'|'||unit),'LEG-'||md5(name||'|'||unit),name,unit FROM inventory GROUP BY name,unit;
+UPDATE inventory SET consumable_id='legacy-'||md5(name||'|'||unit);
+CREATE TABLE consumable_prices(consumable_id text NOT NULL REFERENCES consumable_catalog(id),price_id text PRIMARY KEY REFERENCES prices(id));
+CREATE TABLE consumptions(id text PRIMARY KEY,admission_id text NOT NULL REFERENCES admissions(id),consumable_id text NOT NULL REFERENCES consumable_catalog(id),name text NOT NULL,unit text NOT NULL,quantity numeric NOT NULL CHECK(quantity>0),unit_price numeric NOT NULL CHECK(unit_price>=0),amount numeric NOT NULL CHECK(amount>=0),charge_id text UNIQUE NOT NULL REFERENCES charges(id),actor_id text NOT NULL REFERENCES users(id),created_at timestamptz NOT NULL DEFAULT now());
+CREATE TABLE consumption_movements(consumption_id text NOT NULL REFERENCES consumptions(id),movement_id text PRIMARY KEY REFERENCES stock_movements(id));
+CREATE INDEX inventory_consumable ON inventory(consumable_id,expires_at);
+CREATE INDEX consumption_admission ON consumptions(admission_id,created_at);
+UPDATE roles SET permissions=permissions || '["consumables.read","consumables.use","consumables.catalog"]'::jsonb WHERE name IN('manager','stock');
+UPDATE roles SET permissions=permissions || '["consumables.read","consumables.catalog","prices.write"]'::jsonb WHERE name='admin';
+UPDATE roles SET permissions=permissions || '["consumables.read","consumables.use"]'::jsonb WHERE name IN('doctor','nurse','head_nurse');
+UPDATE roles SET permissions=permissions || '["consumables.read"]'::jsonb WHERE name='accountant';

@@ -1,0 +1,14 @@
+{
+  "id": "/",
+  "name": "Qasr Al Maadi Hospital — NICU Management",
+  "short_name": "Qasr Al Maadi",
+  "description": "NICU management interface. The app shell and downtime help are available offline; patient records and operations require the server.",
+  "lang": "en",
+  "dir": "ltr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f6f8f8",
+  "theme_color": "#16847a",
+  "icons": [{"src": "/hospital-logo.png", "sizes": "1254x1254", "type": "image/png", "purpose": "any"}]
+}

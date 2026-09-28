@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'">
+<title>الإعداد الأول</title>
+<style>
+  :root { --bg:#0b1329; --card:#152238; --line:#263859; --text:#f8fafc; --muted:#94a3b8; --accent:#06b6d4; --bad:#ef4444; }
+  * { box-sizing:border-box; font-family:"Cairo","Segoe UI",Tahoma,sans-serif; }
+  body { margin:0; background:var(--bg); color:var(--text); padding:24px; }
+  h1 { font-size:22px; margin:0 0 4px; }
+  p.sub { color:var(--muted); margin:0 0 18px; font-size:14px; }
+  form { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px; display:grid; gap:12px; }
+  label { display:grid; gap:5px; font-size:14px; }
+  small { color:var(--muted); }
+  input { background:#0f1b30; border:1px solid var(--line); border-radius:8px; padding:10px; color:var(--text); font-size:15px; }
+  input:focus { outline:2px solid var(--accent); }
+  button { background:var(--accent); color:#04222a; border:0; border-radius:10px; padding:12px; font-size:16px; font-weight:700; cursor:pointer; }
+  button:disabled { opacity:.6; cursor:wait; }
+  #err { color:var(--bad); min-height:20px; font-size:14px; }
+  .warn { background:#2a1f0b; border:1px solid #6b4a0f; color:#fbbf24; border-radius:8px; padding:9px 11px; font-size:13px; }
+</style>
+</head>
+<body>
+<h1>مرحبًا بك في نظام مستشفى قصر المعادي</h1>
+<p class="sub">إعداد لمرة واحدة قبل أول تشغيل. تُحفظ كل البيانات على هذا الجهاز فقط.</p>
+<form id="f">
+  <label>اسم المستشفى<input name="hospitalName" required maxlength="160" value="مستشفى قصر المعادي"></label>
+  <label>اسم مستخدم المدير<input name="username" required value="admin" dir="ltr" autocomplete="off"><small>حروف إنجليزية وأرقام (٣ أحرف على الأقل)</small></label>
+  <label>كلمة مرور المدير<input name="password" type="password" required minlength="16" dir="ltr" autocomplete="new-password"><small>١٦ حرفًا على الأقل</small></label>
+  <label>تأكيد كلمة المرور<input name="confirm" type="password" required dir="ltr" autocomplete="new-password"></label>
+  <label>كلمة سر النسخ الاحتياطي المشفّر<input name="backupPassphrase" type="password" required minlength="16" dir="ltr" autocomplete="new-password"><small>١٦ حرفًا على الأقل، وتختلف عن كلمة مرور المدير</small></label>
+  <div class="warn">اكتب كلمة سر النسخ الاحتياطي واحفظها في مكان آمن خارج هذا الجهاز. لا يمكن استرجاع أي نسخة احتياطية بدونها.</div>
+  <div id="err" role="alert"></div>
+  <button id="go" type="submit">إنشاء النظام وبدء التشغيل</button>
+</form>
+<script>
+  const f = document.getElementById("f"), err = document.getElementById("err"), go = document.getElementById("go");
+  f.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    err.textContent = ""; go.disabled = true;
+    const r = await window.setupApi.submit(Object.fromEntries(new FormData(f)));
+    if (!r.ok) { err.textContent = r.error; go.disabled = false; }
+  });
+</script>
+</body>
+</html>

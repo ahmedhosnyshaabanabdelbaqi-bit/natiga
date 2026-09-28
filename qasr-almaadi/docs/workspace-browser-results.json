@@ -1,0 +1,199 @@
+{
+  "at": "2026-09-12T22:06:18.898Z",
+  "results": [
+    {
+      "role": "admin",
+      "pages": [
+        "dashboard",
+        "patients",
+        "beds",
+        "tasks",
+        "labs",
+        "monitoring",
+        "accounts",
+        "treasury",
+        "inventory",
+        "equipment",
+        "maintenance",
+        "registers",
+        "reports",
+        "attendance"
+      ],
+      "status": "PASS"
+    },
+    {
+      "role": "manager",
+      "pages": [
+        "dashboard",
+        "patients",
+        "beds",
+        "tasks",
+        "labs",
+        "monitoring",
+        "accounts",
+        "treasury",
+        "inventory",
+        "equipment",
+        "maintenance",
+        "registers",
+        "reports",
+        "attendance"
+      ],
+      "status": "PASS"
+    },
+    {
+      "role": "doctor",
+      "pages": [
+        "dashboard",
+        "patients",
+        "beds",
+        "tasks",
+        "labs",
+        "monitoring",
+        "inventory",
+        "equipment",
+        "registers",
+        "reports",
+        "attendance"
+      ],
+      "status": "PASS"
+    },
+    {
+      "role": "nurse",
+      "pages": [
+        "dashboard",
+        "patients",
+        "beds",
+        "tasks",
+        "labs",
+        "monitoring",
+        "inventory",
+        "equipment",
+        "registers",
+        "attendance"
+      ],
+      "status": "PASS"
+    },
+    {
+      "role": "head_nurse",
+      "pages": [
+        "dashboard",
+        "patients",
+        "beds",
+        "tasks",
+        "labs",
+        "monitoring",
+        "inventory",
+        "equipment",
+        "maintenance",
+        "registers",
+        "reports",
+        "attendance"
+      ],
+      "status": "PASS"
+    },
+    {
+      "role": "reception",
+      "pages": [
+        "dashboard",
+        "patients",
+        "beds",
+        "purchases",
+        "equipment",
+        "registers",
+        "attendance"
+      ],
+      "status": "PASS"
+    },
+    {
+      "role": "accountant",
+      "pages": [
+        "dashboard",
+        "patients",
+        "beds",
+        "accounts",
+        "treasury",
+        "inventory",
+        "equipment",
+        "maintenance",
+        "registers",
+        "reports",
+        "attendance"
+      ],
+      "status": "PASS"
+    },
+    {
+      "role": "purchasing",
+      "pages": [
+        "dashboard",
+        "inventory",
+        "purchases",
+        "reports"
+      ],
+      "status": "PASS"
+    },
+    {
+      "role": "stock",
+      "pages": [
+        "dashboard",
+        "patients",
+        "beds",
+        "inventory",
+        "purchases",
+        "equipment",
+        "registers",
+        "attendance"
+      ],
+      "status": "PASS"
+    },
+    {
+      "role": "lab",
+      "pages": [
+        "dashboard",
+        "patients",
+        "beds",
+        "labs",
+        "attendance"
+      ],
+      "status": "PASS"
+    },
+    {
+      "role": "quality",
+      "pages": [
+        "dashboard",
+        "patients",
+        "beds",
+        "registers",
+        "reports",
+        "attendance"
+      ],
+      "status": "PASS"
+    },
+    {
+      "role": "maintenance",
+      "pages": [
+        "dashboard",
+        "beds",
+        "equipment",
+        "maintenance",
+        "registers",
+        "attendance"
+      ],
+      "status": "PASS"
+    },
+    {
+      "role": "insurance",
+      "pages": [
+        "dashboard",
+        "patients",
+        "beds",
+        "accounts",
+        "treasury",
+        "maintenance",
+        "registers",
+        "attendance"
+      ],
+      "status": "PASS"
+    }
+  ]
+}

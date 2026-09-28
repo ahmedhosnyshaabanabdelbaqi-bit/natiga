@@ -1,0 +1,94 @@
+.attendance-module {
+  min-width: 0;
+  max-width: 100%;
+  display: grid;
+  gap: 20px;
+}
+.attendance-module > .info-box {
+  margin: 0;
+}
+.attendance-module .panel,
+.attendance-module .panel-heading > div {
+  min-width: 0;
+}
+.attendance-module .table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+}
+.attendance-module .register-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.attendance-module .register-tabs button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.attendance-module .panel-heading {
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.attendance-module .button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.attendance-module .table-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+.attendance-module .table-toolbar input,
+.attendance-module .table-toolbar select {
+  max-width: 100%;
+}
+.attendance-module .panel-pad p,
+.attendance-module code {
+  overflow-wrap: anywhere;
+}
+.attendance-secret > div {
+  width: 100%;
+  min-width: 0;
+}
+.attendance-secret input {
+  width: 100%;
+  margin: 12px 0;
+  font-family: monospace;
+}
+.attendance-module details > summary {
+  cursor: pointer;
+  padding-block: 10px;
+  font-weight: 600;
+}
+@media (max-width: 600px) {
+  .attendance-module {
+    gap: 14px;
+  }
+  .attendance-module .register-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .attendance-module .register-tabs button {
+    min-width: 0;
+    white-space: normal;
+    justify-content: center;
+  }
+  .attendance-module .panel-heading > .button-row,
+  .attendance-module .panel-heading > .button {
+    width: 100%;
+  }
+  .attendance-module .panel-heading .button-row .button {
+    flex: 1;
+    justify-content: center;
+  }
+  .attendance-module .table-toolbar > input,
+  .attendance-module .table-toolbar > select {
+    width: 100%;
+  }
+  .attendance-module .table-toolbar > .button {
+    width: 100%;
+    justify-content: center;
+  }
+}

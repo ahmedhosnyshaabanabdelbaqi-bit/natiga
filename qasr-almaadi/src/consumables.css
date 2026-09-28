@@ -1,0 +1,55 @@
+.consumables-module {
+  display: grid;
+  gap: 20px;
+  min-width: 0;
+}
+.consumable-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.consumable-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+.consumable-summary {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding: 8px 0 18px;
+  color: var(--muted);
+}
+.consumable-search {
+  max-width: 440px;
+  width: 100%;
+  margin-bottom: 16px;
+}
+.consumables-module small {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+}
+.consumables-module details {
+  min-width: 140px;
+}
+.consumables-module details > div {
+  font-size: 12px;
+  margin-top: 6px;
+}
+.consumables-module .panel {
+  min-width: 0;
+}
+@media (max-width: 640px) {
+  .consumable-summary {
+    gap: 12px;
+    font-size: 12px;
+  }
+  .consumables-module .panel-heading {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+}
