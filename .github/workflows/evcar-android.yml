@@ -10,11 +10,10 @@
 # Trigger: a push whose commit message contains "[apk]" (so work-in-progress
 # pushes don't publish a release each time), or a manual run.
 #
-# API base URL: the repository variable EVCAR_API_BASE_URL is REQUIRED
-# (Settings → Secrets and variables → Actions → Variables), e.g.
-# https://api.example.com/api/v1. There is no default: without it the job
-# fails instead of publishing an APK that points at a host that does not
-# exist. Without a reachable backend the app shows its "cannot connect" state.
+# API base URL: repository variable EVCAR_API_BASE_URL (Settings → Secrets
+# and variables → Actions → Variables). Defaults to the planned production
+# host https://api.evcar.news/api/v1 (see docs/DEPLOYMENT_AR.md). Until the
+# backend is deployed there, the app shows its "cannot connect" state.
 name: evcar-android
 
 on:
@@ -39,7 +38,7 @@ jobs:
       run:
         working-directory: evcar-news/mobile
     env:
-      API_BASE_URL: ${{ vars.EVCAR_API_BASE_URL }}
+      API_BASE_URL: ${{ vars.EVCAR_API_BASE_URL || 'https://api.evcar.news/api/v1' }}
     steps:
       - name: Require the API address (repository variable EVCAR_API_BASE_URL)
         working-directory: .
