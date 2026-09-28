@@ -8,6 +8,7 @@ import {
   dialog,
   ipcMain,
   safeStorage,
+  screen,
   shell,
 } from "electron";
 import {
@@ -138,8 +139,8 @@ async function stopServer() {
 // ---- windows ----------------------------------------------------------------------
 function createMainWindow(url) {
   mainWindow = new BrowserWindow({
-    width: 1440,
-    height: 900,
+    width: Math.min(1440, screen.getPrimaryDisplay().workAreaSize.width),
+    height: Math.min(900, screen.getPrimaryDisplay().workAreaSize.height),
     minWidth: 1024,
     minHeight: 680,
     title: "نظام مستشفى قصر المعادي",
@@ -173,8 +174,9 @@ function createMainWindow(url) {
 function showSetupWindow() {
   return new Promise((resolve) => {
     setupWindow = new BrowserWindow({
-      width: 620,
-      height: 760,
+      width: 640,
+      // Small hospital PCs (1366x768) get a scrollable form instead of a clipped window.
+      height: Math.min(860, screen.getPrimaryDisplay().workAreaSize.height - 20),
       resizable: false,
       title: "الإعداد الأول — مستشفى قصر المعادي",
       icon: path.join(appRoot, "build", "icon.png"),
@@ -193,6 +195,8 @@ function showSetupWindow() {
       if (f.password !== f.confirm) return { ok: false, error: "تأكيد كلمة المرور غير مطابق." };
       if (String(f.backupPassphrase || "").length < 16)
         return { ok: false, error: "كلمة سر النسخ الاحتياطي يجب ألا تقل عن 16 حرفًا." };
+      if (f.backupPassphrase === f.password)
+        return { ok: false, error: "كلمة سر النسخ الاحتياطي يجب أن تختلف عن كلمة مرور المدير." };
       if (!safeStorage.isEncryptionAvailable())
         return { ok: false, error: "تعذر حفظ كلمة سر النسخ الاحتياطي بأمان على هذا الجهاز." };
       try {

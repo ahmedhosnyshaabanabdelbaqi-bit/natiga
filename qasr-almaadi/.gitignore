@@ -14,3 +14,4 @@ electron/server.mjs
 electron/migrations/
 electron/migration-overrides/
 electron/server.mjs.map
+dist/
