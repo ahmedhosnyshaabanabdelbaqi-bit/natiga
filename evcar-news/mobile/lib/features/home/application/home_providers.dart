@@ -8,6 +8,7 @@ import '../../auth/presentation/auth_controller.dart';
 import '../../charging/application/charging_providers.dart';
 import '../../charging/data/location_service.dart';
 import '../../charging/domain/station_query.dart';
+import '../../search/application/locale_key.dart';
 import '../data/home_repository.dart';
 import '../domain/home_models.dart';
 
@@ -34,16 +35,14 @@ final homeAutoLocateProvider = FutureProvider<void>((ref) async {
 class HomeFeedController extends AsyncNotifier<CachedResult<HomeFeed>> {
   @override
   Future<CachedResult<HomeFeed>> build() {
-    ref.watch(requestLocaleProvider);
+    ref.watch(requestLocaleProvider.select(localeKey));
     final signedIn = ref.watch(authControllerProvider.select((s) => s.isSignedIn));
     final place = ref.watch(homeNearbyPlaceProvider);
     ref.listen(authControllerProvider.select((s) => s.isSignedIn), (was, now) {
       // The account's personalized copy must not outlive the session.
       if ((was ?? false) && !now) unawaited(ref.read(homeRepositoryProvider).forgetUserCopy());
     });
-    return ref
-        .watch(homeRepositoryProvider)
-        .home(lat: place?.point.lat, lng: place?.point.lng, signedIn: signedIn);
+    return ref.watch(homeRepositoryProvider).home(lat: place?.point.lat, lng: place?.point.lng, signedIn: signedIn);
   }
 
   Future<void> refresh() async {

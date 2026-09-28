@@ -90,6 +90,9 @@ abstract final class AppRoutes {
   static const sessions = '/account/sessions';
   static const deleteAccount = '/account/delete';
 
+  /// Community: people whose posts I hid (`GET /me/mutes`).
+  static const blockedUsers = '/account/blocked-users';
+
   // Auth.
   static const loginPath = '/auth/login';
   static const registerPath = '/auth/register';
@@ -105,7 +108,7 @@ abstract final class AppRoutes {
   static String resetPassword({String? token}) => _withQuery(resetPasswordPath, {'token': token});
 
   /// Routes that redirect guests to sign-in.
-  static const authRequired = {profile, sessions, deleteAccount};
+  static const authRequired = {profile, sessions, deleteAccount, blockedUsers};
 
   static bool requiresAuth(String path) => authRequired.contains(path);
 

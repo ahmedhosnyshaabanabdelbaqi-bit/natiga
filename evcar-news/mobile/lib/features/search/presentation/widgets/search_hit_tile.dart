@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../shared/widgets/kit.dart';
+import '../../../services_directory/presentation/widgets/service_widgets.dart' show DirectorySponsoredLabel;
 import '../../domain/search_models.dart';
 
 IconData searchTypeIcon(String? type) => switch (type) {
@@ -70,19 +71,26 @@ String? searchHitDetailLine(BuildContext context, SearchHit hit) {
   String? s(String k) => d[k] is String && (d[k] as String).trim().isNotEmpty ? (d[k] as String).trim() : null;
   final String? typeDetail = switch (hit.type) {
     'model' => s('brandName'),
-    'variant' => d['modelYear'] is num ? fmt.number(d['modelYear'] as num, maxDecimals: 0) : null,
+    // A model year is a label, never a grouped number ("2,026").
+    'variant' => d['modelYear'] is num ? fmt.shapeDate('${(d['modelYear'] as num).toInt()}') : null,
     'station' => s('city'),
     'encyclopedia' => s('categoryName'),
     'service' => [?s('serviceTypeLabel'), ?s('city')].join(' · '),
     'article' => friendlyTime(context, DateTime.tryParse(s('publishedAt') ?? '')),
     _ => null,
   };
+  final typeLabel = searchHitTypeLabel(l10n, hit.type);
+  // The snippet (with its highlights) is shown under this line: a subtitle
+  // that repeats it, or parts repeating each other ("مركز خدمة · مركز خدمة"),
+  // would only add noise.
+  final snippet = hit.snippet?.trim().toLowerCase();
+  final seen = <String>{typeLabel.trim().toLowerCase()};
   final parts = [
-    ?typeDetail,
-    ?hit.subtitle,
-  ].where((p) => p.isNotEmpty).toList();
-  if (parts.isEmpty) return searchHitTypeLabel(l10n, hit.type);
-  return '${searchHitTypeLabel(l10n, hit.type)} · ${parts.join(' · ')}';
+    for (final p in [?typeDetail, ?hit.subtitle])
+      if (p.trim().isNotEmpty && p.trim().toLowerCase() != snippet && seen.add(p.trim().toLowerCase())) p.trim(),
+  ];
+  if (parts.isEmpty) return typeLabel;
+  return '$typeLabel · ${parts.join(' · ')}';
 }
 
 class SearchHitTile extends StatelessWidget {
@@ -102,7 +110,7 @@ class SearchHitTile extends StatelessWidget {
     final tone = context.palette.tone(AppTone.brand);
     final reviewed = hit.type == 'encyclopedia' && hit.details['reviewedAt'] != null;
     final pills = <Widget>[
-      if (hit.isSponsored) SponsoredLabel(sponsorName: hit.sponsorLabel, dense: true),
+      if (hit.isSponsored) DirectorySponsoredLabel(label: hit.sponsorLabel),
       if (hit.isDemo) const DemoBadge(dense: true),
       if (reviewed) Pill(icon: Icons.verified_outlined, tone: AppTone.success, dense: true, label: l10n.searchReviewed),
       if (hit.type == 'service' && hit.details['contactVerified'] == true)

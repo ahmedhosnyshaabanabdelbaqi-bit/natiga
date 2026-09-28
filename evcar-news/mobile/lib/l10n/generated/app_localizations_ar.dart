@@ -10,6 +10,19 @@ class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
+  String accountCarsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count سيارة',
+      few: '$count سيارات',
+      two: 'سيارتان',
+      one: 'سيارة واحدة',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get accountDeleteAccount => 'حذف الحساب';
 
   @override
@@ -121,6 +134,18 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get accountTitle => 'حسابي';
+
+  @override
+  String get accountTripPlannerExplain =>
+      'يحتاج تخطيط الرحلات إلى خدمة مسارات للطرق، وهي غير مهيأة على الخادم بعد. لا نرسم خطوطًا مستقيمة كمسارات قيادة ولا نختلق خططًا، لذلك يبقى المخطط مخفيًا حتى تُهيأ. في الأثناء، تتيح كل صفحة محطة فتح الاتجاهات في تطبيق الملاحة.';
+
+  @override
+  String get accountTripPlannerUnavailable => 'غير متاح بعد';
+
+  @override
+  String accountUnreadCount(int count) {
+    return '$count جديد';
+  }
 
   @override
   String get accountVerifyNow => 'تأكيد الآن';
@@ -255,10 +280,583 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authVerifyTokenLabel => 'رمز التأكيد';
 
   @override
+  String get calculatorsAcLimitHint => 'غالبًا 7.4 أو 11 أو 22 كيلوواط. غير معروف = ثقة أقل.';
+
+  @override
+  String get calculatorsAssumptions => 'القيم والافتراضات المستخدمة';
+
+  @override
+  String get calculatorsAssumptionsHint => 'غيّر أيًا منها في الأعلى وأعد الحساب.';
+
+  @override
+  String get calculatorsBasisBattery => 'مضافة للبطارية';
+
+  @override
+  String get calculatorsBasisBatteryConsumption => 'من شاشة السيارة';
+
+  @override
+  String get calculatorsBasisGrid => 'من العداد / الشاحن';
+
+  @override
+  String get calculatorsBasisGridConsumption => 'من المقبس (WLTP/EPA)';
+
+  @override
+  String get calculatorsCalculate => 'احسب';
+
+  @override
   String get calculatorsCalculatorTitle => 'الحاسبة';
 
   @override
+  String get calculatorsCarNeedsNetwork => 'استخدام بيانات السيارة يتطلب اتصالًا. أزل السيارة لتحسب دون إنترنت بقيمك.';
+
+  @override
+  String get calculatorsCarOptional => 'اختياري: املأ القيم الناقصة من سيارة';
+
+  @override
+  String get calculatorsCarSelectedHint => 'الحقول الفارغة تُملأ من بيانات هذه السيارة في الدليل';
+
+  @override
+  String get calculatorsChooseCar => 'استخدم بيانات سيارة';
+
+  @override
+  String get calculatorsChooseCarHint =>
+      'تُملأ القيم الناقصة (البطارية وقدرة الشحن والاستهلاك) من الدليل مع مصدرها. القيم التي تكتبها لها الأولوية دائمًا. يتطلب اتصالًا بالإنترنت.';
+
+  @override
+  String get calculatorsCompareFuelCar => 'قارن بسيارة وقود';
+
+  @override
+  String get calculatorsConfidenceHigh => 'ثقة عالية';
+
+  @override
+  String get calculatorsConfidenceLow => 'ثقة منخفضة';
+
+  @override
+  String get calculatorsConfidenceMedium => 'ثقة متوسطة';
+
+  @override
+  String get calculatorsConsumptionBasis => 'الاستهلاك الذي أُدخله مقيس';
+
+  @override
+  String get calculatorsConsumptionHint => 'من سيارتك أو من معيار مثل WLTP. لا يتم التحويل بين الدورات.';
+
+  @override
+  String get calculatorsCostEnergy => 'الطاقة';
+
+  @override
+  String get calculatorsCostIdle => 'رسوم الانتظار';
+
+  @override
+  String get calculatorsCostParking => 'الوقوف';
+
+  @override
+  String get calculatorsCostPer100 => 'التكلفة لكل 100 كم';
+
+  @override
+  String get calculatorsCostPerKm => 'التكلفة لكل كم';
+
+  @override
+  String get calculatorsCostPerKwhAdded => 'التكلفة لكل كيلوواط ساعة مضافة';
+
+  @override
+  String get calculatorsCostSession => 'رسوم الجلسة';
+
+  @override
+  String get calculatorsCostTime => 'الوقت';
+
+  @override
+  String get calculatorsCurrency => 'العملة';
+
+  @override
+  String get calculatorsDcCurveHint =>
+      'الزمن الدقيق للشحن السريع DC يحتاج منحنى الشحن الموثّق للسيارة، ويأتي من الدليل عند اختيار سيارة. بدونه تحصل على نطاق منخفض الثقة.';
+
+  @override
+  String get calculatorsDifferenceHint => 'تكلفة الوقود ناقص تكلفة الكهرباء؛ القيمة السالبة تعني أن الكهربائية أغلى.';
+
+  @override
+  String get calculatorsDifferencePer100 => 'توفيرك لكل 100 كم';
+
+  @override
+  String get calculatorsDifferencePerMonth => 'الفرق شهريًا';
+
+  @override
+  String get calculatorsDifferencePerYear => 'الفرق سنويًا';
+
+  @override
+  String get calculatorsDuration => 'مدة الشحن';
+
+  @override
+  String get calculatorsDurationRange => 'النطاق التقديري';
+
+  @override
+  String calculatorsEffectiveFrom(String date) {
+    return 'ساري من $date';
+  }
+
+  @override
+  String get calculatorsEfficiencyHint => 'كسر عشري، مثل 0.9 = 90%. فارغ = 0.9 ويظهر كافتراض قابل للتعديل.';
+
+  @override
+  String get calculatorsEnergyAdded => 'الطاقة المضافة للبطارية';
+
+  @override
+  String get calculatorsEnergyCost => 'الطاقة / الوقود';
+
+  @override
+  String get calculatorsEnergyPerMonth => 'تكلفة الطاقة الشهرية';
+
+  @override
+  String get calculatorsEnterMyOwn => 'أدخل سعري';
+
+  @override
+  String get calculatorsEv => 'كهربائية';
+
+  @override
+  String get calculatorsEvPer100 => 'الكهرباء لكل 100 كم';
+
+  @override
+  String get calculatorsEvPerMonth => 'الكهرباء شهريًا';
+
+  @override
+  String get calculatorsEvTotal => 'إجمالي السيارة الكهربائية';
+
+  @override
+  String get calculatorsFees => 'الترخيص والرسوم';
+
+  @override
+  String get calculatorsFieldAcLimit => 'الشاحن الداخلي للسيارة AC';
+
+  @override
+  String get calculatorsFieldAmps => 'التيار لكل طور';
+
+  @override
+  String get calculatorsFieldChargingMinutes => 'مدة الشحن';
+
+  @override
+  String get calculatorsFieldConsumption => 'الاستهلاك';
+
+  @override
+  String get calculatorsFieldDcPeak => 'أقصى قدرة DC للسيارة';
+
+  @override
+  String get calculatorsFieldEfficiency => 'كفاءة الشحن';
+
+  @override
+  String get calculatorsFieldElectricityPrice => 'سعر الكهرباء الأساسي (المنزل)';
+
+  @override
+  String get calculatorsFieldEnergy => 'الطاقة';
+
+  @override
+  String get calculatorsFieldFees => 'الترخيص والرسوم سنويًا';
+
+  @override
+  String get calculatorsFieldFixedFees => 'رسوم شهرية ثابتة';
+
+  @override
+  String get calculatorsFieldFromSoc => 'الشحن من';
+
+  @override
+  String get calculatorsFieldFuelConsumption => 'استهلاك الوقود';
+
+  @override
+  String get calculatorsFieldFuelPrice => 'سعر لتر الوقود';
+
+  @override
+  String get calculatorsFieldHomePrice => 'سعر كهرباء المنزل';
+
+  @override
+  String get calculatorsFieldIdleGrace => 'دقائق انتظار مجانية';
+
+  @override
+  String get calculatorsFieldIdleMinutes => 'مدة الانتظار بعد الشحن';
+
+  @override
+  String get calculatorsFieldIdlePrice => 'رسوم الانتظار لكل دقيقة';
+
+  @override
+  String get calculatorsFieldIncentives => 'الحوافز';
+
+  @override
+  String get calculatorsFieldInsurance => 'التأمين سنويًا';
+
+  @override
+  String get calculatorsFieldKmPerDay => 'المسافة اليومية';
+
+  @override
+  String get calculatorsFieldKmPerMonth => 'المسافة الشهرية';
+
+  @override
+  String get calculatorsFieldKmPerYear => 'المسافة السنوية';
+
+  @override
+  String get calculatorsFieldMaintenance => 'الصيانة سنويًا';
+
+  @override
+  String get calculatorsFieldOneOff => 'تكاليف لمرة واحدة';
+
+  @override
+  String get calculatorsFieldParkingFlat => 'رسوم وقوف ثابتة';
+
+  @override
+  String get calculatorsFieldParkingMinutes => 'مدة الوقوف';
+
+  @override
+  String get calculatorsFieldParkingPerHour => 'الوقوف لكل ساعة';
+
+  @override
+  String get calculatorsFieldPublicEnergyPrice => 'السعر لكل كيلوواط ساعة';
+
+  @override
+  String get calculatorsFieldPublicPrice => 'سعر الشحن العام';
+
+  @override
+  String get calculatorsFieldPublicShare => 'نسبة الشحن العام';
+
+  @override
+  String get calculatorsFieldPurchase => 'سعر الشراء';
+
+  @override
+  String get calculatorsFieldResidual => 'قيمة إعادة البيع في النهاية';
+
+  @override
+  String get calculatorsFieldSessionFee => 'رسوم الجلسة';
+
+  @override
+  String get calculatorsFieldStationPower => 'قدرة الشاحن / المحطة';
+
+  @override
+  String get calculatorsFieldTimePrice => 'السعر لكل دقيقة شحن';
+
+  @override
+  String get calculatorsFieldToSoc => 'الشحن إلى';
+
+  @override
+  String get calculatorsFieldUsable => 'السعة القابلة للاستخدام';
+
+  @override
+  String get calculatorsFieldVolts => 'الجهد لكل طور';
+
+  @override
+  String get calculatorsFieldYears => 'سنوات الملكية';
+
+  @override
+  String get calculatorsFixedFees => 'الرسوم الثابتة';
+
+  @override
+  String get calculatorsFromCarHint => 'اتركه فارغًا لاستخدام قيمة السيارة من الدليل.';
+
+  @override
+  String get calculatorsFuelCar => 'وقود';
+
+  @override
+  String get calculatorsFuelPer100 => 'الوقود لكل 100 كم';
+
+  @override
+  String get calculatorsFuelPerMonth => 'الوقود شهريًا';
+
+  @override
+  String get calculatorsGridConsumption => 'الاستهلاك من الشبكة';
+
+  @override
+  String get calculatorsGridEnergy => 'الطاقة من الشبكة';
+
+  @override
+  String get calculatorsHomeDescription =>
+      'الطاقة المضافة والطاقة المسحوبة من الشبكة مع الفاقد، والتكلفة حسب تعرفة منزلك.';
+
+  @override
+  String get calculatorsHomeTitle => 'تكلفة الشحن المنزلي';
+
+  @override
+  String get calculatorsHowCalculated => 'طريقة الحساب';
+
+  @override
+  String get calculatorsIncentives => 'الحوافز';
+
+  @override
+  String get calculatorsInsurance => 'التأمين';
+
+  @override
+  String get calculatorsIntro =>
+      'تُحسب النتائج من القيم التي تُدخلها بنفس معادلات الخادم. لا توجد أسعار مدمجة: أدخل أسعار اليوم أو اختر سعرًا مرجعيًا من الإدارة بتاريخه ومصدره.';
+
+  @override
+  String get calculatorsKmPerMonth => 'المسافة الشهرية';
+
+  @override
+  String get calculatorsKwhPerMonth => 'الطاقة الشهرية';
+
+  @override
+  String get calculatorsLimitCurve => 'منحنى الشحن';
+
+  @override
+  String get calculatorsLimitStation => 'الشاحن';
+
+  @override
+  String get calculatorsLimitSupply => 'مصدر الكهرباء المنزلي';
+
+  @override
+  String get calculatorsLimitVehicle => 'السيارة';
+
+  @override
+  String get calculatorsLimitingFactor => 'المحدِّد';
+
+  @override
+  String get calculatorsLosses => 'فاقد الشحن';
+
+  @override
+  String get calculatorsMaintenance => 'الصيانة';
+
+  @override
+  String get calculatorsModeEnergy => 'طاقة أعرفها';
+
+  @override
+  String get calculatorsModeSoc => 'البطارية ونسب الشحن';
+
+  @override
+  String get calculatorsMonthlyDescription => 'تكلفة الطاقة الشهرية والسنوية حسب المسافة والاستهلاك.';
+
+  @override
+  String get calculatorsMonthlyTitle => 'التكلفة الشهرية';
+
+  @override
+  String get calculatorsNo => 'لا';
+
+  @override
+  String get calculatorsNoCar => 'بدون سيارة';
+
+  @override
+  String get calculatorsNoCarSelected => 'لم تُختر سيارة';
+
+  @override
+  String get calculatorsNoDefaultPrices => 'الأسعار تتغير: تعرض النتيجة تاريخ الأسعار التي استخدمتها.';
+
+  @override
+  String get calculatorsNoReferencePrices => 'لا توجد أسعار مرجعية لهذا السوق';
+
+  @override
+  String get calculatorsNoReferencePricesHint => 'أدخل السعر الذي تدفعه. لا نفترض أي سعر.';
+
+  @override
+  String get calculatorsNonEnergy => 'كل شيء عدا الطاقة';
+
+  @override
+  String get calculatorsNotIncluded => 'غير محتسب';
+
+  @override
+  String get calculatorsOnDevice => 'محسوبة على هذا الهاتف';
+
+  @override
+  String get calculatorsOnServer => 'محسوبة ببيانات الدليل';
+
+  @override
+  String get calculatorsOneOff => 'تكاليف لمرة واحدة';
+
+  @override
+  String get calculatorsOneOffHint => 'مثل تركيب شاحن منزلي.';
+
+  @override
+  String get calculatorsOriginCatalog => 'من الدليل';
+
+  @override
+  String get calculatorsOriginDefault => 'افتراضية';
+
+  @override
+  String get calculatorsOriginReference => 'سعر مرجعي';
+
+  @override
+  String get calculatorsOriginUser => 'أدخلتها';
+
+  @override
+  String get calculatorsPer100Description =>
+      'كم تكلفك 100 كم من الكهرباء، مع مزج أسعار المنزل والشحن العام حسب استخدامك.';
+
+  @override
+  String get calculatorsPer100Title => 'التكلفة لكل 100 كم';
+
+  @override
+  String get calculatorsPerDayMode => 'يوميًا';
+
+  @override
+  String get calculatorsPerKm => 'لكل كم';
+
+  @override
+  String get calculatorsPerMonth => 'شهريًا';
+
+  @override
+  String get calculatorsPerMonthMode => 'شهريًا';
+
+  @override
+  String get calculatorsPerMonthTotal => 'شهريًا';
+
+  @override
+  String get calculatorsPerYear => 'سنويًا';
+
+  @override
+  String calculatorsPerYearValue(String amount) {
+    return '$amount سنويًا';
+  }
+
+  @override
+  String get calculatorsPickTrim => 'اختر فئة من الدليل';
+
+  @override
+  String get calculatorsPossiblyOutdated => 'قد يكون قديمًا';
+
+  @override
+  String get calculatorsPower => 'القدرة المستخدمة';
+
+  @override
+  String get calculatorsPriceDate => 'تاريخ السعر';
+
+  @override
+  String get calculatorsPriceDateFromReference => 'فارغ = تاريخ سريان السعر المرجعي.';
+
+  @override
+  String get calculatorsPriceDateHint => 'متى كانت هذه الأسعار سارية. بدون تاريخ تذكر النتيجة ذلك.';
+
+  @override
+  String get calculatorsPriceDateMissing => 'لم يُحدد تاريخ السعر';
+
+  @override
+  String get calculatorsPriceDateNotSet => 'غير محدد';
+
+  @override
+  String get calculatorsPricePerKwh => 'سعر الكيلوواط ساعة المستخدم';
+
+  @override
+  String calculatorsPricesAsOf(String date) {
+    return 'الأسعار بتاريخ $date';
+  }
+
+  @override
+  String get calculatorsPublicDescription =>
+      'رسوم الكيلوواط ساعة والدقيقة والجلسة والوقوف والانتظار كما يحتسبها المشغّل.';
+
+  @override
+  String get calculatorsPublicTitle => 'تكلفة الشحن العام';
+
+  @override
+  String get calculatorsPurchase => 'الشراء';
+
+  @override
+  String get calculatorsReferencePrices => 'الأسعار المرجعية';
+
+  @override
+  String calculatorsReferenceUsed(String label, String date) {
+    return 'سعر مرجعي: $label، ساري من $date';
+  }
+
+  @override
+  String get calculatorsResidual => 'قيمة إعادة البيع';
+
+  @override
+  String get calculatorsResult => 'النتيجة';
+
+  @override
+  String get calculatorsRoughEstimate => 'تقدير تقريبي — ليس زمنًا دقيقًا';
+
+  @override
+  String get calculatorsSavingPercent => 'نسبة التوفير';
+
+  @override
+  String get calculatorsSectionConsumption => 'الاستهلاك';
+
+  @override
+  String get calculatorsSectionDriving => 'القيادة';
+
+  @override
+  String get calculatorsSectionDrivingOptional => 'القيادة (اختياري، للأرقام الشهرية)';
+
+  @override
+  String get calculatorsSectionDurations => 'الأوقات عند الشاحن';
+
+  @override
+  String get calculatorsSectionEnergy => 'البطارية والطاقة';
+
+  @override
+  String get calculatorsSectionEvCosts => 'تكاليف السيارة الكهربائية';
+
+  @override
+  String get calculatorsSectionFuel => 'سيارة الوقود';
+
+  @override
+  String get calculatorsSectionFuelCar => 'تكاليف سيارة الوقود';
+
+  @override
+  String get calculatorsSectionOwnership => 'الملكية';
+
+  @override
+  String get calculatorsSectionPower => 'القدرة';
+
+  @override
+  String get calculatorsSectionPrices => 'العملة وتاريخ السعر';
+
+  @override
+  String get calculatorsSectionTariff => 'الأسعار';
+
+  @override
+  String get calculatorsSupplyLimit => 'حد مصدر الكهرباء المنزلي';
+
+  @override
+  String get calculatorsSupplyNone => 'غير محدد';
+
+  @override
+  String get calculatorsSupplyOne => 'طور واحد';
+
+  @override
+  String get calculatorsSupplyThree => 'ثلاثة أطوار';
+
+  @override
+  String get calculatorsTcoDescription =>
+      'الشراء والحوافز وإعادة البيع والطاقة والتأمين والصيانة خلال السنوات التي تختارها.';
+
+  @override
+  String calculatorsTcoDifference(String amount) {
+    return 'سيارة الوقود ناقص الكهربائية: $amount';
+  }
+
+  @override
+  String get calculatorsTcoTitle => 'التكلفة الكلية للملكية';
+
+  @override
+  String get calculatorsTimeDescription =>
+      'مدة AC من حد القدرة الفعلي؛ وDC من منحنى موثّق، وإلا فنطاق تقديري منخفض الثقة.';
+
+  @override
+  String get calculatorsTimeTitle => 'مدة الشحن';
+
+  @override
   String get calculatorsTitle => 'حاسبات الشحن والتشغيل';
+
+  @override
+  String get calculatorsTotal => 'الإجمالي';
+
+  @override
+  String get calculatorsTotalCost => 'التكلفة الإجمالية';
+
+  @override
+  String get calculatorsTotalKm => 'المسافة الإجمالية';
+
+  @override
+  String get calculatorsUnknown => 'هذه الحاسبة غير موجودة.';
+
+  @override
+  String get calculatorsUseReference => 'استخدم سعرًا مرجعيًا';
+
+  @override
+  String get calculatorsVoltsHint => 'فارغ = 230 فولت (يظهر كافتراض).';
+
+  @override
+  String get calculatorsVsFuelDescription => 'تكلفة طاقة سيارتك الكهربائية مقارنة بسيارة وقود لكل 100 كم وشهريًا.';
+
+  @override
+  String get calculatorsVsFuelTitle => 'الكهرباء مقابل البنزين';
+
+  @override
+  String get calculatorsYes => 'نعم';
 
   @override
   String carsAbout(String name) {
@@ -336,7 +934,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get carsBodySedan => 'سيدان';
 
   @override
-  String get carsBodySuv => 'دفع رباعي (SUV)';
+  String get carsBodySuv => 'SUV رياضية متعددة الاستخدامات';
 
   @override
   String get carsBodyVan => 'فان';
@@ -1588,16 +2186,290 @@ class AppLocalizationsAr extends AppLocalizations {
   String get chargingLocationUnavailable => 'تعذر تحديد موقعك. اختر مكانًا بدلًا من ذلك.';
 
   @override
+  String get chargingLogsAdd => 'إضافة جلسة';
+
+  @override
+  String get chargingLogsAdded => 'تمت إضافة الجلسة.';
+
+  @override
+  String get chargingLogsAllCars => 'كل السيارات';
+
+  @override
+  String get chargingLogsAvgPerKwh => 'المتوسط لكل كيلوواط ساعة';
+
+  @override
+  String get chargingLogsByLocation => 'أين تشحن';
+
+  @override
+  String get chargingLogsCar => 'السيارة';
+
+  @override
+  String get chargingLogsConfidenceLow => 'ثقة منخفضة';
+
+  @override
+  String get chargingLogsConfidenceMedium => 'ثقة متوسطة';
+
+  @override
+  String get chargingLogsConsumption => 'الاستهلاك';
+
+  @override
+  String get chargingLogsCost => 'المبلغ المدفوع';
+
+  @override
+  String get chargingLogsCostHint => 'اختياري. اتركه فارغًا إن لم تعرفه — لن يُحسب كشحن مجاني.';
+
+  @override
+  String get chargingLogsCostPer100 => 'التكلفة لكل 100 كم';
+
+  @override
+  String get chargingLogsCostSection => 'التكلفة';
+
+  @override
+  String get chargingLogsCurrency => 'العملة';
+
+  @override
+  String get chargingLogsCurrentType => 'نوع التيار';
+
+  @override
+  String get chargingLogsCurrentUnknown => 'غير متأكد';
+
+  @override
+  String get chargingLogsDate => 'التاريخ والوقت';
+
+  @override
+  String get chargingLogsDelete => 'حذف الجلسة';
+
+  @override
+  String get chargingLogsDeleteConfirm => 'حذف هذه الجلسة؟';
+
+  @override
+  String get chargingLogsDeleteMessage => 'ستُزال من تقاريرك.';
+
+  @override
+  String get chargingLogsDeleted => 'تم حذف الجلسة.';
+
+  @override
+  String get chargingLogsDistance => 'المسافة';
+
+  @override
+  String get chargingLogsDuration => 'المدة';
+
+  @override
   String get chargingLogsEditTitle => 'تعديل جلسة الشحن';
+
+  @override
+  String get chargingLogsEmptyMessage => 'سجّل الطاقة والتكلفة وقراءة العداد لكل شحنة. التقارير تُبنى فقط مما تدخله.';
+
+  @override
+  String get chargingLogsEmptyTitle => 'لا توجد جلسات شحن بعد';
+
+  @override
+  String get chargingLogsEnergy => 'الطاقة المشحونة';
+
+  @override
+  String get chargingLogsEnergyHint => 'كما يظهر في الشاحن أو التطبيق أو العداد.';
+
+  @override
+  String chargingLogsErrorMax(String max) {
+    return 'يجب ألا تتجاوز $max.';
+  }
+
+  @override
+  String get chargingLogsErrorPositive => 'يجب أن تكون القيمة أكبر من صفر.';
+
+  @override
+  String get chargingLogsErrorRequired => 'مطلوب.';
+
+  @override
+  String get chargingLogsErrorSoc => 'يجب أن تكون نسبة الانتهاء أعلى من نسبة البدء.';
+
+  @override
+  String get chargingLogsGuestMessage => 'سجّل الدخول لتحتفظ بسجل خاص لجلسات الشحن وترى إنفاقك واستهلاكك الفعليين.';
+
+  @override
+  String chargingLogsInCurrency(String currency) {
+    return 'بعملة $currency';
+  }
+
+  @override
+  String get chargingLogsLoadMore => 'تحميل المزيد';
+
+  @override
+  String get chargingLogsLocation => 'المكان';
+
+  @override
+  String get chargingLogsLocationHome => 'المنزل';
+
+  @override
+  String get chargingLogsLocationOther => 'أخرى';
+
+  @override
+  String get chargingLogsLocationPublic => 'عام';
+
+  @override
+  String get chargingLogsLocationWork => 'العمل';
+
+  @override
+  String get chargingLogsLowConfidenceHint =>
+      'مبني على قراءات قليلة أو مسافة قصيرة. سجّل جلسات أكثر مع قراءة العداد لرقم أدق.';
+
+  @override
+  String get chargingLogsMethod => 'طريقة الحساب';
+
+  @override
+  String get chargingLogsMixedCurrencies => 'دفعت بأكثر من عملة. المبالغ معروضة لكل عملة على حدة ولا تُحوّل.';
+
+  @override
+  String get chargingLogsMonthlyEnergy => 'الطاقة الشهرية';
+
+  @override
+  String get chargingLogsMonthlySpend => 'الإنفاق الشهري';
+
+  @override
+  String get chargingLogsMoreHint => 'اختيارية. قراءة العداد تتيح تقارير الاستهلاك.';
+
+  @override
+  String get chargingLogsMoreSection => 'تفاصيل إضافية';
 
   @override
   String get chargingLogsNewTitle => 'جلسة شحن جديدة';
 
   @override
+  String get chargingLogsNoCarMessage => 'كل جلسة شحن تخص سيارة في جراجك.';
+
+  @override
+  String get chargingLogsNoCarTitle => 'أضف سيارتك أولًا';
+
+  @override
+  String get chargingLogsNoCost => 'لم تُدخل تكلفة';
+
+  @override
+  String get chargingLogsNoSpendData => 'لم تُدخل تكاليف في هذه الفترة.';
+
+  @override
+  String get chargingLogsNotes => 'ملاحظات';
+
+  @override
+  String get chargingLogsOdometer => 'العداد';
+
+  @override
+  String get chargingLogsOdometerHint => 'يجب ألا تقل عن جلسة سابقة لهذه السيارة.';
+
+  @override
+  String chargingLogsPerKwh(String price) {
+    return '$price/كيلوواط ساعة';
+  }
+
+  @override
+  String get chargingLogsPeriod12 => '12 شهرًا';
+
+  @override
+  String get chargingLogsPeriod3 => '3 أشهر';
+
+  @override
+  String get chargingLogsPeriod6 => '6 أشهر';
+
+  @override
+  String get chargingLogsPeriodAll => 'كل الفترات';
+
+  @override
+  String get chargingLogsPower => 'قدرة الشاحن';
+
+  @override
+  String get chargingLogsReasonMissingCosts => 'بيانات غير كافية: تكاليف ناقصة';
+
+  @override
+  String get chargingLogsReasonMixedCurrencies => 'غير معروض: عملات مختلفة';
+
+  @override
+  String get chargingLogsReasonNoDistance => 'بيانات غير كافية: لا مسافة بين القراءات';
+
+  @override
+  String get chargingLogsReasonNoSessions => 'بيانات غير كافية: لا جلسات';
+
+  @override
+  String get chargingLogsReasonOdometer => 'بيانات غير كافية: تحتاج قراءتين للعداد على الأقل';
+
+  @override
+  String get chargingLogsReasonUnknown => 'بيانات غير كافية';
+
+  @override
+  String get chargingLogsReportEmptyMessage =>
+      'التقارير تعتمد فقط على الجلسات التي تسجلها. أضف جلسة أو اختر فترة أطول.';
+
+  @override
+  String get chargingLogsReportEmptyTitle => 'لا توجد جلسات في هذه الفترة';
+
+  @override
   String get chargingLogsReportsTitle => 'الإنفاق والاستهلاك';
 
   @override
+  String get chargingLogsSaved => 'تم حفظ الجلسة.';
+
+  @override
+  String get chargingLogsSessionSection => 'الجلسة';
+
+  @override
+  String get chargingLogsSessions => 'الجلسات';
+
+  @override
+  String chargingLogsSessionsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count جلسة',
+      many: '$count جلسة',
+      few: '$count جلسات',
+      two: 'جلستان',
+      one: 'جلسة واحدة',
+      zero: 'لا جلسات',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String chargingLogsSessionsWithoutCost(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count جلسة بلا تكلفة وغير محسوبة في الإنفاق.',
+      few: '$count جلسات بلا تكلفة وغير محسوبة في الإنفاق.',
+      two: 'جلستان بلا تكلفة وغير محسوبتين في الإنفاق.',
+      one: 'جلسة واحدة بلا تكلفة وغير محسوبة في الإنفاق.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get chargingLogsShowTable => 'عرض الأرقام';
+
+  @override
+  String get chargingLogsSocEnd => 'البطارية عند الانتهاء';
+
+  @override
+  String get chargingLogsSocStart => 'البطارية عند البدء';
+
+  @override
   String get chargingLogsTitle => 'سجل الشحن';
+
+  @override
+  String get chargingLogsTotalEnergy => 'الطاقة';
+
+  @override
+  String get chargingLogsTotalSpend => 'الإنفاق';
+
+  @override
+  String chargingLogsVehicleSummary(int sessions, String energy) {
+    String _temp0 = intl.Intl.pluralLogic(
+      sessions,
+      locale: localeName,
+      other: '$sessions جلسة',
+      few: '$sessions جلسات',
+      two: 'جلستان',
+      one: 'جلسة واحدة',
+    );
+    return '$_temp0 · $energy';
+  }
 
   @override
   String get chargingLongitude => 'خط الطول';
@@ -2585,22 +3457,872 @@ class AppLocalizationsAr extends AppLocalizations {
   String get commonWebPreviewBanner => 'معاينة ويب';
 
   @override
+  String communityAboutCar(String car) {
+    return 'عن: $car';
+  }
+
+  @override
+  String get communityAccept => 'قبول الإجابة';
+
+  @override
+  String get communityAcceptCleared => 'أُلغي قبول الإجابة';
+
+  @override
+  String get communityAccepted => 'تم قبول الإجابة';
+
+  @override
+  String get communityAcceptedAnswer => 'الإجابة المقبولة';
+
+  @override
+  String get communityAllReviews => 'كل التقييمات';
+
+  @override
+  String get communityAnonymous => 'مستخدم';
+
+  @override
+  String communityAnswerCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count إجابة',
+      many: '$count إجابة',
+      few: '$count إجابات',
+      two: 'إجابتان',
+      one: 'إجابة واحدة',
+      zero: 'لا إجابات',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get communityAnswerHint => 'اكتب إجابتك…';
+
+  @override
+  String get communityAnswerPosted => 'نُشرت إجابتك';
+
+  @override
+  String get communityAnswered => 'تمت الإجابة';
+
+  @override
+  String get communityAnswersTitle => 'الإجابات';
+
+  @override
+  String communityAnswersWithCount(String count) {
+    return 'الإجابات ($count)';
+  }
+
+  @override
+  String get communityAskGeneral => 'سؤال عام';
+
+  @override
+  String get communityAskTips =>
+      'اكتب سؤالًا واضحًا ومحددًا (10 أحرف على الأقل)، واذكر السوق والفئة إن كان ذلك مهمًا. لا تضع روابط أو بيانات شخصية.';
+
+  @override
   String get communityAskTitle => 'اطرح سؤالًا';
+
+  @override
+  String communityAskedBy(String name) {
+    return 'سأل $name';
+  }
+
+  @override
+  String get communityBeFirstToReview => 'كن أول من يقيّم';
+
+  @override
+  String get communityBlockConfirm => 'حظر';
+
+  @override
+  String get communityBlockMessage =>
+      'لن ترى تقييماته وتعليقاته وأسئلته وإجاباته بعد الآن. لن يُبلَّغ بذلك، ويمكنك إلغاء الحظر في أي وقت.';
+
+  @override
+  String communityBlockTitle(String name) {
+    return 'حظر $name؟';
+  }
+
+  @override
+  String get communityBlockUser => 'حظر هذا المستخدم';
+
+  @override
+  String communityBlocked(String name) {
+    return 'تم حظر $name';
+  }
+
+  @override
+  String get communityBlockedIndefinite => 'أوقف أحد المشرفين النشر من حسابك حتى إشعار آخر. ما زال بإمكانك القراءة.';
+
+  @override
+  String communityBlockedReason(String reason) {
+    return 'السبب: $reason';
+  }
+
+  @override
+  String get communityBlockedTitle => 'النشر موقوف لحسابك';
+
+  @override
+  String communityBlockedUntil(String until) {
+    return 'أوقف أحد المشرفين النشر من حسابك حتى $until. ما زال بإمكانك القراءة.';
+  }
+
+  @override
+  String get communityBlockedUsersIntro => 'لا ترى مشاركات هؤلاء المستخدمين في المجتمع.';
+
+  @override
+  String get communityBlockedUsersTitle => 'المستخدمون المحظورون';
+
+  @override
+  String get communityCancelReply => 'إلغاء الرد';
 
   @override
   String get communityCarReviewsTitle => 'تقييمات الملاك';
 
   @override
+  String get communityChooseTrim => 'اختر الفئة';
+
+  @override
+  String get communityClearFilters => 'مسح عوامل التصفية';
+
+  @override
+  String get communityClearRating => 'مسح';
+
+  @override
+  String get communityCommentHint => 'اكتب تعليقًا…';
+
+  @override
+  String get communityCommentPosted => 'نُشر تعليقك';
+
+  @override
+  String get communityCommentsClosed => 'التعليقات مغلقة هنا.';
+
+  @override
   String get communityCommentsTitle => 'التعليقات';
+
+  @override
+  String communityCommentsWithCount(String count) {
+    return 'التعليقات ($count)';
+  }
+
+  @override
+  String get communityCons => 'السلبيات';
+
+  @override
+  String get communityConsHint => 'ما الذي لم يعجبك؟';
+
+  @override
+  String get communityCreateAccount => 'إنشاء حساب';
+
+  @override
+  String get communityDelete => 'حذف';
+
+  @override
+  String get communityDeleteAnswerTitle => 'حذف الإجابة؟';
+
+  @override
+  String get communityDeleteCommentTitle => 'حذف التعليق؟';
+
+  @override
+  String get communityDeleteMessage => 'لا يمكن التراجع عن الحذف.';
+
+  @override
+  String get communityDeleteQuestionTitle => 'حذف السؤال؟';
+
+  @override
+  String get communityDeleteReview => 'حذف التقييم';
+
+  @override
+  String get communityDeleteReviewTitle => 'حذف تقييمك؟';
+
+  @override
+  String get communityDeleted => 'تم الحذف';
+
+  @override
+  String get communityDeletedUser => 'مستخدم محذوف';
+
+  @override
+  String get communityDemoTargetNotice => 'هذه بيانات تجريبية للاختبار وليست سيارة أو مقالًا حقيقيًا.';
+
+  @override
+  String get communityDimAfterSales => 'خدمة ما بعد البيع';
+
+  @override
+  String get communityDimBuildQuality => 'جودة التصنيع';
+
+  @override
+  String get communityDimCharging => 'الشحن';
+
+  @override
+  String get communityDimComfort => 'الراحة';
+
+  @override
+  String get communityDimRange => 'المدى الفعلي';
+
+  @override
+  String get communityDimReliability => 'الاعتمادية';
+
+  @override
+  String get communityDimTechnology => 'التقنية';
+
+  @override
+  String get communityDimValue => 'القيمة مقابل السعر';
+
+  @override
+  String communityDimensionScore(String dimension, int score) {
+    return '$dimension: $score من 5';
+  }
+
+  @override
+  String communityDimensionValue(String value, int count) {
+    return '$value من 5، $count تقييم';
+  }
+
+  @override
+  String get communityDimensionsHint => 'اختياري: قيّم جوانب محددة';
+
+  @override
+  String get communityDimensionsTitle => 'التقييم حسب الجانب';
+
+  @override
+  String communityDistributionRow(int stars, int count) {
+    return '$stars نجوم: $count';
+  }
+
+  @override
+  String get communityDone => 'تم';
+
+  @override
+  String get communityEdit => 'تعديل';
+
+  @override
+  String get communityEditAnswer => 'تعديل الإجابة';
+
+  @override
+  String get communityEditComment => 'تعديل التعليق';
+
+  @override
+  String get communityEditMyReview => 'تعديل تقييمي';
+
+  @override
+  String get communityEditQuestion => 'تعديل السؤال';
+
+  @override
+  String get communityEditRemoderated => 'بعد التعديل يعود تقييمك إلى المراجعة قبل ظهوره مجددًا.';
+
+  @override
+  String get communityEditReviewTitle => 'تعديل تقييمك';
+
+  @override
+  String get communityEdited => 'معدَّل';
+
+  @override
+  String get communityErrEmailNotVerified => 'أكّد بريدك الإلكتروني قبل النشر.';
+
+  @override
+  String get communityErrRateLimited => 'نشرت كثيرًا خلال وقت قصير. حاول لاحقًا.';
+
+  @override
+  String communityErrRateLimitedMinutes(int minutes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutes,
+      locale: localeName,
+      other: 'نشرت كثيرًا خلال وقت قصير. حاول بعد $minutes دقيقة.',
+      many: 'نشرت كثيرًا خلال وقت قصير. حاول بعد $minutes دقيقة.',
+      few: 'نشرت كثيرًا خلال وقت قصير. حاول بعد $minutes دقائق.',
+      two: 'نشرت كثيرًا خلال وقت قصير. حاول بعد دقيقتين.',
+      one: 'نشرت كثيرًا خلال وقت قصير. حاول بعد دقيقة.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get communityErrReportDuplicate => 'أبلغت عن هذا المحتوى من قبل، وبلاغك قيد المراجعة.';
+
+  @override
+  String get communityErrSelfReport => 'لا يمكنك الإبلاغ عن مشاركتك.';
+
+  @override
+  String get communityErrSelfVote => 'لا يمكنك التصويت على مشاركتك.';
+
+  @override
+  String get communityErrSignInAgain => 'انتهت جلستك. سجّل الدخول مرة أخرى.';
+
+  @override
+  String get communityFieldRequired => 'هذا الحقل مطلوب.';
+
+  @override
+  String get communityFilterAll => 'الكل';
+
+  @override
+  String get communityFilterAnswered => 'تمت الإجابة';
+
+  @override
+  String get communityFilterUnanswered => 'بلا إجابة مقبولة';
+
+  @override
+  String get communityFormHasErrors => 'يرجى تصحيح الحقول المميزة.';
+
+  @override
+  String get communityGeneralQuestion => 'سؤال عام';
+
+  @override
+  String get communityHelpful => 'مفيد';
+
+  @override
+  String communityHelpfulCount(String count) {
+    return 'مفيد ($count)';
+  }
+
+  @override
+  String get communityJoinTitle => 'شارك في النقاش';
+
+  @override
+  String get communityLoadMore => 'تحميل المزيد';
+
+  @override
+  String get communityLoadMoreAnswers => 'إجابات أخرى';
+
+  @override
+  String get communityLoadMoreComments => 'تعليقات أخرى';
+
+  @override
+  String get communityLoadMoreQuestions => 'أسئلة أخرى';
+
+  @override
+  String get communityLoadMoreReviews => 'تقييمات أخرى';
+
+  @override
+  String get communityMonthsUnit => 'شهر';
+
+  @override
+  String get communityMoreActions => 'إجراءات أخرى';
+
+  @override
+  String get communityNewAccountNote =>
+      'حسابك جديد: تُراجع مشاركاتك قبل ظهورها، ولا يمكن إضافة روابط خلال الأيام الأولى.';
+
+  @override
+  String get communityNoAnswersMessage => 'هل تعرف الإجابة؟ شارك بما جرّبته.';
+
+  @override
+  String get communityNoAnswersMineMessage => 'سنعرض الإجابات هنا عند وصولها.';
+
+  @override
+  String get communityNoAnswersTitle => 'لا إجابات بعد';
+
+  @override
+  String get communityNoAnswersYet => 'لا إجابات بعد';
+
+  @override
+  String get communityNoBlockedMessage => 'يمكنك حظر أي مستخدم من قائمة الإجراءات بجانب مشاركته.';
+
+  @override
+  String get communityNoBlockedTitle => 'لا يوجد مستخدمون محظورون';
+
+  @override
+  String get communityNoCommentsMessage => 'ابدأ النقاش بأول تعليق.';
+
+  @override
+  String get communityNoCommentsTitle => 'لا توجد تعليقات بعد';
+
+  @override
+  String get communityNoFilteredReviewsMessage => 'جرّب إزالة بعض عوامل التصفية.';
+
+  @override
+  String get communityNoFilteredReviewsTitle => 'لا تقييمات مطابقة';
+
+  @override
+  String get communityNoMatchingQuestionsMessage => 'جرّب كلمات أخرى أو غيّر عامل التصفية — أو اطرح سؤالك.';
+
+  @override
+  String get communityNoMatchingQuestionsTitle => 'لا أسئلة مطابقة';
+
+  @override
+  String get communityNoQuestionsMessage => 'اسأل الملاك والمهتمين عن الشحن والمدى والصيانة.';
+
+  @override
+  String get communityNoQuestionsTitle => 'لا توجد أسئلة بعد';
+
+  @override
+  String get communityNoReviewsMessage => 'لم ينشر أي مالك تقييمًا لهذه الفئة حتى الآن.';
+
+  @override
+  String get communityNoReviewsTitle => 'لا توجد تقييمات ملاك بعد';
+
+  @override
+  String get communityNoTrimsMessage =>
+      'لا تتوفر فئات لهذه السيارة في سوقك الحالي، لذلك لا يمكن عرض التقييمات أو كتابتها هنا.';
+
+  @override
+  String get communityNoTrimsTitle => 'لا توجد فئات معروضة';
+
+  @override
+  String get communityNotAnsweredYet => 'بانتظار إجابة مقبولة';
+
+  @override
+  String get communityNotHelpful => 'غير مفيد';
+
+  @override
+  String communityOnArticle(String title) {
+    return 'تعليقات على المقال: $title. افتح المقال';
+  }
+
+  @override
+  String get communityOnArticleLabel => 'تعليقات على المقال';
+
+  @override
+  String get communityOptional => 'اختياري';
+
+  @override
+  String get communityOverallRating => 'التقييم العام';
+
+  @override
+  String communityOwnedMonths(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'ملكية $count شهر',
+      many: 'ملكية $count شهرًا',
+      few: 'ملكية $count أشهر',
+      two: 'ملكية شهرين',
+      one: 'ملكية شهر واحد',
+      zero: 'أقل من شهر ملكية',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String communityOwnedYears(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'ملكية $count سنة',
+      many: 'ملكية $count سنة',
+      few: 'ملكية $count سنوات',
+      two: 'ملكية سنتين',
+      one: 'ملكية سنة واحدة',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String communityOwnedYearsMonths(int years, int months) {
+    return 'ملكية $years سنة و$months شهر';
+  }
+
+  @override
+  String get communityOwnershipHint => 'مثال: 8';
+
+  @override
+  String get communityOwnershipInvalid => 'أدخل عدد أشهر بين 0 و600.';
+
+  @override
+  String get communityOwnershipLabel => 'مدة الملكية';
+
+  @override
+  String get communityPostAnswer => 'نشر الإجابة';
+
+  @override
+  String get communityPostQuestion => 'نشر السؤال';
+
+  @override
+  String get communityPostedPending => 'تم الإرسال — سيظهر للآخرين بعد المراجعة.';
+
+  @override
+  String get communityPros => 'الإيجابيات';
+
+  @override
+  String get communityProsHint => 'ما الذي أعجبك؟';
+
+  @override
+  String get communityQuestionBodyHint => 'أضف ما يساعد على الإجابة: الاستخدام، نوع الشاحن…';
+
+  @override
+  String get communityQuestionBodyLabel => 'تفاصيل';
+
+  @override
+  String get communityQuestionPosted => 'نُشر سؤالك';
 
   @override
   String get communityQuestionTitle => 'سؤال';
 
   @override
+  String get communityQuestionTitleHint => 'مثال: كم يستغرق الشحن المنزلي من 20 إلى 80%؟';
+
+  @override
+  String get communityQuestionTitleLabel => 'سؤالك';
+
+  @override
+  String get communityQuestionUnavailableMessage => 'ربما حُذف أو ما زال قيد المراجعة.';
+
+  @override
+  String get communityQuestionUnavailableTitle => 'السؤال غير متاح';
+
+  @override
   String get communityQuestionsTitle => 'أسئلة وأجوبة';
 
   @override
+  String get communityRating1 => 'سيئ';
+
+  @override
+  String get communityRating2 => 'مقبول';
+
+  @override
+  String get communityRating3 => 'جيد';
+
+  @override
+  String get communityRating4 => 'جيد جدًا';
+
+  @override
+  String get communityRating5 => 'ممتاز';
+
+  @override
+  String get communityRatingRequired => 'اختر تقييمًا من 1 إلى 5 نجوم.';
+
+  @override
+  String get communityReply => 'رد';
+
+  @override
+  String get communityReplyHint => 'اكتب ردًا…';
+
+  @override
+  String get communityReplyPosted => 'نُشر ردك';
+
+  @override
+  String communityReplyingTo(String name) {
+    return 'رد على $name';
+  }
+
+  @override
+  String get communityReport => 'إبلاغ';
+
+  @override
+  String get communityReportDetails => 'التفاصيل (مطلوبة)';
+
+  @override
+  String get communityReportDetailsOptional => 'تفاصيل إضافية (اختياري)';
+
+  @override
+  String get communityReportDetailsRequired => 'اكتب بضع كلمات توضح السبب.';
+
+  @override
+  String get communityReportIntro => 'اختر السبب. يراجع المشرفون البلاغات ولا يُعرض اسمك لصاحب المحتوى.';
+
+  @override
+  String get communityReportSend => 'إرسال البلاغ';
+
+  @override
+  String get communityReportSent => 'شكرًا، وصل بلاغك إلى المشرفين.';
+
+  @override
+  String get communityReportTitle => 'الإبلاغ عن محتوى';
+
+  @override
+  String get communityReportUserTitle => 'الإبلاغ عن مستخدم';
+
+  @override
+  String get communityReviewBodyHelper => '20 حرفًا على الأقل. اكتب عن تجربتك الشخصية فقط، دون بيانات شخصية لأحد.';
+
+  @override
+  String get communityReviewBodyHint => 'كيف تستخدم السيارة؟ ما المدى الذي تحصل عليه فعليًا؟ كيف الشحن والصيانة؟';
+
+  @override
+  String get communityReviewBodyLabel => 'تجربتك';
+
+  @override
+  String communityReviewCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count تقييم',
+      many: '$count تقييمًا',
+      few: '$count تقييمات',
+      two: 'تقييمان',
+      one: 'تقييم واحد',
+      zero: 'لا توجد تقييمات',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get communityReviewExistsMessage => 'يمكن لكل مالك كتابة تقييم واحد لكل فئة. هل تريد تعديل تقييمك الحالي؟';
+
+  @override
+  String get communityReviewExistsTitle => 'لديك تقييم لهذه الفئة';
+
+  @override
+  String get communityReviewGuidelines => 'كن محددًا وصادقًا، ولا تنشر روابط أو إعلانات أو بيانات شخصية.';
+
+  @override
+  String get communityReviewModerated => 'يراجع المشرفون كل تقييم قبل نشره.';
+
+  @override
+  String get communityReviewSubmittedMessage =>
+      'شكرًا! سيظهر تقييمك للآخرين بعد أن يراجعه المشرفون. يمكنك رؤيته وتعديله من صفحة التقييمات.';
+
+  @override
+  String get communityReviewSubmittedTitle => 'تم استلام تقييمك';
+
+  @override
+  String get communityReviewTitleHint => 'خلاصة تجربتك في جملة';
+
+  @override
+  String get communityReviewTitleLabel => 'العنوان';
+
+  @override
+  String get communityReviewsDisclaimer =>
+      'التقييمات آراء وتجارب شخصية لملاك، يراجعها المشرفون قبل النشر، وليست بيانات رسمية أو قياسات معتمدة.';
+
+  @override
+  String get communitySave => 'حفظ';
+
+  @override
+  String get communitySaveReview => 'حفظ وإرسال للمراجعة';
+
+  @override
+  String get communitySearchQuestions => 'ابحث في الأسئلة';
+
+  @override
+  String get communitySend => 'إرسال';
+
+  @override
+  String get communityShowAllQuestions => 'عرض كل الأسئلة';
+
+  @override
+  String get communityShowLess => 'عرض أقل';
+
+  @override
+  String get communityShowMore => 'عرض المزيد';
+
+  @override
+  String get communitySignIn => 'تسجيل الدخول';
+
+  @override
+  String get communitySignInToAnswer => 'سجّل الدخول لإضافة إجابة.';
+
+  @override
+  String get communitySignInToAsk => 'سجّل الدخول لطرح سؤال على المجتمع.';
+
+  @override
+  String get communitySignInToComment => 'سجّل الدخول لكتابة تعليق أو الرد.';
+
+  @override
+  String get communitySignInToParticipate => 'القراءة متاحة للجميع. سجّل الدخول للمشاركة في المجتمع.';
+
+  @override
+  String get communitySignInToReport => 'سجّل الدخول للإبلاغ عن محتوى.';
+
+  @override
+  String get communitySignInToReview => 'سجّل الدخول لكتابة تقييمك كمالك لهذه السيارة.';
+
+  @override
+  String get communitySignInToVote => 'سجّل الدخول لتقييم مدى فائدة المشاركات.';
+
+  @override
+  String get communitySortActive => 'الأنشط';
+
+  @override
+  String get communitySortHelpful => 'الأكثر فائدة';
+
+  @override
+  String get communitySortNewest => 'الأحدث';
+
+  @override
+  String get communitySortOldest => 'الأقدم';
+
+  @override
+  String get communitySortRatingHigh => 'الأعلى تقييمًا';
+
+  @override
+  String get communitySortRatingLow => 'الأدنى تقييمًا';
+
+  @override
+  String get communitySortRecent => 'الأحدث';
+
+  @override
+  String get communitySortTop => 'الأكثر فائدة';
+
+  @override
+  String get communitySortVotes => 'الأكثر تصويتًا';
+
+  @override
+  String communityStarOption(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count نجمة',
+      few: '$count نجوم',
+      two: 'نجمتان',
+      one: 'نجمة واحدة',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String communityStarsSemantics(String rating) {
+    return '$rating من 5 نجوم';
+  }
+
+  @override
+  String get communityStatusHidden => 'مخفي بواسطة المشرفين';
+
+  @override
+  String get communityStatusHiddenHint => 'لم يعد ظاهرًا للآخرين (مثلًا بعد بلاغات). يراه المشرفون ويمكنهم إعادته.';
+
+  @override
+  String get communityStatusPending => 'بانتظار المراجعة';
+
+  @override
+  String get communityStatusPendingHint => 'لا يراه غيرك حتى يوافق عليه مشرف.';
+
+  @override
+  String get communityStatusPendingReviewHint => 'يراجع المشرفون كل تقييم قبل نشره. لا يراه غيرك حتى الآن.';
+
+  @override
+  String get communityStatusRejected => 'لم تتم الموافقة عليه';
+
+  @override
+  String get communityStatusRejectedHint => 'لا يتوافق مع إرشادات المجتمع، لذلك لا يراه غيرك. يمكنك تعديله أو حذفه.';
+
+  @override
+  String get communityStatusUnknownTitle => 'تعذّر التحقق من حالة حسابك';
+
+  @override
+  String get communitySubmitReview => 'إرسال للمراجعة';
+
+  @override
+  String get communityTapToRate => 'اضغط على النجوم للتقييم';
+
+  @override
+  String communityTooLong(int max) {
+    return 'الحد الأقصى $max حرف.';
+  }
+
+  @override
+  String communityTooShort(int min) {
+    return 'اكتب $min حرفًا على الأقل.';
+  }
+
+  @override
+  String get communityTrimLabel => 'الفئة';
+
+  @override
+  String communityTrimSemantics(String trim) {
+    return 'الفئة: $trim. اضغط للتغيير';
+  }
+
+  @override
+  String get communityUnaccept => 'إلغاء القبول';
+
+  @override
+  String get communityUnblock => 'إلغاء الحظر';
+
+  @override
+  String communityUnblocked(String name) {
+    return 'أُلغي حظر $name';
+  }
+
+  @override
+  String get communityUndo => 'تراجع';
+
+  @override
+  String get communityVerifiedAlready => 'أكّدته بالفعل';
+
+  @override
+  String get communityVerifiedOnly => 'ملاك موثّقون فقط';
+
+  @override
+  String get communityVerifiedOwner => 'مالك موثّق';
+
+  @override
+  String communityVerifiedOwnerCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count مالك موثّق',
+      many: '$count مالكًا موثّقًا',
+      few: '$count ملاك موثّقين',
+      two: 'مالكان موثّقان',
+      one: 'مالك موثّق واحد',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get communityVerifiedOwnerExplainer =>
+      'شارة «مالك موثّق» لا تُختار: تظهر فقط بعد أن يتحقق فريقنا فعليًا من ملكيتك للسيارة.';
+
+  @override
+  String get communityVerifiedOwnerHint => 'تحقق فريقنا من ملكية الكاتب لهذه السيارة.';
+
+  @override
+  String get communityVerifyEmailAction => 'تأكيد البريد';
+
+  @override
+  String communityVerifyEmailMessage(String email) {
+    return 'للنشر في المجتمع يجب تأكيد $email. افتح الرسالة التي أرسلناها أو اطلب رسالة جديدة.';
+  }
+
+  @override
+  String get communityVerifyEmailTitle => 'أكّد بريدك الإلكتروني أولًا';
+
+  @override
+  String get communityViewAllComments => 'كل التعليقات';
+
+  @override
+  String communityViewMoreReplies(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'عرض $count رد آخر',
+      many: 'عرض $count ردًا آخر',
+      few: 'عرض $count ردود أخرى',
+      two: 'عرض ردين آخرين',
+      one: 'عرض رد آخر',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String communityVoteDownSemantics(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'غير مفيد، $count صوت',
+      many: 'غير مفيد، $count صوتًا',
+      few: 'غير مفيد، $count أصوات',
+      two: 'غير مفيد، صوتان',
+      one: 'غير مفيد، صوت واحد',
+      zero: 'غير مفيد، لا توجد أصوات',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String communityVoteUpSemantics(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'مفيد، $count صوت',
+      many: 'مفيد، $count صوتًا',
+      few: 'مفيد، $count أصوات',
+      two: 'مفيد، صوتان',
+      one: 'مفيد، صوت واحد',
+      zero: 'مفيد، لا توجد أصوات',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get communityWriteReviewTitle => 'اكتب تقييمًا';
+
+  @override
+  String get communityYou => 'أنت';
+
+  @override
+  String get communityYourAnswer => 'إجابتك';
+
+  @override
+  String get communityYourReview => 'تقييمك';
 
   @override
   String compareAboutRow(String label) {
@@ -3626,6 +5348,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get encyclopediaAllCategories => 'الكل';
 
   @override
+  String get encyclopediaBrowseAll => 'تصفّح الموسوعة';
+
+  @override
   String get encyclopediaClearFilters => 'مسح عوامل التصفية';
 
   @override
@@ -3652,6 +5377,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get encyclopediaNoMatchesTitle => 'لا أدلة مطابقة';
+
+  @override
+  String get encyclopediaNotFoundMessage => 'ربما حُذف أو يجري تحديثه بعد مراجعة تقنية جديدة.';
+
+  @override
+  String get encyclopediaNotFoundTitle => 'هذا الدليل غير متاح';
 
   @override
   String get encyclopediaNotReviewedExplain => 'لا تتوفر معلومات مراجعة تقنية لهذا الدليل.';
@@ -3801,13 +5532,217 @@ class AppLocalizationsAr extends AppLocalizations {
   String get favoritesUndo => 'تراجع';
 
   @override
+  String get garageAddButton => 'أضف إلى جراجي';
+
+  @override
+  String get garageAddFirst => 'أضف سيارتي الأولى';
+
+  @override
+  String get garageAddLog => 'إضافة جلسة شحن';
+
+  @override
+  String get garageAddReminder => 'إضافة تذكير';
+
+  @override
   String get garageAddTitle => 'إضافة سيارة';
+
+  @override
+  String get garageAdded => 'تمت إضافة السيارة إلى جراجك.';
+
+  @override
+  String get garageBack => 'رجوع';
+
+  @override
+  String get garageCarSection => 'السيارة';
+
+  @override
+  String get garageCarSectionHint => 'اختر الفئة بالضبط من الدليل لتكون المواصفات والتوافق صحيحة.';
+
+  @override
+  String get garageChangeCar => 'اضغط للتغيير';
+
+  @override
+  String get garageChooseCar => 'اختر الماركة والموديل والسنة والفئة';
+
+  @override
+  String get garageClear => 'مسح';
+
+  @override
+  String garageCount(int count, int max) {
+    return '$count من $max سيارة';
+  }
+
+  @override
+  String get garageCurrentOdometer => 'العداد الحالي';
+
+  @override
+  String get garageCurrentOdometerHint => 'اختياري. يتحدّث تلقائيًا أيضًا من إدخالات سجل الشحن.';
+
+  @override
+  String get garageDelete => 'إزالة من الجراج';
+
+  @override
+  String get garageDeleteConfirmMessage =>
+      'ستُحذف أيضًا إدخالات سجل الشحن والتذكيرات الخاصة بها. لا يمكن التراجع عن ذلك.';
+
+  @override
+  String garageDeleteConfirmTitle(String name) {
+    return 'إزالة $name؟';
+  }
+
+  @override
+  String get garageDeleted => 'تمت إزالة السيارة.';
+
+  @override
+  String get garageDetailsSection => 'التفاصيل';
 
   @override
   String get garageEditTitle => 'تعديل السيارة';
 
   @override
+  String get garageEmptyMessage => 'أضف سيارتك باختيار الماركة والموديل وسنة الطراز والفئة. يمكنك حفظ حتى 20 سيارة.';
+
+  @override
+  String get garageEmptyTitle => 'جراجك فارغ';
+
+  @override
+  String get garageErrorCurrentBelowInitial => 'لا يمكن أن تكون القراءة الحالية أقل من القراءة عند الشراء.';
+
+  @override
+  String get garageErrorNegative => 'لا يمكن أن تكون القيمة سالبة.';
+
+  @override
+  String get garageErrorNumber => 'أدخل رقمًا.';
+
+  @override
+  String get garageErrorPickCar => 'اختر السيارة أولًا.';
+
+  @override
+  String get garageGuestMessage =>
+      'سجّل الدخول لحفظ سياراتك بفئتها وسوقها بدقة، واستخدامها في سجل الشحن والتذكيرات والحاسبات.';
+
+  @override
+  String get garageInitialOdometer => 'العداد عند الشراء';
+
+  @override
+  String get garageInitialOdometerHint => 'اختياري. يُستخدم كنقطة بداية لتقارير المسافة.';
+
+  @override
+  String garageLimitReached(int max) {
+    return 'يمكنك حفظ حتى $max سيارة. احذف سيارة لإضافة أخرى.';
+  }
+
+  @override
+  String get garageLogsCount => 'جلسات الشحن';
+
+  @override
+  String get garageMakePrimary => 'اجعلها سيارتي الأساسية';
+
+  @override
+  String get garageMarket => 'السوق';
+
+  @override
+  String get garageMarketHint => 'الدولة التي تُستخدم فيها السيارة. الأسعار والعملة والتوافق تتبع هذا السوق.';
+
+  @override
+  String get garageModelYear => 'سنة الطراز';
+
+  @override
+  String get garageNickname => 'اسم مختصر';
+
+  @override
+  String get garageNicknameHint => 'اختياري، مثل \"سيارة العائلة\".';
+
+  @override
+  String garageNotListedExplain(String market) {
+    return 'لا يوجد سجل لهذه الفئة في $market، لذلك لا تتوفر لها الأسعار المحلية وتوافق الشواحن في $market.';
+  }
+
+  @override
+  String get garageNotListedShort => 'غير مطروحة في هذا السوق';
+
+  @override
+  String get garageNotes => 'ملاحظات';
+
+  @override
+  String get garageOdometer => 'العداد';
+
+  @override
+  String get garageOpenCalculators => 'الحاسبات';
+
+  @override
+  String get garageOpenLogs => 'سجل شحن هذه السيارة';
+
+  @override
+  String get garageOpenSpecs => 'المواصفات الكاملة';
+
+  @override
+  String get garageOptional => 'اختياري';
+
+  @override
+  String get garagePickerAllMarkets => 'عرض فئات كل الأسواق';
+
+  @override
+  String get garagePickerAllMarketsHint => 'للسيارات المستوردة غير المطروحة في سوقك.';
+
+  @override
+  String get garagePickerEmpty => 'لا توجد خيارات هنا بعد';
+
+  @override
+  String garagePickerProgress(int step, int total) {
+    return 'الخطوة $step من $total';
+  }
+
+  @override
+  String get garagePickerSearchBrand => 'ابحث في الماركات';
+
+  @override
+  String get garagePickerSearchModel => 'ابحث في الموديلات';
+
+  @override
+  String get garagePickerStepBrand => 'الماركة';
+
+  @override
+  String get garagePickerStepModel => 'الموديل';
+
+  @override
+  String get garagePickerStepTrim => 'الفئة';
+
+  @override
+  String get garagePickerStepYear => 'السنة';
+
+  @override
+  String get garagePickerTitle => 'اختر سيارتك';
+
+  @override
+  String get garagePrimary => 'الأساسية';
+
+  @override
+  String get garagePrimarySet => 'تم تحديث السيارة الأساسية.';
+
+  @override
+  String get garagePrimarySwitch => 'السيارة الأساسية';
+
+  @override
+  String get garagePrimarySwitchHint => 'تُستخدم افتراضيًا في الحاسبات والتقارير وتخطيط الرحلات.';
+
+  @override
+  String get garagePurchaseDate => 'تاريخ الشراء';
+
+  @override
+  String get garageRemindersCount => 'تذكيرات قائمة';
+
+  @override
+  String get garageSaved => 'تم حفظ التغييرات.';
+
+  @override
+  String get garageShortcutsSection => 'استخدم هذه السيارة';
+
+  @override
   String get garageTitle => 'جراجي';
+
+  @override
+  String get garageTrim => 'الفئة';
 
   @override
   String get garageVehicleTitle => 'سيارتي';
@@ -4305,19 +6240,471 @@ class AppLocalizationsAr extends AppLocalizations {
   String get newsWatchVideo => 'شاهد الفيديو';
 
   @override
+  String get notificationsActions => 'إجراءات أخرى';
+
+  @override
+  String get notificationsChannelEmail => 'البريد الإلكتروني';
+
+  @override
+  String get notificationsChannelEmailUnavailable => 'غير متاح بعد.';
+
+  @override
+  String get notificationsChannelInApp => 'داخل التطبيق';
+
+  @override
+  String get notificationsChannelInAppHint => 'مفعّل دائمًا: كل إشعار يُحفظ في هذه القائمة.';
+
+  @override
+  String get notificationsChannelPush => 'إشعارات الهاتف الفورية';
+
+  @override
+  String get notificationsChannelsSection => 'طريقة الوصول إليّ';
+
+  @override
+  String get notificationsChooseTopics => 'اختر ما تتابعه';
+
+  @override
+  String get notificationsDelete => 'حذف';
+
+  @override
+  String get notificationsDeleted => 'تم حذف الإشعار.';
+
+  @override
+  String get notificationsEmptyMessage => 'تابع ماركات أو موديلات أو تصنيفات أخبار ليصلك إشعار عند نشر جديد.';
+
+  @override
+  String get notificationsEmptyTitle => 'لا توجد إشعارات بعد';
+
+  @override
+  String get notificationsEmptyUnreadTitle => 'لا توجد إشعارات غير مقروءة';
+
+  @override
+  String get notificationsFilterAll => 'الكل';
+
+  @override
+  String get notificationsFilterUnread => 'غير المقروءة';
+
+  @override
+  String get notificationsFollowBrand => 'ماركة';
+
+  @override
+  String get notificationsFollowCategory => 'تصنيف أخبار';
+
+  @override
+  String get notificationsFollowMarket => 'سوق';
+
+  @override
+  String get notificationsFollowModel => 'موديل';
+
+  @override
+  String notificationsFollowed(String name) {
+    return 'تتابع الآن $name.';
+  }
+
+  @override
+  String get notificationsGuestMessage => 'سجّل الدخول لتصلك أخبار الماركات والموديلات والموضوعات التي تتابعها.';
+
+  @override
+  String get notificationsLoadMore => 'تحميل المزيد';
+
+  @override
+  String get notificationsMarkAllRead => 'تعليم الكل كمقروء';
+
+  @override
+  String get notificationsMarkRead => 'تعليم كمقروء';
+
+  @override
+  String get notificationsMarkUnread => 'تعليم كغير مقروء';
+
+  @override
+  String get notificationsNew => 'جديد';
+
+  @override
   String get notificationsPreferencesTitle => 'تفضيلات الإشعارات';
+
+  @override
+  String get notificationsPushActive => 'مفعّلة على أجهزتك المسجلة.';
+
+  @override
+  String get notificationsPushDisabled => 'أوقفتها أنت.';
+
+  @override
+  String get notificationsPushNoDevice => 'لا يوجد جهاز مسجل للإشعارات الفورية بعد.';
+
+  @override
+  String get notificationsPushNotConfigured =>
+      'غير متاحة: خدمة الإشعارات الفورية غير مهيأة على الخادم بعد. تظهر الإشعارات داخل التطبيق.';
+
+  @override
+  String get notificationsQuietChange => 'تغيير الأوقات';
+
+  @override
+  String get notificationsQuietEnabled => 'ساعات الهدوء';
+
+  @override
+  String get notificationsQuietEnd => 'الهدوء حتى';
+
+  @override
+  String get notificationsQuietHint => 'تنتظر الإشعارات الفورية حتى انتهاء ساعات الهدوء، وتظهر داخل التطبيق.';
+
+  @override
+  String get notificationsQuietOff => 'متوقفة';
+
+  @override
+  String notificationsQuietRange(String start, String end, String zone) {
+    return '$start – $end ($zone)';
+  }
+
+  @override
+  String get notificationsQuietSection => 'ساعات الهدوء';
+
+  @override
+  String get notificationsQuietStart => 'الهدوء من';
+
+  @override
+  String get notificationsReminderNote => 'تنبيهات التذكيرات على هذا الهاتف تُضبط من شاشة التذكيرات.';
+
+  @override
+  String get notificationsResume => 'استئناف الإشعارات';
 
   @override
   String get notificationsTitle => 'الإشعارات';
 
   @override
+  String get notificationsTopicBrand => 'ماركة';
+
+  @override
+  String get notificationsTopicCategory => 'تصنيف أخبار';
+
+  @override
+  String notificationsTopicInMarket(String market) {
+    return 'في $market';
+  }
+
+  @override
+  String get notificationsTopicMarket => 'سوق';
+
+  @override
+  String get notificationsTopicModel => 'موديل';
+
+  @override
+  String get notificationsTopicPriceAlert => 'تنبيه سعر';
+
+  @override
+  String get notificationsTopicStation => 'محطة';
+
+  @override
+  String get notificationsTopicVariant => 'فئة';
+
+  @override
+  String get notificationsTopicsEmpty => 'لا تتابع أي شيء بعد';
+
+  @override
+  String get notificationsTopicsHint => 'الأخبار المنشورة عنها تصلك مرة واحدة وبلغتك.';
+
+  @override
+  String get notificationsTopicsSection => 'الموضوعات التي أتابعها';
+
+  @override
+  String get notificationsTypeCampaigns => 'إعلانات الخدمة';
+
+  @override
+  String get notificationsTypeCommunity => 'ردود المجتمع';
+
+  @override
+  String get notificationsTypeNews => 'أخبار ما أتابعه';
+
+  @override
+  String get notificationsTypePriceAlerts => 'تنبيهات الأسعار';
+
+  @override
+  String get notificationsTypeReminders => 'التذكيرات';
+
+  @override
+  String get notificationsTypeStations => 'تنبيهات محطات الشحن';
+
+  @override
+  String get notificationsTypesHint => 'تفعيل أي نوع يستأنف الإشعارات.';
+
+  @override
+  String get notificationsTypesSection => 'ما الذي أريد إشعارًا به';
+
+  @override
+  String notificationsUnfollow(String name) {
+    return 'إلغاء متابعة $name';
+  }
+
+  @override
+  String get notificationsUnsubscribeAll => 'إلغاء الاشتراك في الكل';
+
+  @override
+  String get notificationsUnsubscribeAllConfirm => 'إلغاء الاشتراك في كل الإشعارات؟';
+
+  @override
+  String get notificationsUnsubscribeAllMessage => 'لن تصلك أي إشعارات حتى تعيد تفعيل أحد الأنواع.';
+
+  @override
+  String get notificationsUnsubscribedAll => 'ألغيت الاشتراك في كل الإشعارات. لن يُرسل أي جديد حتى تستأنف.';
+
+  @override
+  String get remindersAlertHint => 'متى تريد أن يتم تنبيهك مسبقًا.';
+
+  @override
+  String get remindersAlertSection => 'التنبيه';
+
+  @override
+  String get remindersAlreadyCompleted => 'هذا التذكير مكتمل.';
+
+  @override
+  String get remindersCar => 'السيارة';
+
+  @override
+  String get remindersCarHint => 'مطلوبة للتذكير حسب العداد.';
+
+  @override
+  String get remindersChannelDescription => 'تذكيرات الصيانة والتأمين والترخيص والإطارات التي أنشأتها.';
+
+  @override
+  String get remindersChannelName => 'تذكيرات السيارة';
+
+  @override
+  String get remindersCompleteMessage => 'سينتقل التذكير إلى المكتملة.';
+
+  @override
+  String get remindersCompleteRepeats => 'هذا التذكير متكرر: سيُنشأ التالي تلقائيًا.';
+
+  @override
+  String get remindersCompleteTitle => 'تأكيد الإنجاز؟';
+
+  @override
+  String get remindersCompleted => 'تم.';
+
+  @override
+  String remindersCompletedNext(String due) {
+    return 'تم. التالي: $due';
+  }
+
+  @override
+  String remindersDaysLate(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'متأخر $days يومًا',
+      few: 'متأخر $days أيام',
+      two: 'متأخر يومين',
+      one: 'متأخر يومًا واحدًا',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get remindersDelete => 'حذف التذكير';
+
+  @override
+  String get remindersDeleteConfirm => 'حذف هذا التذكير؟';
+
+  @override
+  String get remindersDeleteMessage => 'سيُلغى إشعاره على الهاتف أيضًا.';
+
+  @override
+  String get remindersDeleted => 'تم حذف التذكير.';
+
+  @override
+  String get remindersDeviceNotifications => 'نبّهني على هذا الهاتف';
+
+  @override
+  String get remindersDeviceNotificationsOff => 'متوقف. تبقى التذكيرات ظاهرة هنا مع حالتها.';
+
+  @override
+  String get remindersDeviceNotificationsOn => 'ستصلك إشعارات في يوم التنبيه لكل تذكير.';
+
+  @override
+  String remindersDueAtKm(String km) {
+    return 'عند $km';
+  }
+
+  @override
+  String get remindersDueDate => 'تاريخ الاستحقاق';
+
+  @override
+  String get remindersDueKm => 'عند قراءة العداد';
+
+  @override
+  String get remindersDueKmNeedsCar => 'اختر سيارة لاستخدام العداد.';
+
+  @override
+  String remindersDueOn(String date) {
+    return 'الموعد $date';
+  }
+
+  @override
   String get remindersEditTitle => 'تعديل التذكير';
+
+  @override
+  String get remindersEmptyCompletedTitle => 'لا توجد تذكيرات مكتملة بعد';
+
+  @override
+  String get remindersEmptyMessage =>
+      'أضف تذكيرًا للصيانة أو التأمين أو تجديد الترخيص أو الإطارات — بالتاريخ أو بالعداد أو بكليهما.';
+
+  @override
+  String get remindersEmptyTitle => 'لا توجد تذكيرات';
+
+  @override
+  String get remindersEnableAction => 'تفعيل';
+
+  @override
+  String get remindersEnableHint => 'فعّل إشعارات الهاتف ليصلك التنبيه في موعده.';
+
+  @override
+  String get remindersErrorDue => 'أدخل تاريخ استحقاق أو قراءة عداد.';
+
+  @override
+  String remindersErrorRange(int min, int max) {
+    return 'يجب أن تكون القيمة بين $min و$max.';
+  }
+
+  @override
+  String get remindersErrorTitle => 'أدخل عنوانًا.';
+
+  @override
+  String get remindersErrorVehicleForKm => 'اختر سيارة للتذكير حسب العداد.';
+
+  @override
+  String get remindersErrorWhole => 'أدخل رقمًا صحيحًا.';
+
+  @override
+  String remindersEveryKm(String km) {
+    return 'كل $km';
+  }
+
+  @override
+  String remindersEveryMonths(int months) {
+    String _temp0 = intl.Intl.pluralLogic(
+      months,
+      locale: localeName,
+      other: 'كل $months شهرًا',
+      few: 'كل $months أشهر',
+      two: 'كل شهرين',
+      one: 'كل شهر',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get remindersFilterCompleted => 'المكتملة';
+
+  @override
+  String get remindersFilterOpen => 'القائمة';
+
+  @override
+  String get remindersGuestMessage => 'سجّل الدخول لحفظ تذكيرات الصيانة والتأمين والترخيص لسياراتك.';
+
+  @override
+  String remindersInDays(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'بعد $days يومًا',
+      few: 'بعد $days أيام',
+      two: 'بعد يومين',
+      one: 'غدًا',
+      zero: 'اليوم',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String remindersInKm(String km) {
+    return 'بعد $km';
+  }
+
+  @override
+  String remindersKmLate(String km) {
+    return 'تجاوز بمقدار $km';
+  }
+
+  @override
+  String get remindersMarkDone => 'تم';
 
   @override
   String get remindersNewTitle => 'تذكير جديد';
 
   @override
+  String get remindersNoCar => 'بدون سيارة محددة';
+
+  @override
+  String get remindersNotes => 'ملاحظات';
+
+  @override
+  String get remindersNotificationsUnsupported => 'إشعارات الهاتف غير متاحة هنا. تبقى التذكيرات ظاهرة في هذه القائمة.';
+
+  @override
+  String get remindersNotifyDays => 'أيام قبلها';
+
+  @override
+  String get remindersNotifyKm => 'كم قبلها';
+
+  @override
+  String get remindersOdometerNow => 'العداد الآن';
+
+  @override
+  String get remindersOdometerNowHint => 'اختياري. يُستخدم لجدولة التذكير التالي حسب المسافة.';
+
+  @override
+  String get remindersPermissionDenied =>
+      'الإشعارات محظورة لهذا التطبيق. اسمح بها من إعدادات الهاتف لتصلك التنبيهات؛ تبقى تذكيراتك ظاهرة هنا.';
+
+  @override
+  String get remindersRepeatKm => 'التكرار كل';
+
+  @override
+  String get remindersRepeatMonths => 'التكرار كل (شهر)';
+
+  @override
+  String get remindersSaved => 'تم حفظ التذكير.';
+
+  @override
+  String get remindersStatusCompleted => 'مكتمل';
+
+  @override
+  String get remindersStatusDueSoon => 'قريبًا';
+
+  @override
+  String get remindersStatusOverdue => 'متأخر';
+
+  @override
+  String get remindersStatusUpcoming => 'قادم';
+
+  @override
   String get remindersTitle => 'التذكيرات';
+
+  @override
+  String get remindersTitleField => 'العنوان';
+
+  @override
+  String get remindersTypeCustom => 'أخرى';
+
+  @override
+  String get remindersTypeInsurance => 'تأمين';
+
+  @override
+  String get remindersTypeLicence => 'ترخيص';
+
+  @override
+  String get remindersTypeMaintenance => 'صيانة';
+
+  @override
+  String get remindersTypeTyres => 'إطارات';
+
+  @override
+  String get remindersWhatSection => 'ماذا';
+
+  @override
+  String get remindersWhenHint => 'أدخل تاريخًا أو قراءة عداد أو كليهما.';
+
+  @override
+  String get remindersWhenSection => 'متى';
 
   @override
   String get searchAllGroups => 'كل النتائج';
@@ -4483,6 +6870,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get servicesDirectoryBrandsTitle => 'الماركات المخدومة';
 
   @override
+  String get servicesDirectoryBrowseAll => 'تصفّح الدليل';
+
+  @override
   String get servicesDirectoryCall => 'اتصال';
 
   @override
@@ -4593,6 +6983,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get servicesDirectoryNoMatchesTitle => 'لا نتائج مطابقة';
+
+  @override
+  String get servicesDirectoryNotFoundMessage => 'ربما أُزيل من الدليل. تصفّح مقدّمي خدمة آخرين بالقرب منك.';
+
+  @override
+  String get servicesDirectoryNotFoundTitle => 'مقدّم الخدمة هذا لم يعد مدرجًا';
 
   @override
   String get servicesDirectoryNotVerified => 'لم يتم التحقق من بيانات التواصل';
@@ -5161,5 +7557,257 @@ class AppLocalizationsAr extends AppLocalizations {
   String get toursZoomOut => 'تصغير';
 
   @override
+  String get tripsAccess => 'الدخول';
+
+  @override
+  String get tripsAlternative => 'محطة بديلة';
+
+  @override
+  String get tripsArrivalSoc => 'البطارية عند الوصول';
+
+  @override
+  String get tripsAssumptions => 'الافتراضات';
+
+  @override
+  String get tripsAssumptionsEdit => 'الافتراضات';
+
+  @override
+  String get tripsAssumptionsEditHint => 'اختياري: اتركها فارغة لاستخدام الدليل والقيم الافتراضية المعروضة في النتيجة.';
+
+  @override
+  String get tripsAtKm => 'عند';
+
+  @override
+  String get tripsAvailabilityUnknown => 'التوفر غير معروف';
+
+  @override
+  String get tripsAvailableNow => 'متاحة الآن (وليس عند الوصول)';
+
+  @override
+  String get tripsBatterySection => 'البطارية';
+
+  @override
+  String get tripsCar => 'السيارة';
+
+  @override
+  String get tripsChargeEnergy => 'الطاقة المطلوبة';
+
+  @override
+  String get tripsChargeFromTo => 'الشحن';
+
+  @override
+  String get tripsChargeTime => 'الشحن';
+
+  @override
+  String get tripsChargeTimeUnknown => 'لا توجد خطة: تعذر تقدير زمن الشحن في المحطات.';
+
+  @override
+  String get tripsChargeTo => 'الشحن حتى';
+
+  @override
+  String get tripsChargeToHint => 'فارغ = 80%.';
+
+  @override
+  String get tripsChoose => 'اختر';
+
+  @override
+  String get tripsClosedAtEta => 'مغلقة عند الوصول';
+
+  @override
+  String get tripsConsumptionHint => 'تحل محل قيمة الدليل.';
+
+  @override
+  String get tripsCost => 'التكلفة التقريبية';
+
+  @override
+  String get tripsCostNotCalculated => 'أدخل سعرًا لحسابها';
+
+  @override
+  String get tripsCurrentSoc => 'البطارية الآن';
+
+  @override
+  String get tripsDeleteSaved => 'حذف الرحلة المحفوظة';
+
+  @override
+  String get tripsDepartureSection => 'المغادرة';
+
+  @override
+  String get tripsDetour => 'الانحراف عن الطريق';
+
+  @override
+  String get tripsDirections => 'الاتجاهات';
+
+  @override
+  String get tripsDriveTime => 'القيادة';
+
+  @override
+  String get tripsEnergyUsed => 'الطاقة المستهلكة';
+
+  @override
+  String get tripsErrorCar => 'اختر السيارة.';
+
+  @override
+  String get tripsErrorDestination => 'اختر وجهتك.';
+
+  @override
+  String get tripsErrorMinSoc => 'يجب أن تكون أقل من نسبة البطارية الحالية.';
+
+  @override
+  String get tripsErrorOrigin => 'اختر نقطة البداية.';
+
+  @override
+  String get tripsEta => 'الوصول المتوقع';
+
+  @override
+  String get tripsFrom => 'من';
+
+  @override
+  String get tripsHours => 'ساعات العمل';
+
+  @override
+  String get tripsHoursUnknown => 'ساعات العمل غير معروفة';
+
+  @override
+  String get tripsIntro =>
+      'يأتي المسار ومسافات الطرق من خدمة مسارات. تُقترح التوقفات مع احتياطي بطارية ومحطة بديلة؛ ولا يُضمن الوصول أو توفر شاحن متاح.';
+
+  @override
+  String get tripsLeaveNow => 'المغادرة الآن';
+
+  @override
+  String tripsLegN(int n) {
+    return 'المرحلة $n';
+  }
+
+  @override
+  String get tripsLegs => 'مراحل الطريق';
+
+  @override
+  String get tripsLocationDenied => 'الموقع متوقف أو غير مسموح. اختر مدينة أو نقطة على الخريطة بدلًا منه.';
+
+  @override
+  String get tripsLocationFailed => 'تعذر تحديد موقعك. اختر مدينة بدلًا منه.';
+
+  @override
+  String get tripsMargin => 'هامش أمان الاستهلاك';
+
+  @override
+  String get tripsMarginHint => 'فارغ = 10%. يغطي المرتفعات والحر والبرد والسرعة.';
+
+  @override
+  String get tripsMinArrivalSoc => 'احتفظ على الأقل بـ';
+
+  @override
+  String get tripsMissingInlets => 'منافذ الشحن';
+
+  @override
+  String get tripsMyLocation => 'موقعي الحالي';
+
+  @override
+  String get tripsMyLocationHint => 'يُستخدم مرة واحدة لهذه الخطة ولا يُحفظ.';
+
+  @override
+  String get tripsNoReachableStation =>
+      'لا توجد خطة: لا توجد محطة متوافقة ومفتوحة يمكن الوصول إليها بالاحتياطي المطلوب. جرّب نسبة بطارية أعلى أو احتياطيًا أقل.';
+
+  @override
+  String get tripsNoStopsNeeded => 'لا حاجة لتوقف شحن بالقيم التي أدخلتها.';
+
+  @override
+  String get tripsNotConfigured =>
+      'تخطيط الرحلات غير متاح: لم تُهيأ خدمة مسارات بعد. يمكنك الحصول على الاتجاهات لأي محطة من خريطة الشحن.';
+
+  @override
+  String get tripsOccupiedNow => 'مشغولة الآن';
+
+  @override
+  String get tripsOpenAtEta => 'مفتوحة عند الوصول';
+
+  @override
+  String get tripsOutOfOrderNow => 'معطلة الآن';
+
+  @override
+  String get tripsPickOnMap => 'اختر على الخريطة';
+
+  @override
+  String get tripsPlan => 'خطط رحلتي';
+
+  @override
+  String tripsPointOnMap(String lat, String lng) {
+    return 'نقطة $lat، $lng';
+  }
+
+  @override
+  String get tripsPrice => 'سعر الكهرباء';
+
+  @override
+  String get tripsPriceHint => 'اختياري. بدونه لا تُحسب التكلفة (لا أسعار مفترضة).';
+
+  @override
+  String get tripsRough => 'تقريبي';
+
+  @override
+  String get tripsRouteNotFound => 'لم يُعثر على طريق بين هاتين النقطتين.';
+
+  @override
+  String tripsRoutingBy(String provider) {
+    return 'المسار: $provider';
+  }
+
+  @override
+  String get tripsSave => 'احفظ هذه الخطة';
+
+  @override
+  String get tripsSaveHint => 'تُحفظ فقط عند طلبك، ولا يراها غيرك.';
+
+  @override
+  String get tripsSaveTitle => 'الاسم (اختياري)';
+
+  @override
+  String get tripsSaved => 'رحلاتي المحفوظة';
+
+  @override
+  String get tripsSavedEmpty => 'لا توجد رحلات محفوظة';
+
+  @override
+  String get tripsSavedStale => 'خطة محفوظة: قد تكون حالة المحطات وساعات العمل تغيّرت منذ ذلك الحين.';
+
+  @override
+  String get tripsStopChargeTime => 'مدة الشحن';
+
+  @override
+  String tripsStopN(int n, String name) {
+    return 'التوقف $n: $name';
+  }
+
+  @override
+  String tripsStopsSummary(int stops, String distance) {
+    String _temp0 = intl.Intl.pluralLogic(
+      stops,
+      locale: localeName,
+      other: '$stops توقف شحن',
+      few: '$stops توقفات شحن',
+      two: 'توقفا شحن',
+      one: 'توقف شحن واحد',
+      zero: 'بدون توقف للشحن',
+    );
+    return '$_temp0 · $distance';
+  }
+
+  @override
   String get tripsTitle => 'مخطط الرحلات';
+
+  @override
+  String get tripsTo => 'إلى';
+
+  @override
+  String get tripsTooManyStops => 'لا توجد خطة: ستحتاج الرحلة إلى عدد كبير جدًا من التوقفات.';
+
+  @override
+  String get tripsUsePoint => 'استخدم هذه النقطة';
+
+  @override
+  String tripsVehicleDataMissing(String missing) {
+    return 'لا توجد خطة: تنقص هذه السيارة بيانات موثّقة ($missing). أدخلها في الافتراضات إن كنت تعرفها.';
+  }
 }

@@ -6,6 +6,7 @@ import { STORAGE_PROVIDER } from '../../../providers/provider-tokens';
 import { isPublicKey } from '../../../providers/storage/storage-keys';
 import type { StorageProvider } from '../../../providers/storage/storage.types';
 import { pick } from './values';
+import { largestRendition } from '../../vehicles/common/media-urls';
 
 /** Same shape as the vehicles API `Image` (docs/decisions/backend-vehicles.md). */
 export interface StationImageView {
@@ -69,13 +70,18 @@ export class StationMediaService {
     caption: string | null,
   ): StationImageView | null {
     if (!this.isPublishable(asset)) return null;
-    const url = this.urlOf(asset.storageKey);
-    if (!url) return null;
+    // Library uploads keep a private original (it may carry GPS metadata):
+    // fall back to the largest public rendition generated from it.
+    const main = this.urlOf(asset.storageKey)
+      ? { url: this.urlOf(asset.storageKey), width: asset.width, height: asset.height }
+      : largestRendition(asset.variants, (k) => this.urlOf(k));
+    const url = main?.url ?? null;
+    if (!url || !main) return null;
     return {
       id: asset.id,
       url,
-      width: asset.width,
-      height: asset.height,
+      width: main.width,
+      height: main.height,
       alt: pick(lang, asset.altTextAr, asset.altTextEn),
       caption: caption ?? pick(lang, asset.captionAr, asset.captionEn),
       credit: asset.creditText ?? asset.license?.attributionText ?? null,

@@ -25,7 +25,11 @@ import 'charging_fixtures.dart';
 
 /// Device location without the plugin.
 class FakeLocationService implements LocationService {
-  FakeLocationService({this.checkResult = LocationAccess.denied, this.requestResult = LocationAccess.denied, this.position});
+  FakeLocationService({
+    this.checkResult = LocationAccess.denied,
+    this.requestResult = LocationAccess.denied,
+    this.position,
+  });
 
   LocationAccess checkResult;
   LocationAccess requestResult;
@@ -100,20 +104,24 @@ class _Server {
       if (!online) throw const FakeNetworkError();
       return FakeResponse.json(200, chargingFixture('detail2_ar'));
     });
-    adapter.on('GET /stations/merged-one', (_) => FakeResponse.error(
-      404,
-      'STATION_MERGED',
-      message: 'Merged',
-      details: {'mergedIntoId': demoStationId},
-    ));
+    adapter.on(
+      'GET /stations/merged-one',
+      (_) => FakeResponse.error(404, 'STATION_MERGED', message: 'Merged', details: {'mergedIntoId': demoStationId}),
+    );
     adapter.on('GET /me', (_) => FakeResponse.json(200, {'data': fakeUserJson()}));
     adapter.on('GET /me/vehicles', (_) => FakeResponse.json(200, {'data': <Object>[]}));
     adapter.on('POST /stations/$demoStationId/reports', (req) {
       reportBodies.add(req.data);
       if (reportBodies.length == 1) {
-        return FakeResponse.error(409, 'STATION_REPORT_DUPLICATE', message: 'You already have an open report of this type.');
+        return FakeResponse.error(
+          409,
+          'STATION_REPORT_DUPLICATE',
+          message: 'You already have an open report of this type.',
+        );
       }
-      return FakeResponse.json(201, {'data': {'id': 'r1', 'status': 'open'}});
+      return FakeResponse.json(201, {
+        'data': {'id': 'r1', 'status': 'open'},
+      });
     });
   }
 
@@ -185,7 +193,14 @@ void main() {
         final (server, loc) = await _pump(tester, language: lang);
         expect(find.byType(ChargingScreen), findsOneWidget);
         final en = lang == 'en';
-        expect(find.text(en ? 'The map is not configured yet, so stations are shown as a list.' : 'لم تُهيأ الخريطة بعد، لذا تُعرض المحطات كقائمة.'), findsOneWidget);
+        expect(
+          find.text(
+            en
+                ? 'The map is not configured yet, so stations are shown as a list.'
+                : 'لم تُهيأ الخريطة بعد، لذا تُعرض المحطات كقائمة.',
+          ),
+          findsOneWidget,
+        );
         final names = en
             ? ['[DEMO] Demo Charging Station (fictional)', '[DEMO] Demo AC Station 2 (fictional)']
             : ['محطة تجريبية (Demo)', 'محطة تجريبية 2 (Demo)'];
@@ -279,7 +294,11 @@ void main() {
       tester
           .container()
           .read(chargingFiltersProvider.notifier)
-          .set(const StationFilters(vehicle: CompatVehicle.catalog(variantId: 'v1', name: 'Demo EV')));
+          .set(
+            const StationFilters(
+              vehicle: CompatVehicle.catalog(variantId: 'v1', name: 'Demo EV'),
+            ),
+          );
       await tester.pumpAndSettle();
       expect(find.text("Compatibility can't be checked"), findsOneWidget);
       expect(find.byType(StationCard), findsNothing, reason: 'never an empty "nothing compatible" list');
@@ -352,7 +371,11 @@ void main() {
         expect(find.text(en ? 'Uncertain (reading expired)' : 'غير مؤكدة (انتهت صلاحية القراءة)'), findsWidgets);
         expect(find.text(en ? 'Connector free now' : 'منفذ متاح الآن'), findsNothing);
         await tester.scrollUntilVisible(
-          find.text(en ? 'The number of connectors is not the number of cars that can charge at the same time.' : 'عدد المنافذ لا يساوي عدد السيارات التي يمكن شحنها في الوقت نفسه.'),
+          find.text(
+            en
+                ? 'The number of connectors is not the number of cars that can charge at the same time.'
+                : 'عدد المنافذ لا يساوي عدد السيارات التي يمكن شحنها في الوقت نفسه.',
+          ),
           300,
           scrollable: _scrollable(),
         );
@@ -399,7 +422,10 @@ void main() {
       expect(find.text('This station was merged'), findsOneWidget);
       await tester.tap(find.text('Open the station'));
       await tester.pumpAndSettle();
-      expect(find.text('Status now'), findsNothing);
+      // The merged notice is replaced by the kept station's page. (This used
+      // to assert that a section below the fold was not built yet, which
+      // depended on card heights; see docs/decisions/design-review.md.)
+      expect(find.text('This station was merged'), findsNothing);
       expect(find.byType(StationDetailScreen), findsOneWidget);
     });
 

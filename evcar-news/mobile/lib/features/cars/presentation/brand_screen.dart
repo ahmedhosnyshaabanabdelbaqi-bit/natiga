@@ -119,7 +119,7 @@ class BrandScreen extends ConsumerWidget {
                                 ? l10n.carsNotSoldAnywhere
                                 : l10n.carsSoldIn(m.marketCodes.join('، ')),
                           ),
-                          trailing: Icon(context.isRtl ? Icons.chevron_left : Icons.chevron_right),
+                          trailing: Icon(Icons.chevron_right),
                           onTap: () => context.push(AppRoutes.car(m.slug)),
                         ),
                     ],

@@ -26,6 +26,8 @@ export const CORS_ALLOWED_HEADERS = [
   'X-Market',
   'X-Client-Type',
   'X-Device-Id',
+  // Sent by the mobile app on every request (build number; used in logs).
+  'X-App-Version',
   'X-Request-Id',
   'If-None-Match',
   'If-Match',
@@ -129,6 +131,14 @@ export function configureApp(app: NestExpressApplication, config: AppConfig): vo
   if (config.storage.driver === 'local' && !config.storage.publicBaseUrl) {
     const publicDir = resolve(config.storage.localRoot, LOCAL_PUBLIC_DIR);
     mkdirSync(publicDir, { recursive: true });
+    // Public files only: any origin may read them without credentials (the
+    // app's 360° viewer loads panorama tiles with fetch/WebGL from a
+    // file:// or app origin; S3/CDN buckets need the same CORS rule).
+    app.use(LOCAL_MEDIA_ROUTE, (_req: Request, res: Response, next: NextFunction) => {
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.removeHeader('Access-Control-Allow-Credentials');
+      next();
+    });
     app.use(
       LOCAL_MEDIA_ROUTE,
       express.static(publicDir, {

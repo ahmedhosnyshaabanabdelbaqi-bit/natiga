@@ -67,6 +67,56 @@ describe('Public articles API (e2e)', () => {
     expect(arabic.body.data).toMatchObject({ language: 'ar', isFallback: false });
   });
 
+  it('per-language slugs: each text gets its own slug, both open the article, locked after publish', async () => {
+    const stamp = uniqueTitle('').trim().replace(/\s+/g, ' ');
+    const a = await publishArticle(t, staff, {
+      originalLanguage: 'ar',
+      translations: {
+        ar: {
+          title: `اختبار الروابط باللغتين ${stamp}`,
+          summary: 'ملخص مكتوب للاختبارات الآلية فقط.',
+          bodyHtml: '<p>نص مكتوب للاختبارات الآلية فقط.</p>',
+        },
+        en: {
+          title: `Slug test in two languages ${stamp}`,
+          summary: 'A test summary written for automated tests.',
+          bodyHtml: '<p>Test body written for automated tests only.</p>',
+        },
+      },
+    });
+    const en = await t.http().get(`/api/v1/articles/${a.slug}?lang=en`).expect(200);
+    const slugs = en.body.data.slugs as Record<string, string>;
+    expect(Object.keys(slugs).sort()).toEqual(['ar', 'en']);
+    expect(slugs.ar).toMatch(/^اختبار-الروابط-باللغتين-/);
+    expect(slugs.en).toMatch(/^slug-test-in-two-languages-/);
+    expect(en.body.data.shareUrl).toContain(`/n/${slugs.en}`);
+    // The Arabic slug opens the same article (and the list carries it too).
+    const viaAr = await t
+      .http()
+      .get(`/api/v1/articles/${encodeURIComponent(slugs.ar)}?lang=ar`)
+      .expect(200);
+    expect(viaAr.body.data).toMatchObject({ id: a.id, language: 'ar' });
+    expect(viaAr.body.data.shareUrl).toContain(`/n/${encodeURIComponent(slugs.ar)}`);
+
+    // After publication a title change keeps the published slug.
+    const admin = await t
+      .http()
+      .get(`/api/v1/admin/articles/${a.id}`)
+      .set(staff.owner.auth)
+      .expect(200);
+    await t
+      .http()
+      .patch(`/api/v1/admin/articles/${a.id}`)
+      .set(staff.owner.auth)
+      .send({
+        expectedVersion: admin.body.data.currentVersion,
+        translations: { en: { title: `Renamed slug test ${stamp}` } },
+      })
+      .expect(200);
+    const after = await t.http().get(`/api/v1/articles/${a.id}?lang=en`).expect(200);
+    expect(after.body.data.slugs).toEqual(slugs);
+  });
+
   it('unreviewed machine translations are never served; a review makes them public', async () => {
     const a = await publishArticle(t, staff);
     const added = await t

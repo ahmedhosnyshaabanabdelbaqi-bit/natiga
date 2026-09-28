@@ -87,7 +87,11 @@ class ApiFavoritesRemote implements FavoritesRemote {
         body: {
           'items': [
             for (final f in batch)
-              {'type': f.key.type.apiValue, 'id': f.key.id, if (f.savedAt != null) 'savedAt': f.savedAt!.toUtc().toIso8601String()},
+              {
+                'type': f.key.type.apiValue,
+                'id': f.key.id,
+                if (f.savedAt != null) 'savedAt': f.savedAt!.toUtc().toIso8601String(),
+              },
           ],
         },
       );
@@ -98,7 +102,9 @@ class ApiFavoritesRemote implements FavoritesRemote {
         final type = FavoriteType.fromApi(s['type'] as String?);
         final id = s['id'];
         if (type == null || id is! String) continue;
-        skipped[FavoriteKey(type, id)] = s['reason'] == 'limit_reached' ? MergeSkipReason.limitReached : MergeSkipReason.notFound;
+        skipped[FavoriteKey(type, id)] = s['reason'] == 'limit_reached'
+            ? MergeSkipReason.limitReached
+            : MergeSkipReason.notFound;
       }
     }
     return FavoritesMergeResult(added: added, alreadyPresent: already, skipped: skipped);

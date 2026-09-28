@@ -171,6 +171,16 @@ sudo evcar create-owner --email you@example.com --name "اسمك"
 
 **مفيش أي كلمة سر ثابتة في الكود.** كل مدير بيختار كلمة سره بنفسه.
 
+### شغّل ميزات التطبيق
+
+كل الميزات (الأخبار، السيارات، المقارنات، المحطات...) بتبدأ **مطفأة**، فالتطبيق هيعرض الرئيسية والحساب بس. شغّل الميزات المنفّذة:
+
+```bash
+sudo evcar seed --enable-features
+```
+
+أو من إعدادات لوحة التحكم (`PATCH /api/v1/admin/settings/features`). مخطط الرحلات محتاج كمان مزود مسارات.
+
 ---
 
 ## 6) اتأكد إن كل حاجة شغالة
@@ -191,11 +201,11 @@ sudo evcar status
 
 ## 7) ربط تطبيق الموبايل (APK) بالسيرفر
 
-التطبيق أصلًا متظبط على `https://api.evcar.news/api/v1`. لو غيرت اسم الدومين، أو عايز تتأكد:
+لازم تحدد عنوان الـ API مرة واحدة (مفيش عنوان افتراضي: من غيره الـ workflow بيفشل بدل ما يطلع APK مش بيوصل لأي سيرفر):
 
 1. افتح المستودع على GitHub → **Settings** → **Secrets and variables** → **Actions** → تبويب **Variables** → **New repository variable**:
    - Name: `EVCAR_API_BASE_URL`
-   - Value: `https://api.evcar.news/api/v1`
+   - Value: `https://<دومين-الـAPI-بتاعك>/api/v1`
 2. روح **Actions** → اختار **evcar-android** → **Run workflow** → اختار الفرع → **Run workflow**.
 3. بعد ما يخلص (حوالي 15–25 دقيقة) هتلاقي نسخة جديدة في **Releases** باسم `android-test-رقم`:
    نزّل `evcar-news-arm64.apk` (لأغلب الموبايلات) أو `evcar-news-universal.apk`.

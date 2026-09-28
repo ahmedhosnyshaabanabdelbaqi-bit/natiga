@@ -1,5 +1,103 @@
 {
   "@@locale": "en",
   "notificationsTitle": "Notifications",
-  "notificationsPreferencesTitle": "Notification preferences"
+  "notificationsPreferencesTitle": "Notification preferences",
+  "notificationsGuestMessage": "Sign in to get news about the brands, models and topics you follow.",
+  "notificationsMarkAllRead": "Mark all as read",
+  "notificationsFilterAll": "All",
+  "notificationsFilterUnread": "Unread",
+  "notificationsEmptyTitle": "No notifications yet",
+  "notificationsEmptyUnreadTitle": "You are all caught up",
+  "notificationsEmptyMessage": "Follow brands, models or news categories to hear when something new is published.",
+  "notificationsChooseTopics": "Choose what to follow",
+  "notificationsLoadMore": "Load more",
+  "notificationsNew": "New",
+  "notificationsActions": "More actions",
+  "notificationsMarkRead": "Mark as read",
+  "notificationsMarkUnread": "Mark as unread",
+  "notificationsDelete": "Delete",
+  "notificationsDeleted": "Notification deleted.",
+  "notificationsUnsubscribedAll": "You unsubscribed from all notifications. Nothing new will be sent until you resume.",
+  "notificationsResume": "Resume notifications",
+  "notificationsTypesSection": "What to notify me about",
+  "notificationsTypesHint": "Turning any type on resumes notifications.",
+  "notificationsTypeNews": "News about what I follow",
+  "notificationsTypePriceAlerts": "Price alerts",
+  "notificationsTypeReminders": "Reminders",
+  "notificationsTypeCommunity": "Community replies",
+  "notificationsTypeStations": "Charging station alerts",
+  "notificationsTypeCampaigns": "Announcements",
+  "notificationsTopicsSection": "Topics I follow",
+  "notificationsTopicsHint": "News published about these is sent to you once, in your language.",
+  "notificationsTopicsEmpty": "You do not follow anything yet",
+  "notificationsTopicBrand": "Brand",
+  "notificationsTopicModel": "Model",
+  "notificationsTopicVariant": "Trim",
+  "notificationsTopicCategory": "News category",
+  "notificationsTopicMarket": "Market",
+  "notificationsTopicStation": "Station",
+  "notificationsTopicPriceAlert": "Price alert",
+  "notificationsTopicInMarket": "in {market}",
+  "@notificationsTopicInMarket": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationsUnfollow": "Stop following {name}",
+  "@notificationsUnfollow": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationsFollowBrand": "Brand",
+  "notificationsFollowModel": "Model",
+  "notificationsFollowCategory": "News category",
+  "notificationsFollowMarket": "Market",
+  "notificationsFollowed": "Following {name}.",
+  "@notificationsFollowed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationsChannelsSection": "How to reach me",
+  "notificationsChannelInApp": "In the app",
+  "notificationsChannelInAppHint": "Always on: every notification is kept in this list.",
+  "notificationsChannelPush": "Push notifications",
+  "notificationsPushActive": "Active on your registered devices.",
+  "notificationsPushDisabled": "Turned off by you.",
+  "notificationsPushNoDevice": "No device registered for push yet.",
+  "notificationsPushNotConfigured": "Not available: the push service is not set up on the server yet. Notifications still appear in the app.",
+  "notificationsChannelEmail": "Email",
+  "notificationsChannelEmailUnavailable": "Not available yet.",
+  "notificationsQuietSection": "Quiet hours",
+  "notificationsQuietHint": "Push notifications wait until quiet hours end; they still appear in the app.",
+  "notificationsQuietEnabled": "Quiet hours",
+  "notificationsQuietOff": "Off",
+  "notificationsQuietRange": "{start} – {end} ({zone})",
+  "@notificationsQuietRange": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      },
+      "zone": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationsQuietChange": "Change times",
+  "notificationsQuietStart": "Quiet from",
+  "notificationsQuietEnd": "Quiet until",
+  "notificationsUnsubscribeAll": "Unsubscribe from all",
+  "notificationsUnsubscribeAllConfirm": "Unsubscribe from all notifications?",
+  "notificationsUnsubscribeAllMessage": "You will not receive any notifications until you turn a type back on.",
+  "notificationsReminderNote": "Reminder alerts on this phone are set in Reminders."
 }

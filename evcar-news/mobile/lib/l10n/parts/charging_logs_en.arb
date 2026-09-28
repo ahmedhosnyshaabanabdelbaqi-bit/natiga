@@ -3,5 +3,128 @@
   "chargingLogsTitle": "Charging log",
   "chargingLogsNewTitle": "New charging session",
   "chargingLogsEditTitle": "Edit charging session",
-  "chargingLogsReportsTitle": "Spending & consumption"
+  "chargingLogsReportsTitle": "Spending & consumption",
+  "chargingLogsGuestMessage": "Sign in to keep a private log of your charging sessions and see your real spending and consumption.",
+  "chargingLogsAdd": "Add session",
+  "chargingLogsAllCars": "All cars",
+  "chargingLogsNoCarTitle": "Add your car first",
+  "chargingLogsNoCarMessage": "Each charging session belongs to a car in your garage.",
+  "chargingLogsEmptyTitle": "No charging sessions yet",
+  "chargingLogsEmptyMessage": "Log the energy, cost and odometer of each charge. Reports are built only from what you enter.",
+  "chargingLogsLoadMore": "Load more",
+  "chargingLogsNoCost": "No cost entered",
+  "chargingLogsPerKwh": "{price}/kWh",
+  "@chargingLogsPerKwh": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingLogsLocationHome": "Home",
+  "chargingLogsLocationPublic": "Public",
+  "chargingLogsLocationWork": "Work",
+  "chargingLogsLocationOther": "Other",
+  "chargingLogsSessionSection": "Session",
+  "chargingLogsCar": "Car",
+  "chargingLogsDate": "Date and time",
+  "chargingLogsEnergy": "Energy charged",
+  "chargingLogsEnergyHint": "As shown by the charger, app or meter.",
+  "chargingLogsLocation": "Where",
+  "chargingLogsCostSection": "Cost",
+  "chargingLogsCostHint": "Optional. Leave empty if you do not know it — it will not count as free.",
+  "chargingLogsCost": "Amount paid",
+  "chargingLogsCurrency": "Currency",
+  "chargingLogsMoreSection": "More details",
+  "chargingLogsMoreHint": "Optional. The odometer reading makes consumption reports possible.",
+  "chargingLogsOdometer": "Odometer",
+  "chargingLogsOdometerHint": "Must not be lower than an earlier session of this car.",
+  "chargingLogsSocStart": "Battery at start",
+  "chargingLogsSocEnd": "Battery at end",
+  "chargingLogsDuration": "Duration",
+  "chargingLogsPower": "Charger power",
+  "chargingLogsCurrentType": "Current type",
+  "chargingLogsCurrentUnknown": "Not sure",
+  "chargingLogsNotes": "Notes",
+  "chargingLogsErrorRequired": "Required.",
+  "chargingLogsErrorPositive": "Must be greater than zero.",
+  "chargingLogsErrorMax": "Must be at most {max}.",
+  "@chargingLogsErrorMax": {
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingLogsErrorSoc": "The end level must be above the start level.",
+  "chargingLogsAdded": "Session added.",
+  "chargingLogsSaved": "Session saved.",
+  "chargingLogsDelete": "Delete session",
+  "chargingLogsDeleteConfirm": "Delete this session?",
+  "chargingLogsDeleteMessage": "It will be removed from your reports.",
+  "chargingLogsDeleted": "Session deleted.",
+  "chargingLogsPeriod3": "3 months",
+  "chargingLogsPeriod6": "6 months",
+  "chargingLogsPeriod12": "12 months",
+  "chargingLogsPeriodAll": "All time",
+  "chargingLogsReportEmptyTitle": "No sessions in this period",
+  "chargingLogsReportEmptyMessage": "Reports use only the sessions you log. Add a session or choose a longer period.",
+  "chargingLogsTotalEnergy": "Energy",
+  "chargingLogsSessions": "Sessions",
+  "chargingLogsSessionsCount": "{count, plural, =1{1 session} other{{count} sessions}}",
+  "@chargingLogsSessionsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingLogsTotalSpend": "Spent",
+  "chargingLogsAvgPerKwh": "Average per kWh",
+  "chargingLogsSessionsWithoutCost": "{count, plural, =1{1 session has no cost and is not in the spending totals.} other{{count} sessions have no cost and are not in the spending totals.}}",
+  "@chargingLogsSessionsWithoutCost": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingLogsMixedCurrencies": "You paid in more than one currency. Amounts are shown per currency and never converted.",
+  "chargingLogsMonthlySpend": "Monthly spending",
+  "chargingLogsInCurrency": "In {currency}",
+  "@chargingLogsInCurrency": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingLogsNoSpendData": "No costs were entered in this period.",
+  "chargingLogsMonthlyEnergy": "Monthly energy",
+  "chargingLogsShowTable": "Show the numbers",
+  "chargingLogsByLocation": "Where you charge",
+  "chargingLogsMethod": "How this is calculated",
+  "chargingLogsVehicleSummary": "{sessions, plural, =1{1 session} other{{sessions} sessions}} · {energy}",
+  "@chargingLogsVehicleSummary": {
+    "placeholders": {
+      "sessions": {
+        "type": "int"
+      },
+      "energy": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingLogsDistance": "Distance",
+  "chargingLogsConsumption": "Consumption",
+  "chargingLogsCostPer100": "Cost per 100 km",
+  "chargingLogsConfidenceMedium": "Medium confidence",
+  "chargingLogsConfidenceLow": "Low confidence",
+  "chargingLogsLowConfidenceHint": "Based on few readings or a short distance. Log more sessions with the odometer for a better figure.",
+  "chargingLogsReasonNoSessions": "Insufficient data: no sessions",
+  "chargingLogsReasonOdometer": "Insufficient data: needs 2+ odometer readings",
+  "chargingLogsReasonNoDistance": "Insufficient data: no distance between readings",
+  "chargingLogsReasonMissingCosts": "Insufficient data: some costs missing",
+  "chargingLogsReasonMixedCurrencies": "Not shown: mixed currencies",
+  "chargingLogsReasonUnknown": "Insufficient data"
 }

@@ -1,5 +1,103 @@
 {
   "@@locale": "ar",
   "notificationsTitle": "الإشعارات",
-  "notificationsPreferencesTitle": "تفضيلات الإشعارات"
+  "notificationsPreferencesTitle": "تفضيلات الإشعارات",
+  "notificationsGuestMessage": "سجّل الدخول لتصلك أخبار الماركات والموديلات والموضوعات التي تتابعها.",
+  "notificationsMarkAllRead": "تعليم الكل كمقروء",
+  "notificationsFilterAll": "الكل",
+  "notificationsFilterUnread": "غير المقروءة",
+  "notificationsEmptyTitle": "لا توجد إشعارات بعد",
+  "notificationsEmptyUnreadTitle": "لا توجد إشعارات غير مقروءة",
+  "notificationsEmptyMessage": "تابع ماركات أو موديلات أو تصنيفات أخبار ليصلك إشعار عند نشر جديد.",
+  "notificationsChooseTopics": "اختر ما تتابعه",
+  "notificationsLoadMore": "تحميل المزيد",
+  "notificationsNew": "جديد",
+  "notificationsActions": "إجراءات أخرى",
+  "notificationsMarkRead": "تعليم كمقروء",
+  "notificationsMarkUnread": "تعليم كغير مقروء",
+  "notificationsDelete": "حذف",
+  "notificationsDeleted": "تم حذف الإشعار.",
+  "notificationsUnsubscribedAll": "ألغيت الاشتراك في كل الإشعارات. لن يُرسل أي جديد حتى تستأنف.",
+  "notificationsResume": "استئناف الإشعارات",
+  "notificationsTypesSection": "ما الذي أريد إشعارًا به",
+  "notificationsTypesHint": "تفعيل أي نوع يستأنف الإشعارات.",
+  "notificationsTypeNews": "أخبار ما أتابعه",
+  "notificationsTypePriceAlerts": "تنبيهات الأسعار",
+  "notificationsTypeReminders": "التذكيرات",
+  "notificationsTypeCommunity": "ردود المجتمع",
+  "notificationsTypeStations": "تنبيهات محطات الشحن",
+  "notificationsTypeCampaigns": "إعلانات الخدمة",
+  "notificationsTopicsSection": "الموضوعات التي أتابعها",
+  "notificationsTopicsHint": "الأخبار المنشورة عنها تصلك مرة واحدة وبلغتك.",
+  "notificationsTopicsEmpty": "لا تتابع أي شيء بعد",
+  "notificationsTopicBrand": "ماركة",
+  "notificationsTopicModel": "موديل",
+  "notificationsTopicVariant": "فئة",
+  "notificationsTopicCategory": "تصنيف أخبار",
+  "notificationsTopicMarket": "سوق",
+  "notificationsTopicStation": "محطة",
+  "notificationsTopicPriceAlert": "تنبيه سعر",
+  "notificationsTopicInMarket": "في {market}",
+  "@notificationsTopicInMarket": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationsUnfollow": "إلغاء متابعة {name}",
+  "@notificationsUnfollow": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationsFollowBrand": "ماركة",
+  "notificationsFollowModel": "موديل",
+  "notificationsFollowCategory": "تصنيف أخبار",
+  "notificationsFollowMarket": "سوق",
+  "notificationsFollowed": "تتابع الآن {name}.",
+  "@notificationsFollowed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationsChannelsSection": "طريقة الوصول إليّ",
+  "notificationsChannelInApp": "داخل التطبيق",
+  "notificationsChannelInAppHint": "مفعّل دائمًا: كل إشعار يُحفظ في هذه القائمة.",
+  "notificationsChannelPush": "إشعارات الهاتف الفورية",
+  "notificationsPushActive": "مفعّلة على أجهزتك المسجلة.",
+  "notificationsPushDisabled": "أوقفتها أنت.",
+  "notificationsPushNoDevice": "لا يوجد جهاز مسجل للإشعارات الفورية بعد.",
+  "notificationsPushNotConfigured": "غير متاحة: خدمة الإشعارات الفورية غير مهيأة على الخادم بعد. تظهر الإشعارات داخل التطبيق.",
+  "notificationsChannelEmail": "البريد الإلكتروني",
+  "notificationsChannelEmailUnavailable": "غير متاح بعد.",
+  "notificationsQuietSection": "ساعات الهدوء",
+  "notificationsQuietHint": "تنتظر الإشعارات الفورية حتى انتهاء ساعات الهدوء، وتظهر داخل التطبيق.",
+  "notificationsQuietEnabled": "ساعات الهدوء",
+  "notificationsQuietOff": "متوقفة",
+  "notificationsQuietRange": "{start} – {end} ({zone})",
+  "@notificationsQuietRange": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      },
+      "zone": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationsQuietChange": "تغيير الأوقات",
+  "notificationsQuietStart": "الهدوء من",
+  "notificationsQuietEnd": "الهدوء حتى",
+  "notificationsUnsubscribeAll": "إلغاء الاشتراك في الكل",
+  "notificationsUnsubscribeAllConfirm": "إلغاء الاشتراك في كل الإشعارات؟",
+  "notificationsUnsubscribeAllMessage": "لن تصلك أي إشعارات حتى تعيد تفعيل أحد الأنواع.",
+  "notificationsReminderNote": "تنبيهات التذكيرات على هذا الهاتف تُضبط من شاشة التذكيرات."
 }

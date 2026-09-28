@@ -535,6 +535,41 @@ export class ArticlesAdminService {
     }
   }
 
+  /**
+   * Per-language slugs (article_translations.slug): generated from each
+   * translation's title while the article has never been published; once
+   * published an existing slug is locked (links keep working) and only a
+   * translation added later gets one. A slug is unique across article slugs
+   * of other articles and every other translation slug.
+   */
+  private async syncTranslationSlugs(
+    tx: Prisma.TransactionClient,
+    articleId: string,
+    locked: boolean,
+  ): Promise<void> {
+    const rows = await tx.articleTranslation.findMany({
+      where: { articleId },
+      select: { id: true, locale: true, slug: true, title: true },
+    });
+    for (const row of rows) {
+      if (locked && row.slug) continue;
+      const base = slugFromTexts([row.title], 120);
+      if (row.slug && (row.slug === base || isSuffixedSlug(row.slug, base))) continue;
+      const slug = await uniqueSlug(base, async (candidate) => {
+        const [article, translation] = await Promise.all([
+          tx.article.findUnique({ where: { slug: candidate }, select: { id: true } }),
+          tx.articleTranslation.findUnique({ where: { slug: candidate }, select: { id: true } }),
+        ]);
+        return (
+          (!!article && article.id !== articleId) || (!!translation && translation.id !== row.id)
+        );
+      });
+      if (slug !== row.slug) {
+        await tx.articleTranslation.update({ where: { id: row.id }, data: { slug } });
+      }
+    }
+  }
+
   private async slugTaken(slug: string, exceptId?: string): Promise<boolean> {
     const row = await this.prisma.article.findUnique({ where: { slug }, select: { id: true } });
     return !!row && row.id !== exceptId;
@@ -667,6 +702,7 @@ export class ArticlesAdminService {
           },
           select: { id: true },
         });
+        await this.syncTranslationSlugs(tx, created.id, false);
         await tx.articleRevision.create({
           data: {
             articleId: created.id,
@@ -845,6 +881,7 @@ export class ArticlesAdminService {
             data: next.vehicleLinks.map((l) => ({ articleId: before.id, ...l })),
           });
         }
+        await this.syncTranslationSlugs(tx, before.id, before.publishedAt !== null);
         await tx.articleRevision.create({
           data: {
             articleId: before.id,
@@ -1133,4 +1170,10 @@ export class ArticlesAdminService {
     });
     return rows.map((r) => this.media.toView(r, lang)).filter((v) => !!v);
   }
+}
+
+/** `base-2` … `base-20` or `base-<6 hex>` (the forms uniqueSlug() produces). */
+function isSuffixedSlug(slug: string, base: string): boolean {
+  if (!slug.startsWith(`${base}-`)) return false;
+  return /^(?:\d{1,2}|[0-9a-f]{6})$/.test(slug.slice(base.length + 1));
 }

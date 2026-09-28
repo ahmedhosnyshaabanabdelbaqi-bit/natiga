@@ -56,5 +56,23 @@
   "accountDeletePasswordLabel": "Enter your password to confirm",
   "accountDeleteAcknowledge": "I understand this is permanent and cannot be undone.",
   "accountDeleteButton": "Delete account permanently",
-  "accountDeleted": "Your account has been deleted."
+  "accountDeleted": "Your account has been deleted.",
+  "accountCarsCount": "{count, plural, =1{1 car} other{{count} cars}}",
+  "@accountCarsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "accountUnreadCount": "{count} new",
+  "@accountUnreadCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "accountTripPlannerUnavailable": "Not available yet",
+  "accountTripPlannerExplain": "Trip planning needs a road-routing service, which is not configured on the server yet. We do not draw straight lines as driving routes or invent plans, so the planner stays hidden until it is. Meanwhile, every station page offers directions in your navigation app."
 }

@@ -41,6 +41,7 @@ cd backend
 npm ci
 npm run prisma:deploy      # تطبيق الترحيلات
 npm run db:seed            # البيانات المرجعية: الأسواق والعملات والأدوار والصلاحيات والإعدادات وأنواع الموصلات
+npm run db:seed -- --enable-implemented-features   # تشغيل الميزات المنفّذة (كلها تبدأ مطفأة، فيعرض التطبيق الرئيسية والحساب فقط)
 # اختياري للتطوير فقط: npm run db:seed:demo   (بيانات تجريبية موسومة is_demo، ممنوعة في الإنتاج)
 ```
 
@@ -98,6 +99,7 @@ cd backend
 npm ci
 npm run prisma:deploy      # apply migrations
 npm run db:seed            # reference data: markets, currencies, roles/permissions, settings, connector types
+npm run db:seed -- --enable-implemented-features   # switch on the implemented features (all start OFF: the app then shows only Home + Account)
 # optional, development only: npm run db:seed:demo   (sample rows flagged is_demo; refused in production)
 ```
 

@@ -3,12 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../app/di/providers.dart';
 import '../../../core/cache/cached_fetch.dart';
+import '../../search/application/locale_key.dart';
 import '../../search/application/paged_state.dart';
 import '../data/encyclopedia_repository.dart';
 import '../domain/encyclopedia_models.dart';
 
 final encyclopediaCategoriesProvider = FutureProvider.autoDispose<CachedResult<List<EncyclopediaCategory>>>((ref) {
-  ref.watch(requestLocaleProvider);
+  ref.watch(requestLocaleProvider.select(localeKey));
   return ref.watch(encyclopediaRepositoryProvider).categories();
 });
 
@@ -34,13 +35,15 @@ class EncyclopediaListController extends PagedController<EncyclopediaEntrySummar
 
   @override
   void watchDependencies() {
-    ref.watch(requestLocaleProvider);
+    ref.watch(requestLocaleProvider.select(localeKey));
     ref.watch(encyclopediaRepositoryProvider);
   }
 
   @override
   Future<CachedResult<PageChunk<EncyclopediaEntrySummary>>> fetchPage(int page) async {
-    final res = await ref.read(encyclopediaRepositoryProvider).entries(category: query.category, q: query.q, page: page);
+    final res = await ref
+        .read(encyclopediaRepositoryProvider)
+        .entries(category: query.category, q: query.q, page: page);
     return CachedResult(
       data: PageChunk(items: res.data.items, hasMore: res.data.meta.hasMore),
       savedAt: res.savedAt,
@@ -61,6 +64,6 @@ final encyclopediaEntryProvider = FutureProvider.autoDispose.family<CachedResult
   ref,
   slug,
 ) {
-  ref.watch(requestLocaleProvider);
+  ref.watch(requestLocaleProvider.select(localeKey));
   return ref.watch(encyclopediaRepositoryProvider).entry(slug);
 });

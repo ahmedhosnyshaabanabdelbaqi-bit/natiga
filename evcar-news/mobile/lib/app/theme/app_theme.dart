@@ -31,10 +31,14 @@ abstract final class AppTheme {
       dynamicSchemeVariant: DynamicSchemeVariant.fidelity,
     );
     scheme = scheme.copyWith(
-      // Keep the exact brand blue in light mode; the seeded tone is used in
-      // dark mode where pure #0A5CFF lacks contrast on dark surfaces.
-      primary: isDark ? scheme.primary : primary,
-      onPrimary: isDark ? scheme.onPrimary : Colors.white,
+      // Keep the exact brand blue in light mode. In dark mode pure #0A5CFF
+      // is only 3.3:1 on dark surfaces, so text/icons use a light brand blue
+      // (7.8:1) — not the seeded lavender tone, which read as "disabled" —
+      // while filled controls keep the brand blue with white text.
+      primary: isDark ? (primary == AppColors.electricBlue ? AppColors.electricBlueOnDark : scheme.primary) : primary,
+      onPrimary: isDark ? const Color(0xFF00277A) : Colors.white,
+      primaryContainer: isDark && primary == AppColors.electricBlue ? const Color(0xFF173A8C) : null,
+      onPrimaryContainer: isDark && primary == AppColors.electricBlue ? const Color(0xFFDCE6FF) : null,
       // Cyan is decorative (contrast too low for text on white): used for
       // accents/containers, with dark text on top.
       secondary: isDark ? accent : scheme.secondary,
@@ -65,6 +69,11 @@ abstract final class AppTheme {
       visualDensity: VisualDensity.standard,
     );
     final text = _textTheme(base.textTheme, scheme);
+
+    // Filled controls (buttons, FAB, switches) use the brand blue with white
+    // text in both themes: 5.3:1, and they stay recognisably "brand".
+    final filledBackground = primary;
+    const filledForeground = Colors.white;
 
     const controlShape = RoundedRectangleBorder(borderRadius: AppRadii.control);
     const buttonMin = Size(kMinTouchTarget, kMinTouchTarget);
@@ -101,9 +110,19 @@ abstract final class AppTheme {
         height: 72,
         elevation: 0,
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-        indicatorColor: scheme.primaryContainer,
+        // Filled brand pill with a white icon (5.3:1). The default icon colour
+        // (onSecondaryContainer) was dark navy on the bright pill.
+        indicatorColor: filledBackground,
+        indicatorShape: const StadiumBorder(),
+        iconTheme: WidgetStateProperty.resolveWith(
+          (states) => IconThemeData(
+            size: 24,
+            color: states.contains(WidgetState.selected) ? filledForeground : scheme.onSurfaceVariant,
+          ),
+        ),
         backgroundColor: scheme.surface,
         surfaceTintColor: Colors.transparent,
+        shadowColor: Colors.transparent,
         labelTextStyle: WidgetStateProperty.resolveWith(
           (states) => text.labelMedium?.copyWith(
             fontWeight: states.contains(WidgetState.selected) ? FontWeight.w700 : FontWeight.w500,
@@ -113,6 +132,10 @@ abstract final class AppTheme {
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
+          backgroundColor: filledBackground,
+          foregroundColor: filledForeground,
+          disabledBackgroundColor: scheme.onSurface.withValues(alpha: 0.12),
+          disabledForegroundColor: scheme.onSurface.withValues(alpha: 0.38),
           minimumSize: buttonMin,
           padding: buttonPadding,
           shape: controlShape,
@@ -143,8 +166,8 @@ abstract final class AppTheme {
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         elevation: 2,
         highlightElevation: 4,
-        backgroundColor: scheme.primary,
-        foregroundColor: scheme.onPrimary,
+        backgroundColor: filledBackground,
+        foregroundColor: filledForeground,
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(AppRadii.lg))),
         extendedTextStyle: buttonText,
       ),
@@ -177,6 +200,25 @@ abstract final class AppTheme {
         checkmarkColor: scheme.onPrimaryContainer,
         labelStyle: text.labelLarge?.copyWith(fontWeight: FontWeight.w500),
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+      ),
+      switchTheme: SwitchThemeData(
+        thumbColor: WidgetStateProperty.resolveWith(
+          (states) => states.contains(WidgetState.disabled)
+              ? null
+              : states.contains(WidgetState.selected)
+              ? filledForeground
+              : scheme.outline,
+        ),
+        trackColor: WidgetStateProperty.resolveWith(
+          (states) => states.contains(WidgetState.disabled)
+              ? null
+              : states.contains(WidgetState.selected)
+              ? filledBackground
+              : scheme.surfaceContainerHighest,
+        ),
+        trackOutlineColor: WidgetStateProperty.resolveWith(
+          (states) => states.contains(WidgetState.selected) ? Colors.transparent : scheme.outline,
+        ),
       ),
       segmentedButtonTheme: SegmentedButtonThemeData(
         style: SegmentedButton.styleFrom(minimumSize: buttonMin, textStyle: buttonText),

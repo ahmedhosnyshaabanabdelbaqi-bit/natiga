@@ -2,5 +2,146 @@
   "@@locale": "en",
   "remindersTitle": "Reminders",
   "remindersNewTitle": "New reminder",
-  "remindersEditTitle": "Edit reminder"
+  "remindersEditTitle": "Edit reminder",
+  "remindersGuestMessage": "Sign in to keep maintenance, insurance and licence reminders for your cars.",
+  "remindersFilterOpen": "Open",
+  "remindersFilterCompleted": "Completed",
+  "remindersEmptyTitle": "No reminders",
+  "remindersEmptyMessage": "Add a reminder for maintenance, insurance, licence renewal or tyres — by date, by odometer, or both.",
+  "remindersEmptyCompletedTitle": "No completed reminders yet",
+  "remindersDeviceNotifications": "Notify me on this phone",
+  "remindersDeviceNotificationsOn": "You will get a notification on each reminder's alert day.",
+  "remindersDeviceNotificationsOff": "Off. Reminders still appear here with their status.",
+  "remindersNotificationsUnsupported": "Phone notifications are not available here. Reminders still appear in this list.",
+  "remindersPermissionDenied": "Notifications are blocked for this app. Allow them in your phone settings to get alerts; your reminders still show here.",
+  "remindersChannelName": "Car reminders",
+  "remindersChannelDescription": "Maintenance, insurance, licence and tyre reminders you created.",
+  "remindersStatusOverdue": "Overdue",
+  "remindersStatusDueSoon": "Due soon",
+  "remindersStatusUpcoming": "Upcoming",
+  "remindersStatusCompleted": "Done",
+  "remindersDueOn": "Due {date}",
+  "@remindersDueOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "remindersDueAtKm": "at {km}",
+  "@remindersDueAtKm": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "remindersInDays": "{days, plural, =0{Today} =1{Tomorrow} other{In {days} days}}",
+  "@remindersInDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "remindersDaysLate": "{days, plural, =1{1 day late} other{{days} days late}}",
+  "@remindersDaysLate": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "remindersInKm": "In {km}",
+  "@remindersInKm": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "remindersKmLate": "{km} over",
+  "@remindersKmLate": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "remindersEveryMonths": "{months, plural, =1{Every month} other{Every {months} months}}",
+  "@remindersEveryMonths": {
+    "placeholders": {
+      "months": {
+        "type": "int"
+      }
+    }
+  },
+  "remindersEveryKm": "Every {km}",
+  "@remindersEveryKm": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "remindersMarkDone": "Mark as done",
+  "remindersCompleteTitle": "Mark as done?",
+  "remindersCompleteMessage": "The reminder moves to completed.",
+  "remindersCompleteRepeats": "This reminder repeats: the next one will be created automatically.",
+  "remindersOdometerNow": "Odometer now",
+  "remindersOdometerNowHint": "Optional. Used to schedule the next reminder by distance.",
+  "remindersCompleted": "Done.",
+  "remindersCompletedNext": "Done. Next one: {due}",
+  "@remindersCompletedNext": {
+    "placeholders": {
+      "due": {
+        "type": "String"
+      }
+    }
+  },
+  "remindersTypeMaintenance": "Maintenance",
+  "remindersTypeInsurance": "Insurance",
+  "remindersTypeLicence": "Licence",
+  "remindersTypeTyres": "Tyres",
+  "remindersTypeCustom": "Other",
+  "remindersWhatSection": "What",
+  "remindersTitleField": "Title",
+  "remindersCar": "Car",
+  "remindersCarHint": "Needed for reminders by odometer.",
+  "remindersNoCar": "No specific car",
+  "remindersWhenSection": "When",
+  "remindersWhenHint": "Enter a date, an odometer reading, or both.",
+  "remindersDueDate": "Due date",
+  "remindersDueKm": "Due at odometer",
+  "remindersDueKmNeedsCar": "Choose a car to use the odometer.",
+  "remindersRepeatMonths": "Repeat every (months)",
+  "remindersRepeatKm": "Repeat every",
+  "remindersAlertSection": "Alert",
+  "remindersAlertHint": "How early to be reminded.",
+  "remindersNotifyDays": "Days before",
+  "remindersNotifyKm": "Km before",
+  "remindersNotes": "Notes",
+  "remindersErrorTitle": "Enter a title.",
+  "remindersErrorDue": "Enter a due date or an odometer reading.",
+  "remindersErrorVehicleForKm": "Choose a car for odometer reminders.",
+  "remindersErrorWhole": "Enter a whole number.",
+  "remindersErrorRange": "Must be between {min} and {max}.",
+  "@remindersErrorRange": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "remindersSaved": "Reminder saved.",
+  "remindersEnableHint": "Turn on phone notifications to be alerted on time.",
+  "remindersEnableAction": "Turn on",
+  "remindersAlreadyCompleted": "This reminder is completed.",
+  "remindersDelete": "Delete reminder",
+  "remindersDeleteConfirm": "Delete this reminder?",
+  "remindersDeleteMessage": "Its phone notification will be cancelled too.",
+  "remindersDeleted": "Reminder deleted."
 }

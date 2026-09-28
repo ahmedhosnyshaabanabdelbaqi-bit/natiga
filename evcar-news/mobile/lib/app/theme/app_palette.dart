@@ -31,6 +31,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
   const AppPalette({
     required this.brightness,
     required this.brandGradient,
+    required this.accentGradient,
     required this.imageScrim,
     required this.skeletonBase,
     required this.skeletonHighlight,
@@ -40,8 +41,14 @@ class AppPalette extends ThemeExtension<AppPalette> {
 
   final Brightness brightness;
 
-  /// Electric blue → cyan, for hero headers, the 360° badge and key CTAs.
+  /// Electric blue → deep cyan-blue: hero headers, result panels, the 360°
+  /// badge — anything that carries white text (≥ 4.5:1 across the whole
+  /// gradient).
   final LinearGradient brandGradient;
+
+  /// Electric blue → bright cyan: purely decorative accents (illustration
+  /// halos, chart bars, thin brand strokes). Never put text on it.
+  final LinearGradient accentGradient;
 
   /// Bottom-up dark gradient drawn over images that carry text.
   final LinearGradient imageScrim;
@@ -64,6 +71,11 @@ class AppPalette extends ThemeExtension<AppPalette> {
   factory AppPalette.light({Color primary = AppColors.electricBlue, Color accent = AppColors.cyan}) => AppPalette(
     brightness: Brightness.light,
     brandGradient: LinearGradient(
+      begin: AlignmentDirectional.topStart,
+      end: AlignmentDirectional.bottomEnd,
+      colors: [primary, _textSafeEnd(primary, accent)],
+    ),
+    accentGradient: LinearGradient(
       begin: AlignmentDirectional.topStart,
       end: AlignmentDirectional.bottomEnd,
       colors: [primary, accent],
@@ -121,6 +133,11 @@ class AppPalette extends ThemeExtension<AppPalette> {
     brandGradient: LinearGradient(
       begin: AlignmentDirectional.topStart,
       end: AlignmentDirectional.bottomEnd,
+      colors: [primary, _textSafeEnd(primary, accent)],
+    ),
+    accentGradient: LinearGradient(
+      begin: AlignmentDirectional.topStart,
+      end: AlignmentDirectional.bottomEnd,
       colors: [Color.lerp(primary, Colors.white, 0.12)!, accent],
     ),
     imageScrim: const LinearGradient(
@@ -168,10 +185,25 @@ class AppPalette extends ThemeExtension<AppPalette> {
     },
   );
 
+  /// End colour of [brandGradient]: the brand default is [AppColors.deepCyan];
+  /// a server-provided accent is darkened until white text on it reaches
+  /// 4.5:1.
+  static Color _textSafeEnd(Color primary, Color accent) {
+    if (accent == AppColors.cyan) return AppColors.deepCyan;
+    var c = accent;
+    for (var i = 0; i < 12 && _contrastWithWhite(c) < 4.5; i++) {
+      c = Color.lerp(c, Colors.black, 0.1)!;
+    }
+    return c;
+  }
+
+  static double _contrastWithWhite(Color c) => 1.05 / (c.computeLuminance() + 0.05);
+
   @override
-  AppPalette copyWith({LinearGradient? brandGradient}) => AppPalette(
+  AppPalette copyWith({LinearGradient? brandGradient, LinearGradient? accentGradient}) => AppPalette(
     brightness: brightness,
     brandGradient: brandGradient ?? this.brandGradient,
+    accentGradient: accentGradient ?? this.accentGradient,
     imageScrim: imageScrim,
     skeletonBase: skeletonBase,
     skeletonHighlight: skeletonHighlight,
@@ -185,6 +217,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
     return AppPalette(
       brightness: t < 0.5 ? brightness : other.brightness,
       brandGradient: LinearGradient.lerp(brandGradient, other.brandGradient, t)!,
+      accentGradient: LinearGradient.lerp(accentGradient, other.accentGradient, t)!,
       imageScrim: LinearGradient.lerp(imageScrim, other.imageScrim, t)!,
       skeletonBase: Color.lerp(skeletonBase, other.skeletonBase, t)!,
       skeletonHighlight: Color.lerp(skeletonHighlight, other.skeletonHighlight, t)!,

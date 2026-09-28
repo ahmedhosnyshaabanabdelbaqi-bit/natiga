@@ -1,5 +1,13 @@
 {
   "@@locale": "en",
+  "accountCarsCount": "{count, plural, =1{1 car} other{{count} cars}}",
+  "@accountCarsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "accountDeleteAccount": "Delete account",
   "accountDeleteAcknowledge": "I understand this is permanent and cannot be undone.",
   "accountDeleteButton": "Delete account permanently",
@@ -56,6 +64,16 @@
   "accountSessionsTitle": "Devices & sessions",
   "accountSettingsSection": "Settings & privacy",
   "accountTitle": "My account",
+  "accountTripPlannerExplain": "Trip planning needs a road-routing service, which is not configured on the server yet. We do not draw straight lines as driving routes or invent plans, so the planner stays hidden until it is. Meanwhile, every station page offers directions in your navigation app.",
+  "accountTripPlannerUnavailable": "Not available yet",
+  "accountUnreadCount": "{count} new",
+  "@accountUnreadCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "accountVerifyNow": "Verify now",
   "authBackToLogin": "Back to sign in",
   "authConfirmPasswordLabel": "Confirm password",
@@ -128,8 +146,231 @@
   "authVerifySuccess": "Your email has been verified.",
   "authVerifyTitle": "Verify email",
   "authVerifyTokenLabel": "Verification code",
+  "calculatorsAcLimitHint": "Often 7.4, 11 or 22 kW. Unknown = lower confidence.",
+  "calculatorsAssumptions": "Values and assumptions used",
+  "calculatorsAssumptionsHint": "Change any of them above and calculate again.",
+  "calculatorsBasisBattery": "Added to the battery",
+  "calculatorsBasisBatteryConsumption": "From the car's display",
+  "calculatorsBasisGrid": "From the meter / charger",
+  "calculatorsBasisGridConsumption": "At the plug (WLTP/EPA)",
+  "calculatorsCalculate": "Calculate",
   "calculatorsCalculatorTitle": "Calculator",
+  "calculatorsCarNeedsNetwork": "Using a car's data needs a connection. Remove the car to calculate offline with your own values.",
+  "calculatorsCarOptional": "Optional: fill missing values from a car",
+  "calculatorsCarSelectedHint": "Empty fields are filled from this car's catalog data",
+  "calculatorsChooseCar": "Use a car's data",
+  "calculatorsChooseCarHint": "Missing values (battery, charging power, consumption) are filled from the catalog, with their source. Values you type always win. Needs an internet connection.",
+  "calculatorsCompareFuelCar": "Compare with a fuel car",
+  "calculatorsConfidenceHigh": "High confidence",
+  "calculatorsConfidenceLow": "Low confidence",
+  "calculatorsConfidenceMedium": "Medium confidence",
+  "calculatorsConsumptionBasis": "The consumption I enter is measured",
+  "calculatorsConsumptionHint": "From your car or a rating such as WLTP. Cycles are not converted.",
+  "calculatorsCostEnergy": "Energy",
+  "calculatorsCostIdle": "Idle fee",
+  "calculatorsCostParking": "Parking",
+  "calculatorsCostPer100": "Cost per 100 km",
+  "calculatorsCostPerKm": "Cost per km",
+  "calculatorsCostPerKwhAdded": "Cost per kWh added",
+  "calculatorsCostSession": "Session fee",
+  "calculatorsCostTime": "Time",
+  "calculatorsCurrency": "Currency",
+  "calculatorsDcCurveHint": "A precise DC time needs the car's documented charging curve, which comes from the catalog when you choose a car. Without it you get a low-confidence range.",
+  "calculatorsDifferenceHint": "Fuel cost minus electricity cost; a negative value means the EV costs more.",
+  "calculatorsDifferencePer100": "You save per 100 km",
+  "calculatorsDifferencePerMonth": "Difference per month",
+  "calculatorsDifferencePerYear": "Difference per year",
+  "calculatorsDuration": "Charging time",
+  "calculatorsDurationRange": "Estimated range",
+  "calculatorsEffectiveFrom": "Effective {date}",
+  "@calculatorsEffectiveFrom": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "calculatorsEfficiencyHint": "A fraction, e.g. 0.9 = 90%. Empty = 0.9, shown as an editable assumption.",
+  "calculatorsEnergyAdded": "Energy added to the battery",
+  "calculatorsEnergyCost": "Energy / fuel",
+  "calculatorsEnergyPerMonth": "Energy cost per month",
+  "calculatorsEnterMyOwn": "Enter my own price",
+  "calculatorsEv": "Electric",
+  "calculatorsEvPer100": "Electric per 100 km",
+  "calculatorsEvPerMonth": "Electric per month",
+  "calculatorsEvTotal": "Electric car total",
+  "calculatorsFees": "Licence & fees",
+  "calculatorsFieldAcLimit": "Car on-board AC charger",
+  "calculatorsFieldAmps": "Current per phase",
+  "calculatorsFieldChargingMinutes": "Charging time",
+  "calculatorsFieldConsumption": "Consumption",
+  "calculatorsFieldDcPeak": "Car peak DC power",
+  "calculatorsFieldEfficiency": "Charging efficiency",
+  "calculatorsFieldElectricityPrice": "Main electricity price (home)",
+  "calculatorsFieldEnergy": "Energy",
+  "calculatorsFieldFees": "Licence & fees per year",
+  "calculatorsFieldFixedFees": "Fixed monthly fees",
+  "calculatorsFieldFromSoc": "Charge from",
+  "calculatorsFieldFuelConsumption": "Fuel consumption",
+  "calculatorsFieldFuelPrice": "Fuel price per litre",
+  "calculatorsFieldHomePrice": "Home electricity price",
+  "calculatorsFieldIdleGrace": "Free idle minutes",
+  "calculatorsFieldIdleMinutes": "Idle time after charging",
+  "calculatorsFieldIdlePrice": "Idle fee per minute",
+  "calculatorsFieldIncentives": "Incentives",
+  "calculatorsFieldInsurance": "Insurance per year",
+  "calculatorsFieldKmPerDay": "Distance per day",
+  "calculatorsFieldKmPerMonth": "Distance per month",
+  "calculatorsFieldKmPerYear": "Distance per year",
+  "calculatorsFieldMaintenance": "Maintenance per year",
+  "calculatorsFieldOneOff": "One-off costs",
+  "calculatorsFieldParkingFlat": "Flat parking fee",
+  "calculatorsFieldParkingMinutes": "Parking time",
+  "calculatorsFieldParkingPerHour": "Parking per hour",
+  "calculatorsFieldPublicEnergyPrice": "Price per kWh",
+  "calculatorsFieldPublicPrice": "Public charging price",
+  "calculatorsFieldPublicShare": "Share of public charging",
+  "calculatorsFieldPurchase": "Purchase price",
+  "calculatorsFieldResidual": "Resale value at the end",
+  "calculatorsFieldSessionFee": "Session fee",
+  "calculatorsFieldStationPower": "Charger / station power",
+  "calculatorsFieldTimePrice": "Price per minute of charging",
+  "calculatorsFieldToSoc": "Charge to",
+  "calculatorsFieldUsable": "Usable battery capacity",
+  "calculatorsFieldVolts": "Volts per phase",
+  "calculatorsFieldYears": "Years of ownership",
+  "calculatorsFixedFees": "Fixed fees",
+  "calculatorsFromCarHint": "Leave empty to use the car's catalog value.",
+  "calculatorsFuelCar": "Fuel",
+  "calculatorsFuelPer100": "Fuel per 100 km",
+  "calculatorsFuelPerMonth": "Fuel per month",
+  "calculatorsGridConsumption": "Consumption from the grid",
+  "calculatorsGridEnergy": "Energy from the grid",
+  "calculatorsHomeDescription": "Energy added, energy from the grid with losses, and the cost at your home tariff.",
+  "calculatorsHomeTitle": "Home charging cost",
+  "calculatorsHowCalculated": "How it was calculated",
+  "calculatorsIncentives": "Incentives",
+  "calculatorsInsurance": "Insurance",
+  "calculatorsIntro": "Results are computed from the values you enter, with the same formulas as our server. There are no built-in prices: enter today's prices or pick an admin reference price with its date and source.",
+  "calculatorsKmPerMonth": "Distance per month",
+  "calculatorsKwhPerMonth": "Energy per month",
+  "calculatorsLimitCurve": "The charging curve",
+  "calculatorsLimitStation": "The charger",
+  "calculatorsLimitSupply": "The home supply",
+  "calculatorsLimitVehicle": "The car",
+  "calculatorsLimitingFactor": "Limited by",
+  "calculatorsLosses": "Charging losses",
+  "calculatorsMaintenance": "Maintenance",
+  "calculatorsModeEnergy": "Energy I know",
+  "calculatorsModeSoc": "Battery & charge levels",
+  "calculatorsMonthlyDescription": "Monthly and yearly energy cost from your distance and consumption.",
+  "calculatorsMonthlyTitle": "Monthly cost",
+  "calculatorsNo": "No",
+  "calculatorsNoCar": "Don't use a car",
+  "calculatorsNoCarSelected": "No car selected",
+  "calculatorsNoDefaultPrices": "Prices change: the result shows the date of the prices you used.",
+  "calculatorsNoReferencePrices": "No reference prices for this market",
+  "calculatorsNoReferencePricesHint": "Enter the price you pay. We never assume a price.",
+  "calculatorsNonEnergy": "Everything except energy",
+  "calculatorsNotIncluded": "Not included",
+  "calculatorsOnDevice": "Calculated on this phone",
+  "calculatorsOnServer": "Calculated with catalog data",
+  "calculatorsOneOff": "One-off costs",
+  "calculatorsOneOffHint": "e.g. home charger installation.",
+  "calculatorsOriginCatalog": "From catalog",
+  "calculatorsOriginDefault": "Default",
+  "calculatorsOriginReference": "Reference price",
+  "calculatorsOriginUser": "You entered",
+  "calculatorsPer100Description": "What 100 km costs in electricity, with home and public prices mixed as you drive.",
+  "calculatorsPer100Title": "Cost per 100 km",
+  "calculatorsPerDayMode": "Per day",
+  "calculatorsPerKm": "Per km",
+  "calculatorsPerMonth": "Per month",
+  "calculatorsPerMonthMode": "Per month",
+  "calculatorsPerMonthTotal": "Per month",
+  "calculatorsPerYear": "Per year",
+  "calculatorsPerYearValue": "{amount} per year",
+  "@calculatorsPerYearValue": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "calculatorsPickTrim": "Pick a trim from the catalog",
+  "calculatorsPossiblyOutdated": "May be outdated",
+  "calculatorsPower": "Power used",
+  "calculatorsPriceDate": "Price date",
+  "calculatorsPriceDateFromReference": "Empty = the effective date of the reference price.",
+  "calculatorsPriceDateHint": "When these prices applied. Without a date the result says so.",
+  "calculatorsPriceDateMissing": "Price date not given",
+  "calculatorsPriceDateNotSet": "Not set",
+  "calculatorsPricePerKwh": "Price per kWh used",
+  "calculatorsPricesAsOf": "Prices as of {date}",
+  "@calculatorsPricesAsOf": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "calculatorsPublicDescription": "Per-kWh, per-minute, session, parking and idle fees exactly as the operator charges them.",
+  "calculatorsPublicTitle": "Public charging cost",
+  "calculatorsPurchase": "Purchase",
+  "calculatorsReferencePrices": "Reference prices",
+  "calculatorsReferenceUsed": "Reference price: {label}, effective {date}",
+  "@calculatorsReferenceUsed": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "calculatorsResidual": "Resale value",
+  "calculatorsResult": "Result",
+  "calculatorsRoughEstimate": "Rough estimate — not an exact time",
+  "calculatorsSavingPercent": "Saving",
+  "calculatorsSectionConsumption": "Consumption",
+  "calculatorsSectionDriving": "Driving",
+  "calculatorsSectionDrivingOptional": "Driving (optional, for monthly figures)",
+  "calculatorsSectionDurations": "Times at the charger",
+  "calculatorsSectionEnergy": "Battery & energy",
+  "calculatorsSectionEvCosts": "Electric car costs",
+  "calculatorsSectionFuel": "Fuel car",
+  "calculatorsSectionFuelCar": "Fuel car costs",
+  "calculatorsSectionOwnership": "Ownership",
+  "calculatorsSectionPower": "Power",
+  "calculatorsSectionPrices": "Currency & price date",
+  "calculatorsSectionTariff": "Prices",
+  "calculatorsSupplyLimit": "Home supply limit",
+  "calculatorsSupplyNone": "Not limited",
+  "calculatorsSupplyOne": "Single phase",
+  "calculatorsSupplyThree": "Three phase",
+  "calculatorsTcoDescription": "Purchase, incentives, resale, energy, insurance and maintenance over the years you choose.",
+  "calculatorsTcoDifference": "Fuel car minus EV: {amount}",
+  "@calculatorsTcoDifference": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "calculatorsTcoTitle": "Total cost of ownership",
+  "calculatorsTimeDescription": "AC time from the real power limit; DC from a documented curve, otherwise a low-confidence range.",
+  "calculatorsTimeTitle": "Charging time",
   "calculatorsTitle": "Charging & running-cost calculators",
+  "calculatorsTotal": "Total",
+  "calculatorsTotalCost": "Total cost",
+  "calculatorsTotalKm": "Total distance",
+  "calculatorsUnknown": "This calculator does not exist.",
+  "calculatorsUseReference": "Use a reference price",
+  "calculatorsVoltsHint": "Empty = 230 V (shown as an assumption).",
+  "calculatorsVsFuelDescription": "Energy cost of your EV compared with a fuel car, per 100 km and per month.",
+  "calculatorsVsFuelTitle": "Electric vs petrol",
+  "calculatorsYes": "Yes",
   "carsAbout": "About {name}",
   "@carsAbout": {
     "placeholders": {
@@ -1068,10 +1309,133 @@
   "chargingLocationServiceOff": "Location services are off on this device. Turn them on, or choose a city or a point instead.",
   "chargingLocationTitle": "Choose a place",
   "chargingLocationUnavailable": "Your location could not be determined. Choose a place instead.",
+  "chargingLogsAdd": "Add session",
+  "chargingLogsAdded": "Session added.",
+  "chargingLogsAllCars": "All cars",
+  "chargingLogsAvgPerKwh": "Average per kWh",
+  "chargingLogsByLocation": "Where you charge",
+  "chargingLogsCar": "Car",
+  "chargingLogsConfidenceLow": "Low confidence",
+  "chargingLogsConfidenceMedium": "Medium confidence",
+  "chargingLogsConsumption": "Consumption",
+  "chargingLogsCost": "Amount paid",
+  "chargingLogsCostHint": "Optional. Leave empty if you do not know it — it will not count as free.",
+  "chargingLogsCostPer100": "Cost per 100 km",
+  "chargingLogsCostSection": "Cost",
+  "chargingLogsCurrency": "Currency",
+  "chargingLogsCurrentType": "Current type",
+  "chargingLogsCurrentUnknown": "Not sure",
+  "chargingLogsDate": "Date and time",
+  "chargingLogsDelete": "Delete session",
+  "chargingLogsDeleteConfirm": "Delete this session?",
+  "chargingLogsDeleteMessage": "It will be removed from your reports.",
+  "chargingLogsDeleted": "Session deleted.",
+  "chargingLogsDistance": "Distance",
+  "chargingLogsDuration": "Duration",
   "chargingLogsEditTitle": "Edit charging session",
+  "chargingLogsEmptyMessage": "Log the energy, cost and odometer of each charge. Reports are built only from what you enter.",
+  "chargingLogsEmptyTitle": "No charging sessions yet",
+  "chargingLogsEnergy": "Energy charged",
+  "chargingLogsEnergyHint": "As shown by the charger, app or meter.",
+  "chargingLogsErrorMax": "Must be at most {max}.",
+  "@chargingLogsErrorMax": {
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingLogsErrorPositive": "Must be greater than zero.",
+  "chargingLogsErrorRequired": "Required.",
+  "chargingLogsErrorSoc": "The end level must be above the start level.",
+  "chargingLogsGuestMessage": "Sign in to keep a private log of your charging sessions and see your real spending and consumption.",
+  "chargingLogsInCurrency": "In {currency}",
+  "@chargingLogsInCurrency": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingLogsLoadMore": "Load more",
+  "chargingLogsLocation": "Where",
+  "chargingLogsLocationHome": "Home",
+  "chargingLogsLocationOther": "Other",
+  "chargingLogsLocationPublic": "Public",
+  "chargingLogsLocationWork": "Work",
+  "chargingLogsLowConfidenceHint": "Based on few readings or a short distance. Log more sessions with the odometer for a better figure.",
+  "chargingLogsMethod": "How this is calculated",
+  "chargingLogsMixedCurrencies": "You paid in more than one currency. Amounts are shown per currency and never converted.",
+  "chargingLogsMonthlyEnergy": "Monthly energy",
+  "chargingLogsMonthlySpend": "Monthly spending",
+  "chargingLogsMoreHint": "Optional. The odometer reading makes consumption reports possible.",
+  "chargingLogsMoreSection": "More details",
   "chargingLogsNewTitle": "New charging session",
+  "chargingLogsNoCarMessage": "Each charging session belongs to a car in your garage.",
+  "chargingLogsNoCarTitle": "Add your car first",
+  "chargingLogsNoCost": "No cost entered",
+  "chargingLogsNoSpendData": "No costs were entered in this period.",
+  "chargingLogsNotes": "Notes",
+  "chargingLogsOdometer": "Odometer",
+  "chargingLogsOdometerHint": "Must not be lower than an earlier session of this car.",
+  "chargingLogsPerKwh": "{price}/kWh",
+  "@chargingLogsPerKwh": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingLogsPeriod12": "12 months",
+  "chargingLogsPeriod3": "3 months",
+  "chargingLogsPeriod6": "6 months",
+  "chargingLogsPeriodAll": "All time",
+  "chargingLogsPower": "Charger power",
+  "chargingLogsReasonMissingCosts": "Insufficient data: some costs missing",
+  "chargingLogsReasonMixedCurrencies": "Not shown: mixed currencies",
+  "chargingLogsReasonNoDistance": "Insufficient data: no distance between readings",
+  "chargingLogsReasonNoSessions": "Insufficient data: no sessions",
+  "chargingLogsReasonOdometer": "Insufficient data: needs 2+ odometer readings",
+  "chargingLogsReasonUnknown": "Insufficient data",
+  "chargingLogsReportEmptyMessage": "Reports use only the sessions you log. Add a session or choose a longer period.",
+  "chargingLogsReportEmptyTitle": "No sessions in this period",
   "chargingLogsReportsTitle": "Spending & consumption",
+  "chargingLogsSaved": "Session saved.",
+  "chargingLogsSessionSection": "Session",
+  "chargingLogsSessions": "Sessions",
+  "chargingLogsSessionsCount": "{count, plural, =1{1 session} other{{count} sessions}}",
+  "@chargingLogsSessionsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingLogsSessionsWithoutCost": "{count, plural, =1{1 session has no cost and is not in the spending totals.} other{{count} sessions have no cost and are not in the spending totals.}}",
+  "@chargingLogsSessionsWithoutCost": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingLogsShowTable": "Show the numbers",
+  "chargingLogsSocEnd": "Battery at end",
+  "chargingLogsSocStart": "Battery at start",
   "chargingLogsTitle": "Charging log",
+  "chargingLogsTotalEnergy": "Energy",
+  "chargingLogsTotalSpend": "Spent",
+  "chargingLogsVehicleSummary": "{sessions, plural, =1{1 session} other{{sessions} sessions}} · {energy}",
+  "@chargingLogsVehicleSummary": {
+    "placeholders": {
+      "sessions": {
+        "type": "int"
+      },
+      "energy": {
+        "type": "String"
+      }
+    }
+  },
   "chargingLongitude": "Longitude",
   "chargingMapNotConfigured": "The map is not configured yet, so stations are shown as a list.",
   "chargingMapSemantics": "Charging stations map, {count} stations",
@@ -1654,12 +2018,470 @@
     }
   },
   "commonWebPreviewBanner": "Web preview",
+  "communityAboutCar": "About: {car}",
+  "@communityAboutCar": {
+    "placeholders": {
+      "car": {
+        "type": "String"
+      }
+    }
+  },
+  "communityAccept": "Accept answer",
+  "communityAcceptCleared": "Acceptance removed",
+  "communityAccepted": "Answer accepted",
+  "communityAcceptedAnswer": "Accepted answer",
+  "communityAllReviews": "All reviews",
+  "communityAnonymous": "User",
+  "communityAnswerCount": "{count, plural, =0{No answers} =1{1 answer} other{{count} answers}}",
+  "@communityAnswerCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityAnswerHint": "Write your answer…",
+  "communityAnswerPosted": "Your answer is posted",
+  "communityAnswered": "Answered",
+  "communityAnswersTitle": "Answers",
+  "communityAnswersWithCount": "Answers ({count})",
+  "@communityAnswersWithCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "communityAskGeneral": "General question",
+  "communityAskTips": "Write a clear, specific question (at least 10 characters) and mention the market and trim if they matter. No links or personal data.",
   "communityAskTitle": "Ask a question",
+  "communityAskedBy": "Asked by {name}",
+  "@communityAskedBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "communityBeFirstToReview": "Be the first to review",
+  "communityBlockConfirm": "Block",
+  "communityBlockMessage": "You won't see their reviews, comments, questions or answers any more. They won't be told, and you can unblock at any time.",
+  "communityBlockTitle": "Block {name}?",
+  "@communityBlockTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "communityBlockUser": "Block this user",
+  "communityBlocked": "{name} blocked",
+  "@communityBlocked": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "communityBlockedIndefinite": "A moderator paused posting from your account until further notice. You can still read.",
+  "communityBlockedReason": "Reason: {reason}",
+  "@communityBlockedReason": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "communityBlockedTitle": "Posting is paused for your account",
+  "communityBlockedUntil": "A moderator paused posting from your account until {until}. You can still read.",
+  "@communityBlockedUntil": {
+    "placeholders": {
+      "until": {
+        "type": "String"
+      }
+    }
+  },
+  "communityBlockedUsersIntro": "You don't see these users' community posts.",
+  "communityBlockedUsersTitle": "Blocked users",
+  "communityCancelReply": "Cancel reply",
   "communityCarReviewsTitle": "Owner reviews",
+  "communityChooseTrim": "Choose a trim",
+  "communityClearFilters": "Clear filters",
+  "communityClearRating": "Clear",
+  "communityCommentHint": "Write a comment…",
+  "communityCommentPosted": "Your comment is posted",
+  "communityCommentsClosed": "Comments are closed here.",
   "communityCommentsTitle": "Comments",
+  "communityCommentsWithCount": "Comments ({count})",
+  "@communityCommentsWithCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "communityCons": "Cons",
+  "communityConsHint": "What didn't you like?",
+  "communityCreateAccount": "Create account",
+  "communityDelete": "Delete",
+  "communityDeleteAnswerTitle": "Delete answer?",
+  "communityDeleteCommentTitle": "Delete comment?",
+  "communityDeleteMessage": "This can't be undone.",
+  "communityDeleteQuestionTitle": "Delete question?",
+  "communityDeleteReview": "Delete review",
+  "communityDeleteReviewTitle": "Delete your review?",
+  "communityDeleted": "Deleted",
+  "communityDeletedUser": "Deleted user",
+  "communityDemoTargetNotice": "This is demo data for testing, not a real car or article.",
+  "communityDimAfterSales": "After-sales service",
+  "communityDimBuildQuality": "Build quality",
+  "communityDimCharging": "Charging",
+  "communityDimComfort": "Comfort",
+  "communityDimRange": "Real-world range",
+  "communityDimReliability": "Reliability",
+  "communityDimTechnology": "Technology",
+  "communityDimValue": "Value for money",
+  "communityDimensionScore": "{dimension}: {score} out of 5",
+  "@communityDimensionScore": {
+    "placeholders": {
+      "dimension": {
+        "type": "String"
+      },
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "communityDimensionValue": "{value} out of 5, {count} ratings",
+  "@communityDimensionValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityDimensionsHint": "Optional: rate specific aspects",
+  "communityDimensionsTitle": "Ratings by aspect",
+  "communityDistributionRow": "{stars} stars: {count}",
+  "@communityDistributionRow": {
+    "placeholders": {
+      "stars": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityDone": "Done",
+  "communityEdit": "Edit",
+  "communityEditAnswer": "Edit answer",
+  "communityEditComment": "Edit comment",
+  "communityEditMyReview": "Edit my review",
+  "communityEditQuestion": "Edit question",
+  "communityEditRemoderated": "After editing, your review goes back to review before it appears again.",
+  "communityEditReviewTitle": "Edit your review",
+  "communityEdited": "edited",
+  "communityErrEmailNotVerified": "Verify your e-mail before posting.",
+  "communityErrRateLimited": "You've posted a lot in a short time. Please try again later.",
+  "communityErrRateLimitedMinutes": "{minutes, plural, =1{You've posted a lot in a short time. Try again in a minute.} other{You've posted a lot in a short time. Try again in {minutes} minutes.}}",
+  "@communityErrRateLimitedMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "communityErrReportDuplicate": "You already reported this; your report is being reviewed.",
+  "communityErrSelfReport": "You can't report your own post.",
+  "communityErrSelfVote": "You can't vote on your own post.",
+  "communityErrSignInAgain": "Your session ended. Please sign in again.",
+  "communityFieldRequired": "This field is required.",
+  "communityFilterAll": "All",
+  "communityFilterAnswered": "Answered",
+  "communityFilterUnanswered": "Unanswered",
+  "communityFormHasErrors": "Please fix the highlighted fields.",
+  "communityGeneralQuestion": "General question",
+  "communityHelpful": "Helpful",
+  "communityHelpfulCount": "Helpful ({count})",
+  "@communityHelpfulCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "communityJoinTitle": "Join the conversation",
+  "communityLoadMore": "Load more",
+  "communityLoadMoreAnswers": "More answers",
+  "communityLoadMoreComments": "More comments",
+  "communityLoadMoreQuestions": "More questions",
+  "communityLoadMoreReviews": "More reviews",
+  "communityMonthsUnit": "months",
+  "communityMoreActions": "More actions",
+  "communityNewAccountNote": "Your account is new: your posts are reviewed before they appear, and links aren't allowed for the first few days.",
+  "communityNoAnswersMessage": "Know the answer? Share what you've experienced.",
+  "communityNoAnswersMineMessage": "Answers will appear here when they arrive.",
+  "communityNoAnswersTitle": "No answers yet",
+  "communityNoAnswersYet": "No answers yet",
+  "communityNoBlockedMessage": "You can block anyone from the actions menu next to their post.",
+  "communityNoBlockedTitle": "No blocked users",
+  "communityNoCommentsMessage": "Start the conversation with the first comment.",
+  "communityNoCommentsTitle": "No comments yet",
+  "communityNoFilteredReviewsMessage": "Try removing some filters.",
+  "communityNoFilteredReviewsTitle": "No matching reviews",
+  "communityNoMatchingQuestionsMessage": "Try other words or change the filter — or ask your question.",
+  "communityNoMatchingQuestionsTitle": "No matching questions",
+  "communityNoQuestionsMessage": "Ask owners and enthusiasts about charging, range and servicing.",
+  "communityNoQuestionsTitle": "No questions yet",
+  "communityNoReviewsMessage": "No owner has published a review of this trim yet.",
+  "communityNoReviewsTitle": "No owner reviews yet",
+  "communityNoTrimsMessage": "This car has no trims listed in your current market, so reviews can't be shown or written here.",
+  "communityNoTrimsTitle": "No trims listed",
+  "communityNotAnsweredYet": "Awaiting an accepted answer",
+  "communityNotHelpful": "Not helpful",
+  "communityOnArticle": "Comments on: {title}. Open the article",
+  "@communityOnArticle": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "communityOnArticleLabel": "Comments on",
+  "communityOptional": "optional",
+  "communityOverallRating": "Overall rating",
+  "communityOwnedMonths": "{count, plural, =0{Owned under a month} =1{Owned 1 month} other{Owned {count} months}}",
+  "@communityOwnedMonths": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityOwnedYears": "{count, plural, =1{Owned 1 year} other{Owned {count} years}}",
+  "@communityOwnedYears": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityOwnedYearsMonths": "Owned {years} yr {months} mo",
+  "@communityOwnedYearsMonths": {
+    "placeholders": {
+      "years": {
+        "type": "int"
+      },
+      "months": {
+        "type": "int"
+      }
+    }
+  },
+  "communityOwnershipHint": "e.g. 8",
+  "communityOwnershipInvalid": "Enter a number of months from 0 to 600.",
+  "communityOwnershipLabel": "How long you've owned it",
+  "communityPostAnswer": "Post answer",
+  "communityPostQuestion": "Post question",
+  "communityPostedPending": "Sent — it will appear to others after review.",
+  "communityPros": "Pros",
+  "communityProsHint": "What did you like?",
+  "communityQuestionBodyHint": "Add anything that helps answer it: usage, charger type…",
+  "communityQuestionBodyLabel": "Details",
+  "communityQuestionPosted": "Your question is posted",
   "communityQuestionTitle": "Question",
+  "communityQuestionTitleHint": "e.g. How long does home charging take from 20 to 80%?",
+  "communityQuestionTitleLabel": "Your question",
+  "communityQuestionUnavailableMessage": "It may have been removed or is still being reviewed.",
+  "communityQuestionUnavailableTitle": "Question not available",
   "communityQuestionsTitle": "Questions & answers",
+  "communityRating1": "Poor",
+  "communityRating2": "Fair",
+  "communityRating3": "Good",
+  "communityRating4": "Very good",
+  "communityRating5": "Excellent",
+  "communityRatingRequired": "Choose a rating from 1 to 5 stars.",
+  "communityReply": "Reply",
+  "communityReplyHint": "Write a reply…",
+  "communityReplyPosted": "Your reply is posted",
+  "communityReplyingTo": "Replying to {name}",
+  "@communityReplyingTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "communityReport": "Report",
+  "communityReportDetails": "Details (required)",
+  "communityReportDetailsOptional": "More details (optional)",
+  "communityReportDetailsRequired": "Add a few words to explain.",
+  "communityReportIntro": "Choose a reason. Moderators review reports; the author won't see your name.",
+  "communityReportSend": "Send report",
+  "communityReportSent": "Thanks — your report reached the moderators.",
+  "communityReportTitle": "Report content",
+  "communityReportUserTitle": "Report a user",
+  "communityReviewBodyHelper": "At least 20 characters. Write about your own experience only, with no one's personal data.",
+  "communityReviewBodyHint": "How do you use the car? What range do you really get? How are charging and servicing?",
+  "communityReviewBodyLabel": "Your experience",
+  "communityReviewCount": "{count, plural, =0{No reviews} =1{1 review} other{{count} reviews}}",
+  "@communityReviewCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityReviewExistsMessage": "Each owner can write one review per trim. Do you want to edit your existing review?",
+  "communityReviewExistsTitle": "You already reviewed this trim",
+  "communityReviewGuidelines": "Be specific and honest; no links, ads or personal data.",
+  "communityReviewModerated": "Moderators check every review before it's published.",
+  "communityReviewSubmittedMessage": "Thank you! Your review will appear to others after moderators check it. You can see and edit it on the reviews page.",
+  "communityReviewSubmittedTitle": "Review received",
+  "communityReviewTitleHint": "Your experience in one line",
+  "communityReviewTitleLabel": "Title",
+  "communityReviewsDisclaimer": "Reviews are owners' personal opinions and experiences, checked by moderators before publishing — not official data or certified measurements.",
+  "communitySave": "Save",
+  "communitySaveReview": "Save and resubmit",
+  "communitySearchQuestions": "Search questions",
+  "communitySend": "Send",
+  "communityShowAllQuestions": "Show all questions",
+  "communityShowLess": "Show less",
+  "communityShowMore": "Show more",
+  "communitySignIn": "Sign in",
+  "communitySignInToAnswer": "Sign in to add an answer.",
+  "communitySignInToAsk": "Sign in to ask the community a question.",
+  "communitySignInToComment": "Sign in to comment or reply.",
+  "communitySignInToParticipate": "Anyone can read. Sign in to take part in the community.",
+  "communitySignInToReport": "Sign in to report content.",
+  "communitySignInToReview": "Sign in to write your owner review of this car.",
+  "communitySignInToVote": "Sign in to mark posts as helpful.",
+  "communitySortActive": "Most active",
+  "communitySortHelpful": "Most helpful",
+  "communitySortNewest": "Newest",
+  "communitySortOldest": "Oldest",
+  "communitySortRatingHigh": "Highest rating",
+  "communitySortRatingLow": "Lowest rating",
+  "communitySortRecent": "Most recent",
+  "communitySortTop": "Most helpful",
+  "communitySortVotes": "Most votes",
+  "communityStarOption": "{count, plural, =1{1 star} other{{count} stars}}",
+  "@communityStarOption": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityStarsSemantics": "{rating} out of 5 stars",
+  "@communityStarsSemantics": {
+    "placeholders": {
+      "rating": {
+        "type": "String"
+      }
+    }
+  },
+  "communityStatusHidden": "Hidden by moderators",
+  "communityStatusHiddenHint": "It's no longer visible to others (for example after reports). Moderators can restore it.",
+  "communityStatusPending": "Awaiting review",
+  "communityStatusPendingHint": "Only you can see this until a moderator approves it.",
+  "communityStatusPendingReviewHint": "Moderators check every review before it's published. Only you can see it for now.",
+  "communityStatusRejected": "Not approved",
+  "communityStatusRejectedHint": "It doesn't follow the community guidelines, so only you can see it. You can edit or delete it.",
+  "communityStatusUnknownTitle": "Couldn't check your account status",
+  "communitySubmitReview": "Submit for review",
+  "communityTapToRate": "Tap the stars to rate",
+  "communityTooLong": "At most {max} characters.",
+  "@communityTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "communityTooShort": "Write at least {min} characters.",
+  "@communityTooShort": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "communityTrimLabel": "Trim",
+  "communityTrimSemantics": "Trim: {trim}. Tap to change",
+  "@communityTrimSemantics": {
+    "placeholders": {
+      "trim": {
+        "type": "String"
+      }
+    }
+  },
+  "communityUnaccept": "Remove acceptance",
+  "communityUnblock": "Unblock",
+  "communityUnblocked": "{name} unblocked",
+  "@communityUnblocked": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "communityUndo": "Undo",
+  "communityVerifiedAlready": "I've verified it",
+  "communityVerifiedOnly": "Verified owners only",
+  "communityVerifiedOwner": "Verified owner",
+  "communityVerifiedOwnerCount": "{count, plural, =1{1 verified owner} other{{count} verified owners}}",
+  "@communityVerifiedOwnerCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityVerifiedOwnerExplainer": "The \"Verified owner\" badge can't be chosen: it appears only after our team actually verifies that you own the car.",
+  "communityVerifiedOwnerHint": "Our team verified that the author owns this car.",
+  "communityVerifyEmailAction": "Verify e-mail",
+  "communityVerifyEmailMessage": "To post in the community, {email} must be verified. Open the message we sent or request a new one.",
+  "@communityVerifyEmailMessage": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "communityVerifyEmailTitle": "Verify your e-mail first",
+  "communityViewAllComments": "View all comments",
+  "communityViewMoreReplies": "{count, plural, =1{View 1 more reply} other{View {count} more replies}}",
+  "@communityViewMoreReplies": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityVoteDownSemantics": "{count, plural, =0{Not helpful, no votes} =1{Not helpful, 1 vote} other{Not helpful, {count} votes}}",
+  "@communityVoteDownSemantics": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityVoteUpSemantics": "{count, plural, =0{Helpful, no votes} =1{Helpful, 1 vote} other{Helpful, {count} votes}}",
+  "@communityVoteUpSemantics": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "communityWriteReviewTitle": "Write a review",
+  "communityYou": "You",
+  "communityYourAnswer": "Your answer",
+  "communityYourReview": "Your review",
   "compareAboutRow": "About “{label}”",
   "@compareAboutRow": {
     "placeholders": {
@@ -2349,6 +3171,7 @@
   },
   "compareYes": "Yes",
   "encyclopediaAllCategories": "All",
+  "encyclopediaBrowseAll": "Browse the encyclopedia",
   "encyclopediaClearFilters": "Clear filters",
   "encyclopediaEmptyMessage": "Guides appear here after a technical specialist has reviewed them.",
   "encyclopediaEmptyTitle": "No guides yet",
@@ -2358,6 +3181,8 @@
   "encyclopediaLanguageEn": "English",
   "encyclopediaNoMatchesMessage": "Try another word or category.",
   "encyclopediaNoMatchesTitle": "No matching guides",
+  "encyclopediaNotFoundMessage": "It may have been removed or is being updated after a new technical review.",
+  "encyclopediaNotFoundTitle": "This guide isn't available",
   "encyclopediaNotReviewedExplain": "This guide has no technical review information.",
   "encyclopediaReadingMinutes": "{minutes, plural, =1{1 min read} other{{formatted} min read}}",
   "@encyclopediaReadingMinutes": {
@@ -2441,9 +3266,114 @@
   "favoritesTitle": "Favorites",
   "favoritesUnavailable": "No longer available",
   "favoritesUndo": "Undo",
+  "garageAddButton": "Add to my garage",
+  "garageAddFirst": "Add my first car",
+  "garageAddLog": "Add a charging session",
+  "garageAddReminder": "Add a reminder",
   "garageAddTitle": "Add a car",
+  "garageAdded": "Car added to your garage.",
+  "garageBack": "Back",
+  "garageCarSection": "Car",
+  "garageCarSectionHint": "Pick the exact trim from the catalog, so specs and compatibility are right.",
+  "garageChangeCar": "Tap to change",
+  "garageChooseCar": "Choose brand, model, year and trim",
+  "garageClear": "Clear",
+  "garageCount": "{count} of {max} cars",
+  "@garageCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "garageCurrentOdometer": "Current odometer",
+  "garageCurrentOdometerHint": "Optional. It also updates automatically from your charging log entries.",
+  "garageDelete": "Remove from garage",
+  "garageDeleteConfirmMessage": "Its charging log entries and reminders will be deleted too. This cannot be undone.",
+  "garageDeleteConfirmTitle": "Remove {name}?",
+  "@garageDeleteConfirmTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "garageDeleted": "Car removed.",
+  "garageDetailsSection": "Details",
   "garageEditTitle": "Edit car",
+  "garageEmptyMessage": "Add your car by choosing its brand, model, model year and trim. You can save up to 20 cars.",
+  "garageEmptyTitle": "Your garage is empty",
+  "garageErrorCurrentBelowInitial": "The current reading cannot be lower than the reading at purchase.",
+  "garageErrorNegative": "Cannot be negative.",
+  "garageErrorNumber": "Enter a number.",
+  "garageErrorPickCar": "Choose the car first.",
+  "garageGuestMessage": "Sign in to save your cars with their exact trim and market, and use them in the charging log, reminders and calculators.",
+  "garageInitialOdometer": "Odometer at purchase",
+  "garageInitialOdometerHint": "Optional. Used as the starting point of distance reports.",
+  "garageLimitReached": "You can save up to {max} cars. Remove one to add another.",
+  "@garageLimitReached": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "garageLogsCount": "Charging sessions",
+  "garageMakePrimary": "Make it my primary car",
+  "garageMarket": "Market",
+  "garageMarketHint": "The country where the car is used. Prices, currency and compatibility follow this market.",
+  "garageModelYear": "Model year",
+  "garageNickname": "Nickname",
+  "garageNicknameHint": "Optional, e.g. \"Family car\".",
+  "garageNotListedExplain": "This trim has no record in {market}. Local prices and charger compatibility for {market} are therefore not available for it.",
+  "@garageNotListedExplain": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "garageNotListedShort": "Not sold in this market",
+  "garageNotes": "Notes",
+  "garageOdometer": "Odometer",
+  "garageOpenCalculators": "Calculators",
+  "garageOpenLogs": "Charging log of this car",
+  "garageOpenSpecs": "Full specifications",
+  "garageOptional": "Optional",
+  "garagePickerAllMarkets": "Show trims from all markets",
+  "garagePickerAllMarketsHint": "For imported cars not sold in your market.",
+  "garagePickerEmpty": "Nothing to choose here yet",
+  "garagePickerProgress": "Step {step} of {total}",
+  "@garagePickerProgress": {
+    "placeholders": {
+      "step": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "garagePickerSearchBrand": "Search brands",
+  "garagePickerSearchModel": "Search models",
+  "garagePickerStepBrand": "Brand",
+  "garagePickerStepModel": "Model",
+  "garagePickerStepTrim": "Trim",
+  "garagePickerStepYear": "Year",
+  "garagePickerTitle": "Choose your car",
+  "garagePrimary": "Primary",
+  "garagePrimarySet": "Primary car updated.",
+  "garagePrimarySwitch": "Primary car",
+  "garagePrimarySwitchHint": "Used by default in calculators, reports and trip planning.",
+  "garagePurchaseDate": "Purchase date",
+  "garageRemindersCount": "Open reminders",
+  "garageSaved": "Changes saved.",
+  "garageShortcutsSection": "Use this car",
   "garageTitle": "My garage",
+  "garageTrim": "Trim",
   "garageVehicleTitle": "My car",
   "homeAllTours": "All 360° tours",
   "homeChangePlace": "Change",
@@ -2732,11 +3662,250 @@
     }
   },
   "newsWatchVideo": "Watch the video",
+  "notificationsActions": "More actions",
+  "notificationsChannelEmail": "Email",
+  "notificationsChannelEmailUnavailable": "Not available yet.",
+  "notificationsChannelInApp": "In the app",
+  "notificationsChannelInAppHint": "Always on: every notification is kept in this list.",
+  "notificationsChannelPush": "Push notifications",
+  "notificationsChannelsSection": "How to reach me",
+  "notificationsChooseTopics": "Choose what to follow",
+  "notificationsDelete": "Delete",
+  "notificationsDeleted": "Notification deleted.",
+  "notificationsEmptyMessage": "Follow brands, models or news categories to hear when something new is published.",
+  "notificationsEmptyTitle": "No notifications yet",
+  "notificationsEmptyUnreadTitle": "You are all caught up",
+  "notificationsFilterAll": "All",
+  "notificationsFilterUnread": "Unread",
+  "notificationsFollowBrand": "Brand",
+  "notificationsFollowCategory": "News category",
+  "notificationsFollowMarket": "Market",
+  "notificationsFollowModel": "Model",
+  "notificationsFollowed": "Following {name}.",
+  "@notificationsFollowed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationsGuestMessage": "Sign in to get news about the brands, models and topics you follow.",
+  "notificationsLoadMore": "Load more",
+  "notificationsMarkAllRead": "Mark all as read",
+  "notificationsMarkRead": "Mark as read",
+  "notificationsMarkUnread": "Mark as unread",
+  "notificationsNew": "New",
   "notificationsPreferencesTitle": "Notification preferences",
+  "notificationsPushActive": "Active on your registered devices.",
+  "notificationsPushDisabled": "Turned off by you.",
+  "notificationsPushNoDevice": "No device registered for push yet.",
+  "notificationsPushNotConfigured": "Not available: the push service is not set up on the server yet. Notifications still appear in the app.",
+  "notificationsQuietChange": "Change times",
+  "notificationsQuietEnabled": "Quiet hours",
+  "notificationsQuietEnd": "Quiet until",
+  "notificationsQuietHint": "Push notifications wait until quiet hours end; they still appear in the app.",
+  "notificationsQuietOff": "Off",
+  "notificationsQuietRange": "{start} – {end} ({zone})",
+  "@notificationsQuietRange": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      },
+      "zone": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationsQuietSection": "Quiet hours",
+  "notificationsQuietStart": "Quiet from",
+  "notificationsReminderNote": "Reminder alerts on this phone are set in Reminders.",
+  "notificationsResume": "Resume notifications",
   "notificationsTitle": "Notifications",
+  "notificationsTopicBrand": "Brand",
+  "notificationsTopicCategory": "News category",
+  "notificationsTopicInMarket": "in {market}",
+  "@notificationsTopicInMarket": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationsTopicMarket": "Market",
+  "notificationsTopicModel": "Model",
+  "notificationsTopicPriceAlert": "Price alert",
+  "notificationsTopicStation": "Station",
+  "notificationsTopicVariant": "Trim",
+  "notificationsTopicsEmpty": "You do not follow anything yet",
+  "notificationsTopicsHint": "News published about these is sent to you once, in your language.",
+  "notificationsTopicsSection": "Topics I follow",
+  "notificationsTypeCampaigns": "Announcements",
+  "notificationsTypeCommunity": "Community replies",
+  "notificationsTypeNews": "News about what I follow",
+  "notificationsTypePriceAlerts": "Price alerts",
+  "notificationsTypeReminders": "Reminders",
+  "notificationsTypeStations": "Charging station alerts",
+  "notificationsTypesHint": "Turning any type on resumes notifications.",
+  "notificationsTypesSection": "What to notify me about",
+  "notificationsUnfollow": "Stop following {name}",
+  "@notificationsUnfollow": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationsUnsubscribeAll": "Unsubscribe from all",
+  "notificationsUnsubscribeAllConfirm": "Unsubscribe from all notifications?",
+  "notificationsUnsubscribeAllMessage": "You will not receive any notifications until you turn a type back on.",
+  "notificationsUnsubscribedAll": "You unsubscribed from all notifications. Nothing new will be sent until you resume.",
+  "remindersAlertHint": "How early to be reminded.",
+  "remindersAlertSection": "Alert",
+  "remindersAlreadyCompleted": "This reminder is completed.",
+  "remindersCar": "Car",
+  "remindersCarHint": "Needed for reminders by odometer.",
+  "remindersChannelDescription": "Maintenance, insurance, licence and tyre reminders you created.",
+  "remindersChannelName": "Car reminders",
+  "remindersCompleteMessage": "The reminder moves to completed.",
+  "remindersCompleteRepeats": "This reminder repeats: the next one will be created automatically.",
+  "remindersCompleteTitle": "Mark as done?",
+  "remindersCompleted": "Done.",
+  "remindersCompletedNext": "Done. Next one: {due}",
+  "@remindersCompletedNext": {
+    "placeholders": {
+      "due": {
+        "type": "String"
+      }
+    }
+  },
+  "remindersDaysLate": "{days, plural, =1{1 day late} other{{days} days late}}",
+  "@remindersDaysLate": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "remindersDelete": "Delete reminder",
+  "remindersDeleteConfirm": "Delete this reminder?",
+  "remindersDeleteMessage": "Its phone notification will be cancelled too.",
+  "remindersDeleted": "Reminder deleted.",
+  "remindersDeviceNotifications": "Notify me on this phone",
+  "remindersDeviceNotificationsOff": "Off. Reminders still appear here with their status.",
+  "remindersDeviceNotificationsOn": "You will get a notification on each reminder's alert day.",
+  "remindersDueAtKm": "at {km}",
+  "@remindersDueAtKm": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "remindersDueDate": "Due date",
+  "remindersDueKm": "Due at odometer",
+  "remindersDueKmNeedsCar": "Choose a car to use the odometer.",
+  "remindersDueOn": "Due {date}",
+  "@remindersDueOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "remindersEditTitle": "Edit reminder",
+  "remindersEmptyCompletedTitle": "No completed reminders yet",
+  "remindersEmptyMessage": "Add a reminder for maintenance, insurance, licence renewal or tyres — by date, by odometer, or both.",
+  "remindersEmptyTitle": "No reminders",
+  "remindersEnableAction": "Turn on",
+  "remindersEnableHint": "Turn on phone notifications to be alerted on time.",
+  "remindersErrorDue": "Enter a due date or an odometer reading.",
+  "remindersErrorRange": "Must be between {min} and {max}.",
+  "@remindersErrorRange": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "remindersErrorTitle": "Enter a title.",
+  "remindersErrorVehicleForKm": "Choose a car for odometer reminders.",
+  "remindersErrorWhole": "Enter a whole number.",
+  "remindersEveryKm": "Every {km}",
+  "@remindersEveryKm": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "remindersEveryMonths": "{months, plural, =1{Every month} other{Every {months} months}}",
+  "@remindersEveryMonths": {
+    "placeholders": {
+      "months": {
+        "type": "int"
+      }
+    }
+  },
+  "remindersFilterCompleted": "Completed",
+  "remindersFilterOpen": "Open",
+  "remindersGuestMessage": "Sign in to keep maintenance, insurance and licence reminders for your cars.",
+  "remindersInDays": "{days, plural, =0{Today} =1{Tomorrow} other{In {days} days}}",
+  "@remindersInDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "remindersInKm": "In {km}",
+  "@remindersInKm": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "remindersKmLate": "{km} over",
+  "@remindersKmLate": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "remindersMarkDone": "Mark as done",
   "remindersNewTitle": "New reminder",
+  "remindersNoCar": "No specific car",
+  "remindersNotes": "Notes",
+  "remindersNotificationsUnsupported": "Phone notifications are not available here. Reminders still appear in this list.",
+  "remindersNotifyDays": "Days before",
+  "remindersNotifyKm": "Km before",
+  "remindersOdometerNow": "Odometer now",
+  "remindersOdometerNowHint": "Optional. Used to schedule the next reminder by distance.",
+  "remindersPermissionDenied": "Notifications are blocked for this app. Allow them in your phone settings to get alerts; your reminders still show here.",
+  "remindersRepeatKm": "Repeat every",
+  "remindersRepeatMonths": "Repeat every (months)",
+  "remindersSaved": "Reminder saved.",
+  "remindersStatusCompleted": "Done",
+  "remindersStatusDueSoon": "Due soon",
+  "remindersStatusOverdue": "Overdue",
+  "remindersStatusUpcoming": "Upcoming",
   "remindersTitle": "Reminders",
+  "remindersTitleField": "Title",
+  "remindersTypeCustom": "Other",
+  "remindersTypeInsurance": "Insurance",
+  "remindersTypeLicence": "Licence",
+  "remindersTypeMaintenance": "Maintenance",
+  "remindersTypeTyres": "Tyres",
+  "remindersWhatSection": "What",
+  "remindersWhenHint": "Enter a date, an odometer reading, or both.",
+  "remindersWhenSection": "When",
   "searchAllGroups": "All results",
   "searchAlsoMatched": "Also matched: {terms}",
   "@searchAlsoMatched": {
@@ -2829,6 +3998,7 @@
   "servicesDirectoryAlwaysOpen": "Open 24/7",
   "servicesDirectoryAnyCity": "Any city",
   "servicesDirectoryBrandsTitle": "Brands served",
+  "servicesDirectoryBrowseAll": "Browse the directory",
   "servicesDirectoryCall": "Call",
   "servicesDirectoryCheckBeforeVisit": "Call ahead to confirm before you visit.",
   "servicesDirectoryChooseCity": "Choose a city",
@@ -2872,6 +4042,8 @@
   "servicesDirectoryNoContact": "No contact details published.",
   "servicesDirectoryNoMatchesMessage": "Try another type or city, or turn off “Open now”.",
   "servicesDirectoryNoMatchesTitle": "No matching providers",
+  "servicesDirectoryNotFoundMessage": "It may have been removed from the directory. Browse other providers near you.",
+  "servicesDirectoryNotFoundTitle": "This provider isn't listed anymore",
   "servicesDirectoryNotVerified": "Contact details not verified",
   "servicesDirectoryOpenNow": "Open now",
   "servicesDirectoryOrderDistance": "Nearest first. Sponsorship never changes this order.",
@@ -3191,5 +4363,132 @@
   "toursWebglTitle": "This device can't display 360° views",
   "toursZoomIn": "Zoom in",
   "toursZoomOut": "Zoom out",
-  "tripsTitle": "Trip planner"
+  "tripsAccess": "Access",
+  "tripsAlternative": "Alternative station",
+  "tripsArrivalSoc": "Battery on arrival",
+  "tripsAssumptions": "Assumptions",
+  "tripsAssumptionsEdit": "Assumptions",
+  "tripsAssumptionsEditHint": "Optional: leave empty to use the catalog and defaults shown in the result.",
+  "tripsAtKm": "At",
+  "tripsAvailabilityUnknown": "Availability unknown",
+  "tripsAvailableNow": "Available now (not at arrival)",
+  "tripsBatterySection": "Battery",
+  "tripsCar": "Car",
+  "tripsChargeEnergy": "Energy to charge",
+  "tripsChargeFromTo": "Charge",
+  "tripsChargeTime": "Charging",
+  "tripsChargeTimeUnknown": "No plan: the charging time at the stations cannot be estimated.",
+  "tripsChargeTo": "Charge up to",
+  "tripsChargeToHint": "Empty = 80%.",
+  "tripsChoose": "Choose",
+  "tripsClosedAtEta": "Closed at arrival",
+  "tripsConsumptionHint": "Overrides the catalog value.",
+  "tripsCost": "Approximate cost",
+  "tripsCostNotCalculated": "Enter a price to calculate",
+  "tripsCurrentSoc": "Battery now",
+  "tripsDeleteSaved": "Delete saved trip",
+  "tripsDepartureSection": "Departure",
+  "tripsDetour": "Detour",
+  "tripsDirections": "Directions",
+  "tripsDriveTime": "Driving",
+  "tripsEnergyUsed": "Energy used",
+  "tripsErrorCar": "Choose the car.",
+  "tripsErrorDestination": "Choose your destination.",
+  "tripsErrorMinSoc": "Must be below the battery level now.",
+  "tripsErrorOrigin": "Choose where you start.",
+  "tripsEta": "Expected arrival",
+  "tripsFrom": "From",
+  "tripsHours": "Opening hours",
+  "tripsHoursUnknown": "Hours unknown",
+  "tripsIntro": "The route and road distances come from a routing service. Stops are suggested with a battery reserve and an alternative; arrival and a free charger are never guaranteed.",
+  "tripsLeaveNow": "Leave now",
+  "tripsLegN": "Leg {n}",
+  "@tripsLegN": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "tripsLegs": "Road legs",
+  "tripsLocationDenied": "Location is off or not allowed. Choose a city or a point on the map instead.",
+  "tripsLocationFailed": "Could not get your location. Choose a city instead.",
+  "tripsMargin": "Consumption safety margin",
+  "tripsMarginHint": "Empty = 10%. Covers hills, heat, cold and speed.",
+  "tripsMinArrivalSoc": "Keep at least",
+  "tripsMissingInlets": "charging inlets",
+  "tripsMyLocation": "My current location",
+  "tripsMyLocationHint": "Used once for this plan, not stored.",
+  "tripsNoReachableStation": "No plan: no compatible, open station is reachable with the reserve you asked for. Try a higher battery level or a lower reserve.",
+  "tripsNoStopsNeeded": "No charging stop is needed with the values you entered.",
+  "tripsNotConfigured": "Trip planning is not available: no routing service is configured yet. You can still get directions to any station from the charging map.",
+  "tripsOccupiedNow": "Occupied now",
+  "tripsOpenAtEta": "Open at arrival",
+  "tripsOutOfOrderNow": "Out of order now",
+  "tripsPickOnMap": "Pick on the map",
+  "tripsPlan": "Plan my trip",
+  "tripsPointOnMap": "Point {lat}, {lng}",
+  "@tripsPointOnMap": {
+    "placeholders": {
+      "lat": {
+        "type": "String"
+      },
+      "lng": {
+        "type": "String"
+      }
+    }
+  },
+  "tripsPrice": "Electricity price",
+  "tripsPriceHint": "Optional. Without it the cost is not calculated (no assumed prices).",
+  "tripsRough": "Rough",
+  "tripsRouteNotFound": "No road route was found between these points.",
+  "tripsRoutingBy": "Route: {provider}",
+  "@tripsRoutingBy": {
+    "placeholders": {
+      "provider": {
+        "type": "String"
+      }
+    }
+  },
+  "tripsSave": "Save this plan",
+  "tripsSaveHint": "Only saved when you ask; visible only to you.",
+  "tripsSaveTitle": "Name (optional)",
+  "tripsSaved": "My saved trips",
+  "tripsSavedEmpty": "No saved trips",
+  "tripsSavedStale": "Saved plan: station status and hours may have changed since.",
+  "tripsStopChargeTime": "Charging time",
+  "tripsStopN": "Stop {n}: {name}",
+  "@tripsStopN": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "tripsStopsSummary": "{stops, plural, =0{No charging stops} =1{1 charging stop} other{{stops} charging stops}} · {distance}",
+  "@tripsStopsSummary": {
+    "placeholders": {
+      "stops": {
+        "type": "int"
+      },
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "tripsTitle": "Trip planner",
+  "tripsTo": "To",
+  "tripsTooManyStops": "No plan: the trip would need too many charging stops.",
+  "tripsUsePoint": "Use this point",
+  "tripsVehicleDataMissing": "No plan: this car is missing verified data ({missing}). Enter it under Assumptions if you know it.",
+  "@tripsVehicleDataMissing": {
+    "placeholders": {
+      "missing": {
+        "type": "String"
+      }
+    }
+  }
 }

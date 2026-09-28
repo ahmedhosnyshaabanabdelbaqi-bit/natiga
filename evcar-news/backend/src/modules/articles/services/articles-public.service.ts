@@ -164,6 +164,13 @@ export class ArticlesPublicService {
     return isUuid(value) ? { id: value.toLowerCase() } : { slug: value.toLowerCase() };
   }
 
+  /** Article id, article slug or one of its per-language slugs. */
+  private articleKey(value: string): Prisma.ArticleWhereInput {
+    if (isUuid(value)) return { id: value.toLowerCase() };
+    const slug = value.toLowerCase();
+    return { OR: [{ slug }, { translations: { some: { slug } } }] };
+  }
+
   /**
    * Articles about a car: brand → brand or any of its models / variants;
    * model → the model or its variants; variant → the variant or its model.
@@ -274,7 +281,7 @@ export class ArticlesPublicService {
     lang: SupportedLanguage,
     market: string,
   ): Promise<PublicArticleDetailDto> {
-    const key = this.idOrSlug(slugOrId);
+    const key = this.articleKey(slugOrId);
     const row = await this.prisma.article.findFirst({
       where: { AND: [visibleArticleWhere(null), key] },
       include: DETAIL_INCLUDE,
@@ -430,7 +437,7 @@ export class ArticlesPublicService {
    */
   async recordView(slugOrId: string, ip: string | undefined, userAgent: string | undefined) {
     const row = await this.prisma.article.findFirst({
-      where: { AND: [visibleArticleWhere(null), this.idOrSlug(slugOrId)] },
+      where: { AND: [visibleArticleWhere(null), this.articleKey(slugOrId)] },
       select: { id: true },
     });
     if (!row) throw contentError('ARTICLE_NOT_FOUND');

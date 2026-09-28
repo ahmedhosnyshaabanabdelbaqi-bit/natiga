@@ -73,7 +73,9 @@ class _ServicesDirectoryScreenState extends ConsumerState<ServicesDirectoryScree
       case NearMeOutcome.unavailable:
         showAppSnackBar(
           context,
-          outcome == NearMeOutcome.denied ? l10n.servicesDirectoryLocationDenied : l10n.servicesDirectoryLocationUnavailable,
+          outcome == NearMeOutcome.denied
+              ? l10n.servicesDirectoryLocationDenied
+              : l10n.servicesDirectoryLocationUnavailable,
           icon: Icons.location_off_outlined,
           actionLabel: l10n.servicesDirectoryChooseCity,
           onAction: _pickCity,
@@ -183,9 +185,13 @@ class _ServicesDirectoryScreenState extends ConsumerState<ServicesDirectoryScree
                   selected: filters.type == null,
                   onSelected: (_) => notifier.setType(null),
                 ),
-                for (final t in types.isEmpty
-                    ? [for (final k in ServiceTypes.all) ServiceTypeCount(type: k, label: serviceTypeLabel(l10n, k))]
-                    : types) ...[
+                for (final t
+                    in types.isEmpty
+                        ? [
+                            for (final k in ServiceTypes.all)
+                              ServiceTypeCount(type: k, label: serviceTypeLabel(l10n, k)),
+                          ]
+                        : types) ...[
                   const SizedBox(width: AppSpacing.sm),
                   AppFilterChip(
                     icon: serviceTypeIcon(t.type),
@@ -380,7 +386,10 @@ Future<String?> showCityPickerSheet(BuildContext context, WidgetRef ref) {
   final l10n = context.l10n;
   final lang = ref.read(effectiveLanguageProvider);
   final market = ref.read(effectiveMarketProvider).code;
-  final cities = [for (final c in citiesFor(market)) if (c.marketCode == market) c.name(lang)];
+  final cities = [
+    for (final c in citiesFor(market))
+      if (c.marketCode == market) c.name(lang),
+  ];
   final controller = TextEditingController(text: ref.read(serviceFiltersProvider).city ?? '');
   return showAppBottomSheet<String>(
     context: context,
@@ -404,10 +413,7 @@ Future<String?> showCityPickerSheet(BuildContext context, WidgetRef ref) {
           Wrap(
             spacing: AppSpacing.sm,
             runSpacing: AppSpacing.sm,
-            children: [
-              for (final c in cities)
-                ActionChip(label: Text(c), onPressed: () => Navigator.of(sheet).pop(c)),
-            ],
+            children: [for (final c in cities) ActionChip(label: Text(c), onPressed: () => Navigator.of(sheet).pop(c))],
           ),
           const SizedBox(height: AppSpacing.lg),
           Row(

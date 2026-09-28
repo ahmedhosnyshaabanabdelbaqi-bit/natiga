@@ -2,5 +2,146 @@
   "@@locale": "ar",
   "remindersTitle": "التذكيرات",
   "remindersNewTitle": "تذكير جديد",
-  "remindersEditTitle": "تعديل التذكير"
+  "remindersEditTitle": "تعديل التذكير",
+  "remindersGuestMessage": "سجّل الدخول لحفظ تذكيرات الصيانة والتأمين والترخيص لسياراتك.",
+  "remindersFilterOpen": "القائمة",
+  "remindersFilterCompleted": "المكتملة",
+  "remindersEmptyTitle": "لا توجد تذكيرات",
+  "remindersEmptyMessage": "أضف تذكيرًا للصيانة أو التأمين أو تجديد الترخيص أو الإطارات — بالتاريخ أو بالعداد أو بكليهما.",
+  "remindersEmptyCompletedTitle": "لا توجد تذكيرات مكتملة بعد",
+  "remindersDeviceNotifications": "نبّهني على هذا الهاتف",
+  "remindersDeviceNotificationsOn": "ستصلك إشعارات في يوم التنبيه لكل تذكير.",
+  "remindersDeviceNotificationsOff": "متوقف. تبقى التذكيرات ظاهرة هنا مع حالتها.",
+  "remindersNotificationsUnsupported": "إشعارات الهاتف غير متاحة هنا. تبقى التذكيرات ظاهرة في هذه القائمة.",
+  "remindersPermissionDenied": "الإشعارات محظورة لهذا التطبيق. اسمح بها من إعدادات الهاتف لتصلك التنبيهات؛ تبقى تذكيراتك ظاهرة هنا.",
+  "remindersChannelName": "تذكيرات السيارة",
+  "remindersChannelDescription": "تذكيرات الصيانة والتأمين والترخيص والإطارات التي أنشأتها.",
+  "remindersStatusOverdue": "متأخر",
+  "remindersStatusDueSoon": "قريبًا",
+  "remindersStatusUpcoming": "قادم",
+  "remindersStatusCompleted": "مكتمل",
+  "remindersDueOn": "الموعد {date}",
+  "@remindersDueOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "remindersDueAtKm": "عند {km}",
+  "@remindersDueAtKm": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "remindersInDays": "{days, plural, =0{اليوم} =1{غدًا} =2{بعد يومين} few{بعد {days} أيام} other{بعد {days} يومًا}}",
+  "@remindersInDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "remindersDaysLate": "{days, plural, =1{متأخر يومًا واحدًا} =2{متأخر يومين} few{متأخر {days} أيام} other{متأخر {days} يومًا}}",
+  "@remindersDaysLate": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "remindersInKm": "بعد {km}",
+  "@remindersInKm": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "remindersKmLate": "تجاوز بمقدار {km}",
+  "@remindersKmLate": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "remindersEveryMonths": "{months, plural, =1{كل شهر} =2{كل شهرين} few{كل {months} أشهر} other{كل {months} شهرًا}}",
+  "@remindersEveryMonths": {
+    "placeholders": {
+      "months": {
+        "type": "int"
+      }
+    }
+  },
+  "remindersEveryKm": "كل {km}",
+  "@remindersEveryKm": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "remindersMarkDone": "تم",
+  "remindersCompleteTitle": "تأكيد الإنجاز؟",
+  "remindersCompleteMessage": "سينتقل التذكير إلى المكتملة.",
+  "remindersCompleteRepeats": "هذا التذكير متكرر: سيُنشأ التالي تلقائيًا.",
+  "remindersOdometerNow": "العداد الآن",
+  "remindersOdometerNowHint": "اختياري. يُستخدم لجدولة التذكير التالي حسب المسافة.",
+  "remindersCompleted": "تم.",
+  "remindersCompletedNext": "تم. التالي: {due}",
+  "@remindersCompletedNext": {
+    "placeholders": {
+      "due": {
+        "type": "String"
+      }
+    }
+  },
+  "remindersTypeMaintenance": "صيانة",
+  "remindersTypeInsurance": "تأمين",
+  "remindersTypeLicence": "ترخيص",
+  "remindersTypeTyres": "إطارات",
+  "remindersTypeCustom": "أخرى",
+  "remindersWhatSection": "ماذا",
+  "remindersTitleField": "العنوان",
+  "remindersCar": "السيارة",
+  "remindersCarHint": "مطلوبة للتذكير حسب العداد.",
+  "remindersNoCar": "بدون سيارة محددة",
+  "remindersWhenSection": "متى",
+  "remindersWhenHint": "أدخل تاريخًا أو قراءة عداد أو كليهما.",
+  "remindersDueDate": "تاريخ الاستحقاق",
+  "remindersDueKm": "عند قراءة العداد",
+  "remindersDueKmNeedsCar": "اختر سيارة لاستخدام العداد.",
+  "remindersRepeatMonths": "التكرار كل (شهر)",
+  "remindersRepeatKm": "التكرار كل",
+  "remindersAlertSection": "التنبيه",
+  "remindersAlertHint": "متى تريد أن يتم تنبيهك مسبقًا.",
+  "remindersNotifyDays": "أيام قبلها",
+  "remindersNotifyKm": "كم قبلها",
+  "remindersNotes": "ملاحظات",
+  "remindersErrorTitle": "أدخل عنوانًا.",
+  "remindersErrorDue": "أدخل تاريخ استحقاق أو قراءة عداد.",
+  "remindersErrorVehicleForKm": "اختر سيارة للتذكير حسب العداد.",
+  "remindersErrorWhole": "أدخل رقمًا صحيحًا.",
+  "remindersErrorRange": "يجب أن تكون القيمة بين {min} و{max}.",
+  "@remindersErrorRange": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "remindersSaved": "تم حفظ التذكير.",
+  "remindersEnableHint": "فعّل إشعارات الهاتف ليصلك التنبيه في موعده.",
+  "remindersEnableAction": "تفعيل",
+  "remindersAlreadyCompleted": "هذا التذكير مكتمل.",
+  "remindersDelete": "حذف التذكير",
+  "remindersDeleteConfirm": "حذف هذا التذكير؟",
+  "remindersDeleteMessage": "سيُلغى إشعاره على الهاتف أيضًا.",
+  "remindersDeleted": "تم حذف التذكير."
 }

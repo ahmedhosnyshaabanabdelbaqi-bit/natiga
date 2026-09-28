@@ -156,6 +156,9 @@ OpenState evaluateOpenNow(StationHours hours, DateTime now) {
       return OpenState.open;
     }
   }
+  // Same as the backend (review 3): an unknown previous day may have a window
+  // that runs past midnight into now, so "closed" cannot be claimed.
+  if (prev == null) return OpenState.unknown;
   return OpenState.closed;
 }
 

@@ -30,9 +30,13 @@ vhost templates), `postgres/initdb/`, `systemd/`, `monitor.sh`, `tests/`.
 3. **First owner:** `sudo evcar create-owner --email you@example.com --name "Name"` → one-time link (24 h) to
    `https://admin.evcar.news/setup-password?token=…`. Without admin panel: add `--set-password` (prompted on the server,
    token and password go to the API over stdin, never on a command line). No password exists in code.
-4. **Check:** `curl https://api.evcar.news/api/v1/health` → `"status":"ok"`; `sudo evcar status`.
-5. **APK:** GitHub → Settings → Secrets and variables → Actions → Variables: `EVCAR_API_BASE_URL =
-   https://api.evcar.news/api/v1` (that is also the workflow default) → Actions → `evcar-android` → Run workflow.
+4. **Features:** `sudo evcar seed --enable-features` — every app feature starts OFF (the app then shows only Home and
+   Account); this switches on the implemented ones (audited). Or toggle them in the admin settings /
+   `PATCH /api/v1/admin/settings/features`. The trip planner also needs a routing provider.
+5. **Check:** `curl https://api.evcar.news/api/v1/health` → `"status":"ok"`; `sudo evcar status`.
+6. **APK:** GitHub → Settings → Secrets and variables → Actions → Variables: `EVCAR_API_BASE_URL =
+   https://<your API domain>/api/v1` (**required** — the workflow fails without it instead of building an APK
+   that points nowhere) → Actions → `evcar-android` → Run workflow.
 
 ## What install.sh does (idempotent; `--dry-run` prints every action)
 

@@ -109,11 +109,43 @@ class _EvCarAppState extends ConsumerState<EvCarApp> with WidgetsBindingObserver
         );
         if (webPreview) {
           // The web build is a design preview only (production: Android/iOS).
-          app = Banner(
-            message: lookupAppLocalizations(Locale(language)).commonWebPreviewBanner,
-            location: BannerLocation.topEnd,
-            color: AppColors.electricBlue,
-            child: app,
+          // A small pill at the top centre: unlike a corner Banner it never
+          // covers app-bar actions (back, search, notifications).
+          app = Stack(
+            children: [
+              app,
+              PositionedDirectional(
+                top: 0,
+                start: 0,
+                end: 0,
+                child: IgnorePointer(
+                  child: SafeArea(
+                    bottom: false,
+                    child: Center(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
+                        decoration: const BoxDecoration(
+                          color: Color(0xCC0A5CFF),
+                          borderRadius: BorderRadius.vertical(bottom: Radius.circular(8)),
+                        ),
+                        child: Text(
+                          lookupAppLocalizations(Locale(language)).commonWebPreviewBanner,
+                          textScaler: TextScaler.noScaling,
+                          style: const TextStyle(
+                            fontFamily: AppTheme.fontFamily,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                            height: 1.3,
+                            decoration: TextDecoration.none,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           );
         }
         return app;

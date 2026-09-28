@@ -74,13 +74,20 @@ class ScaffoldWithNavBar extends ConsumerWidget {
           ),
         ],
       ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: selected < 0 ? 0 : selected,
-        onDestinationSelected: (index) {
-          final branch = visible[index];
-          navigationShell.goBranch(branch, initialLocation: branch == navigationShell.currentIndex);
-        },
-        destinations: [for (final i in visible) destinations[i]],
+      // Hairline above the bar: white cards scrolling under a white bar
+      // otherwise have no edge.
+      bottomNavigationBar: DecoratedBox(
+        decoration: BoxDecoration(
+          border: Border(top: BorderSide(color: Theme.of(context).colorScheme.outlineVariant)),
+        ),
+        child: NavigationBar(
+          selectedIndex: selected < 0 ? 0 : selected,
+          onDestinationSelected: (index) {
+            final branch = visible[index];
+            navigationShell.goBranch(branch, initialLocation: branch == navigationShell.currentIndex);
+          },
+          destinations: [for (final i in visible) destinations[i]],
+        ),
       ),
     );
   }

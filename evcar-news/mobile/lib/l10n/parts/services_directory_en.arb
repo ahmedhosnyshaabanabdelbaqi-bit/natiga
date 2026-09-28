@@ -95,5 +95,8 @@
   "servicesDirectoryLocationDenied": "Location access was not allowed. You can choose a city instead.",
   "servicesDirectoryLocationUnavailable": "Couldn't get your location. You can choose a city instead.",
   "servicesDirectoryLocationDeniedForever": "Location access is off for this app. Turn it on in Settings, or choose a city.",
-  "servicesDirectoryLocationServiceOff": "Location services are off on this device. Turn them on, or choose a city."
+  "servicesDirectoryLocationServiceOff": "Location services are off on this device. Turn them on, or choose a city.",
+  "servicesDirectoryNotFoundTitle": "This provider isn't listed anymore",
+  "servicesDirectoryNotFoundMessage": "It may have been removed from the directory. Browse other providers near you.",
+  "servicesDirectoryBrowseAll": "Browse the directory"
 }

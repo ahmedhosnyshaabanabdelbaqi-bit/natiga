@@ -98,6 +98,9 @@ export class AppConfig {
       osrmBaseUrl: string;
       orsApiKey: string;
       googleRoutesApiKey: string;
+      dailyBudget: number;
+      minuteBudget: number;
+      cacheTtlSeconds: number;
     };
     geocoding: { baseUrl: string; email: string };
     map: { tileUrlTemplate: string; attribution: string; maxZoom: number };
@@ -213,6 +216,9 @@ export class AppConfig {
         osrmBaseUrl: s('OSRM_BASE_URL'),
         orsApiKey: s('ORS_API_KEY'),
         googleRoutesApiKey: s('GOOGLE_ROUTES_API_KEY'),
+        dailyBudget: n('ROUTING_DAILY_BUDGET'),
+        minuteBudget: n('ROUTING_MINUTE_BUDGET'),
+        cacheTtlSeconds: n('ROUTING_CACHE_TTL_SECONDS'),
       },
       geocoding: { baseUrl: s('GEOCODING_BASE_URL'), email: s('GEOCODING_EMAIL') },
       map: {

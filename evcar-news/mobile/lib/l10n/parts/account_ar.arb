@@ -35,5 +35,23 @@
   "accountDeletePasswordLabel": "أدخل كلمة المرور للتأكيد",
   "accountDeleteAcknowledge": "أفهم أن الحذف نهائي ولا يمكن التراجع عنه.",
   "accountDeleteButton": "حذف الحساب نهائيًا",
-  "accountDeleted": "تم حذف حسابك."
+  "accountDeleted": "تم حذف حسابك.",
+  "accountCarsCount": "{count, plural, =1{سيارة واحدة} =2{سيارتان} few{{count} سيارات} other{{count} سيارة}}",
+  "@accountCarsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "accountUnreadCount": "{count} جديد",
+  "@accountUnreadCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "accountTripPlannerUnavailable": "غير متاح بعد",
+  "accountTripPlannerExplain": "يحتاج تخطيط الرحلات إلى خدمة مسارات للطرق، وهي غير مهيأة على الخادم بعد. لا نرسم خطوطًا مستقيمة كمسارات قيادة ولا نختلق خططًا، لذلك يبقى المخطط مخفيًا حتى تُهيأ. في الأثناء، تتيح كل صفحة محطة فتح الاتجاهات في تطبيق الملاحة."
 }

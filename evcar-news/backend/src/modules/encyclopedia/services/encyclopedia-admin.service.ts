@@ -1,13 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import type { SupportedLanguage } from '../../../config/app-config';
-import { AppConfig } from '../../../config/app-config';
 import { toPageRequest } from '../../../common/http/pagination';
 import { paginated, type PaginatedResponse } from '../../../common/http/responses';
 import { normalizeSearchText } from '../../../common/i18n/arabic-normalize';
-import { htmlToPlainText, sanitizeArticleHtml } from '../../../common/sanitize/html-sanitizer';
+import { AppException } from '../../../common/errors/app.exception';
 import { ContentStatus, Prisma } from '../../../generated/prisma/client';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { isValidContentSlug, slugFromTexts, uniqueSlug } from '../../articles/common/slug';
+import { prepareArticleHtml } from '../../articles/domain/article-html';
+import { ArticleMediaService } from '../../articles/services/article-media.service';
 import { AuditService } from '../../audit';
 import { MediaUrlService } from '../../vehicles';
 import { conflict, fieldError, fieldErrors, notFound } from '../../search/common/discovery-http';
@@ -58,13 +59,21 @@ type Actor = { id: string };
  * cannot be the author. The checklist + attestation are stored in the audit
  * record of the review action.
  */
+interface TranslationData {
+  locale: string;
+  title: string;
+  summary: string | null;
+  bodyHtml: string;
+  bodyText: string;
+}
+
 @Injectable()
 export class EncyclopediaAdminService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
     private readonly media: MediaUrlService,
-    private readonly config: AppConfig,
+    private readonly articleMedia: ArticleMediaService,
   ) {}
 
   // --- entries --------------------------------------------------------------------------
@@ -109,6 +118,7 @@ export class EncyclopediaAdminService {
 
   async create(dto: CreateEntryDto, actor: Actor): Promise<AdminEntryViewDto> {
     const translations = this.translationsInput(dto.translations, true);
+    const prepared = await this.prepareTranslations(translations);
     await this.checkCategory(dto.categoryKey);
     await this.checkCover(dto.coverAssetId ?? null);
     const slug = await this.slugFor(
@@ -125,9 +135,7 @@ export class EncyclopediaAdminService {
         createdById: actor.id,
         status: ContentStatus.draft,
         translations: {
-          create: Object.entries(translations)
-            .filter((e): e is [string, EntryTranslationInputDto] => !!e[1])
-            .map(([locale, t]) => this.translationData(locale, t)),
+          create: [...prepared.values()],
         },
       },
       include: ADMIN_INCLUDE,
@@ -151,6 +159,9 @@ export class EncyclopediaAdminService {
         { status: current.status },
       );
     }
+    const prepared = dto.translations
+      ? await this.prepareTranslations(this.translationsInput(dto.translations, false))
+      : new Map<string, TranslationData>();
     if (dto.categoryKey) await this.checkCategory(dto.categoryKey);
     if (dto.coverAssetId !== undefined) await this.checkCover(dto.coverAssetId);
     const data: Prisma.EncyclopediaEntryUpdateInput = {};
@@ -164,7 +175,6 @@ export class EncyclopediaAdminService {
     }
     await this.prisma.$transaction(async (tx) => {
       if (dto.translations) {
-        const input = this.translationsInput(dto.translations, false);
         const remaining = new Set(current.translations.map((t) => t.locale));
         for (const locale of ['ar', 'en'] as const) {
           const value = dto.translations[locale];
@@ -174,7 +184,7 @@ export class EncyclopediaAdminService {
             await tx.encyclopediaEntryTranslation.deleteMany({ where: { entryId: id, locale } });
           } else {
             remaining.add(locale);
-            const d = this.translationData(locale, input[locale]!);
+            const d = prepared.get(locale)!;
             await tx.encyclopediaEntryTranslation.upsert({
               where: { entryId_locale: { entryId: id, locale } },
               create: { entryId: id, ...d },
@@ -530,17 +540,58 @@ export class EncyclopediaAdminService {
     return out;
   }
 
-  private translationData(locale: string, t: EntryTranslationInputDto) {
-    const bodyHtml = sanitizeArticleHtml(t.bodyHtml, {
-      extraImageOrigins: [this.config.storage.publicBaseUrl].filter(Boolean),
-    });
-    return {
-      locale,
-      title: t.title,
-      summary: t.summary ?? null,
-      bodyHtml,
-      bodyText: htmlToPlainText(bodyHtml),
-    };
+  /**
+   * Same HTML policy as articles (review 3, finding 4): embeds limited to
+   * youtube-nocookie / Vimeo players (YouTube rewritten to nocookie) and every
+   * inline image must be a ready, licensed media-library image, so no
+   * third-party host sees readers (tracking pixels) and no unlicensed image is
+   * published. Refuses with 422 instead of silently dropping content.
+   */
+  private async prepareTranslations(
+    input: Partial<Record<SupportedLanguage, EntryTranslationInputDto>>,
+  ): Promise<Map<string, TranslationData>> {
+    const out = new Map<string, TranslationData>();
+    const images: string[] = [];
+    const embeds: string[] = [];
+    for (const [locale, t] of Object.entries(input)) {
+      if (!t) continue;
+      const html = prepareArticleHtml(t.bodyHtml, {
+        mediaOrigins: this.articleMedia.mediaOrigins(),
+      });
+      images.push(...html.imageSources);
+      embeds.push(...html.rejectedEmbeds);
+      out.set(locale, {
+        locale,
+        title: t.title,
+        summary: t.summary ?? null,
+        bodyHtml: html.html,
+        bodyText: html.text,
+      });
+    }
+    if (embeds.length) {
+      throw new AppException({
+        status: HttpStatus.UNPROCESSABLE_ENTITY,
+        code: 'ENCYCLOPEDIA_EMBED_NOT_ALLOWED',
+        message: {
+          ar: 'يُسمح فقط بتضمين فيديو من YouTube أو Vimeo.',
+          en: 'Only YouTube or Vimeo video players can be embedded.',
+        },
+        details: { embeds: [...new Set(embeds)] },
+      });
+    }
+    const bad = await this.articleMedia.unlicensedImages(images);
+    if (bad.length) {
+      throw new AppException({
+        status: HttpStatus.UNPROCESSABLE_ENTITY,
+        code: 'ENCYCLOPEDIA_IMAGE_NOT_LICENSED',
+        message: {
+          ar: 'كل صورة داخل النص يجب أن تكون من مكتبة الوسائط ومعها ترخيص.',
+          en: 'Every inline image must be a licensed image of the media library.',
+        },
+        details: { images: bad },
+      });
+    }
+    return out;
   }
 
   private async slugFor(

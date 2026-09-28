@@ -1,0 +1,52 @@
+{
+    "data": [
+        {
+            "code": "spam",
+            "label": "Spam or advertising",
+            "description": "Promotional or repeated content.",
+            "requiresDetails": false
+        },
+        {
+            "code": "abuse",
+            "label": "Abuse or hate",
+            "description": "Insults, harassment or hate speech.",
+            "requiresDetails": false
+        },
+        {
+            "code": "off_topic",
+            "label": "Off topic",
+            "description": "Not related to the topic.",
+            "requiresDetails": false
+        },
+        {
+            "code": "misinformation",
+            "label": "Misinformation",
+            "description": "False or misleading information.",
+            "requiresDetails": false
+        },
+        {
+            "code": "personal_data",
+            "label": "Personal data",
+            "description": "Publishes someone's personal data.",
+            "requiresDetails": false
+        },
+        {
+            "code": "copyright",
+            "label": "Copyright",
+            "description": "Uses protected content without permission.",
+            "requiresDetails": false
+        },
+        {
+            "code": "other",
+            "label": "Other reason",
+            "description": "Describe the reason.",
+            "requiresDetails": true
+        }
+    ],
+    "meta": {
+        "page": 1,
+        "pageSize": 7,
+        "total": 7,
+        "totalPages": 1
+    }
+}

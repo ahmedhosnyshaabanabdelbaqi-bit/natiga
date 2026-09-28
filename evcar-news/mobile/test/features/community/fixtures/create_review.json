@@ -1,0 +1,47 @@
+{
+    "data": {
+        "id": "01a0e8dc-1eb1-7367-bb1b-ab3917372ae3",
+        "target": {
+            "type": "variant",
+            "id": "d0000000-0000-4000-8000-000000000014"
+        },
+        "rating": 4,
+        "title": "Test review title",
+        "body": "This is a test review body written for the demo database only.",
+        "pros": "Quiet cabin",
+        "cons": null,
+        "ownershipMonths": 8,
+        "ratings": [
+            {
+                "dimension": "charging",
+                "label": "الشحن",
+                "score": 3
+            },
+            {
+                "dimension": "comfort",
+                "label": "الراحة",
+                "score": 5
+            }
+        ],
+        "author": {
+            "id": "01a0e8db-bd51-71cf-8207-b6f4e0688383",
+            "displayName": "Sara",
+            "isDeleted": false
+        },
+        "verifiedOwner": false,
+        "verifiedOwnerLabel": null,
+        "locale": "en",
+        "marketCode": "EG",
+        "votes": {
+            "up": 0,
+            "down": 0,
+            "score": 0,
+            "myVote": null
+        },
+        "commentCount": 0,
+        "status": "pending",
+        "isMine": true,
+        "createdAt": "2026-09-28T16:32:15.025Z",
+        "updatedAt": "2026-09-28T16:32:15.025Z"
+    }
+}

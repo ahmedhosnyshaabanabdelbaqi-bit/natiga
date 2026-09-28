@@ -117,7 +117,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   List<Widget> _content(BuildContext context, CachedResult<HomeFeed> res) {
     final l10n = context.l10n;
     final sections = res.data.sections;
-    final visible = sections.where((s) => s.items.isNotEmpty || s.itemType == 'station' || s.state == HomeSectionState.unavailable);
+    final visible = sections.where(
+      (s) => s.items.isNotEmpty || s.itemType == 'station' || s.state == HomeSectionState.unavailable,
+    );
     if (visible.isEmpty) {
       return [
         SliverToBoxAdapter(
@@ -231,7 +233,9 @@ class _ExploreTile extends StatelessWidget {
             child: Icon(icon, color: tone.onContainer, size: 22),
           ),
           const SizedBox(width: AppSpacing.sm),
-          Expanded(child: Text(label, style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600))),
+          Expanded(
+            child: Text(label, style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600)),
+          ),
         ],
       ),
     );
@@ -255,7 +259,9 @@ class _RefreshFailed extends StatelessWidget {
         children: [
           Icon(Icons.sync_problem, color: tone.onContainer, size: 20),
           const SizedBox(width: AppSpacing.sm),
-          Expanded(child: Text(l10n.homeRefreshFailed, style: TextStyle(color: tone.onContainer))),
+          Expanded(
+            child: Text(l10n.homeRefreshFailed, style: TextStyle(color: tone.onContainer)),
+          ),
           TextButton(onPressed: onRetry, child: Text(l10n.commonRetry)),
         ],
       ),

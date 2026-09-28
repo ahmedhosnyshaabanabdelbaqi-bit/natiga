@@ -70,7 +70,25 @@ export type FeatureFlag = (typeof FEATURE_FLAGS)[number];
  * §21: unfinished features stay hidden in production). Add a flag here in
  * the same change that ships its module.
  */
-export const IMPLEMENTED_FEATURES: ReadonlySet<FeatureFlag> = new Set<FeatureFlag>([]);
+export const IMPLEMENTED_FEATURES: ReadonlySet<FeatureFlag> = new Set<FeatureFlag>([
+  'news',
+  'cars',
+  'comparisons',
+  'interiorTours',
+  'stations',
+  'calculators',
+  'garage',
+  'favorites',
+  'chargingLogs',
+  'reminders',
+  'encyclopedia',
+  'notifications',
+  'community',
+  // Also needs a configured routing provider (forced off otherwise).
+  'tripPlanner',
+  'servicesDirectory',
+  // Not built: 'assistant', 'ads', 'exteriorSpin'.
+]);
 
 export interface BrandingSettings {
   appName: string;

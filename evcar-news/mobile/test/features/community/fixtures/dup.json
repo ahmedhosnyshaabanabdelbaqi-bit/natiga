@@ -1,0 +1,10 @@
+{
+    "error": {
+        "code": "COMMUNITY_DUPLICATE_CONTENT",
+        "message": "نشرت النص نفسه مؤخرًا.",
+        "details": {
+            "existingId": "01a0e8dc-1ed9-7261-a3dd-e7e8dced8f12"
+        },
+        "requestId": "e19f5ae4-13d5-4a3d-9a35-c7d50efda8ee"
+    }
+}

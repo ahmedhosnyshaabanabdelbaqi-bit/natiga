@@ -69,7 +69,10 @@ class HomeSectionView extends ConsumerWidget {
     );
 
     if (s.state == HomeSectionState.unavailable) {
-      return _Titled(header: header, child: _SectionProblem(onRetry: () => ref.read(homeFeedProvider.notifier).refresh()));
+      return _Titled(
+        header: header,
+        child: _SectionProblem(onRetry: () => ref.read(homeFeedProvider.notifier).refresh()),
+      );
     }
     if (s.itemType == 'station') {
       return _Titled(
@@ -107,10 +110,7 @@ class HomeSectionView extends ConsumerWidget {
         }
         return _Titled(
           header: header,
-          child: HorizontalCardList(
-            itemWidth: 280,
-            children: [for (final a in items) ArticleCard(article: a)],
-          ),
+          child: HorizontalCardList(itemWidth: 280, children: [for (final a in items) ArticleCard(article: a)]),
         );
       case 'car':
         return _Titled(
@@ -213,7 +213,7 @@ class _ToursStrip extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(height: 4, decoration: BoxDecoration(gradient: palette.brandGradient)),
+            Container(height: 4, decoration: BoxDecoration(gradient: palette.accentGradient)),
             Padding(
               padding: EdgeInsets.fromLTRB(context.pageGutter, AppSpacing.lg, context.pageGutter, AppSpacing.sm),
               child: Row(
@@ -288,7 +288,10 @@ class _NearbyStations extends ConsumerWidget {
     final theme = Theme.of(context);
     final place = ref.watch(homeNearbyPlaceProvider);
     if (section.state == HomeSectionState.locationRequired || place == null) {
-      return Padding(padding: EdgeInsets.symmetric(horizontal: context.pageGutter), child: const NearbyPromptCard());
+      return Padding(
+        padding: EdgeInsets.symmetric(horizontal: context.pageGutter),
+        child: const NearbyPromptCard(),
+      );
     }
     final stations = section.itemsOf<StationListItem>();
     final now = ref.watch(chargingClockProvider)();
@@ -308,10 +311,7 @@ class _NearbyStations extends ConsumerWidget {
                   style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
                 ),
               ),
-              TextButton(
-                onPressed: () => context.push(AppRoutes.chargingLocation),
-                child: Text(l10n.homeChangePlace),
-              ),
+              TextButton(onPressed: () => context.push(AppRoutes.chargingLocation), child: Text(l10n.homeChangePlace)),
             ],
           ),
           if (stations.isEmpty)
@@ -388,7 +388,10 @@ class _NearbyPromptCardState extends ConsumerState<NearbyPromptCard> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(l10n.homeNearbyPromptTitle, style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
+                    Text(
+                      l10n.homeNearbyPromptTitle,
+                      style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
+                    ),
                     const SizedBox(height: AppSpacing.xs),
                     Text(
                       l10n.homeNearbyPromptMessage,

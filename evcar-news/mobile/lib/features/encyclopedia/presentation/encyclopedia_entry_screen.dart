@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../app/router/app_routes.dart';
+import '../../../core/api/api_exception.dart';
 import '../../../core/cache/cached_fetch.dart';
 import '../../../shared/widgets/kit.dart';
 import '../../../shared/widgets/safe_html.dart';
@@ -36,20 +39,39 @@ class EncyclopediaEntryScreen extends ConsumerWidget {
       title: l10n.encyclopediaTitle,
       onRefresh: refresh,
       slivers: [
-        SliverAsyncStateView<CachedResult<EncyclopediaEntryDetail>>(
-          value: value,
-          onRetry: () => ref.invalidate(provider),
-          loading: const _EntrySkeleton(),
-          builder: (context, res) => SliverToBoxAdapter(
-            child: ResponsiveCenter(
-              child: _EntryBody(
-                detail: res.data,
-                cachedAt: res.fromCache ? res.savedAt : null,
-                onRetry: () => ref.invalidate(provider),
+        if (_isNotFound(value))
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: StateMessageView(
+              kind: StateKind.empty,
+              icon: Icons.menu_book_outlined,
+              title: l10n.encyclopediaNotFoundTitle,
+              message: l10n.encyclopediaNotFoundMessage,
+              actions: [
+                StateAction(
+                  label: l10n.encyclopediaBrowseAll,
+                  icon: Icons.menu_book_outlined,
+                  primary: true,
+                  onPressed: () => context.go(AppRoutes.encyclopedia),
+                ),
+              ],
+            ),
+          )
+        else
+          SliverAsyncStateView<CachedResult<EncyclopediaEntryDetail>>(
+            value: value,
+            onRetry: () => ref.invalidate(provider),
+            loading: const _EntrySkeleton(),
+            builder: (context, res) => SliverToBoxAdapter(
+              child: ResponsiveCenter(
+                child: _EntryBody(
+                  detail: res.data,
+                  cachedAt: res.fromCache ? res.savedAt : null,
+                  onRetry: () => ref.invalidate(provider),
+                ),
               ),
             ),
           ),
-        ),
       ],
     );
   }
@@ -79,10 +101,17 @@ class _EntryBody extends StatelessWidget {
         ],
         Row(
           children: [
-            Icon(encyclopediaCategoryIcon(e.category.iconKey, e.category.key), size: 18, color: theme.colorScheme.primary),
+            Icon(
+              encyclopediaCategoryIcon(e.category.iconKey, e.category.key),
+              size: 18,
+              color: theme.colorScheme.primary,
+            ),
             const SizedBox(width: AppSpacing.xs),
             Flexible(
-              child: Text(e.category.name, style: theme.textTheme.labelLarge?.copyWith(color: theme.colorScheme.primary)),
+              child: Text(
+                e.category.name,
+                style: theme.textTheme.labelLarge?.copyWith(color: theme.colorScheme.primary),
+              ),
             ),
           ],
         ),
@@ -264,3 +293,8 @@ class _EntrySkeleton extends StatelessWidget {
     );
   }
 }
+
+/// A 404 (unpublished / removed entry) gets its own state with a way out,
+/// not a generic error.
+bool _isNotFound(AsyncValue<Object?> value) =>
+    !value.hasValue && value.error is ApiException && (value.error! as ApiException).kind == ApiErrorKind.notFound;

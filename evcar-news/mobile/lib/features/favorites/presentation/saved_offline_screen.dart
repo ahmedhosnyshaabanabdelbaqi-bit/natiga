@@ -125,7 +125,9 @@ class _SavedSheetTile extends ConsumerWidget {
             tooltip: l10n.favoritesDeleteOffline,
             icon: const Icon(Icons.delete_outline),
             onPressed: () async {
-              await ref.read(savedItemsStoreProvider).delete(SavedItemType.carSpecs, item.id, lang: item.lang, market: item.market);
+              await ref
+                  .read(savedItemsStoreProvider)
+                  .delete(SavedItemType.carSpecs, item.id, lang: item.lang, market: item.market);
               ref.invalidate(savedSpecSheetsProvider);
             },
           ),

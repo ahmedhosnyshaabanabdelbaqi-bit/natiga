@@ -1,4 +1,7 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/theme/app_tokens.dart';
@@ -108,26 +111,41 @@ class AppScaffold extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final online = ref.watch(isOnlineProvider).value ?? true;
     final showBanner = showOfflineBanner && !online && !OfflineBannerScope.hasBanner(context);
-    final titleView =
-        titleWidget ?? (title == null ? null : Text(title!, maxLines: 2, overflow: TextOverflow.ellipsis));
+    // Toolbar titles stay on one line: two lines do not fit the 56dp bar at
+    // large text sizes and were clipped at the top. The large (collapsing)
+    // title has room for two.
+    Text titleText(int lines) => Text(title!, maxLines: lines, overflow: TextOverflow.ellipsis);
 
     Widget content;
     PreferredSizeWidget? appBar;
     if (slivers != null) {
       final expanded = flexibleHeader != null;
-      final Widget sliverAppBar = largeTitle && !expanded
-          ? SliverAppBar.large(title: titleView, actions: actions, leading: leading, bottom: bottom)
-          : SliverAppBar(
-              title: titleView,
-              actions: actions,
-              leading: leading,
-              bottom: bottom,
-              pinned: true,
-              expandedHeight: expanded ? (expandedHeight ?? 280) : null,
-              flexibleSpace: expanded
-                  ? FlexibleSpaceBar(background: flexibleHeader, collapseMode: CollapseMode.parallax)
-                  : null,
-            );
+      final Widget sliverAppBar;
+      if (largeTitle && !expanded) {
+        sliverAppBar = SliverAppBar.large(
+          title: titleWidget ?? (title == null ? null : titleText(2)),
+          actions: actions,
+          leading: leading,
+          bottom: bottom,
+        );
+      } else if (expanded) {
+        sliverAppBar = _HeroSliverAppBar(
+          title: titleWidget ?? (title == null ? null : titleText(1)),
+          actions: actions,
+          leading: leading,
+          bottom: bottom,
+          expandedHeight: expandedHeight ?? 280,
+          background: flexibleHeader!,
+        );
+      } else {
+        sliverAppBar = SliverAppBar(
+          title: titleWidget ?? (title == null ? null : titleText(1)),
+          actions: actions,
+          leading: leading,
+          bottom: bottom,
+          pinned: true,
+        );
+      }
       content = CustomScrollView(
         physics: onRefresh == null ? null : const AlwaysScrollableScrollPhysics(),
         slivers: [
@@ -141,7 +159,12 @@ class AppScaffold extends ConsumerWidget {
         ],
       );
     } else {
-      appBar = AppBar(title: titleView, actions: actions, leading: leading, bottom: bottom);
+      appBar = AppBar(
+        title: titleWidget ?? (title == null ? null : titleText(1)),
+        actions: actions,
+        leading: leading,
+        bottom: bottom,
+      );
       content = body!;
     }
 
@@ -163,6 +186,146 @@ class AppScaffold extends ConsumerWidget {
       body: content,
       floatingActionButton: floatingActionButton,
       bottomNavigationBar: bottomBar,
+    );
+  }
+}
+
+/// Pinned app bar over a hero image (car pages).
+///
+/// * While the hero shows, the back button, title and actions are white on
+///   a top scrim; once collapsed they switch to the normal app-bar colours,
+///   and the toolbar title only fades in then (the hero carries the name).
+/// * The [bottom] (tabs) sits on a solid surface strip, never on the image,
+///   so tab labels keep their contrast.
+/// * The expanded height grows with the text size (the hero's text never
+///   overlaps the toolbar) and is capped to half the screen in landscape.
+class _HeroSliverAppBar extends StatefulWidget {
+  const _HeroSliverAppBar({
+    required this.title,
+    required this.actions,
+    required this.leading,
+    required this.bottom,
+    required this.expandedHeight,
+    required this.background,
+  });
+
+  final Widget? title;
+  final List<Widget>? actions;
+  final Widget? leading;
+  final PreferredSizeWidget? bottom;
+  final double expandedHeight;
+  final Widget background;
+
+  @override
+  State<_HeroSliverAppBar> createState() => _HeroSliverAppBarState();
+}
+
+class _HeroSliverAppBarState extends State<_HeroSliverAppBar> {
+  bool _collapsed = false;
+
+  void _update(bool collapsed) {
+    if (collapsed == _collapsed) return;
+    // Called during layout: apply after this frame.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && collapsed != _collapsed) setState(() => _collapsed = collapsed);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final media = MediaQuery.of(context);
+    final scale = context.textScale.clamp(1.0, 2.0);
+    final bottomHeight = widget.bottom?.preferredSize.height ?? 0;
+    final minHeight = media.padding.top + kToolbarHeight + bottomHeight;
+    var expanded = widget.expandedHeight + (scale - 1) * 140;
+    // Landscape / short screens: keep at least half of the screen for content.
+    expanded = expanded.clamp(
+      kToolbarHeight + bottomHeight + 72,
+      math.max(kToolbarHeight + bottomHeight + 72, media.size.height * 0.5),
+    );
+    final onHero = !_collapsed;
+    final foreground = onHero ? Colors.white : scheme.onSurface;
+
+    return SliverAppBar(
+      pinned: true,
+      expandedHeight: expanded,
+      leading: widget.leading,
+      actions: widget.actions,
+      foregroundColor: foreground,
+      iconTheme: IconThemeData(color: foreground),
+      actionsIconTheme: IconThemeData(color: foreground),
+      systemOverlayStyle: onHero ? SystemUiOverlayStyle.light : null,
+      title: widget.title == null
+          ? null
+          : AnimatedOpacity(
+              opacity: _collapsed ? 1 : 0,
+              duration: AppMotion.of(context, AppMotion.fast),
+              child: widget.title,
+            ),
+      bottom: widget.bottom == null ? null : _SolidBottom(child: widget.bottom!),
+      flexibleSpace: LayoutBuilder(
+        builder: (context, constraints) {
+          _update(constraints.maxHeight <= minHeight + 8);
+          return FlexibleSpaceBar(
+            collapseMode: CollapseMode.parallax,
+            background: Stack(
+              fit: StackFit.expand,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(bottom: bottomHeight),
+                  child: widget.background,
+                ),
+                // Top scrim so the white back button / actions stay legible
+                // on bright images.
+                const IgnorePointer(
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: SizedBox(
+                      height: 120,
+                      width: double.infinity,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [Color(0x80000000), Color(0x00000000)],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+/// Puts an app-bar `bottom` (a TabBar) on an opaque surface strip.
+class _SolidBottom extends StatelessWidget implements PreferredSizeWidget {
+  const _SolidBottom({required this.child});
+
+  final PreferredSizeWidget child;
+
+  @override
+  Size get preferredSize => child.preferredSize;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Material(
+      color: theme.appBarTheme.backgroundColor ?? theme.scaffoldBackgroundColor,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(color: theme.colorScheme.outlineVariant)),
+        ),
+        child: child,
+      ),
     );
   }
 }

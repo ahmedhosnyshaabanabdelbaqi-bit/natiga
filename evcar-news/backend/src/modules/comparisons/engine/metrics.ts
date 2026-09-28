@@ -6,10 +6,11 @@
  * - DC peak power (spec / inlet) is a different row from the average power;
  * - charging times only for the same SoC window (10–80 % ≠ 30–80 %) and only
  *   when no charger limited one car differently;
- * - prices never across currencies;
+ * - prices never across currencies, and never across price types (MSRP / dealer / estimate);
  * - missing values stay null (never 0) and block the winner;
  * - battery rows never have a "better" direction.
  */
+import { specAllowsZero } from '../../vehicles/common/spec-values';
 import type {
   ChargingTimeDto,
   ConsumptionDto,
@@ -112,6 +113,19 @@ function inletValue(carKey: string, inlet: InletDto, note: string): MetricValue 
     note,
     alternatives: [],
   };
+}
+
+/**
+ * A stored 0 on a measured quantity (power, time, capacity…) is a placeholder,
+ * not a value: treated as missing so it can never win (review 3, same rule as
+ * the calculators' vehicle data and the admin/CSV validation).
+ */
+function usablePoint(
+  p: DataPointDto | undefined,
+  def: { key: string; unit: string | null },
+): DataPointDto | undefined {
+  if (p && p.value === 0 && !specAllowsZero(def)) return undefined;
+  return p;
 }
 
 // --- decision -------------------------------------------------------------------------
@@ -274,13 +288,27 @@ export function priceMetric(ctx: Ctx): Metric {
       lang,
     );
   }
-  const types = uniq(values.map((v) => v.condition!.priceTypeLabel!));
+  // Review 3: an official MSRP, a dealer price and a market estimate are different
+  // kinds of numbers (§6: a converted estimate is never the official local price),
+  // so different price types are shown side by side but never decide a winner (§7).
+  const types = uniq(values.map((v) => v.condition!.priceType!));
+  if (types.length > 1) {
+    const labels = uniq(values.map((v) => v.condition!.priceTypeLabel!));
+    return finalize(
+      { ...spec, unit: currencies[0] },
+      values,
+      'not_comparable_conditions',
+      NOTES.priceTypes(lang, labels),
+      { currency: currencies[0] },
+      lang,
+    );
+  }
   return finalize(
     { ...spec, unit: currencies[0] },
     values,
     'comparable',
-    types.length > 1 ? NOTES.priceTypes(lang, types) : null,
-    { currency: currencies[0] },
+    null,
+    { currency: currencies[0], priceType: types[0] },
     lang,
   );
 }
@@ -508,7 +536,7 @@ function chargePowerMetric(ctx: Ctx, def: SpecDefLite | undefined, current: 'AC'
     : computed;
   const values = cars.map((car): MetricValue => {
     if (!isPlugIn(car.powertrainType)) return emptyValue(car.key, 'not_applicable');
-    const p = car.specs.get(key);
+    const p = usablePoint(car.specs.get(key), { key, unit: 'kW' });
     if (p && isNum(p.value)) return pointValue(car.key, p, 'kW');
     const inlet = inletMax(car.inlets, current);
     if (inlet) return inletValue(car.key, inlet, NOTES.fromInlet(lang));
@@ -671,15 +699,18 @@ function chooseTimes(ctx: Ctx, current: 'AC' | 'DC'): TimeChoice {
     toSoc: to,
     socWindow: windowLabel(from, to),
   };
-  if (limited && powers.length > 1) {
+  // Review 3: a charger-limited time against a time measured on an unknown charger
+  // is not comparable either (the other car may have been limited too, or not).
+  const unknownCharger = rows.some((r) => r.chargerPowerKw === null);
+  if (limited && (powers.length > 1 || unknownCharger)) {
     return {
       values,
       rows: chosenRows,
       comparability: 'not_comparable_conditions',
-      note: NOTES.chargers(
-        lang,
-        powers.map((p) => `${p} kW`),
-      ),
+      note: NOTES.chargers(lang, [
+        ...powers.map((p) => `${p} kW`),
+        ...(unknownCharger ? [t(lang, { ar: 'شاحن غير معروف', en: 'unknown charger' })] : []),
+      ]),
       basis,
     };
   }
@@ -855,7 +886,7 @@ export function specMetric(ctx: Ctx, def: SpecDefLite): Metric | null {
   const spec = specOfDef(def, lang);
   const values = cars.map((car): MetricValue => {
     if (!specApplies(def, car.powertrainType)) return emptyValue(car.key, 'not_applicable');
-    const p = car.specs.get(def.key);
+    const p = usablePoint(car.specs.get(def.key), def);
     return p ? pointValue(car.key, p, def.unit) : emptyValue(car.key, 'missing');
   });
   const blocked = precedence(values);

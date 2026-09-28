@@ -88,8 +88,8 @@ describe('Platform: app-config & settings (e2e)', () => {
         },
       ]);
       expect(data.homeSections).toHaveLength(8);
-      // Nothing ships yet (IMPLEMENTED_FEATURES is empty) and no routing / LLM is
-      // configured in tests → every feature is announced as off.
+      // Every flag is seeded off (an admin turns shipped features on) and no
+      // routing / LLM is configured in tests → every feature is announced as off.
       expect(Object.values(data.features as Record<string, boolean>).every((v) => !v)).toBe(true);
     });
 
@@ -268,7 +268,7 @@ describe('Platform: app-config & settings (e2e)', () => {
         .http()
         .patch('/api/v1/admin/settings/features')
         .set(admin.auth)
-        .send({ community: true, tripPlanner: true })
+        .send({ community: true, tripPlanner: true, exteriorSpin: true })
         .expect(200);
       await t
         .http()
@@ -307,8 +307,14 @@ describe('Platform: app-config & settings (e2e)', () => {
         { key: 'top_story', enabled: true, order: 2 },
         { key: 'reviews', enabled: false, order: 3 },
       ]);
-      // Stored flags change, but unbuilt modules are never announced to the apps.
-      expect(cfg.features).toMatchObject({ community: false, news: false, tripPlanner: false });
+      // A shipped module is announced once enabled; an unbuilt module (exteriorSpin)
+      // never is, and the trip planner stays off without a routing provider.
+      expect(cfg.features).toMatchObject({
+        community: true,
+        news: false,
+        tripPlanner: false,
+        exteriorSpin: false,
+      });
       expect(cfg.legal).toEqual({
         privacyUrl: 'https://evcar.news/privacy',
         termsUrl: 'https://evcar.news/terms',
@@ -321,7 +327,11 @@ describe('Platform: app-config & settings (e2e)', () => {
         .get('/api/v1/admin/settings/features')
         .set(admin.auth)
         .expect(200);
-      expect(features.body.data.value).toMatchObject({ community: true, tripPlanner: true });
+      expect(features.body.data.value).toMatchObject({
+        community: true,
+        tripPlanner: true,
+        exteriorSpin: true,
+      });
       expect(features.body.data.warnings).toContain('trip_planner_hidden_routing_not_configured');
       expect(features.body.data.warnings).toContain('features_not_implemented_hidden');
     });
@@ -345,7 +355,10 @@ describe('Platform: app-config & settings (e2e)', () => {
         .expect(201);
       const logoUrl = res.body.data.value.logoUrl as string;
       expect(logoUrl).toMatch(/^http:\/\/localhost:3000\/media\/branding\/logo-[0-9a-f]{20}\.png$/);
-      const media = await t.http().get(new URL(logoUrl).pathname).expect(200);
+      const media = await t.http().get(new URL(logoUrl).pathname).set('Origin', 'null').expect(200);
+      // Public media is readable from any origin (360° viewer tiles), without credentials.
+      expect(media.headers['access-control-allow-origin']).toBe('*');
+      expect(media.headers['access-control-allow-credentials']).toBeUndefined();
       expect(media.headers['content-type']).toBe('image/png');
       const meta = await sharp(media.body as Buffer).metadata();
       expect(meta).toMatchObject({ format: 'png', width: 200, height: 120 });

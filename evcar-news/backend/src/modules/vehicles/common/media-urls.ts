@@ -57,8 +57,13 @@ export class MediaUrlService {
     caption?: { ar: string | null; en: string | null },
   ): ImageDto | null {
     if (!asset || !this.isPublishable(asset)) return null;
-    const url = this.urlOf(asset.storageKey);
-    if (!url) return null;
+    // Library uploads keep a private original (it may carry GPS metadata):
+    // fall back to the largest public rendition generated from it.
+    const main = this.urlOf(asset.storageKey)
+      ? { url: this.urlOf(asset.storageKey), width: asset.width, height: asset.height }
+      : largestRendition(asset.variants, (k) => this.urlOf(k));
+    const url = main?.url ?? null;
+    if (!url || !main) return null;
     const license = asset.license;
     const sizes = asset.variants
       .map((v) => ({
@@ -74,8 +79,8 @@ export class MediaUrlService {
     return {
       id: asset.id,
       url,
-      width: asset.width,
-      height: asset.height,
+      width: main.width,
+      height: main.height,
       alt: textIn(lang, asset.altTextAr, asset.altTextEn),
       caption:
         textIn(lang, caption?.ar ?? null, caption?.en ?? null) ??
@@ -86,4 +91,29 @@ export class MediaUrlService {
       isDemo: asset.isDemo,
     };
   }
+}
+
+/**
+ * Largest public `rendition` of an asset (url + its size), or null. Used when
+ * the original file is private (media-library uploads).
+ */
+export function largestRendition(
+  variants: ReadonlyArray<{
+    kind: string;
+    storageKey: string;
+    width: number | null;
+    height: number | null;
+  }>,
+  urlOf: (key: string) => string | null,
+): { url: string; width: number | null; height: number | null } | null {
+  let best: { url: string; width: number | null; height: number | null } | null = null;
+  for (const v of variants) {
+    if (v.kind !== 'rendition') continue;
+    const url = urlOf(v.storageKey);
+    if (!url) continue;
+    if (!best || (v.width ?? 0) > (best.width ?? 0)) {
+      best = { url, width: v.width, height: v.height };
+    }
+  }
+  return best;
 }

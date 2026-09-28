@@ -125,7 +125,7 @@ class _BrandRow extends StatelessWidget {
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [Text(subtitle), if (brand.isDemo) const DemoBadge(dense: true)],
       ),
-      trailing: Icon(context.isRtl ? Icons.chevron_left : Icons.chevron_right),
+      trailing: Icon(Icons.chevron_right),
       onTap: () => context.push(AppRoutes.brand(brand.slug)),
     );
   }

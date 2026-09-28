@@ -11,6 +11,8 @@ export const RATE_LIMIT_PRESETS = {
   /** forgot-password, resend-verification (e-mail sending) */
   authEmail: { limit: 5, ttl: 15 * 60_000 },
   search: { limit: 60, ttl: 60_000 },
+  /** trip planning: each call can cost 2 paid upstream routing calls */
+  tripPlan: { limit: 6, ttl: 60_000 },
   /** station reports, content reports */
   reports: { limit: 10, ttl: 60 * 60_000 },
   uploads: { limit: 60, ttl: 60_000 },

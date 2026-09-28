@@ -1,0 +1,15 @@
+{
+    "data": [
+        {
+            "userId": "01a0e8db-bd51-71cf-8207-b6f4e0688383",
+            "displayName": "Sara",
+            "mutedAt": "2026-09-28T16:32:15.551Z"
+        }
+    ],
+    "meta": {
+        "page": 1,
+        "pageSize": 20,
+        "total": 1,
+        "totalPages": 1
+    }
+}

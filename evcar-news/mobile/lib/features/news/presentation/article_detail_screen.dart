@@ -14,6 +14,8 @@ import '../../../core/app_config/features.dart';
 import '../../../core/errors/app_errors.dart';
 import '../../../core/links/external_links.dart';
 import '../../../shared/widgets/kit.dart';
+import '../../community/domain/community_models.dart';
+import '../../community/presentation/widgets/comments_section.dart';
 import '../application/news_providers.dart';
 import '../application/reader_settings.dart';
 import '../data/news_repository.dart';
@@ -265,11 +267,13 @@ class _ArticleDetailScreenState extends ConsumerState<ArticleDetailScreen> {
               ],
               if (a.allowComments && ref.watch(featureFlagProvider(Features.community))) ...[
                 const SizedBox(height: AppSpacing.lg),
-                SecondaryButton(
-                  label: l10n.newsComments,
-                  icon: Icons.forum_outlined,
-                  expand: true,
-                  onPressed: () => context.push(AppRoutes.articleComments(a.slug)),
+                // Latest comments inline; the full thread has its own page.
+                CommentsSection(
+                  targetType: CommunityTargetTypes.article,
+                  targetId: a.id,
+                  previewCount: 3,
+                  padding: EdgeInsets.zero,
+                  onViewAll: () => context.push(AppRoutes.articleComments(a.slug)),
                 ),
               ],
             ],

@@ -61,7 +61,14 @@ void main() {
         'sections': [
           {'key': 'b', 'order': 2, 'title': 'B', 'itemType': 'article', 'state': 'ok', 'items': []},
           {'key': 'x', 'order': 0, 'title': 'X', 'itemType': 'podcast', 'state': 'ok', 'items': []},
-          {'key': 'a', 'order': 1, 'title': 'A', 'itemType': 'car', 'state': 'weird', 'items': [42, 'x']},
+          {
+            'key': 'a',
+            'order': 1,
+            'title': 'A',
+            'itemType': 'car',
+            'state': 'weird',
+            'items': [42, 'x'],
+          },
           'junk',
         ],
       });

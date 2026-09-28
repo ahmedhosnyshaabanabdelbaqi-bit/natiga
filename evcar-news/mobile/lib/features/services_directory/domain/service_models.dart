@@ -143,7 +143,8 @@ class DayHours {
     if (raw is List) {
       windows = [
         for (final w in raw)
-          if (w is Map && w['start'] is String && w['end'] is String) HoursWindow(w['start'] as String, w['end'] as String),
+          if (w is Map && w['start'] is String && w['end'] is String)
+            HoursWindow(w['start'] as String, w['end'] as String),
       ];
     }
     return DayHours(day: day, windows: windows);

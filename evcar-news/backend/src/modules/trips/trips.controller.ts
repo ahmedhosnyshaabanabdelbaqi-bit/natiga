@@ -29,13 +29,13 @@ export class TripsController {
   @Post('trips/plan')
   @Public()
   @HttpCode(HttpStatus.OK)
-  @RateLimit('search')
+  @RateLimit('tripPlan')
   @ApiLocale()
   @ApiOperation({
     summary:
       'Plan an EV trip (road route, charging stops with reserve + alternative, visible assumptions)',
     description:
-      '503 INTEGRATION_NOT_CONFIGURED when no routing provider is configured (app-config features.tripPlanner is then false). 422 TRIP_VEHICLE_DATA_MISSING / TRIP_NO_REACHABLE_STATION when the data does not support a plan (never invented). Never guarantees arrival or a free connector. `save: true` (signed in) stores it under /me/trips. See docs/decisions/backend-personal.md §7.',
+      "503 INTEGRATION_NOT_CONFIGURED when no routing provider is configured (app-config features.tripPlanner is then false). 503 INTEGRATION_QUOTA (+ Retry-After) when the operator's global routing budget (ROUTING_MINUTE_BUDGET / ROUTING_DAILY_BUDGET) is used up; identical waypoints are served from a cache. Rate limit: 6 plans / minute / IP. 422 TRIP_VEHICLE_DATA_MISSING / TRIP_NO_REACHABLE_STATION when the data does not support a plan (never invented). Never guarantees arrival or a free connector. `save: true` (signed in) stores it under /me/trips. See docs/decisions/backend-personal.md §7.",
   })
   @ApiOkResponse({ description: '{ data: TripPlan }' })
   @ApiErrorResponses(422, 503)

@@ -20,5 +20,8 @@
   "encyclopediaLanguageAr": "العربية",
   "encyclopediaLanguageEn": "الإنجليزية",
   "encyclopediaSafetyTitle": "السلامة الكهربائية",
-  "encyclopediaRelated": "أدلة ذات صلة"
+  "encyclopediaRelated": "أدلة ذات صلة",
+  "encyclopediaNotFoundTitle": "هذا الدليل غير متاح",
+  "encyclopediaNotFoundMessage": "ربما حُذف أو يجري تحديثه بعد مراجعة تقنية جديدة.",
+  "encyclopediaBrowseAll": "تصفّح الموسوعة"
 }

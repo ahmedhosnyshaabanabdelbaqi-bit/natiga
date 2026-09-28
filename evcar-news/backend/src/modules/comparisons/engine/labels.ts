@@ -137,8 +137,8 @@ export const NOTES = {
     }),
   priceTypes: (lang: Lang, types: string[]): string =>
     t(lang, {
-      ar: `تنبيه: أنواع أسعار مختلفة (${join(lang, types)}).`,
-      en: `Note: different price types (${join(lang, types)}).`,
+      ar: `أنواع أسعار مختلفة (${join(lang, types)})؛ لا نقارن سعرًا رسميًا بسعر وكيل أو تقديري ولا نعلن فائزًا.`,
+      en: `Different price types (${join(lang, types)}); an official price is never compared with a dealer or estimated price, so no winner is declared.`,
     }),
   notApplicable: (lang: Lang, key: string): string =>
     key === 'range.total'

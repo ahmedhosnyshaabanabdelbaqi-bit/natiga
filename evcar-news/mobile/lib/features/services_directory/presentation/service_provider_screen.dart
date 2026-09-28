@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../app/router/app_routes.dart';
+import '../../../core/api/api_exception.dart';
 import '../../../core/cache/cached_fetch.dart';
 import '../../../shared/widgets/kit.dart';
 import '../../charging/presentation/widgets/charging_labels.dart' show distanceText;
@@ -38,20 +39,41 @@ class ServiceProviderScreen extends ConsumerWidget {
       title: value.value?.data.name ?? l10n.servicesDirectoryProviderTitle,
       onRefresh: refresh,
       slivers: [
-        SliverAsyncStateView<CachedResult<ServiceProvider>>(
-          value: value,
-          onRetry: () => ref.invalidate(provider),
-          loading: const ServicesListSkeleton(),
-          builder: (context, res) => SliverToBoxAdapter(
-            child: ResponsiveCenter(
-              child: _ProviderBody(
-                provider: res.data,
-                cachedAt: res.fromCache ? res.savedAt : null,
-                onRetry: () => ref.invalidate(provider),
+        if (!value.hasValue &&
+            value.error is ApiException &&
+            (value.error! as ApiException).kind == ApiErrorKind.notFound)
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: StateMessageView(
+              kind: StateKind.empty,
+              icon: Icons.handyman_outlined,
+              title: l10n.servicesDirectoryNotFoundTitle,
+              message: l10n.servicesDirectoryNotFoundMessage,
+              actions: [
+                StateAction(
+                  label: l10n.servicesDirectoryBrowseAll,
+                  icon: Icons.handyman_outlined,
+                  primary: true,
+                  onPressed: () => context.go(AppRoutes.services),
+                ),
+              ],
+            ),
+          )
+        else
+          SliverAsyncStateView<CachedResult<ServiceProvider>>(
+            value: value,
+            onRetry: () => ref.invalidate(provider),
+            loading: const ServicesListSkeleton(),
+            builder: (context, res) => SliverToBoxAdapter(
+              child: ResponsiveCenter(
+                child: _ProviderBody(
+                  provider: res.data,
+                  cachedAt: res.fromCache ? res.savedAt : null,
+                  onRetry: () => ref.invalidate(provider),
+                ),
               ),
             ),
           ),
-        ),
       ],
     );
   }
@@ -125,7 +147,7 @@ class _ProviderBody extends StatelessWidget {
           spacing: AppSpacing.xs,
           runSpacing: AppSpacing.xs,
           children: [
-            if (p.isSponsored) SponsoredLabel(sponsorName: p.sponsorLabel, dense: true),
+            if (p.isSponsored) DirectorySponsoredLabel(label: p.sponsorLabel),
             if (p.isDemo) const DemoBadge(dense: true),
             ServiceOpenPill(state: p.openNow, alwaysOpen: p.isAlwaysOpen),
           ],
@@ -149,7 +171,10 @@ class _ProviderBody extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Align(alignment: AlignmentDirectional.centerStart, child: ContactVerificationPill(contact: p.contact, dense: false)),
+              Align(
+                alignment: AlignmentDirectional.centerStart,
+                child: ContactVerificationPill(contact: p.contact, dense: false),
+              ),
               if (p.contact.stale || !p.contact.verified) ...[
                 const SizedBox(height: AppSpacing.xs),
                 Text(l10n.servicesDirectoryCheckBeforeVisit, style: theme.textTheme.bodySmall),
@@ -158,7 +183,11 @@ class _ProviderBody extends StatelessWidget {
               _InfoRow(icon: Icons.call_outlined, label: l10n.servicesDirectoryPhone, value: p.contact.phone),
               _InfoRow(icon: Icons.chat_outlined, label: l10n.servicesDirectoryWhatsApp, value: p.contact.whatsapp),
               _InfoRow(icon: Icons.mail_outline, label: l10n.servicesDirectoryEmail, value: p.contact.email),
-              _InfoRow(icon: Icons.language, label: l10n.servicesDirectoryWebsite, value: safeWebsite(p.contact.websiteUrl)),
+              _InfoRow(
+                icon: Icons.language,
+                label: l10n.servicesDirectoryWebsite,
+                value: safeWebsite(p.contact.websiteUrl),
+              ),
               const SizedBox(height: AppSpacing.md),
               ServiceContactActions(provider: p, includeEmail: true),
             ],
@@ -268,7 +297,11 @@ class _InfoRow extends StatelessWidget {
                   const NotAvailableValue()
                 else
                   // Numbers and URLs read left-to-right inside Arabic text.
-                  Text(value!, style: theme.textTheme.bodyLarge, textDirection: _looksLtr(value!) ? TextDirection.ltr : null),
+                  Text(
+                    value!,
+                    style: theme.textTheme.bodyLarge,
+                    textDirection: _looksLtr(value!) ? TextDirection.ltr : null,
+                  ),
               ],
             ),
           ),
@@ -322,16 +355,14 @@ class _OpeningHours extends StatelessWidget {
                 Expanded(flex: 2, child: Text(_day(l10n, d), style: theme.textTheme.bodyMedium)),
                 Expanded(
                   flex: 3,
-                  child: Text(
-                    switch (byDay[d]?.windows) {
-                      null => l10n.servicesDirectoryHoursUnknownDay,
-                      final w when w.isEmpty => l10n.servicesDirectoryClosedDay,
-                      final w => w
+                  child: Text(switch (byDay[d]?.windows) {
+                    null => l10n.servicesDirectoryHoursUnknownDay,
+                    final w when w.isEmpty => l10n.servicesDirectoryClosedDay,
+                    final w =>
+                      w
                           .map((x) => '${_digits(fmt, x.start)}–${_digits(fmt, x.end)}')
                           .join(context.languageCode == 'ar' ? '، ' : ', '),
-                    },
-                    style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
-                  ),
+                  }, style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
                 ),
               ],
             ),

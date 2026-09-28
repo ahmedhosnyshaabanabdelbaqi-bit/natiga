@@ -423,6 +423,26 @@ export class ToursAdminService {
     }
   }
 
+  /**
+   * §8 allows a reference tour only of a NEARBY trim: the photographed trim must
+   * be of the same model generation as the tour trim (review 3). Another model or
+   * brand is refused with `referenceVariantId.sameModel`.
+   */
+  private async assertSimilarTrim(variantId: string, referenceVariantId: string): Promise<void> {
+    const rows = await this.prisma.vehicleVariant.findMany({
+      where: { id: { in: [variantId, referenceVariantId] } },
+      select: { id: true, modelYear: { select: { generationId: true } } },
+    });
+    const gen = new Map(rows.map((r) => [r.id, r.modelYear.generationId]));
+    if (!gen.has(variantId) || !gen.has(referenceVariantId)) return; // assertVariant reports it
+    if (gen.get(variantId) !== gen.get(referenceVariantId)) {
+      throw tourFieldError('referenceVariantId', 'sameModel', {
+        ar: 'الفئة المرجعية يجب أن تكون من نفس الموديل والجيل (فئة قريبة فقط).',
+        en: 'The reference trim must be of the same model and generation (a nearby trim only).',
+      });
+    }
+  }
+
   /** Reference rules (the database CHECK repeats them). */
   private assertReference(next: {
     matchType: string;
@@ -492,6 +512,9 @@ export class ToursAdminService {
     this.assertReference(next);
     if (next.referenceVariantId)
       await this.assertVariant(next.referenceVariantId, 'referenceVariantId');
+    if (next.referenceVariantId) {
+      await this.assertSimilarTrim(next.variantId, next.referenceVariantId);
+    }
     let slug: string;
     if (dto.slug) {
       const clash = await this.prisma.interiorTour.findUnique({ where: { slug: dto.slug } });
@@ -586,6 +609,9 @@ export class ToursAdminService {
     this.assertReference(next);
     if (next.referenceVariantId && next.referenceVariantId !== current.referenceVariantId) {
       await this.assertVariant(next.referenceVariantId, 'referenceVariantId');
+    }
+    if (next.referenceVariantId) {
+      await this.assertSimilarTrim(next.variantId, next.referenceVariantId);
     }
     data.matchType = matchType;
     data.referenceVariantId = next.referenceVariantId;
@@ -707,6 +733,7 @@ export class ToursAdminService {
       differenceNoteAr: t.differenceNoteAr,
       differenceNoteEn: t.differenceNoteEn,
     });
+    await this.assertSimilarTrim(t.variantId, t.referenceVariantId!);
     await this.prisma.interiorTour.update({
       where: { id },
       data: { approvedAt: new Date(), approvedById: userId, updatedById: userId },

@@ -1,0 +1,8802 @@
+[
+ {
+  "calc": "charge-cost",
+  "lang": "en",
+  "input": {
+   "batteryUsableKwh": 60,
+   "fromSocPercent": 20,
+   "toSocPercent": 80,
+   "efficiency": 0.9,
+   "currency": "EGP",
+   "priceDate": "2026-09-01",
+   "tariff": {
+    "energyPerKwh": 2
+   }
+  },
+  "prov": null,
+  "output": {
+   "calculator": "charge-cost",
+   "result": {
+    "energyAddedKwh": 36,
+    "gridEnergyKwh": 40,
+    "lossesKwh": 4,
+    "efficiencyApplied": 0.9,
+    "energyBasis": "battery",
+    "cost": {
+     "energy": {
+      "amount": "80.00",
+      "currency": "EGP"
+     },
+     "time": null,
+     "sessionFee": null,
+     "parking": null,
+     "idle": null,
+     "total": {
+      "amount": "80.00",
+      "currency": "EGP"
+     }
+    },
+    "costPerKwhAdded": {
+     "amount": "2.2222",
+     "currency": "EGP"
+    },
+    "priceDate": "2026-09-01"
+   },
+   "formula": "Energy added = usable capacity × ΔSoC; grid energy = energy added ÷ efficiency; cost = grid energy × price per kWh + time, session, parking and idle fees as entered.",
+   "steps": [
+    {
+     "key": "energyAddedKwh",
+     "label": "Energy added to the battery",
+     "expression": "60 kWh × (80% − 20%) = 36 kWh",
+     "value": 36,
+     "unit": "kWh"
+    },
+    {
+     "key": "gridEnergyKwh",
+     "label": "Energy drawn from the grid",
+     "expression": "36 kWh ÷ 0.9 = 40 kWh",
+     "value": 40,
+     "unit": "kWh"
+    },
+    {
+     "key": "lossesKwh",
+     "label": "Charging losses",
+     "expression": "40 kWh − 36 kWh = 4 kWh",
+     "value": 4,
+     "unit": "kWh"
+    },
+    {
+     "key": "energyCost",
+     "label": "Energy cost",
+     "expression": "40 kWh × 2 EGP = 80.00 EGP",
+     "value": "80.00",
+     "unit": "EGP"
+    },
+    {
+     "key": "total",
+     "label": "Total",
+     "expression": "80.00 EGP",
+     "value": "80.00",
+     "unit": "EGP"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "batteryUsableKwh",
+     "label": "Usable battery capacity",
+     "value": 60,
+     "unit": "kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fromSocPercent",
+     "label": "Start state of charge",
+     "value": 20,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "toSocPercent",
+     "label": "End state of charge",
+     "value": 80,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "Charging efficiency",
+     "value": 0.9,
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "value": "EGP",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "Price date",
+     "value": "2026-09-01",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "tariff.energyPerKwh",
+     "label": "Price per kWh",
+     "value": "2",
+     "unit": "EGP/kWh",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [],
+   "confidence": "high",
+   "units": {
+    "energy": "kWh",
+    "time": "min",
+    "money": "EGP",
+    "price": "EGP/kWh"
+   },
+   "disclaimer": "An estimate computed only from the entered values and the assumptions shown; not a measurement or a guarantee."
+  }
+ },
+ {
+  "calc": "charge-cost",
+  "lang": "ar",
+  "input": {
+   "batteryUsableKwh": 60,
+   "fromSocPercent": 20,
+   "toSocPercent": 80,
+   "efficiency": 0.9,
+   "currency": "EGP",
+   "priceDate": "2026-09-01",
+   "tariff": {
+    "energyPerKwh": 2
+   }
+  },
+  "prov": null,
+  "output": {
+   "calculator": "charge-cost",
+   "result": {
+    "energyAddedKwh": 36,
+    "gridEnergyKwh": 40,
+    "lossesKwh": 4,
+    "efficiencyApplied": 0.9,
+    "energyBasis": "battery",
+    "cost": {
+     "energy": {
+      "amount": "80.00",
+      "currency": "EGP"
+     },
+     "time": null,
+     "sessionFee": null,
+     "parking": null,
+     "idle": null,
+     "total": {
+      "amount": "80.00",
+      "currency": "EGP"
+     }
+    },
+    "costPerKwhAdded": {
+     "amount": "2.2222",
+     "currency": "EGP"
+    },
+    "priceDate": "2026-09-01"
+   },
+   "formula": "الطاقة المضافة = السعة القابلة للاستخدام × فرق نسبة الشحن؛ طاقة الشبكة = الطاقة المضافة ÷ الكفاءة؛ التكلفة = طاقة الشبكة × سعر الكيلوواط ساعة + رسوم الوقت والجلسة والوقوف والانتظار كما أُدخلت.",
+   "steps": [
+    {
+     "key": "energyAddedKwh",
+     "label": "الطاقة المضافة للبطارية",
+     "expression": "60 kWh × (80% − 20%) = 36 kWh",
+     "value": 36,
+     "unit": "kWh"
+    },
+    {
+     "key": "gridEnergyKwh",
+     "label": "الطاقة المسحوبة من الشبكة",
+     "expression": "36 kWh ÷ 0.9 = 40 kWh",
+     "value": 40,
+     "unit": "kWh"
+    },
+    {
+     "key": "lossesKwh",
+     "label": "فاقد الشحن",
+     "expression": "40 kWh − 36 kWh = 4 kWh",
+     "value": 4,
+     "unit": "kWh"
+    },
+    {
+     "key": "energyCost",
+     "label": "تكلفة الطاقة",
+     "expression": "40 kWh × 2 EGP = 80.00 EGP",
+     "value": "80.00",
+     "unit": "EGP"
+    },
+    {
+     "key": "total",
+     "label": "الإجمالي",
+     "expression": "80.00 EGP",
+     "value": "80.00",
+     "unit": "EGP"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "batteryUsableKwh",
+     "label": "السعة القابلة للاستخدام",
+     "value": 60,
+     "unit": "kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fromSocPercent",
+     "label": "نسبة الشحن في البداية",
+     "value": 20,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "toSocPercent",
+     "label": "نسبة الشحن في النهاية",
+     "value": 80,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "كفاءة الشحن",
+     "value": 0.9,
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "currency",
+     "label": "العملة",
+     "value": "EGP",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "تاريخ السعر",
+     "value": "2026-09-01",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "tariff.energyPerKwh",
+     "label": "سعر الكيلوواط ساعة",
+     "value": "2",
+     "unit": "EGP/kWh",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [],
+   "confidence": "high",
+   "units": {
+    "energy": "kWh",
+    "time": "min",
+    "money": "EGP",
+    "price": "EGP/kWh"
+   },
+   "disclaimer": "نتيجة تقديرية محسوبة من القيم المُدخلة والافتراضات الظاهرة فقط، وليست قياسًا أو ضمانًا."
+  }
+ },
+ {
+  "calc": "charge-cost",
+  "lang": "en",
+  "input": {
+   "batteryUsableKwh": 60,
+   "fromSocPercent": 20,
+   "toSocPercent": 80,
+   "currency": "EGP",
+   "tariff": {
+    "energyPerKwh": 1.7
+   }
+  },
+  "prov": null,
+  "output": {
+   "calculator": "charge-cost",
+   "result": {
+    "energyAddedKwh": 36,
+    "gridEnergyKwh": 40,
+    "lossesKwh": 4,
+    "efficiencyApplied": 0.9,
+    "energyBasis": "battery",
+    "cost": {
+     "energy": {
+      "amount": "68.00",
+      "currency": "EGP"
+     },
+     "time": null,
+     "sessionFee": null,
+     "parking": null,
+     "idle": null,
+     "total": {
+      "amount": "68.00",
+      "currency": "EGP"
+     }
+    },
+    "costPerKwhAdded": {
+     "amount": "1.8889",
+     "currency": "EGP"
+    },
+    "priceDate": null
+   },
+   "formula": "Energy added = usable capacity × ΔSoC; grid energy = energy added ÷ efficiency; cost = grid energy × price per kWh + time, session, parking and idle fees as entered.",
+   "steps": [
+    {
+     "key": "energyAddedKwh",
+     "label": "Energy added to the battery",
+     "expression": "60 kWh × (80% − 20%) = 36 kWh",
+     "value": 36,
+     "unit": "kWh"
+    },
+    {
+     "key": "gridEnergyKwh",
+     "label": "Energy drawn from the grid",
+     "expression": "36 kWh ÷ 0.9 = 40 kWh",
+     "value": 40,
+     "unit": "kWh"
+    },
+    {
+     "key": "lossesKwh",
+     "label": "Charging losses",
+     "expression": "40 kWh − 36 kWh = 4 kWh",
+     "value": 4,
+     "unit": "kWh"
+    },
+    {
+     "key": "energyCost",
+     "label": "Energy cost",
+     "expression": "40 kWh × 1.7 EGP = 68.00 EGP",
+     "value": "68.00",
+     "unit": "EGP"
+    },
+    {
+     "key": "total",
+     "label": "Total",
+     "expression": "68.00 EGP",
+     "value": "68.00",
+     "unit": "EGP"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "batteryUsableKwh",
+     "label": "Usable battery capacity",
+     "value": 60,
+     "unit": "kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fromSocPercent",
+     "label": "Start state of charge",
+     "value": 20,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "toSocPercent",
+     "label": "End state of charge",
+     "value": 80,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "Charging efficiency",
+     "value": 0.9,
+     "unit": null,
+     "origin": "default",
+     "note": "Editable default assumption (0 < efficiency ≤ 1)."
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "value": "EGP",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "Price date",
+     "value": null,
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "tariff.energyPerKwh",
+     "label": "Price per kWh",
+     "value": "1.7",
+     "unit": "EGP/kWh",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "PRICE_DATE_MISSING",
+     "message": "No price date was given; make sure the entered prices are up to date."
+    }
+   ],
+   "confidence": "medium",
+   "units": {
+    "energy": "kWh",
+    "time": "min",
+    "money": "EGP",
+    "price": "EGP/kWh"
+   },
+   "disclaimer": "An estimate computed only from the entered values and the assumptions shown; not a measurement or a guarantee."
+  }
+ },
+ {
+  "calc": "charge-cost",
+  "lang": "ar",
+  "input": {
+   "batteryUsableKwh": 60,
+   "fromSocPercent": 20,
+   "toSocPercent": 80,
+   "currency": "EGP",
+   "tariff": {
+    "energyPerKwh": 1.7
+   }
+  },
+  "prov": null,
+  "output": {
+   "calculator": "charge-cost",
+   "result": {
+    "energyAddedKwh": 36,
+    "gridEnergyKwh": 40,
+    "lossesKwh": 4,
+    "efficiencyApplied": 0.9,
+    "energyBasis": "battery",
+    "cost": {
+     "energy": {
+      "amount": "68.00",
+      "currency": "EGP"
+     },
+     "time": null,
+     "sessionFee": null,
+     "parking": null,
+     "idle": null,
+     "total": {
+      "amount": "68.00",
+      "currency": "EGP"
+     }
+    },
+    "costPerKwhAdded": {
+     "amount": "1.8889",
+     "currency": "EGP"
+    },
+    "priceDate": null
+   },
+   "formula": "الطاقة المضافة = السعة القابلة للاستخدام × فرق نسبة الشحن؛ طاقة الشبكة = الطاقة المضافة ÷ الكفاءة؛ التكلفة = طاقة الشبكة × سعر الكيلوواط ساعة + رسوم الوقت والجلسة والوقوف والانتظار كما أُدخلت.",
+   "steps": [
+    {
+     "key": "energyAddedKwh",
+     "label": "الطاقة المضافة للبطارية",
+     "expression": "60 kWh × (80% − 20%) = 36 kWh",
+     "value": 36,
+     "unit": "kWh"
+    },
+    {
+     "key": "gridEnergyKwh",
+     "label": "الطاقة المسحوبة من الشبكة",
+     "expression": "36 kWh ÷ 0.9 = 40 kWh",
+     "value": 40,
+     "unit": "kWh"
+    },
+    {
+     "key": "lossesKwh",
+     "label": "فاقد الشحن",
+     "expression": "40 kWh − 36 kWh = 4 kWh",
+     "value": 4,
+     "unit": "kWh"
+    },
+    {
+     "key": "energyCost",
+     "label": "تكلفة الطاقة",
+     "expression": "40 kWh × 1.7 EGP = 68.00 EGP",
+     "value": "68.00",
+     "unit": "EGP"
+    },
+    {
+     "key": "total",
+     "label": "الإجمالي",
+     "expression": "68.00 EGP",
+     "value": "68.00",
+     "unit": "EGP"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "batteryUsableKwh",
+     "label": "السعة القابلة للاستخدام",
+     "value": 60,
+     "unit": "kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fromSocPercent",
+     "label": "نسبة الشحن في البداية",
+     "value": 20,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "toSocPercent",
+     "label": "نسبة الشحن في النهاية",
+     "value": 80,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "كفاءة الشحن",
+     "value": 0.9,
+     "unit": null,
+     "origin": "default",
+     "note": "افتراض افتراضي قابل للتعديل (0 < الكفاءة ≤ 1)."
+    },
+    {
+     "key": "currency",
+     "label": "العملة",
+     "value": "EGP",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "تاريخ السعر",
+     "value": null,
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "tariff.energyPerKwh",
+     "label": "سعر الكيلوواط ساعة",
+     "value": "1.7",
+     "unit": "EGP/kWh",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "PRICE_DATE_MISSING",
+     "message": "لم يُحدَّد تاريخ السعر؛ تأكد أن الأسعار المُدخلة حديثة."
+    }
+   ],
+   "confidence": "medium",
+   "units": {
+    "energy": "kWh",
+    "time": "min",
+    "money": "EGP",
+    "price": "EGP/kWh"
+   },
+   "disclaimer": "نتيجة تقديرية محسوبة من القيم المُدخلة والافتراضات الظاهرة فقط، وليست قياسًا أو ضمانًا."
+  }
+ },
+ {
+  "calc": "charge-cost",
+  "lang": "en",
+  "input": {
+   "energyKwh": 42.5,
+   "energyBasis": "grid",
+   "efficiency": 0.85,
+   "currency": "SAR",
+   "priceDate": "2026-01-15",
+   "tariff": {
+    "energyPerKwh": 0.18,
+    "sessionFee": 5
+   }
+  },
+  "prov": null,
+  "output": {
+   "calculator": "charge-cost",
+   "result": {
+    "energyAddedKwh": null,
+    "gridEnergyKwh": 42.5,
+    "lossesKwh": null,
+    "efficiencyApplied": null,
+    "energyBasis": "grid",
+    "cost": {
+     "energy": {
+      "amount": "7.65",
+      "currency": "SAR"
+     },
+     "time": null,
+     "sessionFee": {
+      "amount": "5.00",
+      "currency": "SAR"
+     },
+     "parking": null,
+     "idle": null,
+     "total": {
+      "amount": "12.65",
+      "currency": "SAR"
+     }
+    },
+    "costPerKwhAdded": null,
+    "priceDate": "2026-01-15"
+   },
+   "formula": "Energy added = usable capacity × ΔSoC; grid energy = energy added ÷ efficiency; cost = grid energy × price per kWh + time, session, parking and idle fees as entered.",
+   "steps": [
+    {
+     "key": "gridEnergyKwh",
+     "label": "Energy drawn from the grid",
+     "expression": "42.5 kWh",
+     "value": 42.5,
+     "unit": "kWh"
+    },
+    {
+     "key": "energyCost",
+     "label": "Energy cost",
+     "expression": "42.5 kWh × 0.18 SAR = 7.65 SAR",
+     "value": "7.65",
+     "unit": "SAR"
+    },
+    {
+     "key": "sessionFee",
+     "label": "Session fee",
+     "expression": "5.00 SAR",
+     "value": "5.00",
+     "unit": "SAR"
+    },
+    {
+     "key": "total",
+     "label": "Total",
+     "expression": "12.65 SAR",
+     "value": "12.65",
+     "unit": "SAR"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "energyBasis",
+     "label": "Basis of the entered energy",
+     "value": "grid",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "value": "SAR",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "Price date",
+     "value": "2026-01-15",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "tariff.energyPerKwh",
+     "label": "Price per kWh",
+     "value": "0.18",
+     "unit": "SAR/kWh",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "EFFICIENCY_NOT_APPLIED",
+     "message": "Efficiency was not applied: the entered energy is grid-side (losses already included)."
+    }
+   ],
+   "confidence": "high",
+   "units": {
+    "energy": "kWh",
+    "time": "min",
+    "money": "SAR",
+    "price": "SAR/kWh"
+   },
+   "disclaimer": "An estimate computed only from the entered values and the assumptions shown; not a measurement or a guarantee."
+  }
+ },
+ {
+  "calc": "charge-cost",
+  "lang": "ar",
+  "input": {
+   "energyKwh": 42.5,
+   "energyBasis": "grid",
+   "efficiency": 0.85,
+   "currency": "SAR",
+   "priceDate": "2026-01-15",
+   "tariff": {
+    "energyPerKwh": 0.18,
+    "sessionFee": 5
+   }
+  },
+  "prov": null,
+  "output": {
+   "calculator": "charge-cost",
+   "result": {
+    "energyAddedKwh": null,
+    "gridEnergyKwh": 42.5,
+    "lossesKwh": null,
+    "efficiencyApplied": null,
+    "energyBasis": "grid",
+    "cost": {
+     "energy": {
+      "amount": "7.65",
+      "currency": "SAR"
+     },
+     "time": null,
+     "sessionFee": {
+      "amount": "5.00",
+      "currency": "SAR"
+     },
+     "parking": null,
+     "idle": null,
+     "total": {
+      "amount": "12.65",
+      "currency": "SAR"
+     }
+    },
+    "costPerKwhAdded": null,
+    "priceDate": "2026-01-15"
+   },
+   "formula": "الطاقة المضافة = السعة القابلة للاستخدام × فرق نسبة الشحن؛ طاقة الشبكة = الطاقة المضافة ÷ الكفاءة؛ التكلفة = طاقة الشبكة × سعر الكيلوواط ساعة + رسوم الوقت والجلسة والوقوف والانتظار كما أُدخلت.",
+   "steps": [
+    {
+     "key": "gridEnergyKwh",
+     "label": "الطاقة المسحوبة من الشبكة",
+     "expression": "42.5 kWh",
+     "value": 42.5,
+     "unit": "kWh"
+    },
+    {
+     "key": "energyCost",
+     "label": "تكلفة الطاقة",
+     "expression": "42.5 kWh × 0.18 SAR = 7.65 SAR",
+     "value": "7.65",
+     "unit": "SAR"
+    },
+    {
+     "key": "sessionFee",
+     "label": "رسوم الجلسة",
+     "expression": "5.00 SAR",
+     "value": "5.00",
+     "unit": "SAR"
+    },
+    {
+     "key": "total",
+     "label": "الإجمالي",
+     "expression": "12.65 SAR",
+     "value": "12.65",
+     "unit": "SAR"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "energyBasis",
+     "label": "أساس الطاقة المُدخلة",
+     "value": "grid",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "currency",
+     "label": "العملة",
+     "value": "SAR",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "تاريخ السعر",
+     "value": "2026-01-15",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "tariff.energyPerKwh",
+     "label": "سعر الكيلوواط ساعة",
+     "value": "0.18",
+     "unit": "SAR/kWh",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "EFFICIENCY_NOT_APPLIED",
+     "message": "لم تُطبَّق الكفاءة لأن الطاقة المُدخلة مقيسة من الشبكة (الفاقد محسوب فيها بالفعل)."
+    }
+   ],
+   "confidence": "high",
+   "units": {
+    "energy": "kWh",
+    "time": "min",
+    "money": "SAR",
+    "price": "SAR/kWh"
+   },
+   "disclaimer": "نتيجة تقديرية محسوبة من القيم المُدخلة والافتراضات الظاهرة فقط، وليست قياسًا أو ضمانًا."
+  }
+ },
+ {
+  "calc": "charge-cost",
+  "lang": "en",
+  "input": {
+   "energyKwh": 30,
+   "currency": "AED",
+   "tariff": {
+    "energyPerKwh": 1.2,
+    "timePerHour": 7,
+    "parkingPerMinute": 0.1,
+    "idlePerHour": 30,
+    "idleGraceMinutes": 15
+   },
+   "chargingMinutes": 47,
+   "parkingMinutes": 60,
+   "idleMinutes": 40
+  },
+  "prov": null,
+  "output": {
+   "calculator": "charge-cost",
+   "result": {
+    "energyAddedKwh": 30,
+    "gridEnergyKwh": 33.333,
+    "lossesKwh": 3.333,
+    "efficiencyApplied": 0.9,
+    "energyBasis": "battery",
+    "cost": {
+     "energy": {
+      "amount": "40.00",
+      "currency": "AED"
+     },
+     "time": {
+      "amount": "5.48",
+      "currency": "AED"
+     },
+     "sessionFee": null,
+     "parking": {
+      "amount": "6.00",
+      "currency": "AED"
+     },
+     "idle": {
+      "amount": "12.50",
+      "currency": "AED"
+     },
+     "total": {
+      "amount": "63.98",
+      "currency": "AED"
+     }
+    },
+    "costPerKwhAdded": {
+     "amount": "2.1328",
+     "currency": "AED"
+    },
+    "priceDate": null
+   },
+   "formula": "Energy added = usable capacity × ΔSoC; grid energy = energy added ÷ efficiency; cost = grid energy × price per kWh + time, session, parking and idle fees as entered.",
+   "steps": [
+    {
+     "key": "energyAddedKwh",
+     "label": "Energy added to the battery",
+     "expression": "30 kWh",
+     "value": 30,
+     "unit": "kWh"
+    },
+    {
+     "key": "gridEnergyKwh",
+     "label": "Energy drawn from the grid",
+     "expression": "30 kWh ÷ 0.9 = 33.333 kWh",
+     "value": 33.333,
+     "unit": "kWh"
+    },
+    {
+     "key": "lossesKwh",
+     "label": "Charging losses",
+     "expression": "33.333 kWh − 30 kWh = 3.333 kWh",
+     "value": 3.333,
+     "unit": "kWh"
+    },
+    {
+     "key": "energyCost",
+     "label": "Energy cost",
+     "expression": "33.333 kWh × 1.2 AED = 40.00 AED",
+     "value": "40.00",
+     "unit": "AED"
+    },
+    {
+     "key": "timeCost",
+     "label": "Time cost",
+     "expression": "47 min × 0.1167 AED = 5.48 AED",
+     "value": "5.48",
+     "unit": "AED"
+    },
+    {
+     "key": "parking",
+     "label": "Parking fee",
+     "expression": "60 min × 0.1 AED = 6.00 AED",
+     "value": "6.00",
+     "unit": "AED"
+    },
+    {
+     "key": "idle",
+     "label": "Idle fee",
+     "expression": "max(0, 40 − 15) min × 0.5 AED = 12.50 AED",
+     "value": "12.50",
+     "unit": "AED"
+    },
+    {
+     "key": "total",
+     "label": "Total",
+     "expression": "63.98 AED",
+     "value": "63.98",
+     "unit": "AED"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "energyBasis",
+     "label": "Basis of the entered energy",
+     "value": "battery",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "Charging efficiency",
+     "value": 0.9,
+     "unit": null,
+     "origin": "default",
+     "note": "Editable default assumption (0 < efficiency ≤ 1)."
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "value": "AED",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "Price date",
+     "value": null,
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "tariff.energyPerKwh",
+     "label": "Price per kWh",
+     "value": "1.2",
+     "unit": "AED/kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "tariff.timePerMinute",
+     "label": "Price per minute",
+     "value": "0.1167",
+     "unit": "AED/min",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "chargingMinutes",
+     "label": "Charging duration",
+     "value": 47,
+     "unit": "min",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "parkingMinutes",
+     "label": "Parking duration",
+     "value": 60,
+     "unit": "min",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "idleMinutes",
+     "label": "Idle time after charging",
+     "value": 40,
+     "unit": "min",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "tariff.idleGraceMinutes",
+     "label": "Free idle grace period",
+     "value": 15,
+     "unit": "min",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "PRICE_DATE_MISSING",
+     "message": "No price date was given; make sure the entered prices are up to date."
+    }
+   ],
+   "confidence": "medium",
+   "units": {
+    "energy": "kWh",
+    "time": "min",
+    "money": "AED",
+    "price": "AED/kWh"
+   },
+   "disclaimer": "An estimate computed only from the entered values and the assumptions shown; not a measurement or a guarantee."
+  }
+ },
+ {
+  "calc": "charge-cost",
+  "lang": "ar",
+  "input": {
+   "energyKwh": 30,
+   "currency": "AED",
+   "tariff": {
+    "energyPerKwh": 1.2,
+    "timePerHour": 7,
+    "parkingPerMinute": 0.1,
+    "idlePerHour": 30,
+    "idleGraceMinutes": 15
+   },
+   "chargingMinutes": 47,
+   "parkingMinutes": 60,
+   "idleMinutes": 40
+  },
+  "prov": null,
+  "output": {
+   "calculator": "charge-cost",
+   "result": {
+    "energyAddedKwh": 30,
+    "gridEnergyKwh": 33.333,
+    "lossesKwh": 3.333,
+    "efficiencyApplied": 0.9,
+    "energyBasis": "battery",
+    "cost": {
+     "energy": {
+      "amount": "40.00",
+      "currency": "AED"
+     },
+     "time": {
+      "amount": "5.48",
+      "currency": "AED"
+     },
+     "sessionFee": null,
+     "parking": {
+      "amount": "6.00",
+      "currency": "AED"
+     },
+     "idle": {
+      "amount": "12.50",
+      "currency": "AED"
+     },
+     "total": {
+      "amount": "63.98",
+      "currency": "AED"
+     }
+    },
+    "costPerKwhAdded": {
+     "amount": "2.1328",
+     "currency": "AED"
+    },
+    "priceDate": null
+   },
+   "formula": "الطاقة المضافة = السعة القابلة للاستخدام × فرق نسبة الشحن؛ طاقة الشبكة = الطاقة المضافة ÷ الكفاءة؛ التكلفة = طاقة الشبكة × سعر الكيلوواط ساعة + رسوم الوقت والجلسة والوقوف والانتظار كما أُدخلت.",
+   "steps": [
+    {
+     "key": "energyAddedKwh",
+     "label": "الطاقة المضافة للبطارية",
+     "expression": "30 kWh",
+     "value": 30,
+     "unit": "kWh"
+    },
+    {
+     "key": "gridEnergyKwh",
+     "label": "الطاقة المسحوبة من الشبكة",
+     "expression": "30 kWh ÷ 0.9 = 33.333 kWh",
+     "value": 33.333,
+     "unit": "kWh"
+    },
+    {
+     "key": "lossesKwh",
+     "label": "فاقد الشحن",
+     "expression": "33.333 kWh − 30 kWh = 3.333 kWh",
+     "value": 3.333,
+     "unit": "kWh"
+    },
+    {
+     "key": "energyCost",
+     "label": "تكلفة الطاقة",
+     "expression": "33.333 kWh × 1.2 AED = 40.00 AED",
+     "value": "40.00",
+     "unit": "AED"
+    },
+    {
+     "key": "timeCost",
+     "label": "تكلفة الوقت",
+     "expression": "47 min × 0.1167 AED = 5.48 AED",
+     "value": "5.48",
+     "unit": "AED"
+    },
+    {
+     "key": "parking",
+     "label": "رسوم الوقوف",
+     "expression": "60 min × 0.1 AED = 6.00 AED",
+     "value": "6.00",
+     "unit": "AED"
+    },
+    {
+     "key": "idle",
+     "label": "رسوم الانتظار بعد الشحن",
+     "expression": "max(0, 40 − 15) min × 0.5 AED = 12.50 AED",
+     "value": "12.50",
+     "unit": "AED"
+    },
+    {
+     "key": "total",
+     "label": "الإجمالي",
+     "expression": "63.98 AED",
+     "value": "63.98",
+     "unit": "AED"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "energyBasis",
+     "label": "أساس الطاقة المُدخلة",
+     "value": "battery",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "كفاءة الشحن",
+     "value": 0.9,
+     "unit": null,
+     "origin": "default",
+     "note": "افتراض افتراضي قابل للتعديل (0 < الكفاءة ≤ 1)."
+    },
+    {
+     "key": "currency",
+     "label": "العملة",
+     "value": "AED",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "تاريخ السعر",
+     "value": null,
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "tariff.energyPerKwh",
+     "label": "سعر الكيلوواط ساعة",
+     "value": "1.2",
+     "unit": "AED/kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "tariff.timePerMinute",
+     "label": "سعر الدقيقة",
+     "value": "0.1167",
+     "unit": "AED/min",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "chargingMinutes",
+     "label": "مدة الشحن",
+     "value": 47,
+     "unit": "min",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "parkingMinutes",
+     "label": "مدة الوقوف",
+     "value": 60,
+     "unit": "min",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "idleMinutes",
+     "label": "مدة الانتظار بعد اكتمال الشحن",
+     "value": 40,
+     "unit": "min",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "tariff.idleGraceMinutes",
+     "label": "مهلة الانتظار المجانية",
+     "value": 15,
+     "unit": "min",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "PRICE_DATE_MISSING",
+     "message": "لم يُحدَّد تاريخ السعر؛ تأكد أن الأسعار المُدخلة حديثة."
+    }
+   ],
+   "confidence": "medium",
+   "units": {
+    "energy": "kWh",
+    "time": "min",
+    "money": "AED",
+    "price": "AED/kWh"
+   },
+   "disclaimer": "نتيجة تقديرية محسوبة من القيم المُدخلة والافتراضات الظاهرة فقط، وليست قياسًا أو ضمانًا."
+  }
+ },
+ {
+  "calc": "charge-cost",
+  "lang": "en",
+  "input": {
+   "batteryUsableKwh": 77.4,
+   "fromSocPercent": 12.5,
+   "toSocPercent": 91,
+   "efficiency": 0.93,
+   "currency": "EGP",
+   "tariff": {
+    "energyPerKwh": 3.333,
+    "timePerMinute": 0.25,
+    "parkingFlat": 10
+   },
+   "chargingMinutes": 33.3
+  },
+  "prov": null,
+  "output": {
+   "calculator": "charge-cost",
+   "result": {
+    "energyAddedKwh": 60.759,
+    "gridEnergyKwh": 65.332,
+    "lossesKwh": 4.573,
+    "efficiencyApplied": 0.93,
+    "energyBasis": "battery",
+    "cost": {
+     "energy": {
+      "amount": "217.75",
+      "currency": "EGP"
+     },
+     "time": {
+      "amount": "8.33",
+      "currency": "EGP"
+     },
+     "sessionFee": null,
+     "parking": {
+      "amount": "10.00",
+      "currency": "EGP"
+     },
+     "idle": null,
+     "total": {
+      "amount": "236.08",
+      "currency": "EGP"
+     }
+    },
+    "costPerKwhAdded": {
+     "amount": "3.8855",
+     "currency": "EGP"
+    },
+    "priceDate": null
+   },
+   "formula": "Energy added = usable capacity × ΔSoC; grid energy = energy added ÷ efficiency; cost = grid energy × price per kWh + time, session, parking and idle fees as entered.",
+   "steps": [
+    {
+     "key": "energyAddedKwh",
+     "label": "Energy added to the battery",
+     "expression": "77.4 kWh × (91% − 12.5%) = 60.759 kWh",
+     "value": 60.759,
+     "unit": "kWh"
+    },
+    {
+     "key": "gridEnergyKwh",
+     "label": "Energy drawn from the grid",
+     "expression": "60.759 kWh ÷ 0.93 = 65.332 kWh",
+     "value": 65.332,
+     "unit": "kWh"
+    },
+    {
+     "key": "lossesKwh",
+     "label": "Charging losses",
+     "expression": "65.332 kWh − 60.759 kWh = 4.573 kWh",
+     "value": 4.573,
+     "unit": "kWh"
+    },
+    {
+     "key": "energyCost",
+     "label": "Energy cost",
+     "expression": "65.332 kWh × 3.333 EGP = 217.75 EGP",
+     "value": "217.75",
+     "unit": "EGP"
+    },
+    {
+     "key": "timeCost",
+     "label": "Time cost",
+     "expression": "33.3 min × 0.25 EGP = 8.33 EGP",
+     "value": "8.33",
+     "unit": "EGP"
+    },
+    {
+     "key": "parking",
+     "label": "Parking fee",
+     "expression": "10.00 EGP",
+     "value": "10.00",
+     "unit": "EGP"
+    },
+    {
+     "key": "total",
+     "label": "Total",
+     "expression": "236.08 EGP",
+     "value": "236.08",
+     "unit": "EGP"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "batteryUsableKwh",
+     "label": "Usable battery capacity",
+     "value": 77.4,
+     "unit": "kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fromSocPercent",
+     "label": "Start state of charge",
+     "value": 12.5,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "toSocPercent",
+     "label": "End state of charge",
+     "value": 91,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "Charging efficiency",
+     "value": 0.93,
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "value": "EGP",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "Price date",
+     "value": null,
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "tariff.energyPerKwh",
+     "label": "Price per kWh",
+     "value": "3.333",
+     "unit": "EGP/kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "tariff.timePerMinute",
+     "label": "Price per minute",
+     "value": "0.25",
+     "unit": "EGP/min",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "chargingMinutes",
+     "label": "Charging duration",
+     "value": 33.3,
+     "unit": "min",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "PRICE_DATE_MISSING",
+     "message": "No price date was given; make sure the entered prices are up to date."
+    }
+   ],
+   "confidence": "high",
+   "units": {
+    "energy": "kWh",
+    "time": "min",
+    "money": "EGP",
+    "price": "EGP/kWh"
+   },
+   "disclaimer": "An estimate computed only from the entered values and the assumptions shown; not a measurement or a guarantee."
+  }
+ },
+ {
+  "calc": "charge-cost",
+  "lang": "ar",
+  "input": {
+   "batteryUsableKwh": 77.4,
+   "fromSocPercent": 12.5,
+   "toSocPercent": 91,
+   "efficiency": 0.93,
+   "currency": "EGP",
+   "tariff": {
+    "energyPerKwh": 3.333,
+    "timePerMinute": 0.25,
+    "parkingFlat": 10
+   },
+   "chargingMinutes": 33.3
+  },
+  "prov": null,
+  "output": {
+   "calculator": "charge-cost",
+   "result": {
+    "energyAddedKwh": 60.759,
+    "gridEnergyKwh": 65.332,
+    "lossesKwh": 4.573,
+    "efficiencyApplied": 0.93,
+    "energyBasis": "battery",
+    "cost": {
+     "energy": {
+      "amount": "217.75",
+      "currency": "EGP"
+     },
+     "time": {
+      "amount": "8.33",
+      "currency": "EGP"
+     },
+     "sessionFee": null,
+     "parking": {
+      "amount": "10.00",
+      "currency": "EGP"
+     },
+     "idle": null,
+     "total": {
+      "amount": "236.08",
+      "currency": "EGP"
+     }
+    },
+    "costPerKwhAdded": {
+     "amount": "3.8855",
+     "currency": "EGP"
+    },
+    "priceDate": null
+   },
+   "formula": "الطاقة المضافة = السعة القابلة للاستخدام × فرق نسبة الشحن؛ طاقة الشبكة = الطاقة المضافة ÷ الكفاءة؛ التكلفة = طاقة الشبكة × سعر الكيلوواط ساعة + رسوم الوقت والجلسة والوقوف والانتظار كما أُدخلت.",
+   "steps": [
+    {
+     "key": "energyAddedKwh",
+     "label": "الطاقة المضافة للبطارية",
+     "expression": "77.4 kWh × (91% − 12.5%) = 60.759 kWh",
+     "value": 60.759,
+     "unit": "kWh"
+    },
+    {
+     "key": "gridEnergyKwh",
+     "label": "الطاقة المسحوبة من الشبكة",
+     "expression": "60.759 kWh ÷ 0.93 = 65.332 kWh",
+     "value": 65.332,
+     "unit": "kWh"
+    },
+    {
+     "key": "lossesKwh",
+     "label": "فاقد الشحن",
+     "expression": "65.332 kWh − 60.759 kWh = 4.573 kWh",
+     "value": 4.573,
+     "unit": "kWh"
+    },
+    {
+     "key": "energyCost",
+     "label": "تكلفة الطاقة",
+     "expression": "65.332 kWh × 3.333 EGP = 217.75 EGP",
+     "value": "217.75",
+     "unit": "EGP"
+    },
+    {
+     "key": "timeCost",
+     "label": "تكلفة الوقت",
+     "expression": "33.3 min × 0.25 EGP = 8.33 EGP",
+     "value": "8.33",
+     "unit": "EGP"
+    },
+    {
+     "key": "parking",
+     "label": "رسوم الوقوف",
+     "expression": "10.00 EGP",
+     "value": "10.00",
+     "unit": "EGP"
+    },
+    {
+     "key": "total",
+     "label": "الإجمالي",
+     "expression": "236.08 EGP",
+     "value": "236.08",
+     "unit": "EGP"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "batteryUsableKwh",
+     "label": "السعة القابلة للاستخدام",
+     "value": 77.4,
+     "unit": "kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fromSocPercent",
+     "label": "نسبة الشحن في البداية",
+     "value": 12.5,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "toSocPercent",
+     "label": "نسبة الشحن في النهاية",
+     "value": 91,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "كفاءة الشحن",
+     "value": 0.93,
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "currency",
+     "label": "العملة",
+     "value": "EGP",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "تاريخ السعر",
+     "value": null,
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "tariff.energyPerKwh",
+     "label": "سعر الكيلوواط ساعة",
+     "value": "3.333",
+     "unit": "EGP/kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "tariff.timePerMinute",
+     "label": "سعر الدقيقة",
+     "value": "0.25",
+     "unit": "EGP/min",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "chargingMinutes",
+     "label": "مدة الشحن",
+     "value": 33.3,
+     "unit": "min",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "PRICE_DATE_MISSING",
+     "message": "لم يُحدَّد تاريخ السعر؛ تأكد أن الأسعار المُدخلة حديثة."
+    }
+   ],
+   "confidence": "high",
+   "units": {
+    "energy": "kWh",
+    "time": "min",
+    "money": "EGP",
+    "price": "EGP/kWh"
+   },
+   "disclaimer": "نتيجة تقديرية محسوبة من القيم المُدخلة والافتراضات الظاهرة فقط، وليست قياسًا أو ضمانًا."
+  }
+ },
+ {
+  "calc": "charge-cost",
+  "lang": "en",
+  "input": {
+   "batteryUsableKwh": 50,
+   "fromSocPercent": 10,
+   "toSocPercent": 90,
+   "currency": "EGP",
+   "tariff": {
+    "energyPerKwh": 0
+   }
+  },
+  "prov": null,
+  "output": {
+   "calculator": "charge-cost",
+   "result": {
+    "energyAddedKwh": 40,
+    "gridEnergyKwh": 44.444,
+    "lossesKwh": 4.444,
+    "efficiencyApplied": 0.9,
+    "energyBasis": "battery",
+    "cost": {
+     "energy": {
+      "amount": "0.00",
+      "currency": "EGP"
+     },
+     "time": null,
+     "sessionFee": null,
+     "parking": null,
+     "idle": null,
+     "total": {
+      "amount": "0.00",
+      "currency": "EGP"
+     }
+    },
+    "costPerKwhAdded": {
+     "amount": "0",
+     "currency": "EGP"
+    },
+    "priceDate": null
+   },
+   "formula": "Energy added = usable capacity × ΔSoC; grid energy = energy added ÷ efficiency; cost = grid energy × price per kWh + time, session, parking and idle fees as entered.",
+   "steps": [
+    {
+     "key": "energyAddedKwh",
+     "label": "Energy added to the battery",
+     "expression": "50 kWh × (90% − 10%) = 40 kWh",
+     "value": 40,
+     "unit": "kWh"
+    },
+    {
+     "key": "gridEnergyKwh",
+     "label": "Energy drawn from the grid",
+     "expression": "40 kWh ÷ 0.9 = 44.444 kWh",
+     "value": 44.444,
+     "unit": "kWh"
+    },
+    {
+     "key": "lossesKwh",
+     "label": "Charging losses",
+     "expression": "44.444 kWh − 40 kWh = 4.444 kWh",
+     "value": 4.444,
+     "unit": "kWh"
+    },
+    {
+     "key": "energyCost",
+     "label": "Energy cost",
+     "expression": "44.444 kWh × 0 EGP = 0.00 EGP",
+     "value": "0.00",
+     "unit": "EGP"
+    },
+    {
+     "key": "total",
+     "label": "Total",
+     "expression": "0.00 EGP",
+     "value": "0.00",
+     "unit": "EGP"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "batteryUsableKwh",
+     "label": "Usable battery capacity",
+     "value": 50,
+     "unit": "kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fromSocPercent",
+     "label": "Start state of charge",
+     "value": 10,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "toSocPercent",
+     "label": "End state of charge",
+     "value": 90,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "Charging efficiency",
+     "value": 0.9,
+     "unit": null,
+     "origin": "default",
+     "note": "Editable default assumption (0 < efficiency ≤ 1)."
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "value": "EGP",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "Price date",
+     "value": null,
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "tariff.energyPerKwh",
+     "label": "Price per kWh",
+     "value": "0",
+     "unit": "EGP/kWh",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "PRICE_DATE_MISSING",
+     "message": "No price date was given; make sure the entered prices are up to date."
+    }
+   ],
+   "confidence": "medium",
+   "units": {
+    "energy": "kWh",
+    "time": "min",
+    "money": "EGP",
+    "price": "EGP/kWh"
+   },
+   "disclaimer": "An estimate computed only from the entered values and the assumptions shown; not a measurement or a guarantee."
+  }
+ },
+ {
+  "calc": "charge-cost",
+  "lang": "ar",
+  "input": {
+   "batteryUsableKwh": 50,
+   "fromSocPercent": 10,
+   "toSocPercent": 90,
+   "currency": "EGP",
+   "tariff": {
+    "energyPerKwh": 0
+   }
+  },
+  "prov": null,
+  "output": {
+   "calculator": "charge-cost",
+   "result": {
+    "energyAddedKwh": 40,
+    "gridEnergyKwh": 44.444,
+    "lossesKwh": 4.444,
+    "efficiencyApplied": 0.9,
+    "energyBasis": "battery",
+    "cost": {
+     "energy": {
+      "amount": "0.00",
+      "currency": "EGP"
+     },
+     "time": null,
+     "sessionFee": null,
+     "parking": null,
+     "idle": null,
+     "total": {
+      "amount": "0.00",
+      "currency": "EGP"
+     }
+    },
+    "costPerKwhAdded": {
+     "amount": "0",
+     "currency": "EGP"
+    },
+    "priceDate": null
+   },
+   "formula": "الطاقة المضافة = السعة القابلة للاستخدام × فرق نسبة الشحن؛ طاقة الشبكة = الطاقة المضافة ÷ الكفاءة؛ التكلفة = طاقة الشبكة × سعر الكيلوواط ساعة + رسوم الوقت والجلسة والوقوف والانتظار كما أُدخلت.",
+   "steps": [
+    {
+     "key": "energyAddedKwh",
+     "label": "الطاقة المضافة للبطارية",
+     "expression": "50 kWh × (90% − 10%) = 40 kWh",
+     "value": 40,
+     "unit": "kWh"
+    },
+    {
+     "key": "gridEnergyKwh",
+     "label": "الطاقة المسحوبة من الشبكة",
+     "expression": "40 kWh ÷ 0.9 = 44.444 kWh",
+     "value": 44.444,
+     "unit": "kWh"
+    },
+    {
+     "key": "lossesKwh",
+     "label": "فاقد الشحن",
+     "expression": "44.444 kWh − 40 kWh = 4.444 kWh",
+     "value": 4.444,
+     "unit": "kWh"
+    },
+    {
+     "key": "energyCost",
+     "label": "تكلفة الطاقة",
+     "expression": "44.444 kWh × 0 EGP = 0.00 EGP",
+     "value": "0.00",
+     "unit": "EGP"
+    },
+    {
+     "key": "total",
+     "label": "الإجمالي",
+     "expression": "0.00 EGP",
+     "value": "0.00",
+     "unit": "EGP"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "batteryUsableKwh",
+     "label": "السعة القابلة للاستخدام",
+     "value": 50,
+     "unit": "kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fromSocPercent",
+     "label": "نسبة الشحن في البداية",
+     "value": 10,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "toSocPercent",
+     "label": "نسبة الشحن في النهاية",
+     "value": 90,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "كفاءة الشحن",
+     "value": 0.9,
+     "unit": null,
+     "origin": "default",
+     "note": "افتراض افتراضي قابل للتعديل (0 < الكفاءة ≤ 1)."
+    },
+    {
+     "key": "currency",
+     "label": "العملة",
+     "value": "EGP",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "تاريخ السعر",
+     "value": null,
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "tariff.energyPerKwh",
+     "label": "سعر الكيلوواط ساعة",
+     "value": "0",
+     "unit": "EGP/kWh",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "PRICE_DATE_MISSING",
+     "message": "لم يُحدَّد تاريخ السعر؛ تأكد أن الأسعار المُدخلة حديثة."
+    }
+   ],
+   "confidence": "medium",
+   "units": {
+    "energy": "kWh",
+    "time": "min",
+    "money": "EGP",
+    "price": "EGP/kWh"
+   },
+   "disclaimer": "نتيجة تقديرية محسوبة من القيم المُدخلة والافتراضات الظاهرة فقط، وليست قياسًا أو ضمانًا."
+  }
+ },
+ {
+  "calc": "charge-cost",
+  "lang": "en",
+  "input": {
+   "batteryUsableKwh": 50,
+   "fromSocPercent": 10,
+   "toSocPercent": 90,
+   "currency": "EGP",
+   "tariff": {
+    "idlePerMinute": 1
+   },
+   "idleMinutes": 5,
+   "tariffX": 1
+  },
+  "prov": null,
+  "output": {
+   "calculator": "charge-cost",
+   "result": {
+    "energyAddedKwh": 40,
+    "gridEnergyKwh": 44.444,
+    "lossesKwh": 4.444,
+    "efficiencyApplied": 0.9,
+    "energyBasis": "battery",
+    "cost": {
+     "energy": null,
+     "time": null,
+     "sessionFee": null,
+     "parking": null,
+     "idle": {
+      "amount": "5.00",
+      "currency": "EGP"
+     },
+     "total": {
+      "amount": "5.00",
+      "currency": "EGP"
+     }
+    },
+    "costPerKwhAdded": {
+     "amount": "0.125",
+     "currency": "EGP"
+    },
+    "priceDate": null
+   },
+   "formula": "Energy added = usable capacity × ΔSoC; grid energy = energy added ÷ efficiency; cost = grid energy × price per kWh + time, session, parking and idle fees as entered.",
+   "steps": [
+    {
+     "key": "energyAddedKwh",
+     "label": "Energy added to the battery",
+     "expression": "50 kWh × (90% − 10%) = 40 kWh",
+     "value": 40,
+     "unit": "kWh"
+    },
+    {
+     "key": "gridEnergyKwh",
+     "label": "Energy drawn from the grid",
+     "expression": "40 kWh ÷ 0.9 = 44.444 kWh",
+     "value": 44.444,
+     "unit": "kWh"
+    },
+    {
+     "key": "lossesKwh",
+     "label": "Charging losses",
+     "expression": "44.444 kWh − 40 kWh = 4.444 kWh",
+     "value": 4.444,
+     "unit": "kWh"
+    },
+    {
+     "key": "idle",
+     "label": "Idle fee",
+     "expression": "max(0, 5 − 0) min × 1 EGP = 5.00 EGP",
+     "value": "5.00",
+     "unit": "EGP"
+    },
+    {
+     "key": "total",
+     "label": "Total",
+     "expression": "5.00 EGP",
+     "value": "5.00",
+     "unit": "EGP"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "batteryUsableKwh",
+     "label": "Usable battery capacity",
+     "value": 50,
+     "unit": "kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fromSocPercent",
+     "label": "Start state of charge",
+     "value": 10,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "toSocPercent",
+     "label": "End state of charge",
+     "value": 90,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "Charging efficiency",
+     "value": 0.9,
+     "unit": null,
+     "origin": "default",
+     "note": "Editable default assumption (0 < efficiency ≤ 1)."
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "value": "EGP",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "Price date",
+     "value": null,
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "idleMinutes",
+     "label": "Idle time after charging",
+     "value": 5,
+     "unit": "min",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "tariff.idleGraceMinutes",
+     "label": "Free idle grace period",
+     "value": null,
+     "unit": "min",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "PRICE_DATE_MISSING",
+     "message": "No price date was given; make sure the entered prices are up to date."
+    }
+   ],
+   "confidence": "medium",
+   "units": {
+    "energy": "kWh",
+    "time": "min",
+    "money": "EGP",
+    "price": "EGP/kWh"
+   },
+   "disclaimer": "An estimate computed only from the entered values and the assumptions shown; not a measurement or a guarantee."
+  }
+ },
+ {
+  "calc": "charge-cost",
+  "lang": "ar",
+  "input": {
+   "batteryUsableKwh": 50,
+   "fromSocPercent": 10,
+   "toSocPercent": 90,
+   "currency": "EGP",
+   "tariff": {
+    "idlePerMinute": 1
+   },
+   "idleMinutes": 5,
+   "tariffX": 1
+  },
+  "prov": null,
+  "output": {
+   "calculator": "charge-cost",
+   "result": {
+    "energyAddedKwh": 40,
+    "gridEnergyKwh": 44.444,
+    "lossesKwh": 4.444,
+    "efficiencyApplied": 0.9,
+    "energyBasis": "battery",
+    "cost": {
+     "energy": null,
+     "time": null,
+     "sessionFee": null,
+     "parking": null,
+     "idle": {
+      "amount": "5.00",
+      "currency": "EGP"
+     },
+     "total": {
+      "amount": "5.00",
+      "currency": "EGP"
+     }
+    },
+    "costPerKwhAdded": {
+     "amount": "0.125",
+     "currency": "EGP"
+    },
+    "priceDate": null
+   },
+   "formula": "الطاقة المضافة = السعة القابلة للاستخدام × فرق نسبة الشحن؛ طاقة الشبكة = الطاقة المضافة ÷ الكفاءة؛ التكلفة = طاقة الشبكة × سعر الكيلوواط ساعة + رسوم الوقت والجلسة والوقوف والانتظار كما أُدخلت.",
+   "steps": [
+    {
+     "key": "energyAddedKwh",
+     "label": "الطاقة المضافة للبطارية",
+     "expression": "50 kWh × (90% − 10%) = 40 kWh",
+     "value": 40,
+     "unit": "kWh"
+    },
+    {
+     "key": "gridEnergyKwh",
+     "label": "الطاقة المسحوبة من الشبكة",
+     "expression": "40 kWh ÷ 0.9 = 44.444 kWh",
+     "value": 44.444,
+     "unit": "kWh"
+    },
+    {
+     "key": "lossesKwh",
+     "label": "فاقد الشحن",
+     "expression": "44.444 kWh − 40 kWh = 4.444 kWh",
+     "value": 4.444,
+     "unit": "kWh"
+    },
+    {
+     "key": "idle",
+     "label": "رسوم الانتظار بعد الشحن",
+     "expression": "max(0, 5 − 0) min × 1 EGP = 5.00 EGP",
+     "value": "5.00",
+     "unit": "EGP"
+    },
+    {
+     "key": "total",
+     "label": "الإجمالي",
+     "expression": "5.00 EGP",
+     "value": "5.00",
+     "unit": "EGP"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "batteryUsableKwh",
+     "label": "السعة القابلة للاستخدام",
+     "value": 50,
+     "unit": "kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fromSocPercent",
+     "label": "نسبة الشحن في البداية",
+     "value": 10,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "toSocPercent",
+     "label": "نسبة الشحن في النهاية",
+     "value": 90,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "كفاءة الشحن",
+     "value": 0.9,
+     "unit": null,
+     "origin": "default",
+     "note": "افتراض افتراضي قابل للتعديل (0 < الكفاءة ≤ 1)."
+    },
+    {
+     "key": "currency",
+     "label": "العملة",
+     "value": "EGP",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "تاريخ السعر",
+     "value": null,
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "idleMinutes",
+     "label": "مدة الانتظار بعد اكتمال الشحن",
+     "value": 5,
+     "unit": "min",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "tariff.idleGraceMinutes",
+     "label": "مهلة الانتظار المجانية",
+     "value": null,
+     "unit": "min",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "PRICE_DATE_MISSING",
+     "message": "لم يُحدَّد تاريخ السعر؛ تأكد أن الأسعار المُدخلة حديثة."
+    }
+   ],
+   "confidence": "medium",
+   "units": {
+    "energy": "kWh",
+    "time": "min",
+    "money": "EGP",
+    "price": "EGP/kWh"
+   },
+   "disclaimer": "نتيجة تقديرية محسوبة من القيم المُدخلة والافتراضات الظاهرة فقط، وليست قياسًا أو ضمانًا."
+  }
+ },
+ {
+  "calc": "charge-cost",
+  "lang": "en",
+  "input": {
+   "batteryUsableKwh": 0,
+   "fromSocPercent": 80,
+   "toSocPercent": 20,
+   "currency": "egp"
+  },
+  "prov": null,
+  "problems": [
+   {
+    "field": "batteryUsableKwh",
+    "rule": "notZero",
+    "message": "Must be greater than zero."
+   },
+   {
+    "field": "toSocPercent",
+    "rule": "greaterThanFrom",
+    "message": "The end state of charge must be above the start."
+   },
+   {
+    "field": "currency",
+    "rule": "currency",
+    "message": "Invalid currency code (e.g. EGP)."
+   },
+   {
+    "field": "tariff",
+    "rule": "required",
+    "message": "Enter at least one price (e.g. price per kWh). There are no default prices."
+   }
+  ]
+ },
+ {
+  "calc": "charge-cost",
+  "lang": "ar",
+  "input": {
+   "batteryUsableKwh": 0,
+   "fromSocPercent": 80,
+   "toSocPercent": 20,
+   "currency": "egp"
+  },
+  "prov": null,
+  "problems": [
+   {
+    "field": "batteryUsableKwh",
+    "rule": "notZero",
+    "message": "يجب أن تكون القيمة أكبر من صفر."
+   },
+   {
+    "field": "toSocPercent",
+    "rule": "greaterThanFrom",
+    "message": "يجب أن تكون نسبة النهاية أكبر من نسبة البداية."
+   },
+   {
+    "field": "currency",
+    "rule": "currency",
+    "message": "رمز العملة غير صالح (مثل EGP)."
+   },
+   {
+    "field": "tariff",
+    "rule": "required",
+    "message": "أدخل سعرًا واحدًا على الأقل (مثل سعر الكيلوواط ساعة). لا توجد أسعار افتراضية."
+   }
+  ]
+ },
+ {
+  "calc": "charge-cost",
+  "lang": "en",
+  "input": {
+   "batteryUsableKwh": -5,
+   "fromSocPercent": 20,
+   "toSocPercent": 80,
+   "efficiency": 0,
+   "currency": "EGP",
+   "tariff": {}
+  },
+  "prov": null,
+  "problems": [
+   {
+    "field": "batteryUsableKwh",
+    "rule": "positive",
+    "message": "Must be greater than zero."
+   },
+   {
+    "field": "efficiency",
+    "rule": "range",
+    "message": "Must be between 0 and 1."
+   },
+   {
+    "field": "tariff",
+    "rule": "required",
+    "message": "Enter at least one price (e.g. price per kWh). There are no default prices."
+   }
+  ]
+ },
+ {
+  "calc": "charge-cost",
+  "lang": "ar",
+  "input": {
+   "batteryUsableKwh": -5,
+   "fromSocPercent": 20,
+   "toSocPercent": 80,
+   "efficiency": 0,
+   "currency": "EGP",
+   "tariff": {}
+  },
+  "prov": null,
+  "problems": [
+   {
+    "field": "batteryUsableKwh",
+    "rule": "positive",
+    "message": "يجب أن تكون القيمة أكبر من صفر."
+   },
+   {
+    "field": "efficiency",
+    "rule": "range",
+    "message": "يجب أن تكون القيمة بين 0 و1."
+   },
+   {
+    "field": "tariff",
+    "rule": "required",
+    "message": "أدخل سعرًا واحدًا على الأقل (مثل سعر الكيلوواط ساعة). لا توجد أسعار افتراضية."
+   }
+  ]
+ },
+ {
+  "calc": "charge-cost",
+  "lang": "en",
+  "input": {
+   "energyBasis": "grid",
+   "batteryUsableKwh": 60,
+   "fromSocPercent": 20,
+   "toSocPercent": 80,
+   "efficiency": 1.2,
+   "currency": "EGP",
+   "priceDate": "2026-02-30",
+   "tariff": {
+    "energyPerKwh": 2,
+    "timePerMinute": 1,
+    "timePerHour": 60,
+    "parkingPerHour": 5,
+    "parkingFlat": 3
+   }
+  },
+  "prov": null,
+  "problems": [
+   {
+    "field": "energyBasis",
+    "rule": "needsEnergyKwh",
+    "message": "\"grid\" basis only applies to energyKwh."
+   },
+   {
+    "field": "efficiency",
+    "rule": "range",
+    "message": "Must be between 0 and 1."
+   },
+   {
+    "field": "priceDate",
+    "rule": "isDate",
+    "message": "Invalid date (YYYY-MM-DD)."
+   },
+   {
+    "field": "tariff.timePerHour",
+    "rule": "oneOf",
+    "message": "Enter one rate only (per minute or per hour)."
+   },
+   {
+    "field": "tariff.parkingFlat",
+    "rule": "oneOf",
+    "message": "Enter a flat or a time-based parking fee, not both."
+   },
+   {
+    "field": "chargingMinutes",
+    "rule": "required",
+    "message": "The charging duration is needed for a time-based price."
+   },
+   {
+    "field": "parkingMinutes",
+    "rule": "required",
+    "message": "The parking duration is needed for a time-based parking fee."
+   }
+  ]
+ },
+ {
+  "calc": "charge-cost",
+  "lang": "ar",
+  "input": {
+   "energyBasis": "grid",
+   "batteryUsableKwh": 60,
+   "fromSocPercent": 20,
+   "toSocPercent": 80,
+   "efficiency": 1.2,
+   "currency": "EGP",
+   "priceDate": "2026-02-30",
+   "tariff": {
+    "energyPerKwh": 2,
+    "timePerMinute": 1,
+    "timePerHour": 60,
+    "parkingPerHour": 5,
+    "parkingFlat": 3
+   }
+  },
+  "prov": null,
+  "problems": [
+   {
+    "field": "energyBasis",
+    "rule": "needsEnergyKwh",
+    "message": "أساس \"grid\" يُستخدم فقط مع energyKwh."
+   },
+   {
+    "field": "efficiency",
+    "rule": "range",
+    "message": "يجب أن تكون القيمة بين 0 و1."
+   },
+   {
+    "field": "priceDate",
+    "rule": "isDate",
+    "message": "التاريخ غير صالح (YYYY-MM-DD)."
+   },
+   {
+    "field": "tariff.timePerHour",
+    "rule": "oneOf",
+    "message": "أدخل سعرًا واحدًا فقط (بالدقيقة أو بالساعة)."
+   },
+   {
+    "field": "tariff.parkingFlat",
+    "rule": "oneOf",
+    "message": "أدخل رسوم وقوف ثابتة أو بالوقت، لا الاثنين."
+   },
+   {
+    "field": "chargingMinutes",
+    "rule": "required",
+    "message": "مدة الشحن مطلوبة لحساب رسوم الوقت."
+   },
+   {
+    "field": "parkingMinutes",
+    "rule": "required",
+    "message": "مدة الوقوف مطلوبة لحساب رسوم الوقوف."
+   }
+  ]
+ },
+ {
+  "calc": "charge-cost",
+  "lang": "en",
+  "input": {
+   "batteryUsableKwh": "abc",
+   "fromSocPercent": "20",
+   "toSocPercent": 80,
+   "currency": "EGP",
+   "tariff": {
+    "energyPerKwh": "1.5"
+   }
+  },
+  "prov": null,
+  "problems": [
+   {
+    "field": "batteryUsableKwh",
+    "rule": "isNumber",
+    "message": "Must be a valid number."
+   }
+  ]
+ },
+ {
+  "calc": "charge-cost",
+  "lang": "ar",
+  "input": {
+   "batteryUsableKwh": "abc",
+   "fromSocPercent": "20",
+   "toSocPercent": 80,
+   "currency": "EGP",
+   "tariff": {
+    "energyPerKwh": "1.5"
+   }
+  },
+  "prov": null,
+  "problems": [
+   {
+    "field": "batteryUsableKwh",
+    "rule": "isNumber",
+    "message": "يجب أن تكون القيمة رقمًا صالحًا."
+   }
+  ]
+ },
+ {
+  "calc": "charge-cost",
+  "lang": "en",
+  "input": {},
+  "prov": null,
+  "problems": [
+   {
+    "field": "batteryUsableKwh",
+    "rule": "required",
+    "message": "This value is required."
+   },
+   {
+    "field": "fromSocPercent",
+    "rule": "required",
+    "message": "This value is required."
+   },
+   {
+    "field": "toSocPercent",
+    "rule": "required",
+    "message": "This value is required."
+   },
+   {
+    "field": "currency",
+    "rule": "required",
+    "message": "This value is required."
+   },
+   {
+    "field": "tariff",
+    "rule": "required",
+    "message": "Enter at least one price (e.g. price per kWh). There are no default prices."
+   }
+  ]
+ },
+ {
+  "calc": "charge-cost",
+  "lang": "ar",
+  "input": {},
+  "prov": null,
+  "problems": [
+   {
+    "field": "batteryUsableKwh",
+    "rule": "required",
+    "message": "هذه القيمة مطلوبة."
+   },
+   {
+    "field": "fromSocPercent",
+    "rule": "required",
+    "message": "هذه القيمة مطلوبة."
+   },
+   {
+    "field": "toSocPercent",
+    "rule": "required",
+    "message": "هذه القيمة مطلوبة."
+   },
+   {
+    "field": "currency",
+    "rule": "required",
+    "message": "هذه القيمة مطلوبة."
+   },
+   {
+    "field": "tariff",
+    "rule": "required",
+    "message": "أدخل سعرًا واحدًا على الأقل (مثل سعر الكيلوواط ساعة). لا توجد أسعار افتراضية."
+   }
+  ]
+ },
+ {
+  "calc": "charge-time",
+  "lang": "en",
+  "input": {
+   "currentType": "AC",
+   "batteryUsableKwh": 60,
+   "fromSocPercent": 20,
+   "toSocPercent": 80,
+   "vehicleAcMaxKw": 11,
+   "stationPowerKw": 22
+  },
+  "prov": null,
+  "output": {
+   "calculator": "charge-time",
+   "result": {
+    "currentType": "AC",
+    "energyAddedKwh": 36,
+    "gridEnergyKwh": 40,
+    "minutes": 218,
+    "minutesRange": null,
+    "powerKw": 11,
+    "limitingFactor": "vehicle",
+    "method": "ac_power_limit",
+    "isRoughEstimate": false
+   },
+   "formula": "AC time = (energy added ÷ efficiency) ÷ min(car on-board limit, station power, supply limit).",
+   "steps": [
+    {
+     "key": "energyAddedKwh",
+     "label": "Energy added to the battery",
+     "expression": "60 kWh × (80% − 20%) = 36 kWh",
+     "value": 36,
+     "unit": "kWh"
+    },
+    {
+     "key": "gridEnergyKwh",
+     "label": "Energy drawn from the grid",
+     "expression": "36 kWh ÷ 0.9 = 40 kWh",
+     "value": 40,
+     "unit": "kWh"
+    },
+    {
+     "key": "lossesKwh",
+     "label": "Charging losses",
+     "expression": "40 kWh − 36 kWh = 4 kWh",
+     "value": 4,
+     "unit": "kWh"
+    },
+    {
+     "key": "effectivePowerKw",
+     "label": "Effective power",
+     "expression": "min(11, 22) = 11 kW",
+     "value": 11,
+     "unit": "kW"
+    },
+    {
+     "key": "minutes",
+     "label": "Duration",
+     "expression": "40 kWh ÷ 11 kW × 60 = 218 min",
+     "value": 218,
+     "unit": "min"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "currentType",
+     "label": "Current type",
+     "value": "AC",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "batteryUsableKwh",
+     "label": "Usable battery capacity",
+     "value": 60,
+     "unit": "kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fromSocPercent",
+     "label": "Start state of charge",
+     "value": 20,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "toSocPercent",
+     "label": "End state of charge",
+     "value": 80,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "Charging efficiency",
+     "value": 0.9,
+     "unit": null,
+     "origin": "default",
+     "note": "Editable default assumption (0 < efficiency ≤ 1)."
+    },
+    {
+     "key": "stationPowerKw",
+     "label": "Station power",
+     "value": 22,
+     "unit": "kW",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "vehicleAcMaxKw",
+     "label": "Car on-board AC limit",
+     "value": 11,
+     "unit": "kW",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [],
+   "confidence": "medium",
+   "units": {
+    "energy": "kWh",
+    "power": "kW",
+    "time": "min"
+   },
+   "disclaimer": "An estimate computed only from the entered values and the assumptions shown; not a measurement or a guarantee."
+  }
+ },
+ {
+  "calc": "charge-time",
+  "lang": "ar",
+  "input": {
+   "currentType": "AC",
+   "batteryUsableKwh": 60,
+   "fromSocPercent": 20,
+   "toSocPercent": 80,
+   "vehicleAcMaxKw": 11,
+   "stationPowerKw": 22
+  },
+  "prov": null,
+  "output": {
+   "calculator": "charge-time",
+   "result": {
+    "currentType": "AC",
+    "energyAddedKwh": 36,
+    "gridEnergyKwh": 40,
+    "minutes": 218,
+    "minutesRange": null,
+    "powerKw": 11,
+    "limitingFactor": "vehicle",
+    "method": "ac_power_limit",
+    "isRoughEstimate": false
+   },
+   "formula": "مدة AC = (الطاقة المضافة ÷ الكفاءة) ÷ أقل قيمة بين حد السيارة وقدرة المحطة وحد مصدر الكهرباء.",
+   "steps": [
+    {
+     "key": "energyAddedKwh",
+     "label": "الطاقة المضافة للبطارية",
+     "expression": "60 kWh × (80% − 20%) = 36 kWh",
+     "value": 36,
+     "unit": "kWh"
+    },
+    {
+     "key": "gridEnergyKwh",
+     "label": "الطاقة المسحوبة من الشبكة",
+     "expression": "36 kWh ÷ 0.9 = 40 kWh",
+     "value": 40,
+     "unit": "kWh"
+    },
+    {
+     "key": "lossesKwh",
+     "label": "فاقد الشحن",
+     "expression": "40 kWh − 36 kWh = 4 kWh",
+     "value": 4,
+     "unit": "kWh"
+    },
+    {
+     "key": "effectivePowerKw",
+     "label": "القدرة الفعلية",
+     "expression": "min(11, 22) = 11 kW",
+     "value": 11,
+     "unit": "kW"
+    },
+    {
+     "key": "minutes",
+     "label": "المدة",
+     "expression": "40 kWh ÷ 11 kW × 60 = 218 min",
+     "value": 218,
+     "unit": "min"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "currentType",
+     "label": "نوع التيار",
+     "value": "AC",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "batteryUsableKwh",
+     "label": "السعة القابلة للاستخدام",
+     "value": 60,
+     "unit": "kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fromSocPercent",
+     "label": "نسبة الشحن في البداية",
+     "value": 20,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "toSocPercent",
+     "label": "نسبة الشحن في النهاية",
+     "value": 80,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "كفاءة الشحن",
+     "value": 0.9,
+     "unit": null,
+     "origin": "default",
+     "note": "افتراض افتراضي قابل للتعديل (0 < الكفاءة ≤ 1)."
+    },
+    {
+     "key": "stationPowerKw",
+     "label": "قدرة المحطة",
+     "value": 22,
+     "unit": "kW",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "vehicleAcMaxKw",
+     "label": "حد الشاحن الداخلي للسيارة (AC)",
+     "value": 11,
+     "unit": "kW",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [],
+   "confidence": "medium",
+   "units": {
+    "energy": "kWh",
+    "power": "kW",
+    "time": "min"
+   },
+   "disclaimer": "نتيجة تقديرية محسوبة من القيم المُدخلة والافتراضات الظاهرة فقط، وليست قياسًا أو ضمانًا."
+  }
+ },
+ {
+  "calc": "charge-time",
+  "lang": "en",
+  "input": {
+   "currentType": "AC",
+   "batteryUsableKwh": 60,
+   "fromSocPercent": 20,
+   "toSocPercent": 100,
+   "efficiency": 0.88,
+   "supplyPhases": 1,
+   "supplyAmps": 16
+  },
+  "prov": null,
+  "output": {
+   "calculator": "charge-time",
+   "result": {
+    "currentType": "AC",
+    "energyAddedKwh": 48,
+    "gridEnergyKwh": 54.545,
+    "minutes": 889,
+    "minutesRange": null,
+    "powerKw": 3.68,
+    "limitingFactor": "supply",
+    "method": "ac_power_limit",
+    "isRoughEstimate": false
+   },
+   "formula": "AC time = (energy added ÷ efficiency) ÷ min(car on-board limit, station power, supply limit).",
+   "steps": [
+    {
+     "key": "energyAddedKwh",
+     "label": "Energy added to the battery",
+     "expression": "60 kWh × (100% − 20%) = 48 kWh",
+     "value": 48,
+     "unit": "kWh"
+    },
+    {
+     "key": "gridEnergyKwh",
+     "label": "Energy drawn from the grid",
+     "expression": "48 kWh ÷ 0.88 = 54.545 kWh",
+     "value": 54.545,
+     "unit": "kWh"
+    },
+    {
+     "key": "lossesKwh",
+     "label": "Charging losses",
+     "expression": "54.545 kWh − 48 kWh = 6.545 kWh",
+     "value": 6.545,
+     "unit": "kWh"
+    },
+    {
+     "key": "supplyKw",
+     "label": "Supply limit",
+     "expression": "1 × 230 V × 16 A ÷ 1000 = 3.68 kW",
+     "value": 3.68,
+     "unit": "kW"
+    },
+    {
+     "key": "effectivePowerKw",
+     "label": "Effective power",
+     "expression": "min(3.68) = 3.68 kW",
+     "value": 3.68,
+     "unit": "kW"
+    },
+    {
+     "key": "minutes",
+     "label": "Duration",
+     "expression": "54.545 kWh ÷ 3.68 kW × 60 = 889 min",
+     "value": 889,
+     "unit": "min"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "currentType",
+     "label": "Current type",
+     "value": "AC",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "batteryUsableKwh",
+     "label": "Usable battery capacity",
+     "value": 60,
+     "unit": "kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fromSocPercent",
+     "label": "Start state of charge",
+     "value": 20,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "toSocPercent",
+     "label": "End state of charge",
+     "value": 100,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "Charging efficiency",
+     "value": 0.88,
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "supplyPhases",
+     "label": "Supply phases",
+     "value": 1,
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "supplyAmps",
+     "label": "Supply current",
+     "value": 16,
+     "unit": "A",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "supplyVoltsPerPhase",
+     "label": "Volts per phase",
+     "value": 230,
+     "unit": "V",
+     "origin": "default",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "VEHICLE_AC_LIMIT_UNKNOWN",
+     "message": "The car on-board AC limit is unknown; the real time may be longer."
+    },
+    {
+     "code": "TOP_OFF_SLOWER",
+     "message": "Charging above 90 % may slow down; the real time can be longer."
+    }
+   ],
+   "confidence": "low",
+   "units": {
+    "energy": "kWh",
+    "power": "kW",
+    "time": "min"
+   },
+   "disclaimer": "An estimate computed only from the entered values and the assumptions shown; not a measurement or a guarantee."
+  }
+ },
+ {
+  "calc": "charge-time",
+  "lang": "ar",
+  "input": {
+   "currentType": "AC",
+   "batteryUsableKwh": 60,
+   "fromSocPercent": 20,
+   "toSocPercent": 100,
+   "efficiency": 0.88,
+   "supplyPhases": 1,
+   "supplyAmps": 16
+  },
+  "prov": null,
+  "output": {
+   "calculator": "charge-time",
+   "result": {
+    "currentType": "AC",
+    "energyAddedKwh": 48,
+    "gridEnergyKwh": 54.545,
+    "minutes": 889,
+    "minutesRange": null,
+    "powerKw": 3.68,
+    "limitingFactor": "supply",
+    "method": "ac_power_limit",
+    "isRoughEstimate": false
+   },
+   "formula": "مدة AC = (الطاقة المضافة ÷ الكفاءة) ÷ أقل قيمة بين حد السيارة وقدرة المحطة وحد مصدر الكهرباء.",
+   "steps": [
+    {
+     "key": "energyAddedKwh",
+     "label": "الطاقة المضافة للبطارية",
+     "expression": "60 kWh × (100% − 20%) = 48 kWh",
+     "value": 48,
+     "unit": "kWh"
+    },
+    {
+     "key": "gridEnergyKwh",
+     "label": "الطاقة المسحوبة من الشبكة",
+     "expression": "48 kWh ÷ 0.88 = 54.545 kWh",
+     "value": 54.545,
+     "unit": "kWh"
+    },
+    {
+     "key": "lossesKwh",
+     "label": "فاقد الشحن",
+     "expression": "54.545 kWh − 48 kWh = 6.545 kWh",
+     "value": 6.545,
+     "unit": "kWh"
+    },
+    {
+     "key": "supplyKw",
+     "label": "حد مصدر الكهرباء",
+     "expression": "1 × 230 V × 16 A ÷ 1000 = 3.68 kW",
+     "value": 3.68,
+     "unit": "kW"
+    },
+    {
+     "key": "effectivePowerKw",
+     "label": "القدرة الفعلية",
+     "expression": "min(3.68) = 3.68 kW",
+     "value": 3.68,
+     "unit": "kW"
+    },
+    {
+     "key": "minutes",
+     "label": "المدة",
+     "expression": "54.545 kWh ÷ 3.68 kW × 60 = 889 min",
+     "value": 889,
+     "unit": "min"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "currentType",
+     "label": "نوع التيار",
+     "value": "AC",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "batteryUsableKwh",
+     "label": "السعة القابلة للاستخدام",
+     "value": 60,
+     "unit": "kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fromSocPercent",
+     "label": "نسبة الشحن في البداية",
+     "value": 20,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "toSocPercent",
+     "label": "نسبة الشحن في النهاية",
+     "value": 100,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "كفاءة الشحن",
+     "value": 0.88,
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "supplyPhases",
+     "label": "عدد الأطوار",
+     "value": 1,
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "supplyAmps",
+     "label": "شدة التيار",
+     "value": 16,
+     "unit": "A",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "supplyVoltsPerPhase",
+     "label": "الجهد لكل طور",
+     "value": 230,
+     "unit": "V",
+     "origin": "default",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "VEHICLE_AC_LIMIT_UNKNOWN",
+     "message": "حد الشاحن الداخلي للسيارة غير معروف؛ قد تكون المدة الفعلية أطول."
+    },
+    {
+     "code": "TOP_OFF_SLOWER",
+     "message": "الشحن فوق 90% قد يبطؤ؛ المدة الفعلية قد تزيد."
+    }
+   ],
+   "confidence": "low",
+   "units": {
+    "energy": "kWh",
+    "power": "kW",
+    "time": "min"
+   },
+   "disclaimer": "نتيجة تقديرية محسوبة من القيم المُدخلة والافتراضات الظاهرة فقط، وليست قياسًا أو ضمانًا."
+  }
+ },
+ {
+  "calc": "charge-time",
+  "lang": "en",
+  "input": {
+   "currentType": "AC",
+   "batteryUsableKwh": 82,
+   "fromSocPercent": 5,
+   "toSocPercent": 95,
+   "vehicleAcMaxKw": 7.4,
+   "supplyPhases": 3,
+   "supplyAmps": 32,
+   "supplyVoltsPerPhase": 220,
+   "stationPowerKw": 22
+  },
+  "prov": null,
+  "output": {
+   "calculator": "charge-time",
+   "result": {
+    "currentType": "AC",
+    "energyAddedKwh": 73.8,
+    "gridEnergyKwh": 82,
+    "minutes": 665,
+    "minutesRange": null,
+    "powerKw": 7.4,
+    "limitingFactor": "vehicle",
+    "method": "ac_power_limit",
+    "isRoughEstimate": false
+   },
+   "formula": "AC time = (energy added ÷ efficiency) ÷ min(car on-board limit, station power, supply limit).",
+   "steps": [
+    {
+     "key": "energyAddedKwh",
+     "label": "Energy added to the battery",
+     "expression": "82 kWh × (95% − 5%) = 73.8 kWh",
+     "value": 73.8,
+     "unit": "kWh"
+    },
+    {
+     "key": "gridEnergyKwh",
+     "label": "Energy drawn from the grid",
+     "expression": "73.8 kWh ÷ 0.9 = 82 kWh",
+     "value": 82,
+     "unit": "kWh"
+    },
+    {
+     "key": "lossesKwh",
+     "label": "Charging losses",
+     "expression": "82 kWh − 73.8 kWh = 8.2 kWh",
+     "value": 8.2,
+     "unit": "kWh"
+    },
+    {
+     "key": "supplyKw",
+     "label": "Supply limit",
+     "expression": "3 × 220 V × 32 A ÷ 1000 = 21.12 kW",
+     "value": 21.12,
+     "unit": "kW"
+    },
+    {
+     "key": "effectivePowerKw",
+     "label": "Effective power",
+     "expression": "min(7.4, 22, 21.12) = 7.4 kW",
+     "value": 7.4,
+     "unit": "kW"
+    },
+    {
+     "key": "minutes",
+     "label": "Duration",
+     "expression": "82 kWh ÷ 7.4 kW × 60 = 665 min",
+     "value": 665,
+     "unit": "min"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "currentType",
+     "label": "Current type",
+     "value": "AC",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "batteryUsableKwh",
+     "label": "Usable battery capacity",
+     "value": 82,
+     "unit": "kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fromSocPercent",
+     "label": "Start state of charge",
+     "value": 5,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "toSocPercent",
+     "label": "End state of charge",
+     "value": 95,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "Charging efficiency",
+     "value": 0.9,
+     "unit": null,
+     "origin": "default",
+     "note": "Editable default assumption (0 < efficiency ≤ 1)."
+    },
+    {
+     "key": "stationPowerKw",
+     "label": "Station power",
+     "value": 22,
+     "unit": "kW",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "vehicleAcMaxKw",
+     "label": "Car on-board AC limit",
+     "value": 7.4,
+     "unit": "kW",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "supplyPhases",
+     "label": "Supply phases",
+     "value": 3,
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "supplyAmps",
+     "label": "Supply current",
+     "value": 32,
+     "unit": "A",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "supplyVoltsPerPhase",
+     "label": "Volts per phase",
+     "value": 220,
+     "unit": "V",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "TOP_OFF_SLOWER",
+     "message": "Charging above 90 % may slow down; the real time can be longer."
+    }
+   ],
+   "confidence": "medium",
+   "units": {
+    "energy": "kWh",
+    "power": "kW",
+    "time": "min"
+   },
+   "disclaimer": "An estimate computed only from the entered values and the assumptions shown; not a measurement or a guarantee."
+  }
+ },
+ {
+  "calc": "charge-time",
+  "lang": "ar",
+  "input": {
+   "currentType": "AC",
+   "batteryUsableKwh": 82,
+   "fromSocPercent": 5,
+   "toSocPercent": 95,
+   "vehicleAcMaxKw": 7.4,
+   "supplyPhases": 3,
+   "supplyAmps": 32,
+   "supplyVoltsPerPhase": 220,
+   "stationPowerKw": 22
+  },
+  "prov": null,
+  "output": {
+   "calculator": "charge-time",
+   "result": {
+    "currentType": "AC",
+    "energyAddedKwh": 73.8,
+    "gridEnergyKwh": 82,
+    "minutes": 665,
+    "minutesRange": null,
+    "powerKw": 7.4,
+    "limitingFactor": "vehicle",
+    "method": "ac_power_limit",
+    "isRoughEstimate": false
+   },
+   "formula": "مدة AC = (الطاقة المضافة ÷ الكفاءة) ÷ أقل قيمة بين حد السيارة وقدرة المحطة وحد مصدر الكهرباء.",
+   "steps": [
+    {
+     "key": "energyAddedKwh",
+     "label": "الطاقة المضافة للبطارية",
+     "expression": "82 kWh × (95% − 5%) = 73.8 kWh",
+     "value": 73.8,
+     "unit": "kWh"
+    },
+    {
+     "key": "gridEnergyKwh",
+     "label": "الطاقة المسحوبة من الشبكة",
+     "expression": "73.8 kWh ÷ 0.9 = 82 kWh",
+     "value": 82,
+     "unit": "kWh"
+    },
+    {
+     "key": "lossesKwh",
+     "label": "فاقد الشحن",
+     "expression": "82 kWh − 73.8 kWh = 8.2 kWh",
+     "value": 8.2,
+     "unit": "kWh"
+    },
+    {
+     "key": "supplyKw",
+     "label": "حد مصدر الكهرباء",
+     "expression": "3 × 220 V × 32 A ÷ 1000 = 21.12 kW",
+     "value": 21.12,
+     "unit": "kW"
+    },
+    {
+     "key": "effectivePowerKw",
+     "label": "القدرة الفعلية",
+     "expression": "min(7.4, 22, 21.12) = 7.4 kW",
+     "value": 7.4,
+     "unit": "kW"
+    },
+    {
+     "key": "minutes",
+     "label": "المدة",
+     "expression": "82 kWh ÷ 7.4 kW × 60 = 665 min",
+     "value": 665,
+     "unit": "min"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "currentType",
+     "label": "نوع التيار",
+     "value": "AC",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "batteryUsableKwh",
+     "label": "السعة القابلة للاستخدام",
+     "value": 82,
+     "unit": "kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fromSocPercent",
+     "label": "نسبة الشحن في البداية",
+     "value": 5,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "toSocPercent",
+     "label": "نسبة الشحن في النهاية",
+     "value": 95,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "كفاءة الشحن",
+     "value": 0.9,
+     "unit": null,
+     "origin": "default",
+     "note": "افتراض افتراضي قابل للتعديل (0 < الكفاءة ≤ 1)."
+    },
+    {
+     "key": "stationPowerKw",
+     "label": "قدرة المحطة",
+     "value": 22,
+     "unit": "kW",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "vehicleAcMaxKw",
+     "label": "حد الشاحن الداخلي للسيارة (AC)",
+     "value": 7.4,
+     "unit": "kW",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "supplyPhases",
+     "label": "عدد الأطوار",
+     "value": 3,
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "supplyAmps",
+     "label": "شدة التيار",
+     "value": 32,
+     "unit": "A",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "supplyVoltsPerPhase",
+     "label": "الجهد لكل طور",
+     "value": 220,
+     "unit": "V",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "TOP_OFF_SLOWER",
+     "message": "الشحن فوق 90% قد يبطؤ؛ المدة الفعلية قد تزيد."
+    }
+   ],
+   "confidence": "medium",
+   "units": {
+    "energy": "kWh",
+    "power": "kW",
+    "time": "min"
+   },
+   "disclaimer": "نتيجة تقديرية محسوبة من القيم المُدخلة والافتراضات الظاهرة فقط، وليست قياسًا أو ضمانًا."
+  }
+ },
+ {
+  "calc": "charge-time",
+  "lang": "en",
+  "input": {
+   "currentType": "DC",
+   "batteryUsableKwh": 60,
+   "fromSocPercent": 10,
+   "toSocPercent": 80,
+   "vehicleDcPeakKw": 135,
+   "stationPowerKw": 50
+  },
+  "prov": null,
+  "output": {
+   "calculator": "charge-time",
+   "result": {
+    "currentType": "DC",
+    "energyAddedKwh": 42,
+    "gridEnergyKwh": 46.667,
+    "minutes": null,
+    "minutesRange": {
+     "low": 56,
+     "high": 101
+    },
+    "powerKw": null,
+    "limitingFactor": "station",
+    "method": "dc_rough_estimate",
+    "isRoughEstimate": true
+   },
+   "formula": "Low-confidence DC estimate: energy added ÷ (50 %–90 % of min(car peak, station power)).",
+   "steps": [
+    {
+     "key": "energyAddedKwh",
+     "label": "Energy added to the battery",
+     "expression": "60 kWh × (80% − 10%) = 42 kWh",
+     "value": 42,
+     "unit": "kWh"
+    },
+    {
+     "key": "gridEnergyKwh",
+     "label": "Energy drawn from the grid",
+     "expression": "42 kWh ÷ 0.9 = 46.667 kWh",
+     "value": 46.667,
+     "unit": "kWh"
+    },
+    {
+     "key": "lossesKwh",
+     "label": "Charging losses",
+     "expression": "46.667 kWh − 42 kWh = 4.667 kWh",
+     "value": 4.667,
+     "unit": "kWh"
+    },
+    {
+     "key": "minutesRange",
+     "label": "Estimated range",
+     "expression": "42 kWh ÷ (0.9…0.5 × 50 kW) × 60 = 56–101 min",
+     "value": "56–101",
+     "unit": "min"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "currentType",
+     "label": "Current type",
+     "value": "DC",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "batteryUsableKwh",
+     "label": "Usable battery capacity",
+     "value": 60,
+     "unit": "kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fromSocPercent",
+     "label": "Start state of charge",
+     "value": 10,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "toSocPercent",
+     "label": "End state of charge",
+     "value": 80,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "Charging efficiency",
+     "value": 0.9,
+     "unit": null,
+     "origin": "default",
+     "note": "Editable default assumption (0 < efficiency ≤ 1)."
+    },
+    {
+     "key": "stationPowerKw",
+     "label": "Station power",
+     "value": 50,
+     "unit": "kW",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "vehicleDcPeakKw",
+     "label": "Car peak DC power",
+     "value": 135,
+     "unit": "kW",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "dcAverageShare",
+     "label": "Assumed average power as a share of peak",
+     "value": "0.5–0.9",
+     "unit": null,
+     "origin": "default",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "NO_CHARGING_CURVE",
+     "message": "No documented charging curve; this is a low-confidence range, not an exact time."
+    }
+   ],
+   "confidence": "low",
+   "units": {
+    "energy": "kWh",
+    "power": "kW",
+    "time": "min"
+   },
+   "disclaimer": "An estimate computed only from the entered values and the assumptions shown; not a measurement or a guarantee."
+  }
+ },
+ {
+  "calc": "charge-time",
+  "lang": "ar",
+  "input": {
+   "currentType": "DC",
+   "batteryUsableKwh": 60,
+   "fromSocPercent": 10,
+   "toSocPercent": 80,
+   "vehicleDcPeakKw": 135,
+   "stationPowerKw": 50
+  },
+  "prov": null,
+  "output": {
+   "calculator": "charge-time",
+   "result": {
+    "currentType": "DC",
+    "energyAddedKwh": 42,
+    "gridEnergyKwh": 46.667,
+    "minutes": null,
+    "minutesRange": {
+     "low": 56,
+     "high": 101
+    },
+    "powerKw": null,
+    "limitingFactor": "station",
+    "method": "dc_rough_estimate",
+    "isRoughEstimate": true
+   },
+   "formula": "تقدير DC منخفض الثقة: الطاقة المضافة ÷ (50% إلى 90% من أقل قيمة بين أقصى قدرة للسيارة وقدرة المحطة).",
+   "steps": [
+    {
+     "key": "energyAddedKwh",
+     "label": "الطاقة المضافة للبطارية",
+     "expression": "60 kWh × (80% − 10%) = 42 kWh",
+     "value": 42,
+     "unit": "kWh"
+    },
+    {
+     "key": "gridEnergyKwh",
+     "label": "الطاقة المسحوبة من الشبكة",
+     "expression": "42 kWh ÷ 0.9 = 46.667 kWh",
+     "value": 46.667,
+     "unit": "kWh"
+    },
+    {
+     "key": "lossesKwh",
+     "label": "فاقد الشحن",
+     "expression": "46.667 kWh − 42 kWh = 4.667 kWh",
+     "value": 4.667,
+     "unit": "kWh"
+    },
+    {
+     "key": "minutesRange",
+     "label": "نطاق تقديري",
+     "expression": "42 kWh ÷ (0.9…0.5 × 50 kW) × 60 = 56–101 min",
+     "value": "56–101",
+     "unit": "min"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "currentType",
+     "label": "نوع التيار",
+     "value": "DC",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "batteryUsableKwh",
+     "label": "السعة القابلة للاستخدام",
+     "value": 60,
+     "unit": "kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fromSocPercent",
+     "label": "نسبة الشحن في البداية",
+     "value": 10,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "toSocPercent",
+     "label": "نسبة الشحن في النهاية",
+     "value": 80,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "كفاءة الشحن",
+     "value": 0.9,
+     "unit": null,
+     "origin": "default",
+     "note": "افتراض افتراضي قابل للتعديل (0 < الكفاءة ≤ 1)."
+    },
+    {
+     "key": "stationPowerKw",
+     "label": "قدرة المحطة",
+     "value": 50,
+     "unit": "kW",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "vehicleDcPeakKw",
+     "label": "أقصى قدرة DC للسيارة",
+     "value": 135,
+     "unit": "kW",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "dcAverageShare",
+     "label": "متوسط القدرة المفترض كنسبة من القدرة القصوى",
+     "value": "0.5–0.9",
+     "unit": null,
+     "origin": "default",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "NO_CHARGING_CURVE",
+     "message": "لا يتوفر منحنى شحن موثّق؛ هذا نطاق تقديري منخفض الثقة وليس زمنًا دقيقًا."
+    }
+   ],
+   "confidence": "low",
+   "units": {
+    "energy": "kWh",
+    "power": "kW",
+    "time": "min"
+   },
+   "disclaimer": "نتيجة تقديرية محسوبة من القيم المُدخلة والافتراضات الظاهرة فقط، وليست قياسًا أو ضمانًا."
+  }
+ },
+ {
+  "calc": "charge-time",
+  "lang": "en",
+  "input": {
+   "currentType": "DC",
+   "batteryUsableKwh": 72.6,
+   "fromSocPercent": 10,
+   "toSocPercent": 80,
+   "stationPowerKw": 150,
+   "curve": [
+    {
+     "socPercent": 0,
+     "powerKw": 90
+    },
+    {
+     "socPercent": 10,
+     "powerKw": 170
+    },
+    {
+     "socPercent": 50,
+     "powerKw": 140
+    },
+    {
+     "socPercent": 80,
+     "powerKw": 70
+    },
+    {
+     "socPercent": 100,
+     "powerKw": 10
+    }
+   ]
+  },
+  "prov": null,
+  "output": {
+   "calculator": "charge-time",
+   "result": {
+    "currentType": "DC",
+    "energyAddedKwh": 50.82,
+    "gridEnergyKwh": 56.467,
+    "minutes": 25,
+    "minutesRange": null,
+    "powerKw": 123.5,
+    "limitingFactor": "station",
+    "method": "dc_curve",
+    "isRoughEstimate": false
+   },
+   "formula": "DC time = Σ (energy per 0.5 % SoC ÷ min(curve power at that SoC, station power)).",
+   "steps": [
+    {
+     "key": "energyAddedKwh",
+     "label": "Energy added to the battery",
+     "expression": "72.6 kWh × (80% − 10%) = 50.82 kWh",
+     "value": 50.82,
+     "unit": "kWh"
+    },
+    {
+     "key": "gridEnergyKwh",
+     "label": "Energy drawn from the grid",
+     "expression": "50.82 kWh ÷ 0.9 = 56.467 kWh",
+     "value": 56.467,
+     "unit": "kWh"
+    },
+    {
+     "key": "lossesKwh",
+     "label": "Charging losses",
+     "expression": "56.467 kWh − 50.82 kWh = 5.647 kWh",
+     "value": 5.647,
+     "unit": "kWh"
+    },
+    {
+     "key": "averagePowerKw",
+     "label": "Average power",
+     "expression": "50.82 kWh ÷ 0.412 h = 123.5 kW",
+     "value": 123.5,
+     "unit": "kW"
+    },
+    {
+     "key": "minutes",
+     "label": "Duration",
+     "expression": "Σ ΔE ÷ P(SoC) = 25 min",
+     "value": 25,
+     "unit": "min"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "currentType",
+     "label": "Current type",
+     "value": "DC",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "batteryUsableKwh",
+     "label": "Usable battery capacity",
+     "value": 72.6,
+     "unit": "kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fromSocPercent",
+     "label": "Start state of charge",
+     "value": 10,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "toSocPercent",
+     "label": "End state of charge",
+     "value": 80,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "Charging efficiency",
+     "value": 0.9,
+     "unit": null,
+     "origin": "default",
+     "note": "Editable default assumption (0 < efficiency ≤ 1)."
+    },
+    {
+     "key": "stationPowerKw",
+     "label": "Station power",
+     "value": 150,
+     "unit": "kW",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "curve",
+     "label": "Documented charging curve",
+     "value": "0%:90kW, 10%:170kW, 50%:140kW, 80%:70kW, 100%:10kW",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "CURVE_CONDITIONS",
+     "message": "The curve was measured in specific conditions; temperature, preconditioning and the charger change the time."
+    }
+   ],
+   "confidence": "medium",
+   "units": {
+    "energy": "kWh",
+    "power": "kW",
+    "time": "min"
+   },
+   "disclaimer": "An estimate computed only from the entered values and the assumptions shown; not a measurement or a guarantee."
+  }
+ },
+ {
+  "calc": "charge-time",
+  "lang": "ar",
+  "input": {
+   "currentType": "DC",
+   "batteryUsableKwh": 72.6,
+   "fromSocPercent": 10,
+   "toSocPercent": 80,
+   "stationPowerKw": 150,
+   "curve": [
+    {
+     "socPercent": 0,
+     "powerKw": 90
+    },
+    {
+     "socPercent": 10,
+     "powerKw": 170
+    },
+    {
+     "socPercent": 50,
+     "powerKw": 140
+    },
+    {
+     "socPercent": 80,
+     "powerKw": 70
+    },
+    {
+     "socPercent": 100,
+     "powerKw": 10
+    }
+   ]
+  },
+  "prov": null,
+  "output": {
+   "calculator": "charge-time",
+   "result": {
+    "currentType": "DC",
+    "energyAddedKwh": 50.82,
+    "gridEnergyKwh": 56.467,
+    "minutes": 25,
+    "minutesRange": null,
+    "powerKw": 123.5,
+    "limitingFactor": "station",
+    "method": "dc_curve",
+    "isRoughEstimate": false
+   },
+   "formula": "مدة DC = مجموع (الطاقة لكل 0.5% ÷ أقل قيمة بين قدرة المنحنى عند تلك النسبة وقدرة المحطة).",
+   "steps": [
+    {
+     "key": "energyAddedKwh",
+     "label": "الطاقة المضافة للبطارية",
+     "expression": "72.6 kWh × (80% − 10%) = 50.82 kWh",
+     "value": 50.82,
+     "unit": "kWh"
+    },
+    {
+     "key": "gridEnergyKwh",
+     "label": "الطاقة المسحوبة من الشبكة",
+     "expression": "50.82 kWh ÷ 0.9 = 56.467 kWh",
+     "value": 56.467,
+     "unit": "kWh"
+    },
+    {
+     "key": "lossesKwh",
+     "label": "فاقد الشحن",
+     "expression": "56.467 kWh − 50.82 kWh = 5.647 kWh",
+     "value": 5.647,
+     "unit": "kWh"
+    },
+    {
+     "key": "averagePowerKw",
+     "label": "متوسط القدرة",
+     "expression": "50.82 kWh ÷ 0.412 h = 123.5 kW",
+     "value": 123.5,
+     "unit": "kW"
+    },
+    {
+     "key": "minutes",
+     "label": "المدة",
+     "expression": "Σ ΔE ÷ P(SoC) = 25 min",
+     "value": 25,
+     "unit": "min"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "currentType",
+     "label": "نوع التيار",
+     "value": "DC",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "batteryUsableKwh",
+     "label": "السعة القابلة للاستخدام",
+     "value": 72.6,
+     "unit": "kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fromSocPercent",
+     "label": "نسبة الشحن في البداية",
+     "value": 10,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "toSocPercent",
+     "label": "نسبة الشحن في النهاية",
+     "value": 80,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "كفاءة الشحن",
+     "value": 0.9,
+     "unit": null,
+     "origin": "default",
+     "note": "افتراض افتراضي قابل للتعديل (0 < الكفاءة ≤ 1)."
+    },
+    {
+     "key": "stationPowerKw",
+     "label": "قدرة المحطة",
+     "value": 150,
+     "unit": "kW",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "curve",
+     "label": "منحنى الشحن الموثّق",
+     "value": "0%:90kW, 10%:170kW, 50%:140kW, 80%:70kW, 100%:10kW",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "CURVE_CONDITIONS",
+     "message": "المنحنى مقيس في ظروف محددة؛ الحرارة وتهيئة البطارية وحالة الشاحن تغيّر المدة."
+    }
+   ],
+   "confidence": "medium",
+   "units": {
+    "energy": "kWh",
+    "power": "kW",
+    "time": "min"
+   },
+   "disclaimer": "نتيجة تقديرية محسوبة من القيم المُدخلة والافتراضات الظاهرة فقط، وليست قياسًا أو ضمانًا."
+  }
+ },
+ {
+  "calc": "charge-time",
+  "lang": "en",
+  "input": {
+   "currentType": "DC",
+   "batteryUsableKwh": 72.6,
+   "fromSocPercent": 10.3,
+   "toSocPercent": 77.7,
+   "curve": [
+    {
+     "socPercent": 0,
+     "powerKw": 90
+    },
+    {
+     "socPercent": 10,
+     "powerKw": 170
+    },
+    {
+     "socPercent": 80,
+     "powerKw": 70
+    }
+   ]
+  },
+  "prov": null,
+  "output": {
+   "calculator": "charge-time",
+   "result": {
+    "currentType": "DC",
+    "energyAddedKwh": 48.932,
+    "gridEnergyKwh": 54.369,
+    "minutes": 26,
+    "minutesRange": null,
+    "powerKw": 114.8,
+    "limitingFactor": "curve",
+    "method": "dc_curve",
+    "isRoughEstimate": false
+   },
+   "formula": "DC time = Σ (energy per 0.5 % SoC ÷ min(curve power at that SoC, station power)).",
+   "steps": [
+    {
+     "key": "energyAddedKwh",
+     "label": "Energy added to the battery",
+     "expression": "72.6 kWh × (77.7% − 10.3%) = 48.932 kWh",
+     "value": 48.932,
+     "unit": "kWh"
+    },
+    {
+     "key": "gridEnergyKwh",
+     "label": "Energy drawn from the grid",
+     "expression": "48.932 kWh ÷ 0.9 = 54.369 kWh",
+     "value": 54.369,
+     "unit": "kWh"
+    },
+    {
+     "key": "lossesKwh",
+     "label": "Charging losses",
+     "expression": "54.369 kWh − 48.932 kWh = 5.437 kWh",
+     "value": 5.437,
+     "unit": "kWh"
+    },
+    {
+     "key": "averagePowerKw",
+     "label": "Average power",
+     "expression": "48.932 kWh ÷ 0.426 h = 114.8 kW",
+     "value": 114.8,
+     "unit": "kW"
+    },
+    {
+     "key": "minutes",
+     "label": "Duration",
+     "expression": "Σ ΔE ÷ P(SoC) = 26 min",
+     "value": 26,
+     "unit": "min"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "currentType",
+     "label": "Current type",
+     "value": "DC",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "batteryUsableKwh",
+     "label": "Usable battery capacity",
+     "value": 72.6,
+     "unit": "kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fromSocPercent",
+     "label": "Start state of charge",
+     "value": 10.3,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "toSocPercent",
+     "label": "End state of charge",
+     "value": 77.7,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "Charging efficiency",
+     "value": 0.9,
+     "unit": null,
+     "origin": "default",
+     "note": "Editable default assumption (0 < efficiency ≤ 1)."
+    },
+    {
+     "key": "curve",
+     "label": "Documented charging curve",
+     "value": "0%:90kW, 10%:170kW, 80%:70kW",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "CURVE_CONDITIONS",
+     "message": "The curve was measured in specific conditions; temperature, preconditioning and the charger change the time."
+    }
+   ],
+   "confidence": "medium",
+   "units": {
+    "energy": "kWh",
+    "power": "kW",
+    "time": "min"
+   },
+   "disclaimer": "An estimate computed only from the entered values and the assumptions shown; not a measurement or a guarantee."
+  }
+ },
+ {
+  "calc": "charge-time",
+  "lang": "ar",
+  "input": {
+   "currentType": "DC",
+   "batteryUsableKwh": 72.6,
+   "fromSocPercent": 10.3,
+   "toSocPercent": 77.7,
+   "curve": [
+    {
+     "socPercent": 0,
+     "powerKw": 90
+    },
+    {
+     "socPercent": 10,
+     "powerKw": 170
+    },
+    {
+     "socPercent": 80,
+     "powerKw": 70
+    }
+   ]
+  },
+  "prov": null,
+  "output": {
+   "calculator": "charge-time",
+   "result": {
+    "currentType": "DC",
+    "energyAddedKwh": 48.932,
+    "gridEnergyKwh": 54.369,
+    "minutes": 26,
+    "minutesRange": null,
+    "powerKw": 114.8,
+    "limitingFactor": "curve",
+    "method": "dc_curve",
+    "isRoughEstimate": false
+   },
+   "formula": "مدة DC = مجموع (الطاقة لكل 0.5% ÷ أقل قيمة بين قدرة المنحنى عند تلك النسبة وقدرة المحطة).",
+   "steps": [
+    {
+     "key": "energyAddedKwh",
+     "label": "الطاقة المضافة للبطارية",
+     "expression": "72.6 kWh × (77.7% − 10.3%) = 48.932 kWh",
+     "value": 48.932,
+     "unit": "kWh"
+    },
+    {
+     "key": "gridEnergyKwh",
+     "label": "الطاقة المسحوبة من الشبكة",
+     "expression": "48.932 kWh ÷ 0.9 = 54.369 kWh",
+     "value": 54.369,
+     "unit": "kWh"
+    },
+    {
+     "key": "lossesKwh",
+     "label": "فاقد الشحن",
+     "expression": "54.369 kWh − 48.932 kWh = 5.437 kWh",
+     "value": 5.437,
+     "unit": "kWh"
+    },
+    {
+     "key": "averagePowerKw",
+     "label": "متوسط القدرة",
+     "expression": "48.932 kWh ÷ 0.426 h = 114.8 kW",
+     "value": 114.8,
+     "unit": "kW"
+    },
+    {
+     "key": "minutes",
+     "label": "المدة",
+     "expression": "Σ ΔE ÷ P(SoC) = 26 min",
+     "value": 26,
+     "unit": "min"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "currentType",
+     "label": "نوع التيار",
+     "value": "DC",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "batteryUsableKwh",
+     "label": "السعة القابلة للاستخدام",
+     "value": 72.6,
+     "unit": "kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fromSocPercent",
+     "label": "نسبة الشحن في البداية",
+     "value": 10.3,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "toSocPercent",
+     "label": "نسبة الشحن في النهاية",
+     "value": 77.7,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "كفاءة الشحن",
+     "value": 0.9,
+     "unit": null,
+     "origin": "default",
+     "note": "افتراض افتراضي قابل للتعديل (0 < الكفاءة ≤ 1)."
+    },
+    {
+     "key": "curve",
+     "label": "منحنى الشحن الموثّق",
+     "value": "0%:90kW, 10%:170kW, 80%:70kW",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "CURVE_CONDITIONS",
+     "message": "المنحنى مقيس في ظروف محددة؛ الحرارة وتهيئة البطارية وحالة الشاحن تغيّر المدة."
+    }
+   ],
+   "confidence": "medium",
+   "units": {
+    "energy": "kWh",
+    "power": "kW",
+    "time": "min"
+   },
+   "disclaimer": "نتيجة تقديرية محسوبة من القيم المُدخلة والافتراضات الظاهرة فقط، وليست قياسًا أو ضمانًا."
+  }
+ },
+ {
+  "calc": "charge-time",
+  "lang": "en",
+  "input": {
+   "currentType": "DC",
+   "batteryUsableKwh": 60,
+   "fromSocPercent": 5,
+   "toSocPercent": 90,
+   "vehicleDcPeakKw": 100,
+   "curve": [
+    {
+     "socPercent": 10,
+     "powerKw": 90
+    },
+    {
+     "socPercent": 80,
+     "powerKw": 60
+    }
+   ]
+  },
+  "prov": null,
+  "output": {
+   "calculator": "charge-time",
+   "result": {
+    "currentType": "DC",
+    "energyAddedKwh": 51,
+    "gridEnergyKwh": 56.667,
+    "minutes": null,
+    "minutesRange": {
+     "low": 34,
+     "high": 61
+    },
+    "powerKw": null,
+    "limitingFactor": "vehicle",
+    "method": "dc_rough_estimate",
+    "isRoughEstimate": true
+   },
+   "formula": "Low-confidence DC estimate: energy added ÷ (50 %–90 % of min(car peak, station power)).",
+   "steps": [
+    {
+     "key": "energyAddedKwh",
+     "label": "Energy added to the battery",
+     "expression": "60 kWh × (90% − 5%) = 51 kWh",
+     "value": 51,
+     "unit": "kWh"
+    },
+    {
+     "key": "gridEnergyKwh",
+     "label": "Energy drawn from the grid",
+     "expression": "51 kWh ÷ 0.9 = 56.667 kWh",
+     "value": 56.667,
+     "unit": "kWh"
+    },
+    {
+     "key": "lossesKwh",
+     "label": "Charging losses",
+     "expression": "56.667 kWh − 51 kWh = 5.667 kWh",
+     "value": 5.667,
+     "unit": "kWh"
+    },
+    {
+     "key": "minutesRange",
+     "label": "Estimated range",
+     "expression": "51 kWh ÷ (0.9…0.5 × 100 kW) × 60 = 34–61 min",
+     "value": "34–61",
+     "unit": "min"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "currentType",
+     "label": "Current type",
+     "value": "DC",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "batteryUsableKwh",
+     "label": "Usable battery capacity",
+     "value": 60,
+     "unit": "kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fromSocPercent",
+     "label": "Start state of charge",
+     "value": 5,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "toSocPercent",
+     "label": "End state of charge",
+     "value": 90,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "Charging efficiency",
+     "value": 0.9,
+     "unit": null,
+     "origin": "default",
+     "note": "Editable default assumption (0 < efficiency ≤ 1)."
+    },
+    {
+     "key": "vehicleDcPeakKw",
+     "label": "Car peak DC power",
+     "value": 100,
+     "unit": "kW",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "curve",
+     "label": "Documented charging curve",
+     "value": "10%:90kW, 80%:60kW",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "dcAverageShare",
+     "label": "Assumed average power as a share of peak",
+     "value": "0.5–0.9",
+     "unit": null,
+     "origin": "default",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "CURVE_NOT_USABLE",
+     "message": "The charging curve does not cover the requested window; a low-confidence estimate is used."
+    },
+    {
+     "code": "NO_CHARGING_CURVE",
+     "message": "No documented charging curve; this is a low-confidence range, not an exact time."
+    }
+   ],
+   "confidence": "low",
+   "units": {
+    "energy": "kWh",
+    "power": "kW",
+    "time": "min"
+   },
+   "disclaimer": "An estimate computed only from the entered values and the assumptions shown; not a measurement or a guarantee."
+  }
+ },
+ {
+  "calc": "charge-time",
+  "lang": "ar",
+  "input": {
+   "currentType": "DC",
+   "batteryUsableKwh": 60,
+   "fromSocPercent": 5,
+   "toSocPercent": 90,
+   "vehicleDcPeakKw": 100,
+   "curve": [
+    {
+     "socPercent": 10,
+     "powerKw": 90
+    },
+    {
+     "socPercent": 80,
+     "powerKw": 60
+    }
+   ]
+  },
+  "prov": null,
+  "output": {
+   "calculator": "charge-time",
+   "result": {
+    "currentType": "DC",
+    "energyAddedKwh": 51,
+    "gridEnergyKwh": 56.667,
+    "minutes": null,
+    "minutesRange": {
+     "low": 34,
+     "high": 61
+    },
+    "powerKw": null,
+    "limitingFactor": "vehicle",
+    "method": "dc_rough_estimate",
+    "isRoughEstimate": true
+   },
+   "formula": "تقدير DC منخفض الثقة: الطاقة المضافة ÷ (50% إلى 90% من أقل قيمة بين أقصى قدرة للسيارة وقدرة المحطة).",
+   "steps": [
+    {
+     "key": "energyAddedKwh",
+     "label": "الطاقة المضافة للبطارية",
+     "expression": "60 kWh × (90% − 5%) = 51 kWh",
+     "value": 51,
+     "unit": "kWh"
+    },
+    {
+     "key": "gridEnergyKwh",
+     "label": "الطاقة المسحوبة من الشبكة",
+     "expression": "51 kWh ÷ 0.9 = 56.667 kWh",
+     "value": 56.667,
+     "unit": "kWh"
+    },
+    {
+     "key": "lossesKwh",
+     "label": "فاقد الشحن",
+     "expression": "56.667 kWh − 51 kWh = 5.667 kWh",
+     "value": 5.667,
+     "unit": "kWh"
+    },
+    {
+     "key": "minutesRange",
+     "label": "نطاق تقديري",
+     "expression": "51 kWh ÷ (0.9…0.5 × 100 kW) × 60 = 34–61 min",
+     "value": "34–61",
+     "unit": "min"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "currentType",
+     "label": "نوع التيار",
+     "value": "DC",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "batteryUsableKwh",
+     "label": "السعة القابلة للاستخدام",
+     "value": 60,
+     "unit": "kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fromSocPercent",
+     "label": "نسبة الشحن في البداية",
+     "value": 5,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "toSocPercent",
+     "label": "نسبة الشحن في النهاية",
+     "value": 90,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "كفاءة الشحن",
+     "value": 0.9,
+     "unit": null,
+     "origin": "default",
+     "note": "افتراض افتراضي قابل للتعديل (0 < الكفاءة ≤ 1)."
+    },
+    {
+     "key": "vehicleDcPeakKw",
+     "label": "أقصى قدرة DC للسيارة",
+     "value": 100,
+     "unit": "kW",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "curve",
+     "label": "منحنى الشحن الموثّق",
+     "value": "10%:90kW, 80%:60kW",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "dcAverageShare",
+     "label": "متوسط القدرة المفترض كنسبة من القدرة القصوى",
+     "value": "0.5–0.9",
+     "unit": null,
+     "origin": "default",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "CURVE_NOT_USABLE",
+     "message": "منحنى الشحن لا يغطي نطاق الشحن المطلوب؛ استُخدم تقدير منخفض الثقة."
+    },
+    {
+     "code": "NO_CHARGING_CURVE",
+     "message": "لا يتوفر منحنى شحن موثّق؛ هذا نطاق تقديري منخفض الثقة وليس زمنًا دقيقًا."
+    }
+   ],
+   "confidence": "low",
+   "units": {
+    "energy": "kWh",
+    "power": "kW",
+    "time": "min"
+   },
+   "disclaimer": "نتيجة تقديرية محسوبة من القيم المُدخلة والافتراضات الظاهرة فقط، وليست قياسًا أو ضمانًا."
+  }
+ },
+ {
+  "calc": "charge-time",
+  "lang": "en",
+  "input": {
+   "currentType": "DC",
+   "batteryUsableKwh": 60,
+   "fromSocPercent": 5,
+   "toSocPercent": 90,
+   "curve": [
+    {
+     "socPercent": 10,
+     "powerKw": 90
+    },
+    {
+     "socPercent": 80,
+     "powerKw": 60
+    }
+   ]
+  },
+  "prov": null,
+  "problems": [
+   {
+    "field": "curve",
+    "rule": "coverage",
+    "message": "The curve does not cover the window; enter the station power or the car peak DC power."
+   }
+  ]
+ },
+ {
+  "calc": "charge-time",
+  "lang": "ar",
+  "input": {
+   "currentType": "DC",
+   "batteryUsableKwh": 60,
+   "fromSocPercent": 5,
+   "toSocPercent": 90,
+   "curve": [
+    {
+     "socPercent": 10,
+     "powerKw": 90
+    },
+    {
+     "socPercent": 80,
+     "powerKw": 60
+    }
+   ]
+  },
+  "prov": null,
+  "problems": [
+   {
+    "field": "curve",
+    "rule": "coverage",
+    "message": "المنحنى لا يغطي النطاق المطلوب؛ أدخل قدرة المحطة أو أقصى قدرة DC للسيارة."
+   }
+  ]
+ },
+ {
+  "calc": "charge-time",
+  "lang": "en",
+  "input": {
+   "currentType": "DC",
+   "batteryUsableKwh": 60,
+   "fromSocPercent": 10,
+   "toSocPercent": 80,
+   "curve": [
+    {
+     "socPercent": 0,
+     "powerKw": 0
+    },
+    {
+     "socPercent": 100,
+     "powerKw": 0
+    }
+   ]
+  },
+  "prov": null,
+  "problems": [
+   {
+    "field": "curve",
+    "rule": "coverage",
+    "message": "The curve does not cover the window; enter the station power or the car peak DC power."
+   }
+  ]
+ },
+ {
+  "calc": "charge-time",
+  "lang": "ar",
+  "input": {
+   "currentType": "DC",
+   "batteryUsableKwh": 60,
+   "fromSocPercent": 10,
+   "toSocPercent": 80,
+   "curve": [
+    {
+     "socPercent": 0,
+     "powerKw": 0
+    },
+    {
+     "socPercent": 100,
+     "powerKw": 0
+    }
+   ]
+  },
+  "prov": null,
+  "problems": [
+   {
+    "field": "curve",
+    "rule": "coverage",
+    "message": "المنحنى لا يغطي النطاق المطلوب؛ أدخل قدرة المحطة أو أقصى قدرة DC للسيارة."
+   }
+  ]
+ },
+ {
+  "calc": "charge-time",
+  "lang": "en",
+  "input": {
+   "currentType": "XX",
+   "batteryUsableKwh": 60,
+   "fromSocPercent": 10,
+   "toSocPercent": 80,
+   "supplyPhases": 2,
+   "curve": [
+    {
+     "socPercent": 50,
+     "powerKw": 1
+    },
+    {
+     "socPercent": 40,
+     "powerKw": 2
+    }
+   ]
+  },
+  "prov": null,
+  "problems": [
+   {
+    "field": "currentType",
+    "rule": "isIn",
+    "message": "Choose the charging type: AC or DC."
+   },
+   {
+    "field": "supplyPhases",
+    "rule": "isIn",
+    "message": "Phases must be 1 or 3."
+   },
+   {
+    "field": "supplyAmps",
+    "rule": "required",
+    "message": "A supply limit needs both phases and amps."
+   },
+   {
+    "field": "curve",
+    "rule": "ascending",
+    "message": "Curve SoC values must be strictly increasing."
+   }
+  ]
+ },
+ {
+  "calc": "charge-time",
+  "lang": "ar",
+  "input": {
+   "currentType": "XX",
+   "batteryUsableKwh": 60,
+   "fromSocPercent": 10,
+   "toSocPercent": 80,
+   "supplyPhases": 2,
+   "curve": [
+    {
+     "socPercent": 50,
+     "powerKw": 1
+    },
+    {
+     "socPercent": 40,
+     "powerKw": 2
+    }
+   ]
+  },
+  "prov": null,
+  "problems": [
+   {
+    "field": "currentType",
+    "rule": "isIn",
+    "message": "اختر نوع الشحن: AC أو DC."
+   },
+   {
+    "field": "supplyPhases",
+    "rule": "isIn",
+    "message": "عدد الأطوار 1 أو 3."
+   },
+   {
+    "field": "supplyAmps",
+    "rule": "required",
+    "message": "حد مصدر الكهرباء يحتاج عدد الأطوار وشدة التيار معًا."
+   },
+   {
+    "field": "curve",
+    "rule": "ascending",
+    "message": "يجب أن تكون نسب الشحن في المنحنى تصاعدية وبلا تكرار."
+   }
+  ]
+ },
+ {
+  "calc": "charge-time",
+  "lang": "en",
+  "input": {
+   "currentType": "AC",
+   "batteryUsableKwh": 60,
+   "fromSocPercent": 10,
+   "toSocPercent": 80
+  },
+  "prov": null,
+  "problems": [
+   {
+    "field": "stationPowerKw",
+    "rule": "required",
+    "message": "Enter at least the station power or the car on-board AC limit."
+   }
+  ]
+ },
+ {
+  "calc": "charge-time",
+  "lang": "ar",
+  "input": {
+   "currentType": "AC",
+   "batteryUsableKwh": 60,
+   "fromSocPercent": 10,
+   "toSocPercent": 80
+  },
+  "prov": null,
+  "problems": [
+   {
+    "field": "stationPowerKw",
+    "rule": "required",
+    "message": "أدخل قدرة المحطة أو حد الشاحن الداخلي للسيارة على الأقل."
+   }
+  ]
+ },
+ {
+  "calc": "charge-time",
+  "lang": "en",
+  "input": {
+   "currentType": "AC",
+   "batteryUsableKwh": 60,
+   "fromSocPercent": 10,
+   "toSocPercent": 80,
+   "vehicleAcMaxKw": 11
+  },
+  "prov": {
+   "batteryUsableKwh": {
+    "origin": "catalog",
+    "note": "Manufacturer claim · test source"
+   },
+   "vehicleAcMaxKw": {
+    "origin": "catalog",
+    "note": "verified"
+   }
+  },
+  "output": {
+   "calculator": "charge-time",
+   "result": {
+    "currentType": "AC",
+    "energyAddedKwh": 42,
+    "gridEnergyKwh": 46.667,
+    "minutes": 255,
+    "minutesRange": null,
+    "powerKw": 11,
+    "limitingFactor": "vehicle",
+    "method": "ac_power_limit",
+    "isRoughEstimate": false
+   },
+   "formula": "AC time = (energy added ÷ efficiency) ÷ min(car on-board limit, station power, supply limit).",
+   "steps": [
+    {
+     "key": "energyAddedKwh",
+     "label": "Energy added to the battery",
+     "expression": "60 kWh × (80% − 10%) = 42 kWh",
+     "value": 42,
+     "unit": "kWh"
+    },
+    {
+     "key": "gridEnergyKwh",
+     "label": "Energy drawn from the grid",
+     "expression": "42 kWh ÷ 0.9 = 46.667 kWh",
+     "value": 46.667,
+     "unit": "kWh"
+    },
+    {
+     "key": "lossesKwh",
+     "label": "Charging losses",
+     "expression": "46.667 kWh − 42 kWh = 4.667 kWh",
+     "value": 4.667,
+     "unit": "kWh"
+    },
+    {
+     "key": "effectivePowerKw",
+     "label": "Effective power",
+     "expression": "min(11) = 11 kW",
+     "value": 11,
+     "unit": "kW"
+    },
+    {
+     "key": "minutes",
+     "label": "Duration",
+     "expression": "46.667 kWh ÷ 11 kW × 60 = 255 min",
+     "value": 255,
+     "unit": "min"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "currentType",
+     "label": "Current type",
+     "value": "AC",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "batteryUsableKwh",
+     "label": "Usable battery capacity",
+     "value": 60,
+     "unit": "kWh",
+     "origin": "catalog",
+     "note": "Manufacturer claim · test source"
+    },
+    {
+     "key": "fromSocPercent",
+     "label": "Start state of charge",
+     "value": 10,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "toSocPercent",
+     "label": "End state of charge",
+     "value": 80,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "Charging efficiency",
+     "value": 0.9,
+     "unit": null,
+     "origin": "default",
+     "note": "Editable default assumption (0 < efficiency ≤ 1)."
+    },
+    {
+     "key": "vehicleAcMaxKw",
+     "label": "Car on-board AC limit",
+     "value": 11,
+     "unit": "kW",
+     "origin": "catalog",
+     "note": "verified"
+    }
+   ],
+   "warnings": [],
+   "confidence": "low",
+   "units": {
+    "energy": "kWh",
+    "power": "kW",
+    "time": "min"
+   },
+   "disclaimer": "An estimate computed only from the entered values and the assumptions shown; not a measurement or a guarantee."
+  }
+ },
+ {
+  "calc": "charge-time",
+  "lang": "ar",
+  "input": {
+   "currentType": "AC",
+   "batteryUsableKwh": 60,
+   "fromSocPercent": 10,
+   "toSocPercent": 80,
+   "vehicleAcMaxKw": 11
+  },
+  "prov": {
+   "batteryUsableKwh": {
+    "origin": "catalog",
+    "note": "Manufacturer claim · test source"
+   },
+   "vehicleAcMaxKw": {
+    "origin": "catalog",
+    "note": "verified"
+   }
+  },
+  "output": {
+   "calculator": "charge-time",
+   "result": {
+    "currentType": "AC",
+    "energyAddedKwh": 42,
+    "gridEnergyKwh": 46.667,
+    "minutes": 255,
+    "minutesRange": null,
+    "powerKw": 11,
+    "limitingFactor": "vehicle",
+    "method": "ac_power_limit",
+    "isRoughEstimate": false
+   },
+   "formula": "مدة AC = (الطاقة المضافة ÷ الكفاءة) ÷ أقل قيمة بين حد السيارة وقدرة المحطة وحد مصدر الكهرباء.",
+   "steps": [
+    {
+     "key": "energyAddedKwh",
+     "label": "الطاقة المضافة للبطارية",
+     "expression": "60 kWh × (80% − 10%) = 42 kWh",
+     "value": 42,
+     "unit": "kWh"
+    },
+    {
+     "key": "gridEnergyKwh",
+     "label": "الطاقة المسحوبة من الشبكة",
+     "expression": "42 kWh ÷ 0.9 = 46.667 kWh",
+     "value": 46.667,
+     "unit": "kWh"
+    },
+    {
+     "key": "lossesKwh",
+     "label": "فاقد الشحن",
+     "expression": "46.667 kWh − 42 kWh = 4.667 kWh",
+     "value": 4.667,
+     "unit": "kWh"
+    },
+    {
+     "key": "effectivePowerKw",
+     "label": "القدرة الفعلية",
+     "expression": "min(11) = 11 kW",
+     "value": 11,
+     "unit": "kW"
+    },
+    {
+     "key": "minutes",
+     "label": "المدة",
+     "expression": "46.667 kWh ÷ 11 kW × 60 = 255 min",
+     "value": 255,
+     "unit": "min"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "currentType",
+     "label": "نوع التيار",
+     "value": "AC",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "batteryUsableKwh",
+     "label": "السعة القابلة للاستخدام",
+     "value": 60,
+     "unit": "kWh",
+     "origin": "catalog",
+     "note": "Manufacturer claim · test source"
+    },
+    {
+     "key": "fromSocPercent",
+     "label": "نسبة الشحن في البداية",
+     "value": 10,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "toSocPercent",
+     "label": "نسبة الشحن في النهاية",
+     "value": 80,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "كفاءة الشحن",
+     "value": 0.9,
+     "unit": null,
+     "origin": "default",
+     "note": "افتراض افتراضي قابل للتعديل (0 < الكفاءة ≤ 1)."
+    },
+    {
+     "key": "vehicleAcMaxKw",
+     "label": "حد الشاحن الداخلي للسيارة (AC)",
+     "value": 11,
+     "unit": "kW",
+     "origin": "catalog",
+     "note": "verified"
+    }
+   ],
+   "warnings": [],
+   "confidence": "low",
+   "units": {
+    "energy": "kWh",
+    "power": "kW",
+    "time": "min"
+   },
+   "disclaimer": "نتيجة تقديرية محسوبة من القيم المُدخلة والافتراضات الظاهرة فقط، وليست قياسًا أو ضمانًا."
+  }
+ },
+ {
+  "calc": "cost-per-100km",
+  "lang": "en",
+  "input": {
+   "consumptionKwhPer100km": 16.4,
+   "electricityPricePerKwh": 1.35,
+   "currency": "EGP",
+   "priceDate": "2026-09-01"
+  },
+  "prov": null,
+  "output": {
+   "calculator": "cost-per-100km",
+   "result": {
+    "gridKwhPer100km": 16.4,
+    "pricePerKwh": {
+     "amount": "1.35",
+     "currency": "EGP"
+    },
+    "costPer100km": {
+     "amount": "22.14",
+     "currency": "EGP"
+    },
+    "costPerKm": {
+     "amount": "0.2214",
+     "currency": "EGP"
+    },
+    "priceDate": "2026-09-01"
+   },
+   "formula": "Cost per 100 km = grid consumption (kWh/100 km) × price per kWh.",
+   "steps": [
+    {
+     "key": "costPer100km",
+     "label": "Cost per 100 km",
+     "expression": "16.4 kWh × 1.35 EGP = 22.14 EGP",
+     "value": "22.14",
+     "unit": "EGP"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "consumptionKwhPer100km",
+     "label": "Consumption",
+     "value": 16.4,
+     "unit": "kWh/100km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "consumptionBasis",
+     "label": "Consumption basis",
+     "value": "grid",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "value": "EGP",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "Price date",
+     "value": "2026-09-01",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "electricityPricePerKwh",
+     "label": "Main electricity price",
+     "value": "1.35",
+     "unit": "EGP/kWh",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [],
+   "confidence": "high",
+   "units": {
+    "consumption": "kWh/100km",
+    "money": "EGP"
+   },
+   "disclaimer": "An estimate computed only from the entered values and the assumptions shown; not a measurement or a guarantee."
+  }
+ },
+ {
+  "calc": "cost-per-100km",
+  "lang": "ar",
+  "input": {
+   "consumptionKwhPer100km": 16.4,
+   "electricityPricePerKwh": 1.35,
+   "currency": "EGP",
+   "priceDate": "2026-09-01"
+  },
+  "prov": null,
+  "output": {
+   "calculator": "cost-per-100km",
+   "result": {
+    "gridKwhPer100km": 16.4,
+    "pricePerKwh": {
+     "amount": "1.35",
+     "currency": "EGP"
+    },
+    "costPer100km": {
+     "amount": "22.14",
+     "currency": "EGP"
+    },
+    "costPerKm": {
+     "amount": "0.2214",
+     "currency": "EGP"
+    },
+    "priceDate": "2026-09-01"
+   },
+   "formula": "تكلفة كل 100 كم = استهلاك الشبكة (كيلوواط ساعة/100 كم) × سعر الكيلوواط ساعة.",
+   "steps": [
+    {
+     "key": "costPer100km",
+     "label": "تكلفة كل 100 كم",
+     "expression": "16.4 kWh × 1.35 EGP = 22.14 EGP",
+     "value": "22.14",
+     "unit": "EGP"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "consumptionKwhPer100km",
+     "label": "الاستهلاك",
+     "value": 16.4,
+     "unit": "kWh/100km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "consumptionBasis",
+     "label": "أساس الاستهلاك",
+     "value": "grid",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "currency",
+     "label": "العملة",
+     "value": "EGP",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "تاريخ السعر",
+     "value": "2026-09-01",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "electricityPricePerKwh",
+     "label": "سعر الكهرباء الأساسي",
+     "value": "1.35",
+     "unit": "EGP/kWh",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [],
+   "confidence": "high",
+   "units": {
+    "consumption": "kWh/100km",
+    "money": "EGP"
+   },
+   "disclaimer": "نتيجة تقديرية محسوبة من القيم المُدخلة والافتراضات الظاهرة فقط، وليست قياسًا أو ضمانًا."
+  }
+ },
+ {
+  "calc": "cost-per-100km",
+  "lang": "en",
+  "input": {
+   "consumptionWhPerKm": 172,
+   "consumptionBasis": "battery",
+   "electricityPricePerKwh": 0.9,
+   "publicPricePerKwh": 2.75,
+   "publicSharePercent": 30,
+   "currency": "EGP"
+  },
+  "prov": null,
+  "output": {
+   "calculator": "cost-per-100km",
+   "result": {
+    "gridKwhPer100km": 19.11,
+    "pricePerKwh": {
+     "amount": "1.455",
+     "currency": "EGP"
+    },
+    "costPer100km": {
+     "amount": "27.81",
+     "currency": "EGP"
+    },
+    "costPerKm": {
+     "amount": "0.2781",
+     "currency": "EGP"
+    },
+    "priceDate": null
+   },
+   "formula": "Cost per 100 km = grid consumption (kWh/100 km) × price per kWh.",
+   "steps": [
+    {
+     "key": "gridKwhPer100km",
+     "label": "Grid consumption",
+     "expression": "17.2 ÷ 0.9 = 19.11 kWh/100km",
+     "value": 19.11,
+     "unit": "kWh/100km"
+    },
+    {
+     "key": "blendedPricePerKwh",
+     "label": "Blended price per kWh",
+     "expression": "0.9 × 0.7 + 2.75 × 0.3 = 1.455",
+     "value": "1.455",
+     "unit": "EGP/kWh"
+    },
+    {
+     "key": "costPer100km",
+     "label": "Cost per 100 km",
+     "expression": "19.11 kWh × 1.455 EGP = 27.81 EGP",
+     "value": "27.81",
+     "unit": "EGP"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "consumptionKwhPer100km",
+     "label": "Consumption",
+     "value": 17.2,
+     "unit": "kWh/100km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "consumptionBasis",
+     "label": "Consumption basis",
+     "value": "battery",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "Charging efficiency",
+     "value": 0.9,
+     "unit": null,
+     "origin": "default",
+     "note": "Editable default assumption (0 < efficiency ≤ 1)."
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "value": "EGP",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "Price date",
+     "value": null,
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "electricityPricePerKwh",
+     "label": "Main electricity price",
+     "value": "0.9",
+     "unit": "EGP/kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "publicPricePerKwh",
+     "label": "Public charging price",
+     "value": "2.75",
+     "unit": "EGP/kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "publicSharePercent",
+     "label": "Public charging share",
+     "value": 30,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "PRICE_DATE_MISSING",
+     "message": "No price date was given; make sure the entered prices are up to date."
+    }
+   ],
+   "confidence": "medium",
+   "units": {
+    "consumption": "kWh/100km",
+    "money": "EGP"
+   },
+   "disclaimer": "An estimate computed only from the entered values and the assumptions shown; not a measurement or a guarantee."
+  }
+ },
+ {
+  "calc": "cost-per-100km",
+  "lang": "ar",
+  "input": {
+   "consumptionWhPerKm": 172,
+   "consumptionBasis": "battery",
+   "electricityPricePerKwh": 0.9,
+   "publicPricePerKwh": 2.75,
+   "publicSharePercent": 30,
+   "currency": "EGP"
+  },
+  "prov": null,
+  "output": {
+   "calculator": "cost-per-100km",
+   "result": {
+    "gridKwhPer100km": 19.11,
+    "pricePerKwh": {
+     "amount": "1.455",
+     "currency": "EGP"
+    },
+    "costPer100km": {
+     "amount": "27.81",
+     "currency": "EGP"
+    },
+    "costPerKm": {
+     "amount": "0.2781",
+     "currency": "EGP"
+    },
+    "priceDate": null
+   },
+   "formula": "تكلفة كل 100 كم = استهلاك الشبكة (كيلوواط ساعة/100 كم) × سعر الكيلوواط ساعة.",
+   "steps": [
+    {
+     "key": "gridKwhPer100km",
+     "label": "الاستهلاك من الشبكة",
+     "expression": "17.2 ÷ 0.9 = 19.11 kWh/100km",
+     "value": 19.11,
+     "unit": "kWh/100km"
+    },
+    {
+     "key": "blendedPricePerKwh",
+     "label": "متوسط سعر الكيلوواط ساعة",
+     "expression": "0.9 × 0.7 + 2.75 × 0.3 = 1.455",
+     "value": "1.455",
+     "unit": "EGP/kWh"
+    },
+    {
+     "key": "costPer100km",
+     "label": "تكلفة كل 100 كم",
+     "expression": "19.11 kWh × 1.455 EGP = 27.81 EGP",
+     "value": "27.81",
+     "unit": "EGP"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "consumptionKwhPer100km",
+     "label": "الاستهلاك",
+     "value": 17.2,
+     "unit": "kWh/100km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "consumptionBasis",
+     "label": "أساس الاستهلاك",
+     "value": "battery",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "كفاءة الشحن",
+     "value": 0.9,
+     "unit": null,
+     "origin": "default",
+     "note": "افتراض افتراضي قابل للتعديل (0 < الكفاءة ≤ 1)."
+    },
+    {
+     "key": "currency",
+     "label": "العملة",
+     "value": "EGP",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "تاريخ السعر",
+     "value": null,
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "electricityPricePerKwh",
+     "label": "سعر الكهرباء الأساسي",
+     "value": "0.9",
+     "unit": "EGP/kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "publicPricePerKwh",
+     "label": "سعر الشحن العام",
+     "value": "2.75",
+     "unit": "EGP/kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "publicSharePercent",
+     "label": "نسبة الشحن العام",
+     "value": 30,
+     "unit": "%",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "PRICE_DATE_MISSING",
+     "message": "لم يُحدَّد تاريخ السعر؛ تأكد أن الأسعار المُدخلة حديثة."
+    }
+   ],
+   "confidence": "medium",
+   "units": {
+    "consumption": "kWh/100km",
+    "money": "EGP"
+   },
+   "disclaimer": "نتيجة تقديرية محسوبة من القيم المُدخلة والافتراضات الظاهرة فقط، وليست قياسًا أو ضمانًا."
+  }
+ },
+ {
+  "calc": "cost-per-100km",
+  "lang": "en",
+  "input": {
+   "consumptionKwhPer100km": 15,
+   "consumptionBasis": "battery",
+   "efficiency": 0.87,
+   "electricityPricePerKwh": 1,
+   "currency": "SAR"
+  },
+  "prov": null,
+  "output": {
+   "calculator": "cost-per-100km",
+   "result": {
+    "gridKwhPer100km": 17.24,
+    "pricePerKwh": {
+     "amount": "1",
+     "currency": "SAR"
+    },
+    "costPer100km": {
+     "amount": "17.24",
+     "currency": "SAR"
+    },
+    "costPerKm": {
+     "amount": "0.1724",
+     "currency": "SAR"
+    },
+    "priceDate": null
+   },
+   "formula": "Cost per 100 km = grid consumption (kWh/100 km) × price per kWh.",
+   "steps": [
+    {
+     "key": "gridKwhPer100km",
+     "label": "Grid consumption",
+     "expression": "15 ÷ 0.87 = 17.24 kWh/100km",
+     "value": 17.24,
+     "unit": "kWh/100km"
+    },
+    {
+     "key": "costPer100km",
+     "label": "Cost per 100 km",
+     "expression": "17.24 kWh × 1 SAR = 17.24 SAR",
+     "value": "17.24",
+     "unit": "SAR"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "consumptionKwhPer100km",
+     "label": "Consumption",
+     "value": 15,
+     "unit": "kWh/100km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "consumptionBasis",
+     "label": "Consumption basis",
+     "value": "battery",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "Charging efficiency",
+     "value": 0.87,
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "value": "SAR",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "Price date",
+     "value": null,
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "electricityPricePerKwh",
+     "label": "Main electricity price",
+     "value": "1",
+     "unit": "SAR/kWh",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "PRICE_DATE_MISSING",
+     "message": "No price date was given; make sure the entered prices are up to date."
+    }
+   ],
+   "confidence": "high",
+   "units": {
+    "consumption": "kWh/100km",
+    "money": "SAR"
+   },
+   "disclaimer": "An estimate computed only from the entered values and the assumptions shown; not a measurement or a guarantee."
+  }
+ },
+ {
+  "calc": "cost-per-100km",
+  "lang": "ar",
+  "input": {
+   "consumptionKwhPer100km": 15,
+   "consumptionBasis": "battery",
+   "efficiency": 0.87,
+   "electricityPricePerKwh": 1,
+   "currency": "SAR"
+  },
+  "prov": null,
+  "output": {
+   "calculator": "cost-per-100km",
+   "result": {
+    "gridKwhPer100km": 17.24,
+    "pricePerKwh": {
+     "amount": "1",
+     "currency": "SAR"
+    },
+    "costPer100km": {
+     "amount": "17.24",
+     "currency": "SAR"
+    },
+    "costPerKm": {
+     "amount": "0.1724",
+     "currency": "SAR"
+    },
+    "priceDate": null
+   },
+   "formula": "تكلفة كل 100 كم = استهلاك الشبكة (كيلوواط ساعة/100 كم) × سعر الكيلوواط ساعة.",
+   "steps": [
+    {
+     "key": "gridKwhPer100km",
+     "label": "الاستهلاك من الشبكة",
+     "expression": "15 ÷ 0.87 = 17.24 kWh/100km",
+     "value": 17.24,
+     "unit": "kWh/100km"
+    },
+    {
+     "key": "costPer100km",
+     "label": "تكلفة كل 100 كم",
+     "expression": "17.24 kWh × 1 SAR = 17.24 SAR",
+     "value": "17.24",
+     "unit": "SAR"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "consumptionKwhPer100km",
+     "label": "الاستهلاك",
+     "value": 15,
+     "unit": "kWh/100km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "consumptionBasis",
+     "label": "أساس الاستهلاك",
+     "value": "battery",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "efficiency",
+     "label": "كفاءة الشحن",
+     "value": 0.87,
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "currency",
+     "label": "العملة",
+     "value": "SAR",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "تاريخ السعر",
+     "value": null,
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "electricityPricePerKwh",
+     "label": "سعر الكهرباء الأساسي",
+     "value": "1",
+     "unit": "SAR/kWh",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "PRICE_DATE_MISSING",
+     "message": "لم يُحدَّد تاريخ السعر؛ تأكد أن الأسعار المُدخلة حديثة."
+    }
+   ],
+   "confidence": "high",
+   "units": {
+    "consumption": "kWh/100km",
+    "money": "SAR"
+   },
+   "disclaimer": "نتيجة تقديرية محسوبة من القيم المُدخلة والافتراضات الظاهرة فقط، وليست قياسًا أو ضمانًا."
+  }
+ },
+ {
+  "calc": "cost-per-100km",
+  "lang": "en",
+  "input": {
+   "consumptionKwhPer100km": 15,
+   "efficiency": 0.87,
+   "electricityPricePerKwh": 1,
+   "currency": "SAR"
+  },
+  "prov": {
+   "consumptionKwhPer100km": {
+    "origin": "catalog",
+    "note": "WLTP"
+   },
+   "electricityPricePerKwh": {
+    "origin": "reference_price",
+    "note": "Reference price · x · effective from 2025-01-01"
+   },
+   "priceDate": {
+    "origin": "reference_price"
+   }
+  },
+  "output": {
+   "calculator": "cost-per-100km",
+   "result": {
+    "gridKwhPer100km": 15,
+    "pricePerKwh": {
+     "amount": "1",
+     "currency": "SAR"
+    },
+    "costPer100km": {
+     "amount": "15.00",
+     "currency": "SAR"
+    },
+    "costPerKm": {
+     "amount": "0.15",
+     "currency": "SAR"
+    },
+    "priceDate": null
+   },
+   "formula": "Cost per 100 km = grid consumption (kWh/100 km) × price per kWh.",
+   "steps": [
+    {
+     "key": "costPer100km",
+     "label": "Cost per 100 km",
+     "expression": "15 kWh × 1 SAR = 15.00 SAR",
+     "value": "15.00",
+     "unit": "SAR"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "consumptionKwhPer100km",
+     "label": "Consumption",
+     "value": 15,
+     "unit": "kWh/100km",
+     "origin": "catalog",
+     "note": "WLTP"
+    },
+    {
+     "key": "consumptionBasis",
+     "label": "Consumption basis",
+     "value": "grid",
+     "unit": null,
+     "origin": "catalog",
+     "note": null
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "value": "SAR",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "Price date",
+     "value": null,
+     "unit": null,
+     "origin": "reference_price",
+     "note": null
+    },
+    {
+     "key": "electricityPricePerKwh",
+     "label": "Main electricity price",
+     "value": "1",
+     "unit": "SAR/kWh",
+     "origin": "reference_price",
+     "note": "Reference price · x · effective from 2025-01-01"
+    }
+   ],
+   "warnings": [
+    {
+     "code": "EFFICIENCY_NOT_APPLIED",
+     "message": "Efficiency was not applied: the consumption is grid-side (losses already included)."
+    },
+    {
+     "code": "PRICE_DATE_MISSING",
+     "message": "No price date was given; make sure the entered prices are up to date."
+    }
+   ],
+   "confidence": "medium",
+   "units": {
+    "consumption": "kWh/100km",
+    "money": "SAR"
+   },
+   "disclaimer": "An estimate computed only from the entered values and the assumptions shown; not a measurement or a guarantee."
+  }
+ },
+ {
+  "calc": "cost-per-100km",
+  "lang": "ar",
+  "input": {
+   "consumptionKwhPer100km": 15,
+   "efficiency": 0.87,
+   "electricityPricePerKwh": 1,
+   "currency": "SAR"
+  },
+  "prov": {
+   "consumptionKwhPer100km": {
+    "origin": "catalog",
+    "note": "WLTP"
+   },
+   "electricityPricePerKwh": {
+    "origin": "reference_price",
+    "note": "Reference price · x · effective from 2025-01-01"
+   },
+   "priceDate": {
+    "origin": "reference_price"
+   }
+  },
+  "output": {
+   "calculator": "cost-per-100km",
+   "result": {
+    "gridKwhPer100km": 15,
+    "pricePerKwh": {
+     "amount": "1",
+     "currency": "SAR"
+    },
+    "costPer100km": {
+     "amount": "15.00",
+     "currency": "SAR"
+    },
+    "costPerKm": {
+     "amount": "0.15",
+     "currency": "SAR"
+    },
+    "priceDate": null
+   },
+   "formula": "تكلفة كل 100 كم = استهلاك الشبكة (كيلوواط ساعة/100 كم) × سعر الكيلوواط ساعة.",
+   "steps": [
+    {
+     "key": "costPer100km",
+     "label": "تكلفة كل 100 كم",
+     "expression": "15 kWh × 1 SAR = 15.00 SAR",
+     "value": "15.00",
+     "unit": "SAR"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "consumptionKwhPer100km",
+     "label": "الاستهلاك",
+     "value": 15,
+     "unit": "kWh/100km",
+     "origin": "catalog",
+     "note": "WLTP"
+    },
+    {
+     "key": "consumptionBasis",
+     "label": "أساس الاستهلاك",
+     "value": "grid",
+     "unit": null,
+     "origin": "catalog",
+     "note": null
+    },
+    {
+     "key": "currency",
+     "label": "العملة",
+     "value": "SAR",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "تاريخ السعر",
+     "value": null,
+     "unit": null,
+     "origin": "reference_price",
+     "note": null
+    },
+    {
+     "key": "electricityPricePerKwh",
+     "label": "سعر الكهرباء الأساسي",
+     "value": "1",
+     "unit": "SAR/kWh",
+     "origin": "reference_price",
+     "note": "Reference price · x · effective from 2025-01-01"
+    }
+   ],
+   "warnings": [
+    {
+     "code": "EFFICIENCY_NOT_APPLIED",
+     "message": "لم تُطبَّق الكفاءة لأن الاستهلاك مقيس من الشبكة (الفاقد محسوب فيه بالفعل)."
+    },
+    {
+     "code": "PRICE_DATE_MISSING",
+     "message": "لم يُحدَّد تاريخ السعر؛ تأكد أن الأسعار المُدخلة حديثة."
+    }
+   ],
+   "confidence": "medium",
+   "units": {
+    "consumption": "kWh/100km",
+    "money": "SAR"
+   },
+   "disclaimer": "نتيجة تقديرية محسوبة من القيم المُدخلة والافتراضات الظاهرة فقط، وليست قياسًا أو ضمانًا."
+  }
+ },
+ {
+  "calc": "cost-per-100km",
+  "lang": "en",
+  "input": {
+   "consumptionKwhPer100km": 15,
+   "consumptionWhPerKm": 150,
+   "consumptionBasis": "x",
+   "electricityPricePerKwh": -1,
+   "publicSharePercent": 20,
+   "currency": "EGP"
+  },
+  "prov": null,
+  "problems": [
+   {
+    "field": "consumptionWhPerKm",
+    "rule": "oneOf",
+    "message": "Enter the consumption in one unit only."
+   },
+   {
+    "field": "consumptionBasis",
+    "rule": "isIn",
+    "message": "Use grid or battery."
+   },
+   {
+    "field": "electricityPricePerKwh",
+    "rule": "nonNegative",
+    "message": "Cannot be negative."
+   },
+   {
+    "field": "publicPricePerKwh",
+    "rule": "required",
+    "message": "Enter the public charging price together with its share."
+   }
+  ]
+ },
+ {
+  "calc": "cost-per-100km",
+  "lang": "ar",
+  "input": {
+   "consumptionKwhPer100km": 15,
+   "consumptionWhPerKm": 150,
+   "consumptionBasis": "x",
+   "electricityPricePerKwh": -1,
+   "publicSharePercent": 20,
+   "currency": "EGP"
+  },
+  "prov": null,
+  "problems": [
+   {
+    "field": "consumptionWhPerKm",
+    "rule": "oneOf",
+    "message": "أدخل الاستهلاك بوحدة واحدة فقط."
+   },
+   {
+    "field": "consumptionBasis",
+    "rule": "isIn",
+    "message": "القيمة: grid أو battery."
+   },
+   {
+    "field": "electricityPricePerKwh",
+    "rule": "nonNegative",
+    "message": "لا يمكن أن تكون القيمة سالبة."
+   },
+   {
+    "field": "publicPricePerKwh",
+    "rule": "required",
+    "message": "أدخل سعر الشحن العام مع نسبته."
+   }
+  ]
+ },
+ {
+  "calc": "cost-per-100km",
+  "lang": "en",
+  "input": {
+   "publicPricePerKwh": 2
+  },
+  "prov": null,
+  "problems": [
+   {
+    "field": "consumptionKwhPer100km",
+    "rule": "required",
+    "message": "The car consumption is required (kWh per 100 km)."
+   },
+   {
+    "field": "currency",
+    "rule": "required",
+    "message": "This value is required."
+   },
+   {
+    "field": "electricityPricePerKwh",
+    "rule": "required",
+    "message": "This value is required."
+   },
+   {
+    "field": "publicSharePercent",
+    "rule": "required",
+    "message": "Enter the share of public charging."
+   }
+  ]
+ },
+ {
+  "calc": "cost-per-100km",
+  "lang": "ar",
+  "input": {
+   "publicPricePerKwh": 2
+  },
+  "prov": null,
+  "problems": [
+   {
+    "field": "consumptionKwhPer100km",
+    "rule": "required",
+    "message": "استهلاك السيارة مطلوب (كيلوواط ساعة لكل 100 كم)."
+   },
+   {
+    "field": "currency",
+    "rule": "required",
+    "message": "هذه القيمة مطلوبة."
+   },
+   {
+    "field": "electricityPricePerKwh",
+    "rule": "required",
+    "message": "هذه القيمة مطلوبة."
+   },
+   {
+    "field": "publicSharePercent",
+    "rule": "required",
+    "message": "أدخل نسبة الشحن العام."
+   }
+  ]
+ },
+ {
+  "calc": "monthly-cost",
+  "lang": "en",
+  "input": {
+   "consumptionKwhPer100km": 16.4,
+   "electricityPricePerKwh": 1.35,
+   "currency": "EGP",
+   "priceDate": "2026-09-01",
+   "kmPerMonth": 1500
+  },
+  "prov": null,
+  "output": {
+   "calculator": "monthly-cost",
+   "result": {
+    "kmPerMonth": 1500,
+    "gridKwhPerMonth": 246,
+    "energyCostPerMonth": {
+     "amount": "332.10",
+     "currency": "EGP"
+    },
+    "fixedMonthlyFees": null,
+    "totalPerMonth": {
+     "amount": "332.10",
+     "currency": "EGP"
+    },
+    "totalPerYear": {
+     "amount": "3985.20",
+     "currency": "EGP"
+    },
+    "costPer100km": {
+     "amount": "22.14",
+     "currency": "EGP"
+    },
+    "priceDate": "2026-09-01"
+   },
+   "formula": "Monthly energy = monthly distance × consumption ÷ 100; cost = energy × price per kWh (+ fixed fees if entered).",
+   "steps": [
+    {
+     "key": "costPer100km",
+     "label": "Cost per 100 km",
+     "expression": "16.4 kWh × 1.35 EGP = 22.14 EGP",
+     "value": "22.14",
+     "unit": "EGP"
+    },
+    {
+     "key": "gridKwhPerMonth",
+     "label": "Grid energy per month",
+     "expression": "1500 km × 16.4 ÷ 100 = 246 kWh",
+     "value": 246,
+     "unit": "kWh"
+    },
+    {
+     "key": "energyCostPerMonth",
+     "label": "Energy cost per month",
+     "expression": "246 kWh × 1.35 = 332.10 EGP",
+     "value": "332.10",
+     "unit": "EGP"
+    },
+    {
+     "key": "totalPerMonth",
+     "label": "Monthly total",
+     "expression": "332.10 EGP",
+     "value": "332.10",
+     "unit": "EGP"
+    },
+    {
+     "key": "totalPerYear",
+     "label": "Cost per year",
+     "expression": "332.10 × 12 = 3985.20 EGP",
+     "value": "3985.20",
+     "unit": "EGP"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "consumptionKwhPer100km",
+     "label": "Consumption",
+     "value": 16.4,
+     "unit": "kWh/100km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "consumptionBasis",
+     "label": "Consumption basis",
+     "value": "grid",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "value": "EGP",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "Price date",
+     "value": "2026-09-01",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "electricityPricePerKwh",
+     "label": "Main electricity price",
+     "value": "1.35",
+     "unit": "EGP/kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "kmPerMonth",
+     "label": "Distance per month",
+     "value": 1500,
+     "unit": "km",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [],
+   "confidence": "high",
+   "units": {
+    "distance": "km",
+    "energy": "kWh",
+    "money": "EGP"
+   },
+   "disclaimer": "An estimate computed only from the entered values and the assumptions shown; not a measurement or a guarantee."
+  }
+ },
+ {
+  "calc": "monthly-cost",
+  "lang": "ar",
+  "input": {
+   "consumptionKwhPer100km": 16.4,
+   "electricityPricePerKwh": 1.35,
+   "currency": "EGP",
+   "priceDate": "2026-09-01",
+   "kmPerMonth": 1500
+  },
+  "prov": null,
+  "output": {
+   "calculator": "monthly-cost",
+   "result": {
+    "kmPerMonth": 1500,
+    "gridKwhPerMonth": 246,
+    "energyCostPerMonth": {
+     "amount": "332.10",
+     "currency": "EGP"
+    },
+    "fixedMonthlyFees": null,
+    "totalPerMonth": {
+     "amount": "332.10",
+     "currency": "EGP"
+    },
+    "totalPerYear": {
+     "amount": "3985.20",
+     "currency": "EGP"
+    },
+    "costPer100km": {
+     "amount": "22.14",
+     "currency": "EGP"
+    },
+    "priceDate": "2026-09-01"
+   },
+   "formula": "الطاقة الشهرية = المسافة الشهرية × الاستهلاك ÷ 100؛ التكلفة = الطاقة × سعر الكيلوواط ساعة (+ رسوم ثابتة إن وُجدت).",
+   "steps": [
+    {
+     "key": "costPer100km",
+     "label": "تكلفة كل 100 كم",
+     "expression": "16.4 kWh × 1.35 EGP = 22.14 EGP",
+     "value": "22.14",
+     "unit": "EGP"
+    },
+    {
+     "key": "gridKwhPerMonth",
+     "label": "طاقة الشبكة شهريًا",
+     "expression": "1500 km × 16.4 ÷ 100 = 246 kWh",
+     "value": 246,
+     "unit": "kWh"
+    },
+    {
+     "key": "energyCostPerMonth",
+     "label": "تكلفة الطاقة شهريًا",
+     "expression": "246 kWh × 1.35 = 332.10 EGP",
+     "value": "332.10",
+     "unit": "EGP"
+    },
+    {
+     "key": "totalPerMonth",
+     "label": "الإجمالي الشهري",
+     "expression": "332.10 EGP",
+     "value": "332.10",
+     "unit": "EGP"
+    },
+    {
+     "key": "totalPerYear",
+     "label": "التكلفة السنوية",
+     "expression": "332.10 × 12 = 3985.20 EGP",
+     "value": "3985.20",
+     "unit": "EGP"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "consumptionKwhPer100km",
+     "label": "الاستهلاك",
+     "value": 16.4,
+     "unit": "kWh/100km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "consumptionBasis",
+     "label": "أساس الاستهلاك",
+     "value": "grid",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "currency",
+     "label": "العملة",
+     "value": "EGP",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "تاريخ السعر",
+     "value": "2026-09-01",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "electricityPricePerKwh",
+     "label": "سعر الكهرباء الأساسي",
+     "value": "1.35",
+     "unit": "EGP/kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "kmPerMonth",
+     "label": "المسافة الشهرية",
+     "value": 1500,
+     "unit": "km",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [],
+   "confidence": "high",
+   "units": {
+    "distance": "km",
+    "energy": "kWh",
+    "money": "EGP"
+   },
+   "disclaimer": "نتيجة تقديرية محسوبة من القيم المُدخلة والافتراضات الظاهرة فقط، وليست قياسًا أو ضمانًا."
+  }
+ },
+ {
+  "calc": "monthly-cost",
+  "lang": "en",
+  "input": {
+   "consumptionKwhPer100km": 16.4,
+   "electricityPricePerKwh": 1.35,
+   "currency": "EGP",
+   "priceDate": "2026-09-01",
+   "kmPerDay": 42,
+   "fixedMonthlyFees": 150
+  },
+  "prov": null,
+  "output": {
+   "calculator": "monthly-cost",
+   "result": {
+    "kmPerMonth": 1278.4,
+    "gridKwhPerMonth": 209.7,
+    "energyCostPerMonth": {
+     "amount": "283.03",
+     "currency": "EGP"
+    },
+    "fixedMonthlyFees": {
+     "amount": "150.00",
+     "currency": "EGP"
+    },
+    "totalPerMonth": {
+     "amount": "433.03",
+     "currency": "EGP"
+    },
+    "totalPerYear": {
+     "amount": "5196.39",
+     "currency": "EGP"
+    },
+    "costPer100km": {
+     "amount": "22.14",
+     "currency": "EGP"
+    },
+    "priceDate": "2026-09-01"
+   },
+   "formula": "Monthly energy = monthly distance × consumption ÷ 100; cost = energy × price per kWh (+ fixed fees if entered).",
+   "steps": [
+    {
+     "key": "kmPerMonth",
+     "label": "Distance per month",
+     "expression": "42 km × 30.4375 = 1278.4 km",
+     "value": 1278.4,
+     "unit": "km"
+    },
+    {
+     "key": "costPer100km",
+     "label": "Cost per 100 km",
+     "expression": "16.4 kWh × 1.35 EGP = 22.14 EGP",
+     "value": "22.14",
+     "unit": "EGP"
+    },
+    {
+     "key": "gridKwhPerMonth",
+     "label": "Grid energy per month",
+     "expression": "1278.4 km × 16.4 ÷ 100 = 209.7 kWh",
+     "value": 209.7,
+     "unit": "kWh"
+    },
+    {
+     "key": "energyCostPerMonth",
+     "label": "Energy cost per month",
+     "expression": "209.65 kWh × 1.35 = 283.03 EGP",
+     "value": "283.03",
+     "unit": "EGP"
+    },
+    {
+     "key": "totalPerMonth",
+     "label": "Monthly total",
+     "expression": "433.03 EGP",
+     "value": "433.03",
+     "unit": "EGP"
+    },
+    {
+     "key": "totalPerYear",
+     "label": "Cost per year",
+     "expression": "433.03 × 12 = 5196.39 EGP",
+     "value": "5196.39",
+     "unit": "EGP"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "consumptionKwhPer100km",
+     "label": "Consumption",
+     "value": 16.4,
+     "unit": "kWh/100km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "consumptionBasis",
+     "label": "Consumption basis",
+     "value": "grid",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "value": "EGP",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "Price date",
+     "value": "2026-09-01",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "electricityPricePerKwh",
+     "label": "Main electricity price",
+     "value": "1.35",
+     "unit": "EGP/kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "kmPerDay",
+     "label": "Distance per day",
+     "value": 42,
+     "unit": "km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fixedMonthlyFees",
+     "label": "Fixed monthly fees",
+     "value": "150.00",
+     "unit": "EGP",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [],
+   "confidence": "high",
+   "units": {
+    "distance": "km",
+    "energy": "kWh",
+    "money": "EGP"
+   },
+   "disclaimer": "An estimate computed only from the entered values and the assumptions shown; not a measurement or a guarantee."
+  }
+ },
+ {
+  "calc": "monthly-cost",
+  "lang": "ar",
+  "input": {
+   "consumptionKwhPer100km": 16.4,
+   "electricityPricePerKwh": 1.35,
+   "currency": "EGP",
+   "priceDate": "2026-09-01",
+   "kmPerDay": 42,
+   "fixedMonthlyFees": 150
+  },
+  "prov": null,
+  "output": {
+   "calculator": "monthly-cost",
+   "result": {
+    "kmPerMonth": 1278.4,
+    "gridKwhPerMonth": 209.7,
+    "energyCostPerMonth": {
+     "amount": "283.03",
+     "currency": "EGP"
+    },
+    "fixedMonthlyFees": {
+     "amount": "150.00",
+     "currency": "EGP"
+    },
+    "totalPerMonth": {
+     "amount": "433.03",
+     "currency": "EGP"
+    },
+    "totalPerYear": {
+     "amount": "5196.39",
+     "currency": "EGP"
+    },
+    "costPer100km": {
+     "amount": "22.14",
+     "currency": "EGP"
+    },
+    "priceDate": "2026-09-01"
+   },
+   "formula": "الطاقة الشهرية = المسافة الشهرية × الاستهلاك ÷ 100؛ التكلفة = الطاقة × سعر الكيلوواط ساعة (+ رسوم ثابتة إن وُجدت).",
+   "steps": [
+    {
+     "key": "kmPerMonth",
+     "label": "المسافة الشهرية",
+     "expression": "42 km × 30.4375 = 1278.4 km",
+     "value": 1278.4,
+     "unit": "km"
+    },
+    {
+     "key": "costPer100km",
+     "label": "تكلفة كل 100 كم",
+     "expression": "16.4 kWh × 1.35 EGP = 22.14 EGP",
+     "value": "22.14",
+     "unit": "EGP"
+    },
+    {
+     "key": "gridKwhPerMonth",
+     "label": "طاقة الشبكة شهريًا",
+     "expression": "1278.4 km × 16.4 ÷ 100 = 209.7 kWh",
+     "value": 209.7,
+     "unit": "kWh"
+    },
+    {
+     "key": "energyCostPerMonth",
+     "label": "تكلفة الطاقة شهريًا",
+     "expression": "209.65 kWh × 1.35 = 283.03 EGP",
+     "value": "283.03",
+     "unit": "EGP"
+    },
+    {
+     "key": "totalPerMonth",
+     "label": "الإجمالي الشهري",
+     "expression": "433.03 EGP",
+     "value": "433.03",
+     "unit": "EGP"
+    },
+    {
+     "key": "totalPerYear",
+     "label": "التكلفة السنوية",
+     "expression": "433.03 × 12 = 5196.39 EGP",
+     "value": "5196.39",
+     "unit": "EGP"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "consumptionKwhPer100km",
+     "label": "الاستهلاك",
+     "value": 16.4,
+     "unit": "kWh/100km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "consumptionBasis",
+     "label": "أساس الاستهلاك",
+     "value": "grid",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "currency",
+     "label": "العملة",
+     "value": "EGP",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "تاريخ السعر",
+     "value": "2026-09-01",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "electricityPricePerKwh",
+     "label": "سعر الكهرباء الأساسي",
+     "value": "1.35",
+     "unit": "EGP/kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "kmPerDay",
+     "label": "المسافة اليومية",
+     "value": 42,
+     "unit": "km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fixedMonthlyFees",
+     "label": "رسوم شهرية ثابتة",
+     "value": "150.00",
+     "unit": "EGP",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [],
+   "confidence": "high",
+   "units": {
+    "distance": "km",
+    "energy": "kWh",
+    "money": "EGP"
+   },
+   "disclaimer": "نتيجة تقديرية محسوبة من القيم المُدخلة والافتراضات الظاهرة فقط، وليست قياسًا أو ضمانًا."
+  }
+ },
+ {
+  "calc": "monthly-cost",
+  "lang": "en",
+  "input": {
+   "consumptionKwhPer100km": 16.4,
+   "electricityPricePerKwh": 1.35,
+   "currency": "EGP",
+   "priceDate": "2026-09-01",
+   "kmPerDay": 42,
+   "kmPerMonth": 100
+  },
+  "prov": null,
+  "problems": [
+   {
+    "field": "kmPerDay",
+    "rule": "oneOf",
+    "message": "Enter the monthly or the daily distance, not both."
+   }
+  ]
+ },
+ {
+  "calc": "monthly-cost",
+  "lang": "ar",
+  "input": {
+   "consumptionKwhPer100km": 16.4,
+   "electricityPricePerKwh": 1.35,
+   "currency": "EGP",
+   "priceDate": "2026-09-01",
+   "kmPerDay": 42,
+   "kmPerMonth": 100
+  },
+  "prov": null,
+  "problems": [
+   {
+    "field": "kmPerDay",
+    "rule": "oneOf",
+    "message": "أدخل المسافة الشهرية أو اليومية فقط."
+   }
+  ]
+ },
+ {
+  "calc": "monthly-cost",
+  "lang": "en",
+  "input": {
+   "consumptionKwhPer100km": 16.4,
+   "electricityPricePerKwh": 1.35,
+   "currency": "EGP",
+   "priceDate": "2026-09-01"
+  },
+  "prov": null,
+  "problems": [
+   {
+    "field": "kmPerMonth",
+    "rule": "required",
+    "message": "Enter the distance per month or per day."
+   }
+  ]
+ },
+ {
+  "calc": "monthly-cost",
+  "lang": "ar",
+  "input": {
+   "consumptionKwhPer100km": 16.4,
+   "electricityPricePerKwh": 1.35,
+   "currency": "EGP",
+   "priceDate": "2026-09-01"
+  },
+  "prov": null,
+  "problems": [
+   {
+    "field": "kmPerMonth",
+    "rule": "required",
+    "message": "أدخل المسافة الشهرية أو اليومية."
+   }
+  ]
+ },
+ {
+  "calc": "vs-fuel",
+  "lang": "en",
+  "input": {
+   "consumptionKwhPer100km": 16.4,
+   "electricityPricePerKwh": 1.35,
+   "currency": "EGP",
+   "priceDate": "2026-09-01",
+   "fuelConsumptionLPer100km": 7.5,
+   "fuelPricePerLiter": 13.75
+  },
+  "prov": null,
+  "output": {
+   "calculator": "vs-fuel",
+   "result": {
+    "evCostPer100km": {
+     "amount": "22.14",
+     "currency": "EGP"
+    },
+    "fuelCostPer100km": {
+     "amount": "103.13",
+     "currency": "EGP"
+    },
+    "differencePer100km": {
+     "amount": "80.99",
+     "currency": "EGP"
+    },
+    "savingPercent": 78.5,
+    "monthly": null,
+    "yearlyDifference": null,
+    "priceDate": "2026-09-01"
+   },
+   "formula": "EV cost per 100 km = consumption × price per kWh; fuel cost per 100 km = L/100 km × price per litre; difference = fuel − EV.",
+   "steps": [
+    {
+     "key": "costPer100km",
+     "label": "Cost per 100 km",
+     "expression": "16.4 kWh × 1.35 EGP = 22.14 EGP",
+     "value": "22.14",
+     "unit": "EGP"
+    },
+    {
+     "key": "fuelCostPer100km",
+     "label": "Fuel cost per 100 km",
+     "expression": "7.5 L × 13.75 EGP = 103.13 EGP",
+     "value": "103.13",
+     "unit": "EGP"
+    },
+    {
+     "key": "differencePer100km",
+     "label": "Difference per 100 km",
+     "expression": "103.13 − 22.14 = 80.99 EGP",
+     "value": "80.99",
+     "unit": "EGP"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "consumptionKwhPer100km",
+     "label": "Consumption",
+     "value": 16.4,
+     "unit": "kWh/100km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "consumptionBasis",
+     "label": "Consumption basis",
+     "value": "grid",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "value": "EGP",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "Price date",
+     "value": "2026-09-01",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "electricityPricePerKwh",
+     "label": "Main electricity price",
+     "value": "1.35",
+     "unit": "EGP/kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fuelConsumptionLPer100km",
+     "label": "Fuel consumption",
+     "value": 7.5,
+     "unit": "L/100km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fuelPricePerLiter",
+     "label": "Fuel price per litre",
+     "value": "13.75",
+     "unit": "EGP/L",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "ENERGY_ONLY",
+     "message": "This compares energy cost only, not maintenance, insurance or depreciation."
+    }
+   ],
+   "confidence": "high",
+   "units": {
+    "consumption": "kWh/100km",
+    "fuel": "L/100km",
+    "money": "EGP"
+   },
+   "disclaimer": "An estimate computed only from the entered values and the assumptions shown; not a measurement or a guarantee."
+  }
+ },
+ {
+  "calc": "vs-fuel",
+  "lang": "ar",
+  "input": {
+   "consumptionKwhPer100km": 16.4,
+   "electricityPricePerKwh": 1.35,
+   "currency": "EGP",
+   "priceDate": "2026-09-01",
+   "fuelConsumptionLPer100km": 7.5,
+   "fuelPricePerLiter": 13.75
+  },
+  "prov": null,
+  "output": {
+   "calculator": "vs-fuel",
+   "result": {
+    "evCostPer100km": {
+     "amount": "22.14",
+     "currency": "EGP"
+    },
+    "fuelCostPer100km": {
+     "amount": "103.13",
+     "currency": "EGP"
+    },
+    "differencePer100km": {
+     "amount": "80.99",
+     "currency": "EGP"
+    },
+    "savingPercent": 78.5,
+    "monthly": null,
+    "yearlyDifference": null,
+    "priceDate": "2026-09-01"
+   },
+   "formula": "تكلفة الكهرباء لكل 100 كم = الاستهلاك × سعر الكيلوواط ساعة؛ تكلفة الوقود لكل 100 كم = لتر/100 كم × سعر اللتر؛ الفرق = الوقود − الكهرباء.",
+   "steps": [
+    {
+     "key": "costPer100km",
+     "label": "تكلفة كل 100 كم",
+     "expression": "16.4 kWh × 1.35 EGP = 22.14 EGP",
+     "value": "22.14",
+     "unit": "EGP"
+    },
+    {
+     "key": "fuelCostPer100km",
+     "label": "تكلفة الوقود لكل 100 كم",
+     "expression": "7.5 L × 13.75 EGP = 103.13 EGP",
+     "value": "103.13",
+     "unit": "EGP"
+    },
+    {
+     "key": "differencePer100km",
+     "label": "الفرق لكل 100 كم",
+     "expression": "103.13 − 22.14 = 80.99 EGP",
+     "value": "80.99",
+     "unit": "EGP"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "consumptionKwhPer100km",
+     "label": "الاستهلاك",
+     "value": 16.4,
+     "unit": "kWh/100km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "consumptionBasis",
+     "label": "أساس الاستهلاك",
+     "value": "grid",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "currency",
+     "label": "العملة",
+     "value": "EGP",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "تاريخ السعر",
+     "value": "2026-09-01",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "electricityPricePerKwh",
+     "label": "سعر الكهرباء الأساسي",
+     "value": "1.35",
+     "unit": "EGP/kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fuelConsumptionLPer100km",
+     "label": "استهلاك الوقود",
+     "value": 7.5,
+     "unit": "L/100km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fuelPricePerLiter",
+     "label": "سعر لتر الوقود",
+     "value": "13.75",
+     "unit": "EGP/L",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "ENERGY_ONLY",
+     "message": "المقارنة تشمل تكلفة الطاقة فقط، وليس الصيانة أو التأمين أو الإهلاك."
+    }
+   ],
+   "confidence": "high",
+   "units": {
+    "consumption": "kWh/100km",
+    "fuel": "L/100km",
+    "money": "EGP"
+   },
+   "disclaimer": "نتيجة تقديرية محسوبة من القيم المُدخلة والافتراضات الظاهرة فقط، وليست قياسًا أو ضمانًا."
+  }
+ },
+ {
+  "calc": "vs-fuel",
+  "lang": "en",
+  "input": {
+   "consumptionKwhPer100km": 16.4,
+   "electricityPricePerKwh": 1.35,
+   "currency": "EGP",
+   "priceDate": "2026-09-01",
+   "fuelConsumptionLPer100km": 7.5,
+   "fuelPricePerLiter": 0,
+   "kmPerDay": 30
+  },
+  "prov": null,
+  "output": {
+   "calculator": "vs-fuel",
+   "result": {
+    "evCostPer100km": {
+     "amount": "22.14",
+     "currency": "EGP"
+    },
+    "fuelCostPer100km": {
+     "amount": "0.00",
+     "currency": "EGP"
+    },
+    "differencePer100km": {
+     "amount": "-22.14",
+     "currency": "EGP"
+    },
+    "savingPercent": null,
+    "monthly": {
+     "km": 913.1,
+     "ev": {
+      "amount": "202.17",
+      "currency": "EGP"
+     },
+     "fuel": {
+      "amount": "0.00",
+      "currency": "EGP"
+     },
+     "difference": {
+      "amount": "-202.17",
+      "currency": "EGP"
+     }
+    },
+    "yearlyDifference": {
+     "amount": "-2425.99",
+     "currency": "EGP"
+    },
+    "priceDate": "2026-09-01"
+   },
+   "formula": "EV cost per 100 km = consumption × price per kWh; fuel cost per 100 km = L/100 km × price per litre; difference = fuel − EV.",
+   "steps": [
+    {
+     "key": "costPer100km",
+     "label": "Cost per 100 km",
+     "expression": "16.4 kWh × 1.35 EGP = 22.14 EGP",
+     "value": "22.14",
+     "unit": "EGP"
+    },
+    {
+     "key": "fuelCostPer100km",
+     "label": "Fuel cost per 100 km",
+     "expression": "7.5 L × 0 EGP = 0.00 EGP",
+     "value": "0.00",
+     "unit": "EGP"
+    },
+    {
+     "key": "differencePer100km",
+     "label": "Difference per 100 km",
+     "expression": "0.00 − 22.14 = -22.14 EGP",
+     "value": "-22.14",
+     "unit": "EGP"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "consumptionKwhPer100km",
+     "label": "Consumption",
+     "value": 16.4,
+     "unit": "kWh/100km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "consumptionBasis",
+     "label": "Consumption basis",
+     "value": "grid",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "value": "EGP",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "Price date",
+     "value": "2026-09-01",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "electricityPricePerKwh",
+     "label": "Main electricity price",
+     "value": "1.35",
+     "unit": "EGP/kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fuelConsumptionLPer100km",
+     "label": "Fuel consumption",
+     "value": 7.5,
+     "unit": "L/100km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fuelPricePerLiter",
+     "label": "Fuel price per litre",
+     "value": "0",
+     "unit": "EGP/L",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "kmPerMonth",
+     "label": "Distance per month",
+     "value": 913.1,
+     "unit": "km",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "ENERGY_ONLY",
+     "message": "This compares energy cost only, not maintenance, insurance or depreciation."
+    }
+   ],
+   "confidence": "high",
+   "units": {
+    "consumption": "kWh/100km",
+    "fuel": "L/100km",
+    "money": "EGP"
+   },
+   "disclaimer": "An estimate computed only from the entered values and the assumptions shown; not a measurement or a guarantee."
+  }
+ },
+ {
+  "calc": "vs-fuel",
+  "lang": "ar",
+  "input": {
+   "consumptionKwhPer100km": 16.4,
+   "electricityPricePerKwh": 1.35,
+   "currency": "EGP",
+   "priceDate": "2026-09-01",
+   "fuelConsumptionLPer100km": 7.5,
+   "fuelPricePerLiter": 0,
+   "kmPerDay": 30
+  },
+  "prov": null,
+  "output": {
+   "calculator": "vs-fuel",
+   "result": {
+    "evCostPer100km": {
+     "amount": "22.14",
+     "currency": "EGP"
+    },
+    "fuelCostPer100km": {
+     "amount": "0.00",
+     "currency": "EGP"
+    },
+    "differencePer100km": {
+     "amount": "-22.14",
+     "currency": "EGP"
+    },
+    "savingPercent": null,
+    "monthly": {
+     "km": 913.1,
+     "ev": {
+      "amount": "202.17",
+      "currency": "EGP"
+     },
+     "fuel": {
+      "amount": "0.00",
+      "currency": "EGP"
+     },
+     "difference": {
+      "amount": "-202.17",
+      "currency": "EGP"
+     }
+    },
+    "yearlyDifference": {
+     "amount": "-2425.99",
+     "currency": "EGP"
+    },
+    "priceDate": "2026-09-01"
+   },
+   "formula": "تكلفة الكهرباء لكل 100 كم = الاستهلاك × سعر الكيلوواط ساعة؛ تكلفة الوقود لكل 100 كم = لتر/100 كم × سعر اللتر؛ الفرق = الوقود − الكهرباء.",
+   "steps": [
+    {
+     "key": "costPer100km",
+     "label": "تكلفة كل 100 كم",
+     "expression": "16.4 kWh × 1.35 EGP = 22.14 EGP",
+     "value": "22.14",
+     "unit": "EGP"
+    },
+    {
+     "key": "fuelCostPer100km",
+     "label": "تكلفة الوقود لكل 100 كم",
+     "expression": "7.5 L × 0 EGP = 0.00 EGP",
+     "value": "0.00",
+     "unit": "EGP"
+    },
+    {
+     "key": "differencePer100km",
+     "label": "الفرق لكل 100 كم",
+     "expression": "0.00 − 22.14 = -22.14 EGP",
+     "value": "-22.14",
+     "unit": "EGP"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "consumptionKwhPer100km",
+     "label": "الاستهلاك",
+     "value": 16.4,
+     "unit": "kWh/100km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "consumptionBasis",
+     "label": "أساس الاستهلاك",
+     "value": "grid",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "currency",
+     "label": "العملة",
+     "value": "EGP",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "تاريخ السعر",
+     "value": "2026-09-01",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "electricityPricePerKwh",
+     "label": "سعر الكهرباء الأساسي",
+     "value": "1.35",
+     "unit": "EGP/kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fuelConsumptionLPer100km",
+     "label": "استهلاك الوقود",
+     "value": 7.5,
+     "unit": "L/100km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fuelPricePerLiter",
+     "label": "سعر لتر الوقود",
+     "value": "0",
+     "unit": "EGP/L",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "kmPerMonth",
+     "label": "المسافة الشهرية",
+     "value": 913.1,
+     "unit": "km",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "ENERGY_ONLY",
+     "message": "المقارنة تشمل تكلفة الطاقة فقط، وليس الصيانة أو التأمين أو الإهلاك."
+    }
+   ],
+   "confidence": "high",
+   "units": {
+    "consumption": "kWh/100km",
+    "fuel": "L/100km",
+    "money": "EGP"
+   },
+   "disclaimer": "نتيجة تقديرية محسوبة من القيم المُدخلة والافتراضات الظاهرة فقط، وليست قياسًا أو ضمانًا."
+  }
+ },
+ {
+  "calc": "vs-fuel",
+  "lang": "en",
+  "input": {
+   "consumptionKwhPer100km": 20,
+   "electricityPricePerKwh": 5,
+   "currency": "EGP",
+   "fuelConsumptionLPer100km": 5,
+   "fuelPricePerLiter": 10,
+   "kmPerMonth": 1000
+  },
+  "prov": null,
+  "output": {
+   "calculator": "vs-fuel",
+   "result": {
+    "evCostPer100km": {
+     "amount": "100.00",
+     "currency": "EGP"
+    },
+    "fuelCostPer100km": {
+     "amount": "50.00",
+     "currency": "EGP"
+    },
+    "differencePer100km": {
+     "amount": "-50.00",
+     "currency": "EGP"
+    },
+    "savingPercent": -100,
+    "monthly": {
+     "km": 1000,
+     "ev": {
+      "amount": "1000.00",
+      "currency": "EGP"
+     },
+     "fuel": {
+      "amount": "500.00",
+      "currency": "EGP"
+     },
+     "difference": {
+      "amount": "-500.00",
+      "currency": "EGP"
+     }
+    },
+    "yearlyDifference": {
+     "amount": "-6000.00",
+     "currency": "EGP"
+    },
+    "priceDate": null
+   },
+   "formula": "EV cost per 100 km = consumption × price per kWh; fuel cost per 100 km = L/100 km × price per litre; difference = fuel − EV.",
+   "steps": [
+    {
+     "key": "costPer100km",
+     "label": "Cost per 100 km",
+     "expression": "20 kWh × 5 EGP = 100.00 EGP",
+     "value": "100.00",
+     "unit": "EGP"
+    },
+    {
+     "key": "fuelCostPer100km",
+     "label": "Fuel cost per 100 km",
+     "expression": "5 L × 10 EGP = 50.00 EGP",
+     "value": "50.00",
+     "unit": "EGP"
+    },
+    {
+     "key": "differencePer100km",
+     "label": "Difference per 100 km",
+     "expression": "50.00 − 100.00 = -50.00 EGP",
+     "value": "-50.00",
+     "unit": "EGP"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "consumptionKwhPer100km",
+     "label": "Consumption",
+     "value": 20,
+     "unit": "kWh/100km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "consumptionBasis",
+     "label": "Consumption basis",
+     "value": "grid",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "value": "EGP",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "Price date",
+     "value": null,
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "electricityPricePerKwh",
+     "label": "Main electricity price",
+     "value": "5",
+     "unit": "EGP/kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fuelConsumptionLPer100km",
+     "label": "Fuel consumption",
+     "value": 5,
+     "unit": "L/100km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fuelPricePerLiter",
+     "label": "Fuel price per litre",
+     "value": "10",
+     "unit": "EGP/L",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "kmPerMonth",
+     "label": "Distance per month",
+     "value": 1000,
+     "unit": "km",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "PRICE_DATE_MISSING",
+     "message": "No price date was given; make sure the entered prices are up to date."
+    },
+    {
+     "code": "ENERGY_ONLY",
+     "message": "This compares energy cost only, not maintenance, insurance or depreciation."
+    }
+   ],
+   "confidence": "high",
+   "units": {
+    "consumption": "kWh/100km",
+    "fuel": "L/100km",
+    "money": "EGP"
+   },
+   "disclaimer": "An estimate computed only from the entered values and the assumptions shown; not a measurement or a guarantee."
+  }
+ },
+ {
+  "calc": "vs-fuel",
+  "lang": "ar",
+  "input": {
+   "consumptionKwhPer100km": 20,
+   "electricityPricePerKwh": 5,
+   "currency": "EGP",
+   "fuelConsumptionLPer100km": 5,
+   "fuelPricePerLiter": 10,
+   "kmPerMonth": 1000
+  },
+  "prov": null,
+  "output": {
+   "calculator": "vs-fuel",
+   "result": {
+    "evCostPer100km": {
+     "amount": "100.00",
+     "currency": "EGP"
+    },
+    "fuelCostPer100km": {
+     "amount": "50.00",
+     "currency": "EGP"
+    },
+    "differencePer100km": {
+     "amount": "-50.00",
+     "currency": "EGP"
+    },
+    "savingPercent": -100,
+    "monthly": {
+     "km": 1000,
+     "ev": {
+      "amount": "1000.00",
+      "currency": "EGP"
+     },
+     "fuel": {
+      "amount": "500.00",
+      "currency": "EGP"
+     },
+     "difference": {
+      "amount": "-500.00",
+      "currency": "EGP"
+     }
+    },
+    "yearlyDifference": {
+     "amount": "-6000.00",
+     "currency": "EGP"
+    },
+    "priceDate": null
+   },
+   "formula": "تكلفة الكهرباء لكل 100 كم = الاستهلاك × سعر الكيلوواط ساعة؛ تكلفة الوقود لكل 100 كم = لتر/100 كم × سعر اللتر؛ الفرق = الوقود − الكهرباء.",
+   "steps": [
+    {
+     "key": "costPer100km",
+     "label": "تكلفة كل 100 كم",
+     "expression": "20 kWh × 5 EGP = 100.00 EGP",
+     "value": "100.00",
+     "unit": "EGP"
+    },
+    {
+     "key": "fuelCostPer100km",
+     "label": "تكلفة الوقود لكل 100 كم",
+     "expression": "5 L × 10 EGP = 50.00 EGP",
+     "value": "50.00",
+     "unit": "EGP"
+    },
+    {
+     "key": "differencePer100km",
+     "label": "الفرق لكل 100 كم",
+     "expression": "50.00 − 100.00 = -50.00 EGP",
+     "value": "-50.00",
+     "unit": "EGP"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "consumptionKwhPer100km",
+     "label": "الاستهلاك",
+     "value": 20,
+     "unit": "kWh/100km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "consumptionBasis",
+     "label": "أساس الاستهلاك",
+     "value": "grid",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "currency",
+     "label": "العملة",
+     "value": "EGP",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "تاريخ السعر",
+     "value": null,
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "electricityPricePerKwh",
+     "label": "سعر الكهرباء الأساسي",
+     "value": "5",
+     "unit": "EGP/kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fuelConsumptionLPer100km",
+     "label": "استهلاك الوقود",
+     "value": 5,
+     "unit": "L/100km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fuelPricePerLiter",
+     "label": "سعر لتر الوقود",
+     "value": "10",
+     "unit": "EGP/L",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "kmPerMonth",
+     "label": "المسافة الشهرية",
+     "value": 1000,
+     "unit": "km",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "PRICE_DATE_MISSING",
+     "message": "لم يُحدَّد تاريخ السعر؛ تأكد أن الأسعار المُدخلة حديثة."
+    },
+    {
+     "code": "ENERGY_ONLY",
+     "message": "المقارنة تشمل تكلفة الطاقة فقط، وليس الصيانة أو التأمين أو الإهلاك."
+    }
+   ],
+   "confidence": "high",
+   "units": {
+    "consumption": "kWh/100km",
+    "fuel": "L/100km",
+    "money": "EGP"
+   },
+   "disclaimer": "نتيجة تقديرية محسوبة من القيم المُدخلة والافتراضات الظاهرة فقط، وليست قياسًا أو ضمانًا."
+  }
+ },
+ {
+  "calc": "vs-fuel",
+  "lang": "en",
+  "input": {
+   "consumptionKwhPer100km": 16.4,
+   "electricityPricePerKwh": 1.35,
+   "currency": "EGP",
+   "priceDate": "2026-09-01"
+  },
+  "prov": null,
+  "problems": [
+   {
+    "field": "fuelConsumptionLPer100km",
+    "rule": "required",
+    "message": "This value is required."
+   },
+   {
+    "field": "fuelPricePerLiter",
+    "rule": "required",
+    "message": "This value is required."
+   }
+  ]
+ },
+ {
+  "calc": "vs-fuel",
+  "lang": "ar",
+  "input": {
+   "consumptionKwhPer100km": 16.4,
+   "electricityPricePerKwh": 1.35,
+   "currency": "EGP",
+   "priceDate": "2026-09-01"
+  },
+  "prov": null,
+  "problems": [
+   {
+    "field": "fuelConsumptionLPer100km",
+    "rule": "required",
+    "message": "هذه القيمة مطلوبة."
+   },
+   {
+    "field": "fuelPricePerLiter",
+    "rule": "required",
+    "message": "هذه القيمة مطلوبة."
+   }
+  ]
+ },
+ {
+  "calc": "tco",
+  "lang": "en",
+  "input": {
+   "consumptionKwhPer100km": 16.4,
+   "electricityPricePerKwh": 1.35,
+   "currency": "EGP",
+   "priceDate": "2026-09-01",
+   "years": 5,
+   "kmPerYear": 15000,
+   "ev": {
+    "purchasePrice": 1850000,
+    "incentives": 50000,
+    "residualValue": 900000,
+    "insurancePerYear": 45000,
+    "maintenancePerYear": 4000,
+    "oneOffCosts": 35000
+   },
+   "fuelCar": {
+    "purchasePrice": 1300000,
+    "residualValue": 650000,
+    "insurancePerYear": 30000,
+    "maintenancePerYear": 12000,
+    "fuelConsumptionLPer100km": 7.2,
+    "fuelPricePerLiter": 15.25
+   }
+  },
+  "prov": null,
+  "output": {
+   "calculator": "tco",
+   "result": {
+    "years": 5,
+    "kmPerYear": 15000,
+    "totalKm": 75000,
+    "ev": {
+     "purchase": {
+      "amount": "1850000.00",
+      "currency": "EGP"
+     },
+     "incentives": {
+      "amount": "50000.00",
+      "currency": "EGP"
+     },
+     "residualValue": {
+      "amount": "900000.00",
+      "currency": "EGP"
+     },
+     "energy": {
+      "amount": "16605.00",
+      "currency": "EGP"
+     },
+     "insurance": {
+      "amount": "225000.00",
+      "currency": "EGP"
+     },
+     "maintenance": {
+      "amount": "20000.00",
+      "currency": "EGP"
+     },
+     "fees": null,
+     "oneOff": {
+      "amount": "35000.00",
+      "currency": "EGP"
+     },
+     "nonEnergy": {
+      "amount": "1180000.00",
+      "currency": "EGP"
+     },
+     "total": {
+      "amount": "1196605.00",
+      "currency": "EGP"
+     },
+     "perKm": {
+      "amount": "15.9547",
+      "currency": "EGP"
+     },
+     "perMonth": {
+      "amount": "19943.42",
+      "currency": "EGP"
+     },
+     "excluded": [
+      "feesPerYear"
+     ]
+    },
+    "fuelCar": {
+     "purchase": {
+      "amount": "1300000.00",
+      "currency": "EGP"
+     },
+     "incentives": null,
+     "residualValue": {
+      "amount": "650000.00",
+      "currency": "EGP"
+     },
+     "energy": {
+      "amount": "82350.00",
+      "currency": "EGP"
+     },
+     "insurance": {
+      "amount": "150000.00",
+      "currency": "EGP"
+     },
+     "maintenance": {
+      "amount": "60000.00",
+      "currency": "EGP"
+     },
+     "fees": null,
+     "oneOff": null,
+     "nonEnergy": {
+      "amount": "860000.00",
+      "currency": "EGP"
+     },
+     "total": {
+      "amount": "942350.00",
+      "currency": "EGP"
+     },
+     "perKm": {
+      "amount": "12.5647",
+      "currency": "EGP"
+     },
+     "perMonth": {
+      "amount": "15705.83",
+      "currency": "EGP"
+     },
+     "excluded": [
+      "incentives",
+      "feesPerYear",
+      "oneOffCosts"
+     ]
+    },
+    "difference": {
+     "amount": "-254255.00",
+     "currency": "EGP"
+    },
+    "priceDate": "2026-09-01"
+   },
+   "formula": "Total = purchase − incentives − residual value + energy cost + (insurance + maintenance + fees) × years + one-off costs.",
+   "steps": [
+    {
+     "key": "ev.energy",
+     "label": "EV energy cost",
+     "expression": "16605.00 EGP",
+     "value": "16605.00",
+     "unit": "EGP"
+    },
+    {
+     "key": "ev.total",
+     "label": "EV total cost",
+     "expression": "1850000.00 − 50000.00 − 900000.00 + 225000.00 + 20000.00 + 35000.00 + 16605.00 = 1196605.00 EGP",
+     "value": "1196605.00",
+     "unit": "EGP"
+    },
+    {
+     "key": "fuelCar.energy",
+     "label": "Fuel car fuel cost",
+     "expression": "82350.00 EGP",
+     "value": "82350.00",
+     "unit": "EGP"
+    },
+    {
+     "key": "fuelCar.total",
+     "label": "Fuel car total cost",
+     "expression": "1300000.00 − 650000.00 + 150000.00 + 60000.00 + 82350.00 = 942350.00 EGP",
+     "value": "942350.00",
+     "unit": "EGP"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "years",
+     "label": "Ownership period",
+     "value": 5,
+     "unit": "years",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "kmPerYear",
+     "label": "Distance per year",
+     "value": 15000,
+     "unit": "km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "constantPrices",
+     "label": "Prices constant over the period",
+     "value": true,
+     "unit": null,
+     "origin": "default",
+     "note": null
+    },
+    {
+     "key": "noFinancing",
+     "label": "No financing or discounting",
+     "value": true,
+     "unit": null,
+     "origin": "default",
+     "note": null
+    },
+    {
+     "key": "consumptionKwhPer100km",
+     "label": "Consumption",
+     "value": 16.4,
+     "unit": "kWh/100km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "consumptionBasis",
+     "label": "Consumption basis",
+     "value": "grid",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "value": "EGP",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "Price date",
+     "value": "2026-09-01",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "electricityPricePerKwh",
+     "label": "Main electricity price",
+     "value": "1.35",
+     "unit": "EGP/kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fuelCar.fuelConsumptionLPer100km",
+     "label": "Fuel consumption",
+     "value": 7.2,
+     "unit": "L/100km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fuelCar.fuelPricePerLiter",
+     "label": "Fuel price per litre",
+     "value": "15.25",
+     "unit": "EGP/L",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "COMPONENTS_NOT_INCLUDED",
+     "message": "Items not entered and not included: feesPerYear, incentives, oneOffCosts."
+    }
+   ],
+   "confidence": "medium",
+   "units": {
+    "distance": "km",
+    "money": "EGP"
+   },
+   "disclaimer": "An estimate computed only from the entered values and the assumptions shown; not a measurement or a guarantee."
+  }
+ },
+ {
+  "calc": "tco",
+  "lang": "ar",
+  "input": {
+   "consumptionKwhPer100km": 16.4,
+   "electricityPricePerKwh": 1.35,
+   "currency": "EGP",
+   "priceDate": "2026-09-01",
+   "years": 5,
+   "kmPerYear": 15000,
+   "ev": {
+    "purchasePrice": 1850000,
+    "incentives": 50000,
+    "residualValue": 900000,
+    "insurancePerYear": 45000,
+    "maintenancePerYear": 4000,
+    "oneOffCosts": 35000
+   },
+   "fuelCar": {
+    "purchasePrice": 1300000,
+    "residualValue": 650000,
+    "insurancePerYear": 30000,
+    "maintenancePerYear": 12000,
+    "fuelConsumptionLPer100km": 7.2,
+    "fuelPricePerLiter": 15.25
+   }
+  },
+  "prov": null,
+  "output": {
+   "calculator": "tco",
+   "result": {
+    "years": 5,
+    "kmPerYear": 15000,
+    "totalKm": 75000,
+    "ev": {
+     "purchase": {
+      "amount": "1850000.00",
+      "currency": "EGP"
+     },
+     "incentives": {
+      "amount": "50000.00",
+      "currency": "EGP"
+     },
+     "residualValue": {
+      "amount": "900000.00",
+      "currency": "EGP"
+     },
+     "energy": {
+      "amount": "16605.00",
+      "currency": "EGP"
+     },
+     "insurance": {
+      "amount": "225000.00",
+      "currency": "EGP"
+     },
+     "maintenance": {
+      "amount": "20000.00",
+      "currency": "EGP"
+     },
+     "fees": null,
+     "oneOff": {
+      "amount": "35000.00",
+      "currency": "EGP"
+     },
+     "nonEnergy": {
+      "amount": "1180000.00",
+      "currency": "EGP"
+     },
+     "total": {
+      "amount": "1196605.00",
+      "currency": "EGP"
+     },
+     "perKm": {
+      "amount": "15.9547",
+      "currency": "EGP"
+     },
+     "perMonth": {
+      "amount": "19943.42",
+      "currency": "EGP"
+     },
+     "excluded": [
+      "feesPerYear"
+     ]
+    },
+    "fuelCar": {
+     "purchase": {
+      "amount": "1300000.00",
+      "currency": "EGP"
+     },
+     "incentives": null,
+     "residualValue": {
+      "amount": "650000.00",
+      "currency": "EGP"
+     },
+     "energy": {
+      "amount": "82350.00",
+      "currency": "EGP"
+     },
+     "insurance": {
+      "amount": "150000.00",
+      "currency": "EGP"
+     },
+     "maintenance": {
+      "amount": "60000.00",
+      "currency": "EGP"
+     },
+     "fees": null,
+     "oneOff": null,
+     "nonEnergy": {
+      "amount": "860000.00",
+      "currency": "EGP"
+     },
+     "total": {
+      "amount": "942350.00",
+      "currency": "EGP"
+     },
+     "perKm": {
+      "amount": "12.5647",
+      "currency": "EGP"
+     },
+     "perMonth": {
+      "amount": "15705.83",
+      "currency": "EGP"
+     },
+     "excluded": [
+      "incentives",
+      "feesPerYear",
+      "oneOffCosts"
+     ]
+    },
+    "difference": {
+     "amount": "-254255.00",
+     "currency": "EGP"
+    },
+    "priceDate": "2026-09-01"
+   },
+   "formula": "التكلفة الكلية = سعر الشراء − الحوافز − القيمة المتبقية + تكلفة الطاقة + (التأمين + الصيانة + الرسوم) × السنوات + التكاليف لمرة واحدة.",
+   "steps": [
+    {
+     "key": "ev.energy",
+     "label": "تكلفة طاقة السيارة الكهربائية",
+     "expression": "16605.00 EGP",
+     "value": "16605.00",
+     "unit": "EGP"
+    },
+    {
+     "key": "ev.total",
+     "label": "إجمالي تكلفة السيارة الكهربائية",
+     "expression": "1850000.00 − 50000.00 − 900000.00 + 225000.00 + 20000.00 + 35000.00 + 16605.00 = 1196605.00 EGP",
+     "value": "1196605.00",
+     "unit": "EGP"
+    },
+    {
+     "key": "fuelCar.energy",
+     "label": "تكلفة وقود سيارة الوقود",
+     "expression": "82350.00 EGP",
+     "value": "82350.00",
+     "unit": "EGP"
+    },
+    {
+     "key": "fuelCar.total",
+     "label": "إجمالي تكلفة سيارة الوقود",
+     "expression": "1300000.00 − 650000.00 + 150000.00 + 60000.00 + 82350.00 = 942350.00 EGP",
+     "value": "942350.00",
+     "unit": "EGP"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "years",
+     "label": "مدة الملكية",
+     "value": 5,
+     "unit": "years",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "kmPerYear",
+     "label": "المسافة السنوية",
+     "value": 15000,
+     "unit": "km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "constantPrices",
+     "label": "الأسعار ثابتة طوال المدة",
+     "value": true,
+     "unit": null,
+     "origin": "default",
+     "note": null
+    },
+    {
+     "key": "noFinancing",
+     "label": "بدون تمويل أو خصم زمني",
+     "value": true,
+     "unit": null,
+     "origin": "default",
+     "note": null
+    },
+    {
+     "key": "consumptionKwhPer100km",
+     "label": "الاستهلاك",
+     "value": 16.4,
+     "unit": "kWh/100km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "consumptionBasis",
+     "label": "أساس الاستهلاك",
+     "value": "grid",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "currency",
+     "label": "العملة",
+     "value": "EGP",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "تاريخ السعر",
+     "value": "2026-09-01",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "electricityPricePerKwh",
+     "label": "سعر الكهرباء الأساسي",
+     "value": "1.35",
+     "unit": "EGP/kWh",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fuelCar.fuelConsumptionLPer100km",
+     "label": "استهلاك الوقود",
+     "value": 7.2,
+     "unit": "L/100km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "fuelCar.fuelPricePerLiter",
+     "label": "سعر لتر الوقود",
+     "value": "15.25",
+     "unit": "EGP/L",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "COMPONENTS_NOT_INCLUDED",
+     "message": "بنود لم تُدخل ولم تُحتسب: feesPerYear، incentives، oneOffCosts."
+    }
+   ],
+   "confidence": "medium",
+   "units": {
+    "distance": "km",
+    "money": "EGP"
+   },
+   "disclaimer": "نتيجة تقديرية محسوبة من القيم المُدخلة والافتراضات الظاهرة فقط، وليست قياسًا أو ضمانًا."
+  }
+ },
+ {
+  "calc": "tco",
+  "lang": "en",
+  "input": {
+   "consumptionKwhPer100km": 16.4,
+   "electricityPricePerKwh": 1.35,
+   "currency": "EGP",
+   "priceDate": "2026-09-01",
+   "years": 3,
+   "kmPerYear": 12345,
+   "ev": {
+    "purchasePrice": 999999.99
+   }
+  },
+  "prov": null,
+  "output": {
+   "calculator": "tco",
+   "result": {
+    "years": 3,
+    "kmPerYear": 12345,
+    "totalKm": 37035,
+    "ev": {
+     "purchase": {
+      "amount": "999999.99",
+      "currency": "EGP"
+     },
+     "incentives": null,
+     "residualValue": null,
+     "energy": {
+      "amount": "8199.55",
+      "currency": "EGP"
+     },
+     "insurance": null,
+     "maintenance": null,
+     "fees": null,
+     "oneOff": null,
+     "nonEnergy": {
+      "amount": "999999.99",
+      "currency": "EGP"
+     },
+     "total": {
+      "amount": "1008199.54",
+      "currency": "EGP"
+     },
+     "perKm": {
+      "amount": "27.2229",
+      "currency": "EGP"
+     },
+     "perMonth": {
+      "amount": "28005.54",
+      "currency": "EGP"
+     },
+     "excluded": [
+      "incentives",
+      "residualValue",
+      "insurancePerYear",
+      "maintenancePerYear",
+      "feesPerYear",
+      "oneOffCosts"
+     ]
+    },
+    "fuelCar": null,
+    "difference": null,
+    "priceDate": "2026-09-01"
+   },
+   "formula": "Total = purchase − incentives − residual value + energy cost + (insurance + maintenance + fees) × years + one-off costs.",
+   "steps": [
+    {
+     "key": "ev.energy",
+     "label": "EV energy cost",
+     "expression": "8199.55 EGP",
+     "value": "8199.55",
+     "unit": "EGP"
+    },
+    {
+     "key": "ev.total",
+     "label": "EV total cost",
+     "expression": "999999.99 + 8199.55 = 1008199.54 EGP",
+     "value": "1008199.54",
+     "unit": "EGP"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "years",
+     "label": "Ownership period",
+     "value": 3,
+     "unit": "years",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "kmPerYear",
+     "label": "Distance per year",
+     "value": 12345,
+     "unit": "km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "constantPrices",
+     "label": "Prices constant over the period",
+     "value": true,
+     "unit": null,
+     "origin": "default",
+     "note": null
+    },
+    {
+     "key": "noFinancing",
+     "label": "No financing or discounting",
+     "value": true,
+     "unit": null,
+     "origin": "default",
+     "note": null
+    },
+    {
+     "key": "consumptionKwhPer100km",
+     "label": "Consumption",
+     "value": 16.4,
+     "unit": "kWh/100km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "consumptionBasis",
+     "label": "Consumption basis",
+     "value": "grid",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "value": "EGP",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "Price date",
+     "value": "2026-09-01",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "electricityPricePerKwh",
+     "label": "Main electricity price",
+     "value": "1.35",
+     "unit": "EGP/kWh",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "COMPONENTS_NOT_INCLUDED",
+     "message": "Items not entered and not included: incentives, residualValue, insurancePerYear, maintenancePerYear, feesPerYear, oneOffCosts."
+    }
+   ],
+   "confidence": "medium",
+   "units": {
+    "distance": "km",
+    "money": "EGP"
+   },
+   "disclaimer": "An estimate computed only from the entered values and the assumptions shown; not a measurement or a guarantee."
+  }
+ },
+ {
+  "calc": "tco",
+  "lang": "ar",
+  "input": {
+   "consumptionKwhPer100km": 16.4,
+   "electricityPricePerKwh": 1.35,
+   "currency": "EGP",
+   "priceDate": "2026-09-01",
+   "years": 3,
+   "kmPerYear": 12345,
+   "ev": {
+    "purchasePrice": 999999.99
+   }
+  },
+  "prov": null,
+  "output": {
+   "calculator": "tco",
+   "result": {
+    "years": 3,
+    "kmPerYear": 12345,
+    "totalKm": 37035,
+    "ev": {
+     "purchase": {
+      "amount": "999999.99",
+      "currency": "EGP"
+     },
+     "incentives": null,
+     "residualValue": null,
+     "energy": {
+      "amount": "8199.55",
+      "currency": "EGP"
+     },
+     "insurance": null,
+     "maintenance": null,
+     "fees": null,
+     "oneOff": null,
+     "nonEnergy": {
+      "amount": "999999.99",
+      "currency": "EGP"
+     },
+     "total": {
+      "amount": "1008199.54",
+      "currency": "EGP"
+     },
+     "perKm": {
+      "amount": "27.2229",
+      "currency": "EGP"
+     },
+     "perMonth": {
+      "amount": "28005.54",
+      "currency": "EGP"
+     },
+     "excluded": [
+      "incentives",
+      "residualValue",
+      "insurancePerYear",
+      "maintenancePerYear",
+      "feesPerYear",
+      "oneOffCosts"
+     ]
+    },
+    "fuelCar": null,
+    "difference": null,
+    "priceDate": "2026-09-01"
+   },
+   "formula": "التكلفة الكلية = سعر الشراء − الحوافز − القيمة المتبقية + تكلفة الطاقة + (التأمين + الصيانة + الرسوم) × السنوات + التكاليف لمرة واحدة.",
+   "steps": [
+    {
+     "key": "ev.energy",
+     "label": "تكلفة طاقة السيارة الكهربائية",
+     "expression": "8199.55 EGP",
+     "value": "8199.55",
+     "unit": "EGP"
+    },
+    {
+     "key": "ev.total",
+     "label": "إجمالي تكلفة السيارة الكهربائية",
+     "expression": "999999.99 + 8199.55 = 1008199.54 EGP",
+     "value": "1008199.54",
+     "unit": "EGP"
+    }
+   ],
+   "assumptions": [
+    {
+     "key": "years",
+     "label": "مدة الملكية",
+     "value": 3,
+     "unit": "years",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "kmPerYear",
+     "label": "المسافة السنوية",
+     "value": 12345,
+     "unit": "km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "constantPrices",
+     "label": "الأسعار ثابتة طوال المدة",
+     "value": true,
+     "unit": null,
+     "origin": "default",
+     "note": null
+    },
+    {
+     "key": "noFinancing",
+     "label": "بدون تمويل أو خصم زمني",
+     "value": true,
+     "unit": null,
+     "origin": "default",
+     "note": null
+    },
+    {
+     "key": "consumptionKwhPer100km",
+     "label": "الاستهلاك",
+     "value": 16.4,
+     "unit": "kWh/100km",
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "consumptionBasis",
+     "label": "أساس الاستهلاك",
+     "value": "grid",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "currency",
+     "label": "العملة",
+     "value": "EGP",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "priceDate",
+     "label": "تاريخ السعر",
+     "value": "2026-09-01",
+     "unit": null,
+     "origin": "user",
+     "note": null
+    },
+    {
+     "key": "electricityPricePerKwh",
+     "label": "سعر الكهرباء الأساسي",
+     "value": "1.35",
+     "unit": "EGP/kWh",
+     "origin": "user",
+     "note": null
+    }
+   ],
+   "warnings": [
+    {
+     "code": "COMPONENTS_NOT_INCLUDED",
+     "message": "بنود لم تُدخل ولم تُحتسب: incentives، residualValue، insurancePerYear، maintenancePerYear، feesPerYear، oneOffCosts."
+    }
+   ],
+   "confidence": "medium",
+   "units": {
+    "distance": "km",
+    "money": "EGP"
+   },
+   "disclaimer": "نتيجة تقديرية محسوبة من القيم المُدخلة والافتراضات الظاهرة فقط، وليست قياسًا أو ضمانًا."
+  }
+ },
+ {
+  "calc": "tco",
+  "lang": "en",
+  "input": {
+   "consumptionKwhPer100km": 16.4,
+   "electricityPricePerKwh": 1.35,
+   "currency": "EGP",
+   "priceDate": "2026-09-01",
+   "years": 0,
+   "kmPerYear": -1,
+   "ev": {},
+   "fuelCar": {
+    "purchasePrice": 5
+   }
+  },
+  "prov": null,
+  "problems": [
+   {
+    "field": "years",
+    "rule": "notZero",
+    "message": "Must be greater than zero."
+   },
+   {
+    "field": "kmPerYear",
+    "rule": "positive",
+    "message": "Must be greater than zero."
+   },
+   {
+    "field": "ev.purchasePrice",
+    "rule": "required",
+    "message": "This value is required."
+   },
+   {
+    "field": "fuelCar.fuelConsumptionLPer100km",
+    "rule": "required",
+    "message": "This value is required."
+   },
+   {
+    "field": "fuelCar.fuelPricePerLiter",
+    "rule": "required",
+    "message": "This value is required."
+   }
+  ]
+ },
+ {
+  "calc": "tco",
+  "lang": "ar",
+  "input": {
+   "consumptionKwhPer100km": 16.4,
+   "electricityPricePerKwh": 1.35,
+   "currency": "EGP",
+   "priceDate": "2026-09-01",
+   "years": 0,
+   "kmPerYear": -1,
+   "ev": {},
+   "fuelCar": {
+    "purchasePrice": 5
+   }
+  },
+  "prov": null,
+  "problems": [
+   {
+    "field": "years",
+    "rule": "notZero",
+    "message": "يجب أن تكون القيمة أكبر من صفر."
+   },
+   {
+    "field": "kmPerYear",
+    "rule": "positive",
+    "message": "يجب أن تكون القيمة أكبر من صفر."
+   },
+   {
+    "field": "ev.purchasePrice",
+    "rule": "required",
+    "message": "هذه القيمة مطلوبة."
+   },
+   {
+    "field": "fuelCar.fuelConsumptionLPer100km",
+    "rule": "required",
+    "message": "هذه القيمة مطلوبة."
+   },
+   {
+    "field": "fuelCar.fuelPricePerLiter",
+    "rule": "required",
+    "message": "هذه القيمة مطلوبة."
+   }
+  ]
+ }
+]

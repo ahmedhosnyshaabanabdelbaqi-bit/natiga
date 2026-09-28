@@ -63,7 +63,17 @@ class StatTile extends StatelessWidget {
             ),
             SizedBox(height: dense ? AppSpacing.xs : AppSpacing.sm),
           ],
-          Text(has ? v : l10n.commonNotAvailable, style: valueStyle),
+          // At normal text sizes a long value ("18.3 كيلوواط ساعة") shrinks a
+          // little to stay on one line instead of orphaning its unit; at large
+          // sizes it wraps (tiles are full-width there).
+          if (context.textScale <= 1.3)
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: AlignmentDirectional.centerStart,
+              child: Text(has ? v : l10n.commonNotAvailable, style: valueStyle, maxLines: 1),
+            )
+          else
+            Text(has ? v : l10n.commonNotAvailable, style: valueStyle),
           const SizedBox(height: 2),
           Text(label, style: theme.textTheme.labelMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
           if (qualifier != null && qualifier!.trim().isNotEmpty) ...[
@@ -96,7 +106,8 @@ class StatTile extends StatelessWidget {
 }
 
 /// Row of [StatTile]s that wraps onto more lines at large text sizes instead
-/// of overflowing. Each tile gets at least [minTileWidth].
+/// of overflowing. Each tile gets at least [minTileWidth]; tiles of an
+/// incomplete last line stretch to fill it.
 class StatTileRow extends StatelessWidget {
   const StatTileRow({super.key, required this.tiles, this.minTileWidth = 104, this.spacing = AppSpacing.sm});
 
@@ -110,11 +121,18 @@ class StatTileRow extends StatelessWidget {
       builder: (context, constraints) {
         final scaledMin = minTileWidth * context.textScale.clamp(1.0, 2.0);
         final perRow = ((constraints.maxWidth + spacing) / (scaledMin + spacing)).floor().clamp(1, tiles.length);
-        final width = (constraints.maxWidth - spacing * (perRow - 1)) / perRow;
+        double widthFor(int count) => (constraints.maxWidth - spacing * (count - 1)) / count;
+        // Tiles of an incomplete last row share its full width, so a single
+        // tile never sits alone next to an empty gap.
+        final lastRow = tiles.length % perRow;
+        final firstOfLast = tiles.length - lastRow;
         return Wrap(
           spacing: spacing,
           runSpacing: spacing,
-          children: [for (final t in tiles) SizedBox(width: width, child: t)],
+          children: [
+            for (var i = 0; i < tiles.length; i++)
+              SizedBox(width: widthFor(lastRow != 0 && i >= firstOfLast ? lastRow : perRow), child: tiles[i]),
+          ],
         );
       },
     );

@@ -1,4 +1,4 @@
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import type { SupportedLanguage } from '../../config/app-config';
 import { AppException } from '../../common/errors/app.exception';
 import { toPageRequest } from '../../common/http/pagination';
@@ -6,7 +6,7 @@ import { paginated, type PaginatedResponse } from '../../common/http/responses';
 import { Decimal } from '../../common/money/money';
 import { Prisma } from '../../generated/prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
-import { ROUTING_PROVIDER, type RouteResult, type RoutingProvider } from '../../providers';
+import type { RouteResult } from '../../providers';
 import { VehicleDataService, type VehicleData } from '../calculators/vehicle-data.service';
 import { appError, fieldError, notFound } from '../garage/common/personal-errors';
 import { connectorAvailability } from '../stations/common/availability';
@@ -15,6 +15,7 @@ import { evaluateOpenNow, type OpeningHours } from '../stations/common/opening-h
 import { pick } from '../stations/common/values';
 import { cumulativeKm, projectOnLine, simplify } from './planner/geo';
 import { planStops, type PlannedStop, type PlannerCandidate } from './planner/plan';
+import { RoutingGuardService } from './routing-guard.service';
 import type { ListTripsQueryDto, PlanTripDto } from './trips.dto';
 
 export const TRIP_DEFAULTS = {
@@ -74,7 +75,7 @@ export class TripsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly vehicles: VehicleDataService,
-    @Inject(ROUTING_PROVIDER) private readonly routing: RoutingProvider,
+    private readonly routing: RoutingGuardService,
   ) {}
 
   private static refuse(code: string, message: { ar: string; en: string }, details?: unknown) {

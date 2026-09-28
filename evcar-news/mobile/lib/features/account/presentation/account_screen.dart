@@ -8,10 +8,14 @@ import '../../../core/app_config/features.dart';
 import '../../../core/l10n/l10n.dart';
 import '../../../shared/widgets/app_card.dart';
 import '../../../shared/widgets/async_state_view.dart';
+import '../../../shared/widgets/bottom_sheets.dart';
 import '../../../shared/widgets/section_header.dart';
 import '../../auth/domain/app_user.dart';
 import '../../auth/domain/auth_state.dart';
 import '../../auth/presentation/auth_controller.dart';
+import '../../garage/application/garage_providers.dart';
+import '../../notifications/application/notifications_providers.dart';
+import '../../reminders/application/reminder_notifications.dart';
 
 /// Feature flag (from `/app-config` → `features`) that shows the trip
 /// planner entry. It stays hidden until the server enables it (routing
@@ -31,9 +35,16 @@ class AccountScreen extends ConsumerWidget {
     // Tiles of features the server does not announce are hidden (REQUIREMENTS §21).
     bool on(String flag) => config.isFeatureEnabled(flag);
     final signedIn = auth is AuthSignedIn;
+    final unread = signedIn && on(Features.notifications) ? ref.watch(unreadNotificationsCountProvider).value : null;
+    final cars = signedIn && on(Features.garage) ? ref.watch(garageVehiclesProvider).value : null;
     final myTools = [
       if (on(Features.garage))
-        _NavTile(icon: Icons.garage_outlined, label: l10n.garageTitle, location: AppRoutes.garage),
+        _NavTile(
+          icon: Icons.garage_outlined,
+          label: l10n.garageTitle,
+          subtitle: cars == null || cars.isEmpty ? null : l10n.accountCarsCount(cars.length),
+          location: AppRoutes.garage,
+        ),
       if (on(Features.favorites))
         _NavTile(icon: Icons.favorite_outline, label: l10n.favoritesTitle, location: AppRoutes.favorites),
       // Offline reading of saved items is local to the device (always available).
@@ -47,13 +58,33 @@ class AccountScreen extends ConsumerWidget {
       if (on(Features.reminders))
         _NavTile(icon: Icons.alarm_outlined, label: l10n.remindersTitle, location: AppRoutes.reminders),
       if (on(Features.notifications))
-        _NavTile(icon: Icons.notifications_outlined, label: l10n.notificationsTitle, location: AppRoutes.notifications),
+        _NavTile(
+          icon: Icons.notifications_outlined,
+          label: l10n.notificationsTitle,
+          location: AppRoutes.notifications,
+          badge: unread != null && unread > 0 ? unread : null,
+        ),
     ];
     final explore = [
       if (on(Features.calculators))
         _NavTile(icon: Icons.calculate_outlined, label: l10n.calculatorsTitle, location: AppRoutes.calculators),
       if (on(tripPlannerFeatureFlag))
-        _NavTile(icon: Icons.route_outlined, label: l10n.tripsTitle, location: AppRoutes.trips),
+        _NavTile(icon: Icons.route_outlined, label: l10n.tripsTitle, location: AppRoutes.trips)
+      else
+        ListTile(
+          leading: const Icon(Icons.route_outlined),
+          title: Text(l10n.tripsTitle),
+          subtitle: Text(l10n.accountTripPlannerUnavailable),
+          trailing: const Icon(Icons.info_outline),
+          onTap: () => showAppBottomSheet<void>(
+            context: context,
+            title: l10n.tripsTitle,
+            builder: (context) =>
+                Padding(padding: const EdgeInsets.fromLTRB(24, 0, 24, 24), child: Text(l10n.accountTripPlannerExplain)),
+          ),
+        ),
+      if (on(Features.community))
+        _NavTile(icon: Icons.forum_outlined, label: l10n.communityQuestionsTitle, location: AppRoutes.questions()),
       if (on(Features.encyclopedia))
         _NavTile(icon: Icons.menu_book_outlined, label: l10n.encyclopediaTitle, location: AppRoutes.encyclopedia),
       if (on(Features.servicesDirectory))
@@ -62,46 +93,71 @@ class AccountScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.accountTitle)),
-      body: ListView(
-        key: const PageStorageKey('account-list'),
-        padding: const EdgeInsets.only(bottom: 24),
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-            child: switch (auth) {
-              AuthSignedIn(:final user, :final offline) => _UserCard(user: user, offline: offline),
-              AuthGuest() => const _GuestCard(),
-              AuthRestoring(:final error) => AppCard(
-                child: error == null
-                    ? StateMessageView(kind: StateKind.loading, title: l10n.accountRestoring, compact: true)
-                    : StateMessageView(
-                        kind: AsyncStateView.kindForError(error),
-                        compact: true,
-                        onRetry: () => ref.read(authControllerProvider.notifier).restore(),
-                      ),
-              ),
-            },
-          ),
-          SectionHeader(title: l10n.accountMyToolsSection),
-          ...myTools,
-          if (explore.isNotEmpty) ...[SectionHeader(title: l10n.accountExploreSection), ...explore],
-          SectionHeader(title: l10n.accountSettingsSection),
-          _NavTile(icon: Icons.settings_outlined, label: l10n.settingsTitle, location: AppRoutes.settings),
-          if (signedIn) ...[
-            _NavTile(icon: Icons.badge_outlined, label: l10n.accountProfile, location: AppRoutes.profile),
-            _NavTile(icon: Icons.devices_outlined, label: l10n.accountSessions, location: AppRoutes.sessions),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: Text(l10n.accountLogout),
-              onTap: () => _confirmLogout(context, ref),
+      body: RefreshIndicator.adaptive(
+        onRefresh: () async {
+          ref.invalidate(unreadNotificationsCountProvider);
+          ref.invalidate(garageVehiclesProvider);
+        },
+        child: ListView(
+          key: const PageStorageKey('account-list'),
+          padding: const EdgeInsets.only(bottom: 24),
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+              child: switch (auth) {
+                AuthSignedIn(:final user, :final offline) => _UserCard(user: user, offline: offline),
+                AuthGuest() => const _GuestCard(),
+                AuthRestoring(:final error) => AppCard(
+                  child: error == null
+                      ? StateMessageView(kind: StateKind.loading, title: l10n.accountRestoring, compact: true)
+                      : StateMessageView(
+                          kind: AsyncStateView.kindForError(error),
+                          compact: true,
+                          onRetry: () => ref.read(authControllerProvider.notifier).restore(),
+                        ),
+                ),
+              },
             ),
-            ListTile(
-              leading: Icon(Icons.delete_forever_outlined, color: Theme.of(context).colorScheme.error),
-              title: Text(l10n.accountDeleteAccount, style: TextStyle(color: Theme.of(context).colorScheme.error)),
-              onTap: () => context.push(AppRoutes.deleteAccount),
+            SectionHeader(title: l10n.accountMyToolsSection),
+            _Group(children: myTools),
+            if (explore.isNotEmpty) ...[SectionHeader(title: l10n.accountExploreSection), _Group(children: explore)],
+            SectionHeader(title: l10n.accountSettingsSection),
+            _Group(
+              children: [
+                _NavTile(icon: Icons.settings_outlined, label: l10n.settingsTitle, location: AppRoutes.settings),
+                if (on(Features.notifications) && signedIn)
+                  _NavTile(
+                    icon: Icons.tune,
+                    label: l10n.notificationsPreferencesTitle,
+                    location: AppRoutes.notificationPreferences,
+                  ),
+                if (signedIn) ...[
+                  _NavTile(icon: Icons.badge_outlined, label: l10n.accountProfile, location: AppRoutes.profile),
+                  _NavTile(icon: Icons.devices_outlined, label: l10n.accountSessions, location: AppRoutes.sessions),
+                  if (on(Features.community))
+                    _NavTile(
+                      icon: Icons.person_off_outlined,
+                      label: l10n.communityBlockedUsersTitle,
+                      location: AppRoutes.blockedUsers,
+                    ),
+                  ListTile(
+                    leading: const Icon(Icons.logout),
+                    title: Text(l10n.accountLogout),
+                    onTap: () => _confirmLogout(context, ref),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.delete_forever_outlined, color: Theme.of(context).colorScheme.error),
+                    title: Text(
+                      l10n.accountDeleteAccount,
+                      style: TextStyle(color: Theme.of(context).colorScheme.error),
+                    ),
+                    onTap: () => context.push(AppRoutes.deleteAccount),
+                  ),
+                ],
+              ],
             ),
           ],
-        ],
+        ),
       ),
     );
   }
@@ -120,25 +176,60 @@ class AccountScreen extends ConsumerWidget {
     );
     if (ok != true || !context.mounted) return;
     final messenger = ScaffoldMessenger.of(context);
+    // Reminder alerts on this phone belong to the account being signed out.
+    await ref.read(reminderNotificationsProvider.notifier).cancelAll();
     await ref.read(authControllerProvider.notifier).logout();
     messenger.showSnackBar(SnackBar(content: Text(l10n.accountLoggedOut)));
   }
 }
 
 class _NavTile extends StatelessWidget {
-  const _NavTile({required this.icon, required this.label, required this.location});
+  const _NavTile({required this.icon, required this.label, required this.location, this.subtitle, this.badge});
 
   final IconData icon;
   final String label;
   final String location;
+  final String? subtitle;
+
+  /// Unread count shown as a badge (also announced).
+  final int? badge;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return ListTile(
-      leading: Icon(icon),
+      leading: badge == null ? Icon(icon) : Badge.count(count: badge!, child: Icon(icon)),
       title: Text(label),
-      trailing: Icon(Directionality.of(context) == TextDirection.rtl ? Icons.chevron_left : Icons.chevron_right),
+      subtitle: switch ((subtitle, badge)) {
+        (null, null) => null,
+        (final s, final b) => Text([?s, if (b != null) l10n.accountUnreadCount(b)].join(' · ')),
+      },
+      trailing: const Icon(Icons.chevron_right),
       onTap: () => context.push(location),
+    );
+  }
+}
+
+/// Rounded group of tiles (settings-style).
+class _Group extends StatelessWidget {
+  const _Group({required this.children});
+
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    if (children.isEmpty) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: AppCard(
+        padding: EdgeInsets.zero,
+        clip: true,
+        child: Column(
+          children: [
+            for (var i = 0; i < children.length; i++) ...[if (i > 0) const Divider(height: 1, indent: 56), children[i]],
+          ],
+        ),
+      ),
     );
   }
 }
@@ -226,15 +317,16 @@ class _UserCard extends StatelessWidget {
               children: [
                 Icon(Icons.verified_outlined, size: 18, color: theme.colorScheme.primary),
                 const SizedBox(width: 4),
-                Text(l10n.accountEmailVerified, style: theme.textTheme.labelMedium),
+                Expanded(child: Text(l10n.accountEmailVerified, style: theme.textTheme.labelMedium)),
               ],
             )
           else
-            Row(
+            Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: 4,
               children: [
                 Icon(Icons.mark_email_unread_outlined, size: 18, color: theme.colorScheme.error),
-                const SizedBox(width: 4),
-                Expanded(child: Text(l10n.accountEmailNotVerified, style: theme.textTheme.labelMedium)),
+                Text(l10n.accountEmailNotVerified, style: theme.textTheme.labelMedium),
                 TextButton(
                   onPressed: () => context.push(AppRoutes.verifyEmail(email: user.email)),
                   child: Text(l10n.accountVerifyNow),

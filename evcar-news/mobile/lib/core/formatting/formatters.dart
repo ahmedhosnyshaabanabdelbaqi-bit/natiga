@@ -55,6 +55,12 @@ class AppFormatters {
   String _shapeNumber(String s) => _indic ? toArabicIndicDigits(s, numberSeparators: true) : s;
   String _shapeText(String s) => _indic ? toArabicIndicDigits(s) : s;
 
+  /// Digit shaping for output of `DateFormat`: Flutter's Arabic date symbols
+  /// use Arabic-Indic digits while numbers use Western ones, which mixes both
+  /// systems on one line. Dates follow the same "Arabic-Indic digits" setting
+  /// as every other number.
+  String shapeDate(String s) => _indic ? toArabicIndicDigits(s) : (_ar ? toWesternDigits(s) : s);
+
   /// Grouped number with up to [maxDecimals] fraction digits (trailing zeros
   /// trimmed).
   String? number(num? value, {int maxDecimals = 1, int minDecimals = 0}) {
@@ -128,6 +134,35 @@ class AppFormatters {
     return _ar ? '$n $symbol' : '$symbol $n';
   }
 
+  /// A unit price / rate (per kWh, per minute, per litre, per km) from the
+  /// API's decimal string. Rates carry up to 4 decimals (`"0.0040"`), so they
+  /// keep up to [maxDecimals] significant decimals (trailing zeros dropped,
+  /// at least 2 when there is a fraction): `0.0040` → `EGP 0.004`, never
+  /// `EGP 0.00`. A non-zero rate smaller than the last decimal is shown as
+  /// `< EGP 0.0001` instead of zero. Totals keep using [money].
+  String? rate(String? amount, String? currency, {int maxDecimals = 4}) {
+    if (amount == null || currency == null || currency.isEmpty) return null;
+    final value = num.tryParse(amount.trim());
+    if (value == null) return null;
+    final symbol = currencySymbol(currency);
+    final unit = 1 / _pow10(maxDecimals);
+    if (value != 0 && value.abs() < unit / 2) {
+      final n = number(unit, maxDecimals: maxDecimals, minDecimals: maxDecimals)!;
+      return _ar ? '< $n $symbol' : '< $symbol $n';
+    }
+    final hasFraction = value != value.truncate();
+    final n = number(value, maxDecimals: hasFraction ? maxDecimals : 0, minDecimals: hasFraction ? 2 : 0)!;
+    return _ar ? '$n $symbol' : '$symbol $n';
+  }
+
+  static int _pow10(int n) {
+    var r = 1;
+    for (var i = 0; i < n; i++) {
+      r *= 10;
+    }
+    return r;
+  }
+
   /// Arabic abbreviation for known currencies, ISO code otherwise.
   String currencySymbol(String code) {
     final upper = code.toUpperCase();
@@ -135,10 +170,15 @@ class AppFormatters {
     return _currencyAr[upper] ?? upper;
   }
 
+  /// `from → to` for ranges read in reading order ("20% → 80%", origin →
+  /// destination). In Arabic the arrow points left (the reading direction),
+  /// so "٢٠٪ ← ٨٠٪" never reads as going backwards.
+  String range(String from, String to) => _ar ? '$from ← $to' : '$from → $to';
+
   /// Medium date in local time, e.g. `Sep 25, 2026` / `25 سبتمبر 2026`.
   String? date(DateTime? value) {
     if (value == null) return null;
-    return _shapeText(DateFormat.yMMMd(languageCode).format(value.toLocal()));
+    return shapeDate(DateFormat.yMMMd(languageCode).format(value.toLocal()));
   }
 
   /// Date + time in local time.
@@ -147,7 +187,7 @@ class AppFormatters {
     final local = value.toLocal();
     final d = DateFormat.yMMMd(languageCode).format(local);
     final t = DateFormat.jm(languageCode).format(local);
-    return _shapeText('$d $t');
+    return shapeDate('$d $t');
   }
 
   static const _unitsEn = {

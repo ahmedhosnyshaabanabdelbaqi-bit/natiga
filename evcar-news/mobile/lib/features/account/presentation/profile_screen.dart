@@ -69,9 +69,11 @@ class _ProfileFormState extends ConsumerState<_ProfileForm> {
     final l10n = context.l10n;
     final err = _error;
     final apiErr = err is ApiException ? err : null;
-    return Center(
+    // Top-aligned like every other form (a centred form floated mid-screen).
+    return Align(
+      alignment: Alignment.topCenter,
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 480),
           child: Form(

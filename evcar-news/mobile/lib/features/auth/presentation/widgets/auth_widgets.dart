@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/api/api_exception.dart';
 import '../../../../core/errors/app_errors.dart';
 import '../../../../core/l10n/l10n.dart';
+import '../../../../shared/widgets/app_mark.dart';
 
 /// Client-side checks only to give fast feedback; the server's 422 field
 /// errors remain authoritative and are shown under the same fields.
@@ -41,7 +42,9 @@ class AuthValidators {
   }
 }
 
-/// Centered, width-limited, scrollable form page.
+/// Width-limited, scrollable form page, top-aligned under a brand mark (a
+/// vertically centred form left a large empty band above it and jumped
+/// when the keyboard opened).
 class AuthFormScaffold extends StatelessWidget {
   const AuthFormScaffold({super.key, required this.title, required this.children});
 
@@ -53,13 +56,21 @@ class AuthFormScaffold extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(title)),
       body: SafeArea(
-        child: Center(
+        child: Align(
+          alignment: Alignment.topCenter,
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 480),
               child: AutofillGroup(
-                child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: children),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const Center(child: AppMark(size: 64)),
+                    const SizedBox(height: 24),
+                    ...children,
+                  ],
+                ),
               ),
             ),
           ),

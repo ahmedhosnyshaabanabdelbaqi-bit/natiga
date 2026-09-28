@@ -3,15 +3,13 @@ import type { SupportedLanguage } from '../../../config/app-config';
 import { toPageRequest } from '../../../common/http/pagination';
 import { paginated, type PaginatedResponse } from '../../../common/http/responses';
 import { Prisma } from '../../../generated/prisma/client';
-import {
-  AssetVariantKind,
-  ContentStatus,
-  HotspotType,
-  MediaStatus,
-} from '../../../generated/prisma/enums';
+import { AssetVariantKind, HotspotType } from '../../../generated/prisma/enums';
 import { PrismaService } from '../../../prisma/prisma.service';
-import { creditLine, isAllowedEmbedUrl, MediaUrls, metadataOf, todayUtc } from '../../media';
-import { pointsByKey, PUBLIC_VARIANT_WHERE } from '../../vehicles';
+import { creditLine, isAllowedEmbedUrl, MediaUrls, metadataOf } from '../../media';
+import { pointsByKey } from '../../vehicles';
+import { publicTourWhere } from '../domain/public-tour-where';
+
+export { publicTourWhere };
 import { DEMO_TOUR_LABEL, nameIn, positionLabel, textIn } from '../domain/labels';
 import type {
   PublicTourCardDto,
@@ -26,38 +24,6 @@ import { TourErrors } from '../tours-errors';
 
 const DEFAULT_MAX_WIDTH = 4096;
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-
-/** A file that must not be shown: deleted, unprocessed, unlicensed or licence not valid today. */
-function unusableAsset(today: Date): Prisma.MediaAssetWhereInput {
-  return {
-    OR: [
-      { deletedAt: { not: null } },
-      { status: { not: MediaStatus.ready } },
-      { licenseId: null },
-      { license: { validUntil: { lt: today } } },
-      { license: { validFrom: { gt: today } } },
-    ],
-  };
-}
-
-/**
- * Published, not deleted, of a public trim, and every scene panorama and
- * hotspot file usable today (licence dates are time-dependent, so they are
- * checked here in addition to the database publishing rules).
- */
-export function publicTourWhere(today: Date = todayUtc()): Prisma.InteriorTourWhereInput {
-  const bad = unusableAsset(today);
-  return {
-    status: ContentStatus.published,
-    deletedAt: null,
-    initialSceneId: { not: null },
-    variant: PUBLIC_VARIANT_WHERE,
-    scenes: {
-      some: {},
-      none: { OR: [{ asset: bad }, { hotspots: { some: { mediaAsset: bad } } }] },
-    },
-  };
-}
 
 const PREVIEW_ONLY = {
   variants: {

@@ -16,6 +16,22 @@ export const NOTIFICATION_CATEGORIES = [
 ] as const;
 export type NotificationCategory = (typeof NOTIFICATION_CATEGORIES)[number];
 
+/**
+ * Preference switches (`types.*` of /me/notification-preferences) that a server
+ * component actually PRODUCES today (review 3). Clients show only these; a switch
+ * without a producer would be a button without a function. Add a key here when
+ * its producer ships (price-change listener, community replies, station alerts,
+ * campaigns). `reminders` stays off the list: reminders are local notifications
+ * scheduled by the app itself.
+ */
+export const PRODUCED_PREFERENCE_TYPES = ['news'] as const;
+
+/**
+ * Topic types whose follow actually leads to notifications today (the
+ * article-published listener matches variant → model → brand → category).
+ */
+export const PRODUCED_TOPIC_TYPES = ['brand', 'model', 'variant', 'category'] as const;
+
 export interface PreferenceSwitches {
   pushEnabled: boolean;
   newsEnabled: boolean;

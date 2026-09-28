@@ -92,6 +92,12 @@ abstract class AppLocalizations {
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[Locale('ar'), Locale('en')];
 
+  /// No description provided for @accountCarsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 car} other{{count} cars}}'**
+  String accountCarsCount(int count);
+
   /// No description provided for @accountDeleteAccount.
   ///
   /// In en, this message translates to:
@@ -301,6 +307,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'My account'**
   String get accountTitle;
+
+  /// No description provided for @accountTripPlannerExplain.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip planning needs a road-routing service, which is not configured on the server yet. We do not draw straight lines as driving routes or invent plans, so the planner stays hidden until it is. Meanwhile, every station page offers directions in your navigation app.'**
+  String get accountTripPlannerExplain;
+
+  /// No description provided for @accountTripPlannerUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Not available yet'**
+  String get accountTripPlannerUnavailable;
+
+  /// No description provided for @accountUnreadCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} new'**
+  String accountUnreadCount(int count);
 
   /// No description provided for @accountVerifyNow.
   ///
@@ -548,17 +572,1127 @@ abstract class AppLocalizations {
   /// **'Verification code'**
   String get authVerifyTokenLabel;
 
+  /// No description provided for @calculatorsAcLimitHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Often 7.4, 11 or 22 kW. Unknown = lower confidence.'**
+  String get calculatorsAcLimitHint;
+
+  /// No description provided for @calculatorsAssumptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Values and assumptions used'**
+  String get calculatorsAssumptions;
+
+  /// No description provided for @calculatorsAssumptionsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Change any of them above and calculate again.'**
+  String get calculatorsAssumptionsHint;
+
+  /// No description provided for @calculatorsBasisBattery.
+  ///
+  /// In en, this message translates to:
+  /// **'Added to the battery'**
+  String get calculatorsBasisBattery;
+
+  /// No description provided for @calculatorsBasisBatteryConsumption.
+  ///
+  /// In en, this message translates to:
+  /// **'From the car\'s display'**
+  String get calculatorsBasisBatteryConsumption;
+
+  /// No description provided for @calculatorsBasisGrid.
+  ///
+  /// In en, this message translates to:
+  /// **'From the meter / charger'**
+  String get calculatorsBasisGrid;
+
+  /// No description provided for @calculatorsBasisGridConsumption.
+  ///
+  /// In en, this message translates to:
+  /// **'At the plug (WLTP/EPA)'**
+  String get calculatorsBasisGridConsumption;
+
+  /// No description provided for @calculatorsCalculate.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculate'**
+  String get calculatorsCalculate;
+
   /// No description provided for @calculatorsCalculatorTitle.
   ///
   /// In en, this message translates to:
   /// **'Calculator'**
   String get calculatorsCalculatorTitle;
 
+  /// No description provided for @calculatorsCarNeedsNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Using a car\'s data needs a connection. Remove the car to calculate offline with your own values.'**
+  String get calculatorsCarNeedsNetwork;
+
+  /// No description provided for @calculatorsCarOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional: fill missing values from a car'**
+  String get calculatorsCarOptional;
+
+  /// No description provided for @calculatorsCarSelectedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Empty fields are filled from this car\'s catalog data'**
+  String get calculatorsCarSelectedHint;
+
+  /// No description provided for @calculatorsChooseCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Use a car\'s data'**
+  String get calculatorsChooseCar;
+
+  /// No description provided for @calculatorsChooseCarHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing values (battery, charging power, consumption) are filled from the catalog, with their source. Values you type always win. Needs an internet connection.'**
+  String get calculatorsChooseCarHint;
+
+  /// No description provided for @calculatorsCompareFuelCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare with a fuel car'**
+  String get calculatorsCompareFuelCar;
+
+  /// No description provided for @calculatorsConfidenceHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'High confidence'**
+  String get calculatorsConfidenceHigh;
+
+  /// No description provided for @calculatorsConfidenceLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Low confidence'**
+  String get calculatorsConfidenceLow;
+
+  /// No description provided for @calculatorsConfidenceMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium confidence'**
+  String get calculatorsConfidenceMedium;
+
+  /// No description provided for @calculatorsConsumptionBasis.
+  ///
+  /// In en, this message translates to:
+  /// **'The consumption I enter is measured'**
+  String get calculatorsConsumptionBasis;
+
+  /// No description provided for @calculatorsConsumptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'From your car or a rating such as WLTP. Cycles are not converted.'**
+  String get calculatorsConsumptionHint;
+
+  /// No description provided for @calculatorsCostEnergy.
+  ///
+  /// In en, this message translates to:
+  /// **'Energy'**
+  String get calculatorsCostEnergy;
+
+  /// No description provided for @calculatorsCostIdle.
+  ///
+  /// In en, this message translates to:
+  /// **'Idle fee'**
+  String get calculatorsCostIdle;
+
+  /// No description provided for @calculatorsCostParking.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking'**
+  String get calculatorsCostParking;
+
+  /// No description provided for @calculatorsCostPer100.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost per 100 km'**
+  String get calculatorsCostPer100;
+
+  /// No description provided for @calculatorsCostPerKm.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost per km'**
+  String get calculatorsCostPerKm;
+
+  /// No description provided for @calculatorsCostPerKwhAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost per kWh added'**
+  String get calculatorsCostPerKwhAdded;
+
+  /// No description provided for @calculatorsCostSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Session fee'**
+  String get calculatorsCostSession;
+
+  /// No description provided for @calculatorsCostTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get calculatorsCostTime;
+
+  /// No description provided for @calculatorsCurrency.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency'**
+  String get calculatorsCurrency;
+
+  /// No description provided for @calculatorsDcCurveHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A precise DC time needs the car\'s documented charging curve, which comes from the catalog when you choose a car. Without it you get a low-confidence range.'**
+  String get calculatorsDcCurveHint;
+
+  /// No description provided for @calculatorsDifferenceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuel cost minus electricity cost; a negative value means the EV costs more.'**
+  String get calculatorsDifferenceHint;
+
+  /// No description provided for @calculatorsDifferencePer100.
+  ///
+  /// In en, this message translates to:
+  /// **'You save per 100 km'**
+  String get calculatorsDifferencePer100;
+
+  /// No description provided for @calculatorsDifferencePerMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Difference per month'**
+  String get calculatorsDifferencePerMonth;
+
+  /// No description provided for @calculatorsDifferencePerYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Difference per year'**
+  String get calculatorsDifferencePerYear;
+
+  /// No description provided for @calculatorsDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Charging time'**
+  String get calculatorsDuration;
+
+  /// No description provided for @calculatorsDurationRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated range'**
+  String get calculatorsDurationRange;
+
+  /// No description provided for @calculatorsEffectiveFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'Effective {date}'**
+  String calculatorsEffectiveFrom(String date);
+
+  /// No description provided for @calculatorsEfficiencyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A fraction, e.g. 0.9 = 90%. Empty = 0.9, shown as an editable assumption.'**
+  String get calculatorsEfficiencyHint;
+
+  /// No description provided for @calculatorsEnergyAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Energy added to the battery'**
+  String get calculatorsEnergyAdded;
+
+  /// No description provided for @calculatorsEnergyCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Energy / fuel'**
+  String get calculatorsEnergyCost;
+
+  /// No description provided for @calculatorsEnergyPerMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Energy cost per month'**
+  String get calculatorsEnergyPerMonth;
+
+  /// No description provided for @calculatorsEnterMyOwn.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter my own price'**
+  String get calculatorsEnterMyOwn;
+
+  /// No description provided for @calculatorsEv.
+  ///
+  /// In en, this message translates to:
+  /// **'Electric'**
+  String get calculatorsEv;
+
+  /// No description provided for @calculatorsEvPer100.
+  ///
+  /// In en, this message translates to:
+  /// **'Electric per 100 km'**
+  String get calculatorsEvPer100;
+
+  /// No description provided for @calculatorsEvPerMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Electric per month'**
+  String get calculatorsEvPerMonth;
+
+  /// No description provided for @calculatorsEvTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Electric car total'**
+  String get calculatorsEvTotal;
+
+  /// No description provided for @calculatorsFees.
+  ///
+  /// In en, this message translates to:
+  /// **'Licence & fees'**
+  String get calculatorsFees;
+
+  /// No description provided for @calculatorsFieldAcLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Car on-board AC charger'**
+  String get calculatorsFieldAcLimit;
+
+  /// No description provided for @calculatorsFieldAmps.
+  ///
+  /// In en, this message translates to:
+  /// **'Current per phase'**
+  String get calculatorsFieldAmps;
+
+  /// No description provided for @calculatorsFieldChargingMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Charging time'**
+  String get calculatorsFieldChargingMinutes;
+
+  /// No description provided for @calculatorsFieldConsumption.
+  ///
+  /// In en, this message translates to:
+  /// **'Consumption'**
+  String get calculatorsFieldConsumption;
+
+  /// No description provided for @calculatorsFieldDcPeak.
+  ///
+  /// In en, this message translates to:
+  /// **'Car peak DC power'**
+  String get calculatorsFieldDcPeak;
+
+  /// No description provided for @calculatorsFieldEfficiency.
+  ///
+  /// In en, this message translates to:
+  /// **'Charging efficiency'**
+  String get calculatorsFieldEfficiency;
+
+  /// No description provided for @calculatorsFieldElectricityPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Main electricity price (home)'**
+  String get calculatorsFieldElectricityPrice;
+
+  /// No description provided for @calculatorsFieldEnergy.
+  ///
+  /// In en, this message translates to:
+  /// **'Energy'**
+  String get calculatorsFieldEnergy;
+
+  /// No description provided for @calculatorsFieldFees.
+  ///
+  /// In en, this message translates to:
+  /// **'Licence & fees per year'**
+  String get calculatorsFieldFees;
+
+  /// No description provided for @calculatorsFieldFixedFees.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed monthly fees'**
+  String get calculatorsFieldFixedFees;
+
+  /// No description provided for @calculatorsFieldFromSoc.
+  ///
+  /// In en, this message translates to:
+  /// **'Charge from'**
+  String get calculatorsFieldFromSoc;
+
+  /// No description provided for @calculatorsFieldFuelConsumption.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuel consumption'**
+  String get calculatorsFieldFuelConsumption;
+
+  /// No description provided for @calculatorsFieldFuelPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuel price per litre'**
+  String get calculatorsFieldFuelPrice;
+
+  /// No description provided for @calculatorsFieldHomePrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Home electricity price'**
+  String get calculatorsFieldHomePrice;
+
+  /// No description provided for @calculatorsFieldIdleGrace.
+  ///
+  /// In en, this message translates to:
+  /// **'Free idle minutes'**
+  String get calculatorsFieldIdleGrace;
+
+  /// No description provided for @calculatorsFieldIdleMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Idle time after charging'**
+  String get calculatorsFieldIdleMinutes;
+
+  /// No description provided for @calculatorsFieldIdlePrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Idle fee per minute'**
+  String get calculatorsFieldIdlePrice;
+
+  /// No description provided for @calculatorsFieldIncentives.
+  ///
+  /// In en, this message translates to:
+  /// **'Incentives'**
+  String get calculatorsFieldIncentives;
+
+  /// No description provided for @calculatorsFieldInsurance.
+  ///
+  /// In en, this message translates to:
+  /// **'Insurance per year'**
+  String get calculatorsFieldInsurance;
+
+  /// No description provided for @calculatorsFieldKmPerDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance per day'**
+  String get calculatorsFieldKmPerDay;
+
+  /// No description provided for @calculatorsFieldKmPerMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance per month'**
+  String get calculatorsFieldKmPerMonth;
+
+  /// No description provided for @calculatorsFieldKmPerYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance per year'**
+  String get calculatorsFieldKmPerYear;
+
+  /// No description provided for @calculatorsFieldMaintenance.
+  ///
+  /// In en, this message translates to:
+  /// **'Maintenance per year'**
+  String get calculatorsFieldMaintenance;
+
+  /// No description provided for @calculatorsFieldOneOff.
+  ///
+  /// In en, this message translates to:
+  /// **'One-off costs'**
+  String get calculatorsFieldOneOff;
+
+  /// No description provided for @calculatorsFieldParkingFlat.
+  ///
+  /// In en, this message translates to:
+  /// **'Flat parking fee'**
+  String get calculatorsFieldParkingFlat;
+
+  /// No description provided for @calculatorsFieldParkingMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking time'**
+  String get calculatorsFieldParkingMinutes;
+
+  /// No description provided for @calculatorsFieldParkingPerHour.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking per hour'**
+  String get calculatorsFieldParkingPerHour;
+
+  /// No description provided for @calculatorsFieldPublicEnergyPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Price per kWh'**
+  String get calculatorsFieldPublicEnergyPrice;
+
+  /// No description provided for @calculatorsFieldPublicPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Public charging price'**
+  String get calculatorsFieldPublicPrice;
+
+  /// No description provided for @calculatorsFieldPublicShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share of public charging'**
+  String get calculatorsFieldPublicShare;
+
+  /// No description provided for @calculatorsFieldPurchase.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase price'**
+  String get calculatorsFieldPurchase;
+
+  /// No description provided for @calculatorsFieldResidual.
+  ///
+  /// In en, this message translates to:
+  /// **'Resale value at the end'**
+  String get calculatorsFieldResidual;
+
+  /// No description provided for @calculatorsFieldSessionFee.
+  ///
+  /// In en, this message translates to:
+  /// **'Session fee'**
+  String get calculatorsFieldSessionFee;
+
+  /// No description provided for @calculatorsFieldStationPower.
+  ///
+  /// In en, this message translates to:
+  /// **'Charger / station power'**
+  String get calculatorsFieldStationPower;
+
+  /// No description provided for @calculatorsFieldTimePrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Price per minute of charging'**
+  String get calculatorsFieldTimePrice;
+
+  /// No description provided for @calculatorsFieldToSoc.
+  ///
+  /// In en, this message translates to:
+  /// **'Charge to'**
+  String get calculatorsFieldToSoc;
+
+  /// No description provided for @calculatorsFieldUsable.
+  ///
+  /// In en, this message translates to:
+  /// **'Usable battery capacity'**
+  String get calculatorsFieldUsable;
+
+  /// No description provided for @calculatorsFieldVolts.
+  ///
+  /// In en, this message translates to:
+  /// **'Volts per phase'**
+  String get calculatorsFieldVolts;
+
+  /// No description provided for @calculatorsFieldYears.
+  ///
+  /// In en, this message translates to:
+  /// **'Years of ownership'**
+  String get calculatorsFieldYears;
+
+  /// No description provided for @calculatorsFixedFees.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed fees'**
+  String get calculatorsFixedFees;
+
+  /// No description provided for @calculatorsFromCarHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave empty to use the car\'s catalog value.'**
+  String get calculatorsFromCarHint;
+
+  /// No description provided for @calculatorsFuelCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuel'**
+  String get calculatorsFuelCar;
+
+  /// No description provided for @calculatorsFuelPer100.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuel per 100 km'**
+  String get calculatorsFuelPer100;
+
+  /// No description provided for @calculatorsFuelPerMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuel per month'**
+  String get calculatorsFuelPerMonth;
+
+  /// No description provided for @calculatorsGridConsumption.
+  ///
+  /// In en, this message translates to:
+  /// **'Consumption from the grid'**
+  String get calculatorsGridConsumption;
+
+  /// No description provided for @calculatorsGridEnergy.
+  ///
+  /// In en, this message translates to:
+  /// **'Energy from the grid'**
+  String get calculatorsGridEnergy;
+
+  /// No description provided for @calculatorsHomeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Energy added, energy from the grid with losses, and the cost at your home tariff.'**
+  String get calculatorsHomeDescription;
+
+  /// No description provided for @calculatorsHomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Home charging cost'**
+  String get calculatorsHomeTitle;
+
+  /// No description provided for @calculatorsHowCalculated.
+  ///
+  /// In en, this message translates to:
+  /// **'How it was calculated'**
+  String get calculatorsHowCalculated;
+
+  /// No description provided for @calculatorsIncentives.
+  ///
+  /// In en, this message translates to:
+  /// **'Incentives'**
+  String get calculatorsIncentives;
+
+  /// No description provided for @calculatorsInsurance.
+  ///
+  /// In en, this message translates to:
+  /// **'Insurance'**
+  String get calculatorsInsurance;
+
+  /// No description provided for @calculatorsIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Results are computed from the values you enter, with the same formulas as our server. There are no built-in prices: enter today\'s prices or pick an admin reference price with its date and source.'**
+  String get calculatorsIntro;
+
+  /// No description provided for @calculatorsKmPerMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance per month'**
+  String get calculatorsKmPerMonth;
+
+  /// No description provided for @calculatorsKwhPerMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Energy per month'**
+  String get calculatorsKwhPerMonth;
+
+  /// No description provided for @calculatorsLimitCurve.
+  ///
+  /// In en, this message translates to:
+  /// **'The charging curve'**
+  String get calculatorsLimitCurve;
+
+  /// No description provided for @calculatorsLimitStation.
+  ///
+  /// In en, this message translates to:
+  /// **'The charger'**
+  String get calculatorsLimitStation;
+
+  /// No description provided for @calculatorsLimitSupply.
+  ///
+  /// In en, this message translates to:
+  /// **'The home supply'**
+  String get calculatorsLimitSupply;
+
+  /// No description provided for @calculatorsLimitVehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'The car'**
+  String get calculatorsLimitVehicle;
+
+  /// No description provided for @calculatorsLimitingFactor.
+  ///
+  /// In en, this message translates to:
+  /// **'Limited by'**
+  String get calculatorsLimitingFactor;
+
+  /// No description provided for @calculatorsLosses.
+  ///
+  /// In en, this message translates to:
+  /// **'Charging losses'**
+  String get calculatorsLosses;
+
+  /// No description provided for @calculatorsMaintenance.
+  ///
+  /// In en, this message translates to:
+  /// **'Maintenance'**
+  String get calculatorsMaintenance;
+
+  /// No description provided for @calculatorsModeEnergy.
+  ///
+  /// In en, this message translates to:
+  /// **'Energy I know'**
+  String get calculatorsModeEnergy;
+
+  /// No description provided for @calculatorsModeSoc.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery & charge levels'**
+  String get calculatorsModeSoc;
+
+  /// No description provided for @calculatorsMonthlyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly and yearly energy cost from your distance and consumption.'**
+  String get calculatorsMonthlyDescription;
+
+  /// No description provided for @calculatorsMonthlyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly cost'**
+  String get calculatorsMonthlyTitle;
+
+  /// No description provided for @calculatorsNo.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get calculatorsNo;
+
+  /// No description provided for @calculatorsNoCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t use a car'**
+  String get calculatorsNoCar;
+
+  /// No description provided for @calculatorsNoCarSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'No car selected'**
+  String get calculatorsNoCarSelected;
+
+  /// No description provided for @calculatorsNoDefaultPrices.
+  ///
+  /// In en, this message translates to:
+  /// **'Prices change: the result shows the date of the prices you used.'**
+  String get calculatorsNoDefaultPrices;
+
+  /// No description provided for @calculatorsNoReferencePrices.
+  ///
+  /// In en, this message translates to:
+  /// **'No reference prices for this market'**
+  String get calculatorsNoReferencePrices;
+
+  /// No description provided for @calculatorsNoReferencePricesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the price you pay. We never assume a price.'**
+  String get calculatorsNoReferencePricesHint;
+
+  /// No description provided for @calculatorsNonEnergy.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything except energy'**
+  String get calculatorsNonEnergy;
+
+  /// No description provided for @calculatorsNotIncluded.
+  ///
+  /// In en, this message translates to:
+  /// **'Not included'**
+  String get calculatorsNotIncluded;
+
+  /// No description provided for @calculatorsOnDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculated on this phone'**
+  String get calculatorsOnDevice;
+
+  /// No description provided for @calculatorsOnServer.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculated with catalog data'**
+  String get calculatorsOnServer;
+
+  /// No description provided for @calculatorsOneOff.
+  ///
+  /// In en, this message translates to:
+  /// **'One-off costs'**
+  String get calculatorsOneOff;
+
+  /// No description provided for @calculatorsOneOffHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. home charger installation.'**
+  String get calculatorsOneOffHint;
+
+  /// No description provided for @calculatorsOriginCatalog.
+  ///
+  /// In en, this message translates to:
+  /// **'From catalog'**
+  String get calculatorsOriginCatalog;
+
+  /// No description provided for @calculatorsOriginDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Default'**
+  String get calculatorsOriginDefault;
+
+  /// No description provided for @calculatorsOriginReference.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference price'**
+  String get calculatorsOriginReference;
+
+  /// No description provided for @calculatorsOriginUser.
+  ///
+  /// In en, this message translates to:
+  /// **'You entered'**
+  String get calculatorsOriginUser;
+
+  /// No description provided for @calculatorsPer100Description.
+  ///
+  /// In en, this message translates to:
+  /// **'What 100 km costs in electricity, with home and public prices mixed as you drive.'**
+  String get calculatorsPer100Description;
+
+  /// No description provided for @calculatorsPer100Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost per 100 km'**
+  String get calculatorsPer100Title;
+
+  /// No description provided for @calculatorsPerDayMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Per day'**
+  String get calculatorsPerDayMode;
+
+  /// No description provided for @calculatorsPerKm.
+  ///
+  /// In en, this message translates to:
+  /// **'Per km'**
+  String get calculatorsPerKm;
+
+  /// No description provided for @calculatorsPerMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Per month'**
+  String get calculatorsPerMonth;
+
+  /// No description provided for @calculatorsPerMonthMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Per month'**
+  String get calculatorsPerMonthMode;
+
+  /// No description provided for @calculatorsPerMonthTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Per month'**
+  String get calculatorsPerMonthTotal;
+
+  /// No description provided for @calculatorsPerYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Per year'**
+  String get calculatorsPerYear;
+
+  /// No description provided for @calculatorsPerYearValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} per year'**
+  String calculatorsPerYearValue(String amount);
+
+  /// No description provided for @calculatorsPickTrim.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a trim from the catalog'**
+  String get calculatorsPickTrim;
+
+  /// No description provided for @calculatorsPossiblyOutdated.
+  ///
+  /// In en, this message translates to:
+  /// **'May be outdated'**
+  String get calculatorsPossiblyOutdated;
+
+  /// No description provided for @calculatorsPower.
+  ///
+  /// In en, this message translates to:
+  /// **'Power used'**
+  String get calculatorsPower;
+
+  /// No description provided for @calculatorsPriceDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Price date'**
+  String get calculatorsPriceDate;
+
+  /// No description provided for @calculatorsPriceDateFromReference.
+  ///
+  /// In en, this message translates to:
+  /// **'Empty = the effective date of the reference price.'**
+  String get calculatorsPriceDateFromReference;
+
+  /// No description provided for @calculatorsPriceDateHint.
+  ///
+  /// In en, this message translates to:
+  /// **'When these prices applied. Without a date the result says so.'**
+  String get calculatorsPriceDateHint;
+
+  /// No description provided for @calculatorsPriceDateMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Price date not given'**
+  String get calculatorsPriceDateMissing;
+
+  /// No description provided for @calculatorsPriceDateNotSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set'**
+  String get calculatorsPriceDateNotSet;
+
+  /// No description provided for @calculatorsPricePerKwh.
+  ///
+  /// In en, this message translates to:
+  /// **'Price per kWh used'**
+  String get calculatorsPricePerKwh;
+
+  /// No description provided for @calculatorsPricesAsOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Prices as of {date}'**
+  String calculatorsPricesAsOf(String date);
+
+  /// No description provided for @calculatorsPublicDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Per-kWh, per-minute, session, parking and idle fees exactly as the operator charges them.'**
+  String get calculatorsPublicDescription;
+
+  /// No description provided for @calculatorsPublicTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Public charging cost'**
+  String get calculatorsPublicTitle;
+
+  /// No description provided for @calculatorsPurchase.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase'**
+  String get calculatorsPurchase;
+
+  /// No description provided for @calculatorsReferencePrices.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference prices'**
+  String get calculatorsReferencePrices;
+
+  /// No description provided for @calculatorsReferenceUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference price: {label}, effective {date}'**
+  String calculatorsReferenceUsed(String label, String date);
+
+  /// No description provided for @calculatorsResidual.
+  ///
+  /// In en, this message translates to:
+  /// **'Resale value'**
+  String get calculatorsResidual;
+
+  /// No description provided for @calculatorsResult.
+  ///
+  /// In en, this message translates to:
+  /// **'Result'**
+  String get calculatorsResult;
+
+  /// No description provided for @calculatorsRoughEstimate.
+  ///
+  /// In en, this message translates to:
+  /// **'Rough estimate — not an exact time'**
+  String get calculatorsRoughEstimate;
+
+  /// No description provided for @calculatorsSavingPercent.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving'**
+  String get calculatorsSavingPercent;
+
+  /// No description provided for @calculatorsSectionConsumption.
+  ///
+  /// In en, this message translates to:
+  /// **'Consumption'**
+  String get calculatorsSectionConsumption;
+
+  /// No description provided for @calculatorsSectionDriving.
+  ///
+  /// In en, this message translates to:
+  /// **'Driving'**
+  String get calculatorsSectionDriving;
+
+  /// No description provided for @calculatorsSectionDrivingOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Driving (optional, for monthly figures)'**
+  String get calculatorsSectionDrivingOptional;
+
+  /// No description provided for @calculatorsSectionDurations.
+  ///
+  /// In en, this message translates to:
+  /// **'Times at the charger'**
+  String get calculatorsSectionDurations;
+
+  /// No description provided for @calculatorsSectionEnergy.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery & energy'**
+  String get calculatorsSectionEnergy;
+
+  /// No description provided for @calculatorsSectionEvCosts.
+  ///
+  /// In en, this message translates to:
+  /// **'Electric car costs'**
+  String get calculatorsSectionEvCosts;
+
+  /// No description provided for @calculatorsSectionFuel.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuel car'**
+  String get calculatorsSectionFuel;
+
+  /// No description provided for @calculatorsSectionFuelCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuel car costs'**
+  String get calculatorsSectionFuelCar;
+
+  /// No description provided for @calculatorsSectionOwnership.
+  ///
+  /// In en, this message translates to:
+  /// **'Ownership'**
+  String get calculatorsSectionOwnership;
+
+  /// No description provided for @calculatorsSectionPower.
+  ///
+  /// In en, this message translates to:
+  /// **'Power'**
+  String get calculatorsSectionPower;
+
+  /// No description provided for @calculatorsSectionPrices.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency & price date'**
+  String get calculatorsSectionPrices;
+
+  /// No description provided for @calculatorsSectionTariff.
+  ///
+  /// In en, this message translates to:
+  /// **'Prices'**
+  String get calculatorsSectionTariff;
+
+  /// No description provided for @calculatorsSupplyLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Home supply limit'**
+  String get calculatorsSupplyLimit;
+
+  /// No description provided for @calculatorsSupplyNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Not limited'**
+  String get calculatorsSupplyNone;
+
+  /// No description provided for @calculatorsSupplyOne.
+  ///
+  /// In en, this message translates to:
+  /// **'Single phase'**
+  String get calculatorsSupplyOne;
+
+  /// No description provided for @calculatorsSupplyThree.
+  ///
+  /// In en, this message translates to:
+  /// **'Three phase'**
+  String get calculatorsSupplyThree;
+
+  /// No description provided for @calculatorsTcoDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase, incentives, resale, energy, insurance and maintenance over the years you choose.'**
+  String get calculatorsTcoDescription;
+
+  /// No description provided for @calculatorsTcoDifference.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuel car minus EV: {amount}'**
+  String calculatorsTcoDifference(String amount);
+
+  /// No description provided for @calculatorsTcoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Total cost of ownership'**
+  String get calculatorsTcoTitle;
+
+  /// No description provided for @calculatorsTimeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'AC time from the real power limit; DC from a documented curve, otherwise a low-confidence range.'**
+  String get calculatorsTimeDescription;
+
+  /// No description provided for @calculatorsTimeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Charging time'**
+  String get calculatorsTimeTitle;
+
   /// No description provided for @calculatorsTitle.
   ///
   /// In en, this message translates to:
   /// **'Charging & running-cost calculators'**
   String get calculatorsTitle;
+
+  /// No description provided for @calculatorsTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get calculatorsTotal;
+
+  /// No description provided for @calculatorsTotalCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Total cost'**
+  String get calculatorsTotalCost;
+
+  /// No description provided for @calculatorsTotalKm.
+  ///
+  /// In en, this message translates to:
+  /// **'Total distance'**
+  String get calculatorsTotalKm;
+
+  /// No description provided for @calculatorsUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'This calculator does not exist.'**
+  String get calculatorsUnknown;
+
+  /// No description provided for @calculatorsUseReference.
+  ///
+  /// In en, this message translates to:
+  /// **'Use a reference price'**
+  String get calculatorsUseReference;
+
+  /// No description provided for @calculatorsVoltsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Empty = 230 V (shown as an assumption).'**
+  String get calculatorsVoltsHint;
+
+  /// No description provided for @calculatorsVsFuelDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Energy cost of your EV compared with a fuel car, per 100 km and per month.'**
+  String get calculatorsVsFuelDescription;
+
+  /// No description provided for @calculatorsVsFuelTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Electric vs petrol'**
+  String get calculatorsVsFuelTitle;
+
+  /// No description provided for @calculatorsYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get calculatorsYes;
 
   /// No description provided for @carsAbout.
   ///
@@ -2642,11 +3776,287 @@ abstract class AppLocalizations {
   /// **'Your location could not be determined. Choose a place instead.'**
   String get chargingLocationUnavailable;
 
+  /// No description provided for @chargingLogsAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add session'**
+  String get chargingLogsAdd;
+
+  /// No description provided for @chargingLogsAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Session added.'**
+  String get chargingLogsAdded;
+
+  /// No description provided for @chargingLogsAllCars.
+  ///
+  /// In en, this message translates to:
+  /// **'All cars'**
+  String get chargingLogsAllCars;
+
+  /// No description provided for @chargingLogsAvgPerKwh.
+  ///
+  /// In en, this message translates to:
+  /// **'Average per kWh'**
+  String get chargingLogsAvgPerKwh;
+
+  /// No description provided for @chargingLogsByLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Where you charge'**
+  String get chargingLogsByLocation;
+
+  /// No description provided for @chargingLogsCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Car'**
+  String get chargingLogsCar;
+
+  /// No description provided for @chargingLogsConfidenceLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Low confidence'**
+  String get chargingLogsConfidenceLow;
+
+  /// No description provided for @chargingLogsConfidenceMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium confidence'**
+  String get chargingLogsConfidenceMedium;
+
+  /// No description provided for @chargingLogsConsumption.
+  ///
+  /// In en, this message translates to:
+  /// **'Consumption'**
+  String get chargingLogsConsumption;
+
+  /// No description provided for @chargingLogsCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount paid'**
+  String get chargingLogsCost;
+
+  /// No description provided for @chargingLogsCostHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional. Leave empty if you do not know it — it will not count as free.'**
+  String get chargingLogsCostHint;
+
+  /// No description provided for @chargingLogsCostPer100.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost per 100 km'**
+  String get chargingLogsCostPer100;
+
+  /// No description provided for @chargingLogsCostSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost'**
+  String get chargingLogsCostSection;
+
+  /// No description provided for @chargingLogsCurrency.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency'**
+  String get chargingLogsCurrency;
+
+  /// No description provided for @chargingLogsCurrentType.
+  ///
+  /// In en, this message translates to:
+  /// **'Current type'**
+  String get chargingLogsCurrentType;
+
+  /// No description provided for @chargingLogsCurrentUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Not sure'**
+  String get chargingLogsCurrentUnknown;
+
+  /// No description provided for @chargingLogsDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date and time'**
+  String get chargingLogsDate;
+
+  /// No description provided for @chargingLogsDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete session'**
+  String get chargingLogsDelete;
+
+  /// No description provided for @chargingLogsDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this session?'**
+  String get chargingLogsDeleteConfirm;
+
+  /// No description provided for @chargingLogsDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'It will be removed from your reports.'**
+  String get chargingLogsDeleteMessage;
+
+  /// No description provided for @chargingLogsDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Session deleted.'**
+  String get chargingLogsDeleted;
+
+  /// No description provided for @chargingLogsDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance'**
+  String get chargingLogsDistance;
+
+  /// No description provided for @chargingLogsDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get chargingLogsDuration;
+
   /// No description provided for @chargingLogsEditTitle.
   ///
   /// In en, this message translates to:
   /// **'Edit charging session'**
   String get chargingLogsEditTitle;
+
+  /// No description provided for @chargingLogsEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Log the energy, cost and odometer of each charge. Reports are built only from what you enter.'**
+  String get chargingLogsEmptyMessage;
+
+  /// No description provided for @chargingLogsEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No charging sessions yet'**
+  String get chargingLogsEmptyTitle;
+
+  /// No description provided for @chargingLogsEnergy.
+  ///
+  /// In en, this message translates to:
+  /// **'Energy charged'**
+  String get chargingLogsEnergy;
+
+  /// No description provided for @chargingLogsEnergyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'As shown by the charger, app or meter.'**
+  String get chargingLogsEnergyHint;
+
+  /// No description provided for @chargingLogsErrorMax.
+  ///
+  /// In en, this message translates to:
+  /// **'Must be at most {max}.'**
+  String chargingLogsErrorMax(String max);
+
+  /// No description provided for @chargingLogsErrorPositive.
+  ///
+  /// In en, this message translates to:
+  /// **'Must be greater than zero.'**
+  String get chargingLogsErrorPositive;
+
+  /// No description provided for @chargingLogsErrorRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Required.'**
+  String get chargingLogsErrorRequired;
+
+  /// No description provided for @chargingLogsErrorSoc.
+  ///
+  /// In en, this message translates to:
+  /// **'The end level must be above the start level.'**
+  String get chargingLogsErrorSoc;
+
+  /// No description provided for @chargingLogsGuestMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to keep a private log of your charging sessions and see your real spending and consumption.'**
+  String get chargingLogsGuestMessage;
+
+  /// No description provided for @chargingLogsInCurrency.
+  ///
+  /// In en, this message translates to:
+  /// **'In {currency}'**
+  String chargingLogsInCurrency(String currency);
+
+  /// No description provided for @chargingLogsLoadMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Load more'**
+  String get chargingLogsLoadMore;
+
+  /// No description provided for @chargingLogsLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Where'**
+  String get chargingLogsLocation;
+
+  /// No description provided for @chargingLogsLocationHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get chargingLogsLocationHome;
+
+  /// No description provided for @chargingLogsLocationOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get chargingLogsLocationOther;
+
+  /// No description provided for @chargingLogsLocationPublic.
+  ///
+  /// In en, this message translates to:
+  /// **'Public'**
+  String get chargingLogsLocationPublic;
+
+  /// No description provided for @chargingLogsLocationWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Work'**
+  String get chargingLogsLocationWork;
+
+  /// No description provided for @chargingLogsLowConfidenceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Based on few readings or a short distance. Log more sessions with the odometer for a better figure.'**
+  String get chargingLogsLowConfidenceHint;
+
+  /// No description provided for @chargingLogsMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'How this is calculated'**
+  String get chargingLogsMethod;
+
+  /// No description provided for @chargingLogsMixedCurrencies.
+  ///
+  /// In en, this message translates to:
+  /// **'You paid in more than one currency. Amounts are shown per currency and never converted.'**
+  String get chargingLogsMixedCurrencies;
+
+  /// No description provided for @chargingLogsMonthlyEnergy.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly energy'**
+  String get chargingLogsMonthlyEnergy;
+
+  /// No description provided for @chargingLogsMonthlySpend.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly spending'**
+  String get chargingLogsMonthlySpend;
+
+  /// No description provided for @chargingLogsMoreHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional. The odometer reading makes consumption reports possible.'**
+  String get chargingLogsMoreHint;
+
+  /// No description provided for @chargingLogsMoreSection.
+  ///
+  /// In en, this message translates to:
+  /// **'More details'**
+  String get chargingLogsMoreSection;
 
   /// No description provided for @chargingLogsNewTitle.
   ///
@@ -2654,17 +4064,209 @@ abstract class AppLocalizations {
   /// **'New charging session'**
   String get chargingLogsNewTitle;
 
+  /// No description provided for @chargingLogsNoCarMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Each charging session belongs to a car in your garage.'**
+  String get chargingLogsNoCarMessage;
+
+  /// No description provided for @chargingLogsNoCarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your car first'**
+  String get chargingLogsNoCarTitle;
+
+  /// No description provided for @chargingLogsNoCost.
+  ///
+  /// In en, this message translates to:
+  /// **'No cost entered'**
+  String get chargingLogsNoCost;
+
+  /// No description provided for @chargingLogsNoSpendData.
+  ///
+  /// In en, this message translates to:
+  /// **'No costs were entered in this period.'**
+  String get chargingLogsNoSpendData;
+
+  /// No description provided for @chargingLogsNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get chargingLogsNotes;
+
+  /// No description provided for @chargingLogsOdometer.
+  ///
+  /// In en, this message translates to:
+  /// **'Odometer'**
+  String get chargingLogsOdometer;
+
+  /// No description provided for @chargingLogsOdometerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Must not be lower than an earlier session of this car.'**
+  String get chargingLogsOdometerHint;
+
+  /// No description provided for @chargingLogsPerKwh.
+  ///
+  /// In en, this message translates to:
+  /// **'{price}/kWh'**
+  String chargingLogsPerKwh(String price);
+
+  /// No description provided for @chargingLogsPeriod12.
+  ///
+  /// In en, this message translates to:
+  /// **'12 months'**
+  String get chargingLogsPeriod12;
+
+  /// No description provided for @chargingLogsPeriod3.
+  ///
+  /// In en, this message translates to:
+  /// **'3 months'**
+  String get chargingLogsPeriod3;
+
+  /// No description provided for @chargingLogsPeriod6.
+  ///
+  /// In en, this message translates to:
+  /// **'6 months'**
+  String get chargingLogsPeriod6;
+
+  /// No description provided for @chargingLogsPeriodAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All time'**
+  String get chargingLogsPeriodAll;
+
+  /// No description provided for @chargingLogsPower.
+  ///
+  /// In en, this message translates to:
+  /// **'Charger power'**
+  String get chargingLogsPower;
+
+  /// No description provided for @chargingLogsReasonMissingCosts.
+  ///
+  /// In en, this message translates to:
+  /// **'Insufficient data: some costs missing'**
+  String get chargingLogsReasonMissingCosts;
+
+  /// No description provided for @chargingLogsReasonMixedCurrencies.
+  ///
+  /// In en, this message translates to:
+  /// **'Not shown: mixed currencies'**
+  String get chargingLogsReasonMixedCurrencies;
+
+  /// No description provided for @chargingLogsReasonNoDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'Insufficient data: no distance between readings'**
+  String get chargingLogsReasonNoDistance;
+
+  /// No description provided for @chargingLogsReasonNoSessions.
+  ///
+  /// In en, this message translates to:
+  /// **'Insufficient data: no sessions'**
+  String get chargingLogsReasonNoSessions;
+
+  /// No description provided for @chargingLogsReasonOdometer.
+  ///
+  /// In en, this message translates to:
+  /// **'Insufficient data: needs 2+ odometer readings'**
+  String get chargingLogsReasonOdometer;
+
+  /// No description provided for @chargingLogsReasonUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Insufficient data'**
+  String get chargingLogsReasonUnknown;
+
+  /// No description provided for @chargingLogsReportEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Reports use only the sessions you log. Add a session or choose a longer period.'**
+  String get chargingLogsReportEmptyMessage;
+
+  /// No description provided for @chargingLogsReportEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No sessions in this period'**
+  String get chargingLogsReportEmptyTitle;
+
   /// No description provided for @chargingLogsReportsTitle.
   ///
   /// In en, this message translates to:
   /// **'Spending & consumption'**
   String get chargingLogsReportsTitle;
 
+  /// No description provided for @chargingLogsSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Session saved.'**
+  String get chargingLogsSaved;
+
+  /// No description provided for @chargingLogsSessionSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Session'**
+  String get chargingLogsSessionSection;
+
+  /// No description provided for @chargingLogsSessions.
+  ///
+  /// In en, this message translates to:
+  /// **'Sessions'**
+  String get chargingLogsSessions;
+
+  /// No description provided for @chargingLogsSessionsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 session} other{{count} sessions}}'**
+  String chargingLogsSessionsCount(int count);
+
+  /// No description provided for @chargingLogsSessionsWithoutCost.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 session has no cost and is not in the spending totals.} other{{count} sessions have no cost and are not in the spending totals.}}'**
+  String chargingLogsSessionsWithoutCost(int count);
+
+  /// No description provided for @chargingLogsShowTable.
+  ///
+  /// In en, this message translates to:
+  /// **'Show the numbers'**
+  String get chargingLogsShowTable;
+
+  /// No description provided for @chargingLogsSocEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery at end'**
+  String get chargingLogsSocEnd;
+
+  /// No description provided for @chargingLogsSocStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery at start'**
+  String get chargingLogsSocStart;
+
   /// No description provided for @chargingLogsTitle.
   ///
   /// In en, this message translates to:
   /// **'Charging log'**
   String get chargingLogsTitle;
+
+  /// No description provided for @chargingLogsTotalEnergy.
+  ///
+  /// In en, this message translates to:
+  /// **'Energy'**
+  String get chargingLogsTotalEnergy;
+
+  /// No description provided for @chargingLogsTotalSpend.
+  ///
+  /// In en, this message translates to:
+  /// **'Spent'**
+  String get chargingLogsTotalSpend;
+
+  /// No description provided for @chargingLogsVehicleSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{sessions, plural, =1{1 session} other{{sessions} sessions}} · {energy}'**
+  String chargingLogsVehicleSummary(int sessions, String energy);
 
   /// No description provided for @chargingLongitude.
   ///
@@ -4352,11 +5954,185 @@ abstract class AppLocalizations {
   /// **'Web preview'**
   String get commonWebPreviewBanner;
 
+  /// No description provided for @communityAboutCar.
+  ///
+  /// In en, this message translates to:
+  /// **'About: {car}'**
+  String communityAboutCar(String car);
+
+  /// No description provided for @communityAccept.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept answer'**
+  String get communityAccept;
+
+  /// No description provided for @communityAcceptCleared.
+  ///
+  /// In en, this message translates to:
+  /// **'Acceptance removed'**
+  String get communityAcceptCleared;
+
+  /// No description provided for @communityAccepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer accepted'**
+  String get communityAccepted;
+
+  /// No description provided for @communityAcceptedAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Accepted answer'**
+  String get communityAcceptedAnswer;
+
+  /// No description provided for @communityAllReviews.
+  ///
+  /// In en, this message translates to:
+  /// **'All reviews'**
+  String get communityAllReviews;
+
+  /// No description provided for @communityAnonymous.
+  ///
+  /// In en, this message translates to:
+  /// **'User'**
+  String get communityAnonymous;
+
+  /// No description provided for @communityAnswerCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No answers} =1{1 answer} other{{count} answers}}'**
+  String communityAnswerCount(int count);
+
+  /// No description provided for @communityAnswerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write your answer…'**
+  String get communityAnswerHint;
+
+  /// No description provided for @communityAnswerPosted.
+  ///
+  /// In en, this message translates to:
+  /// **'Your answer is posted'**
+  String get communityAnswerPosted;
+
+  /// No description provided for @communityAnswered.
+  ///
+  /// In en, this message translates to:
+  /// **'Answered'**
+  String get communityAnswered;
+
+  /// No description provided for @communityAnswersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Answers'**
+  String get communityAnswersTitle;
+
+  /// No description provided for @communityAnswersWithCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Answers ({count})'**
+  String communityAnswersWithCount(String count);
+
+  /// No description provided for @communityAskGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'General question'**
+  String get communityAskGeneral;
+
+  /// No description provided for @communityAskTips.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a clear, specific question (at least 10 characters) and mention the market and trim if they matter. No links or personal data.'**
+  String get communityAskTips;
+
   /// No description provided for @communityAskTitle.
   ///
   /// In en, this message translates to:
   /// **'Ask a question'**
   String get communityAskTitle;
+
+  /// No description provided for @communityAskedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Asked by {name}'**
+  String communityAskedBy(String name);
+
+  /// No description provided for @communityBeFirstToReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Be the first to review'**
+  String get communityBeFirstToReview;
+
+  /// No description provided for @communityBlockConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Block'**
+  String get communityBlockConfirm;
+
+  /// No description provided for @communityBlockMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You won\'t see their reviews, comments, questions or answers any more. They won\'t be told, and you can unblock at any time.'**
+  String get communityBlockMessage;
+
+  /// No description provided for @communityBlockTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Block {name}?'**
+  String communityBlockTitle(String name);
+
+  /// No description provided for @communityBlockUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Block this user'**
+  String get communityBlockUser;
+
+  /// No description provided for @communityBlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} blocked'**
+  String communityBlocked(String name);
+
+  /// No description provided for @communityBlockedIndefinite.
+  ///
+  /// In en, this message translates to:
+  /// **'A moderator paused posting from your account until further notice. You can still read.'**
+  String get communityBlockedIndefinite;
+
+  /// No description provided for @communityBlockedReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason: {reason}'**
+  String communityBlockedReason(String reason);
+
+  /// No description provided for @communityBlockedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Posting is paused for your account'**
+  String get communityBlockedTitle;
+
+  /// No description provided for @communityBlockedUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'A moderator paused posting from your account until {until}. You can still read.'**
+  String communityBlockedUntil(String until);
+
+  /// No description provided for @communityBlockedUsersIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t see these users\' community posts.'**
+  String get communityBlockedUsersIntro;
+
+  /// No description provided for @communityBlockedUsersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked users'**
+  String get communityBlockedUsersTitle;
+
+  /// No description provided for @communityCancelReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel reply'**
+  String get communityCancelReply;
 
   /// No description provided for @communityCarReviewsTitle.
   ///
@@ -4364,11 +6140,635 @@ abstract class AppLocalizations {
   /// **'Owner reviews'**
   String get communityCarReviewsTitle;
 
+  /// No description provided for @communityChooseTrim.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a trim'**
+  String get communityChooseTrim;
+
+  /// No description provided for @communityClearFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear filters'**
+  String get communityClearFilters;
+
+  /// No description provided for @communityClearRating.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get communityClearRating;
+
+  /// No description provided for @communityCommentHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a comment…'**
+  String get communityCommentHint;
+
+  /// No description provided for @communityCommentPosted.
+  ///
+  /// In en, this message translates to:
+  /// **'Your comment is posted'**
+  String get communityCommentPosted;
+
+  /// No description provided for @communityCommentsClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'Comments are closed here.'**
+  String get communityCommentsClosed;
+
   /// No description provided for @communityCommentsTitle.
   ///
   /// In en, this message translates to:
   /// **'Comments'**
   String get communityCommentsTitle;
+
+  /// No description provided for @communityCommentsWithCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Comments ({count})'**
+  String communityCommentsWithCount(String count);
+
+  /// No description provided for @communityCons.
+  ///
+  /// In en, this message translates to:
+  /// **'Cons'**
+  String get communityCons;
+
+  /// No description provided for @communityConsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What didn\'t you like?'**
+  String get communityConsHint;
+
+  /// No description provided for @communityCreateAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Create account'**
+  String get communityCreateAccount;
+
+  /// No description provided for @communityDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get communityDelete;
+
+  /// No description provided for @communityDeleteAnswerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete answer?'**
+  String get communityDeleteAnswerTitle;
+
+  /// No description provided for @communityDeleteCommentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete comment?'**
+  String get communityDeleteCommentTitle;
+
+  /// No description provided for @communityDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This can\'t be undone.'**
+  String get communityDeleteMessage;
+
+  /// No description provided for @communityDeleteQuestionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete question?'**
+  String get communityDeleteQuestionTitle;
+
+  /// No description provided for @communityDeleteReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete review'**
+  String get communityDeleteReview;
+
+  /// No description provided for @communityDeleteReviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete your review?'**
+  String get communityDeleteReviewTitle;
+
+  /// No description provided for @communityDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted'**
+  String get communityDeleted;
+
+  /// No description provided for @communityDeletedUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted user'**
+  String get communityDeletedUser;
+
+  /// No description provided for @communityDemoTargetNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'This is demo data for testing, not a real car or article.'**
+  String get communityDemoTargetNotice;
+
+  /// No description provided for @communityDimAfterSales.
+  ///
+  /// In en, this message translates to:
+  /// **'After-sales service'**
+  String get communityDimAfterSales;
+
+  /// No description provided for @communityDimBuildQuality.
+  ///
+  /// In en, this message translates to:
+  /// **'Build quality'**
+  String get communityDimBuildQuality;
+
+  /// No description provided for @communityDimCharging.
+  ///
+  /// In en, this message translates to:
+  /// **'Charging'**
+  String get communityDimCharging;
+
+  /// No description provided for @communityDimComfort.
+  ///
+  /// In en, this message translates to:
+  /// **'Comfort'**
+  String get communityDimComfort;
+
+  /// No description provided for @communityDimRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Real-world range'**
+  String get communityDimRange;
+
+  /// No description provided for @communityDimReliability.
+  ///
+  /// In en, this message translates to:
+  /// **'Reliability'**
+  String get communityDimReliability;
+
+  /// No description provided for @communityDimTechnology.
+  ///
+  /// In en, this message translates to:
+  /// **'Technology'**
+  String get communityDimTechnology;
+
+  /// No description provided for @communityDimValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Value for money'**
+  String get communityDimValue;
+
+  /// No description provided for @communityDimensionScore.
+  ///
+  /// In en, this message translates to:
+  /// **'{dimension}: {score} out of 5'**
+  String communityDimensionScore(String dimension, int score);
+
+  /// No description provided for @communityDimensionValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} out of 5, {count} ratings'**
+  String communityDimensionValue(String value, int count);
+
+  /// No description provided for @communityDimensionsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional: rate specific aspects'**
+  String get communityDimensionsHint;
+
+  /// No description provided for @communityDimensionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ratings by aspect'**
+  String get communityDimensionsTitle;
+
+  /// No description provided for @communityDistributionRow.
+  ///
+  /// In en, this message translates to:
+  /// **'{stars} stars: {count}'**
+  String communityDistributionRow(int stars, int count);
+
+  /// No description provided for @communityDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get communityDone;
+
+  /// No description provided for @communityEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get communityEdit;
+
+  /// No description provided for @communityEditAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit answer'**
+  String get communityEditAnswer;
+
+  /// No description provided for @communityEditComment.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit comment'**
+  String get communityEditComment;
+
+  /// No description provided for @communityEditMyReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit my review'**
+  String get communityEditMyReview;
+
+  /// No description provided for @communityEditQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit question'**
+  String get communityEditQuestion;
+
+  /// No description provided for @communityEditRemoderated.
+  ///
+  /// In en, this message translates to:
+  /// **'After editing, your review goes back to review before it appears again.'**
+  String get communityEditRemoderated;
+
+  /// No description provided for @communityEditReviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit your review'**
+  String get communityEditReviewTitle;
+
+  /// No description provided for @communityEdited.
+  ///
+  /// In en, this message translates to:
+  /// **'edited'**
+  String get communityEdited;
+
+  /// No description provided for @communityErrEmailNotVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify your e-mail before posting.'**
+  String get communityErrEmailNotVerified;
+
+  /// No description provided for @communityErrRateLimited.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve posted a lot in a short time. Please try again later.'**
+  String get communityErrRateLimited;
+
+  /// No description provided for @communityErrRateLimitedMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes, plural, =1{You\'ve posted a lot in a short time. Try again in a minute.} other{You\'ve posted a lot in a short time. Try again in {minutes} minutes.}}'**
+  String communityErrRateLimitedMinutes(int minutes);
+
+  /// No description provided for @communityErrReportDuplicate.
+  ///
+  /// In en, this message translates to:
+  /// **'You already reported this; your report is being reviewed.'**
+  String get communityErrReportDuplicate;
+
+  /// No description provided for @communityErrSelfReport.
+  ///
+  /// In en, this message translates to:
+  /// **'You can\'t report your own post.'**
+  String get communityErrSelfReport;
+
+  /// No description provided for @communityErrSelfVote.
+  ///
+  /// In en, this message translates to:
+  /// **'You can\'t vote on your own post.'**
+  String get communityErrSelfVote;
+
+  /// No description provided for @communityErrSignInAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Your session ended. Please sign in again.'**
+  String get communityErrSignInAgain;
+
+  /// No description provided for @communityFieldRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required.'**
+  String get communityFieldRequired;
+
+  /// No description provided for @communityFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get communityFilterAll;
+
+  /// No description provided for @communityFilterAnswered.
+  ///
+  /// In en, this message translates to:
+  /// **'Answered'**
+  String get communityFilterAnswered;
+
+  /// No description provided for @communityFilterUnanswered.
+  ///
+  /// In en, this message translates to:
+  /// **'Unanswered'**
+  String get communityFilterUnanswered;
+
+  /// No description provided for @communityFormHasErrors.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fix the highlighted fields.'**
+  String get communityFormHasErrors;
+
+  /// No description provided for @communityGeneralQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'General question'**
+  String get communityGeneralQuestion;
+
+  /// No description provided for @communityHelpful.
+  ///
+  /// In en, this message translates to:
+  /// **'Helpful'**
+  String get communityHelpful;
+
+  /// No description provided for @communityHelpfulCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Helpful ({count})'**
+  String communityHelpfulCount(String count);
+
+  /// No description provided for @communityJoinTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Join the conversation'**
+  String get communityJoinTitle;
+
+  /// No description provided for @communityLoadMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Load more'**
+  String get communityLoadMore;
+
+  /// No description provided for @communityLoadMoreAnswers.
+  ///
+  /// In en, this message translates to:
+  /// **'More answers'**
+  String get communityLoadMoreAnswers;
+
+  /// No description provided for @communityLoadMoreComments.
+  ///
+  /// In en, this message translates to:
+  /// **'More comments'**
+  String get communityLoadMoreComments;
+
+  /// No description provided for @communityLoadMoreQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'More questions'**
+  String get communityLoadMoreQuestions;
+
+  /// No description provided for @communityLoadMoreReviews.
+  ///
+  /// In en, this message translates to:
+  /// **'More reviews'**
+  String get communityLoadMoreReviews;
+
+  /// No description provided for @communityMonthsUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'months'**
+  String get communityMonthsUnit;
+
+  /// No description provided for @communityMoreActions.
+  ///
+  /// In en, this message translates to:
+  /// **'More actions'**
+  String get communityMoreActions;
+
+  /// No description provided for @communityNewAccountNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account is new: your posts are reviewed before they appear, and links aren\'t allowed for the first few days.'**
+  String get communityNewAccountNote;
+
+  /// No description provided for @communityNoAnswersMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Know the answer? Share what you\'ve experienced.'**
+  String get communityNoAnswersMessage;
+
+  /// No description provided for @communityNoAnswersMineMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Answers will appear here when they arrive.'**
+  String get communityNoAnswersMineMessage;
+
+  /// No description provided for @communityNoAnswersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No answers yet'**
+  String get communityNoAnswersTitle;
+
+  /// No description provided for @communityNoAnswersYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No answers yet'**
+  String get communityNoAnswersYet;
+
+  /// No description provided for @communityNoBlockedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You can block anyone from the actions menu next to their post.'**
+  String get communityNoBlockedMessage;
+
+  /// No description provided for @communityNoBlockedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No blocked users'**
+  String get communityNoBlockedTitle;
+
+  /// No description provided for @communityNoCommentsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Start the conversation with the first comment.'**
+  String get communityNoCommentsMessage;
+
+  /// No description provided for @communityNoCommentsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No comments yet'**
+  String get communityNoCommentsTitle;
+
+  /// No description provided for @communityNoFilteredReviewsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Try removing some filters.'**
+  String get communityNoFilteredReviewsMessage;
+
+  /// No description provided for @communityNoFilteredReviewsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching reviews'**
+  String get communityNoFilteredReviewsTitle;
+
+  /// No description provided for @communityNoMatchingQuestionsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Try other words or change the filter — or ask your question.'**
+  String get communityNoMatchingQuestionsMessage;
+
+  /// No description provided for @communityNoMatchingQuestionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching questions'**
+  String get communityNoMatchingQuestionsTitle;
+
+  /// No description provided for @communityNoQuestionsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask owners and enthusiasts about charging, range and servicing.'**
+  String get communityNoQuestionsMessage;
+
+  /// No description provided for @communityNoQuestionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No questions yet'**
+  String get communityNoQuestionsTitle;
+
+  /// No description provided for @communityNoReviewsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No owner has published a review of this trim yet.'**
+  String get communityNoReviewsMessage;
+
+  /// No description provided for @communityNoReviewsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No owner reviews yet'**
+  String get communityNoReviewsTitle;
+
+  /// No description provided for @communityNoTrimsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This car has no trims listed in your current market, so reviews can\'t be shown or written here.'**
+  String get communityNoTrimsMessage;
+
+  /// No description provided for @communityNoTrimsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No trims listed'**
+  String get communityNoTrimsTitle;
+
+  /// No description provided for @communityNotAnsweredYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting an accepted answer'**
+  String get communityNotAnsweredYet;
+
+  /// No description provided for @communityNotHelpful.
+  ///
+  /// In en, this message translates to:
+  /// **'Not helpful'**
+  String get communityNotHelpful;
+
+  /// No description provided for @communityOnArticle.
+  ///
+  /// In en, this message translates to:
+  /// **'Comments on: {title}. Open the article'**
+  String communityOnArticle(String title);
+
+  /// No description provided for @communityOnArticleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Comments on'**
+  String get communityOnArticleLabel;
+
+  /// No description provided for @communityOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'optional'**
+  String get communityOptional;
+
+  /// No description provided for @communityOverallRating.
+  ///
+  /// In en, this message translates to:
+  /// **'Overall rating'**
+  String get communityOverallRating;
+
+  /// No description provided for @communityOwnedMonths.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Owned under a month} =1{Owned 1 month} other{Owned {count} months}}'**
+  String communityOwnedMonths(int count);
+
+  /// No description provided for @communityOwnedYears.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Owned 1 year} other{Owned {count} years}}'**
+  String communityOwnedYears(int count);
+
+  /// No description provided for @communityOwnedYearsMonths.
+  ///
+  /// In en, this message translates to:
+  /// **'Owned {years} yr {months} mo'**
+  String communityOwnedYearsMonths(int years, int months);
+
+  /// No description provided for @communityOwnershipHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 8'**
+  String get communityOwnershipHint;
+
+  /// No description provided for @communityOwnershipInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a number of months from 0 to 600.'**
+  String get communityOwnershipInvalid;
+
+  /// No description provided for @communityOwnershipLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'How long you\'ve owned it'**
+  String get communityOwnershipLabel;
+
+  /// No description provided for @communityPostAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Post answer'**
+  String get communityPostAnswer;
+
+  /// No description provided for @communityPostQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Post question'**
+  String get communityPostQuestion;
+
+  /// No description provided for @communityPostedPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent — it will appear to others after review.'**
+  String get communityPostedPending;
+
+  /// No description provided for @communityPros.
+  ///
+  /// In en, this message translates to:
+  /// **'Pros'**
+  String get communityPros;
+
+  /// No description provided for @communityProsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What did you like?'**
+  String get communityProsHint;
+
+  /// No description provided for @communityQuestionBodyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add anything that helps answer it: usage, charger type…'**
+  String get communityQuestionBodyHint;
+
+  /// No description provided for @communityQuestionBodyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get communityQuestionBodyLabel;
+
+  /// No description provided for @communityQuestionPosted.
+  ///
+  /// In en, this message translates to:
+  /// **'Your question is posted'**
+  String get communityQuestionPosted;
 
   /// No description provided for @communityQuestionTitle.
   ///
@@ -4376,17 +6776,593 @@ abstract class AppLocalizations {
   /// **'Question'**
   String get communityQuestionTitle;
 
+  /// No description provided for @communityQuestionTitleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. How long does home charging take from 20 to 80%?'**
+  String get communityQuestionTitleHint;
+
+  /// No description provided for @communityQuestionTitleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Your question'**
+  String get communityQuestionTitleLabel;
+
+  /// No description provided for @communityQuestionUnavailableMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'It may have been removed or is still being reviewed.'**
+  String get communityQuestionUnavailableMessage;
+
+  /// No description provided for @communityQuestionUnavailableTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Question not available'**
+  String get communityQuestionUnavailableTitle;
+
   /// No description provided for @communityQuestionsTitle.
   ///
   /// In en, this message translates to:
   /// **'Questions & answers'**
   String get communityQuestionsTitle;
 
+  /// No description provided for @communityRating1.
+  ///
+  /// In en, this message translates to:
+  /// **'Poor'**
+  String get communityRating1;
+
+  /// No description provided for @communityRating2.
+  ///
+  /// In en, this message translates to:
+  /// **'Fair'**
+  String get communityRating2;
+
+  /// No description provided for @communityRating3.
+  ///
+  /// In en, this message translates to:
+  /// **'Good'**
+  String get communityRating3;
+
+  /// No description provided for @communityRating4.
+  ///
+  /// In en, this message translates to:
+  /// **'Very good'**
+  String get communityRating4;
+
+  /// No description provided for @communityRating5.
+  ///
+  /// In en, this message translates to:
+  /// **'Excellent'**
+  String get communityRating5;
+
+  /// No description provided for @communityRatingRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a rating from 1 to 5 stars.'**
+  String get communityRatingRequired;
+
+  /// No description provided for @communityReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply'**
+  String get communityReply;
+
+  /// No description provided for @communityReplyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a reply…'**
+  String get communityReplyHint;
+
+  /// No description provided for @communityReplyPosted.
+  ///
+  /// In en, this message translates to:
+  /// **'Your reply is posted'**
+  String get communityReplyPosted;
+
+  /// No description provided for @communityReplyingTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Replying to {name}'**
+  String communityReplyingTo(String name);
+
+  /// No description provided for @communityReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Report'**
+  String get communityReport;
+
+  /// No description provided for @communityReportDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Details (required)'**
+  String get communityReportDetails;
+
+  /// No description provided for @communityReportDetailsOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'More details (optional)'**
+  String get communityReportDetailsOptional;
+
+  /// No description provided for @communityReportDetailsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a few words to explain.'**
+  String get communityReportDetailsRequired;
+
+  /// No description provided for @communityReportIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a reason. Moderators review reports; the author won\'t see your name.'**
+  String get communityReportIntro;
+
+  /// No description provided for @communityReportSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send report'**
+  String get communityReportSend;
+
+  /// No description provided for @communityReportSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Thanks — your report reached the moderators.'**
+  String get communityReportSent;
+
+  /// No description provided for @communityReportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Report content'**
+  String get communityReportTitle;
+
+  /// No description provided for @communityReportUserTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Report a user'**
+  String get communityReportUserTitle;
+
+  /// No description provided for @communityReviewBodyHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'At least 20 characters. Write about your own experience only, with no one\'s personal data.'**
+  String get communityReviewBodyHelper;
+
+  /// No description provided for @communityReviewBodyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'How do you use the car? What range do you really get? How are charging and servicing?'**
+  String get communityReviewBodyHint;
+
+  /// No description provided for @communityReviewBodyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Your experience'**
+  String get communityReviewBodyLabel;
+
+  /// No description provided for @communityReviewCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No reviews} =1{1 review} other{{count} reviews}}'**
+  String communityReviewCount(int count);
+
+  /// No description provided for @communityReviewExistsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Each owner can write one review per trim. Do you want to edit your existing review?'**
+  String get communityReviewExistsMessage;
+
+  /// No description provided for @communityReviewExistsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You already reviewed this trim'**
+  String get communityReviewExistsTitle;
+
+  /// No description provided for @communityReviewGuidelines.
+  ///
+  /// In en, this message translates to:
+  /// **'Be specific and honest; no links, ads or personal data.'**
+  String get communityReviewGuidelines;
+
+  /// No description provided for @communityReviewModerated.
+  ///
+  /// In en, this message translates to:
+  /// **'Moderators check every review before it\'s published.'**
+  String get communityReviewModerated;
+
+  /// No description provided for @communityReviewSubmittedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you! Your review will appear to others after moderators check it. You can see and edit it on the reviews page.'**
+  String get communityReviewSubmittedMessage;
+
+  /// No description provided for @communityReviewSubmittedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Review received'**
+  String get communityReviewSubmittedTitle;
+
+  /// No description provided for @communityReviewTitleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your experience in one line'**
+  String get communityReviewTitleHint;
+
+  /// No description provided for @communityReviewTitleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get communityReviewTitleLabel;
+
+  /// No description provided for @communityReviewsDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Reviews are owners\' personal opinions and experiences, checked by moderators before publishing — not official data or certified measurements.'**
+  String get communityReviewsDisclaimer;
+
+  /// No description provided for @communitySave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get communitySave;
+
+  /// No description provided for @communitySaveReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Save and resubmit'**
+  String get communitySaveReview;
+
+  /// No description provided for @communitySearchQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Search questions'**
+  String get communitySearchQuestions;
+
+  /// No description provided for @communitySend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get communitySend;
+
+  /// No description provided for @communityShowAllQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Show all questions'**
+  String get communityShowAllQuestions;
+
+  /// No description provided for @communityShowLess.
+  ///
+  /// In en, this message translates to:
+  /// **'Show less'**
+  String get communityShowLess;
+
+  /// No description provided for @communityShowMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Show more'**
+  String get communityShowMore;
+
+  /// No description provided for @communitySignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get communitySignIn;
+
+  /// No description provided for @communitySignInToAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to add an answer.'**
+  String get communitySignInToAnswer;
+
+  /// No description provided for @communitySignInToAsk.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to ask the community a question.'**
+  String get communitySignInToAsk;
+
+  /// No description provided for @communitySignInToComment.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to comment or reply.'**
+  String get communitySignInToComment;
+
+  /// No description provided for @communitySignInToParticipate.
+  ///
+  /// In en, this message translates to:
+  /// **'Anyone can read. Sign in to take part in the community.'**
+  String get communitySignInToParticipate;
+
+  /// No description provided for @communitySignInToReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to report content.'**
+  String get communitySignInToReport;
+
+  /// No description provided for @communitySignInToReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to write your owner review of this car.'**
+  String get communitySignInToReview;
+
+  /// No description provided for @communitySignInToVote.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to mark posts as helpful.'**
+  String get communitySignInToVote;
+
+  /// No description provided for @communitySortActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Most active'**
+  String get communitySortActive;
+
+  /// No description provided for @communitySortHelpful.
+  ///
+  /// In en, this message translates to:
+  /// **'Most helpful'**
+  String get communitySortHelpful;
+
+  /// No description provided for @communitySortNewest.
+  ///
+  /// In en, this message translates to:
+  /// **'Newest'**
+  String get communitySortNewest;
+
+  /// No description provided for @communitySortOldest.
+  ///
+  /// In en, this message translates to:
+  /// **'Oldest'**
+  String get communitySortOldest;
+
+  /// No description provided for @communitySortRatingHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'Highest rating'**
+  String get communitySortRatingHigh;
+
+  /// No description provided for @communitySortRatingLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Lowest rating'**
+  String get communitySortRatingLow;
+
+  /// No description provided for @communitySortRecent.
+  ///
+  /// In en, this message translates to:
+  /// **'Most recent'**
+  String get communitySortRecent;
+
+  /// No description provided for @communitySortTop.
+  ///
+  /// In en, this message translates to:
+  /// **'Most helpful'**
+  String get communitySortTop;
+
+  /// No description provided for @communitySortVotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Most votes'**
+  String get communitySortVotes;
+
+  /// No description provided for @communityStarOption.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 star} other{{count} stars}}'**
+  String communityStarOption(int count);
+
+  /// No description provided for @communityStarsSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'{rating} out of 5 stars'**
+  String communityStarsSemantics(String rating);
+
+  /// No description provided for @communityStatusHidden.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden by moderators'**
+  String get communityStatusHidden;
+
+  /// No description provided for @communityStatusHiddenHint.
+  ///
+  /// In en, this message translates to:
+  /// **'It\'s no longer visible to others (for example after reports). Moderators can restore it.'**
+  String get communityStatusHiddenHint;
+
+  /// No description provided for @communityStatusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting review'**
+  String get communityStatusPending;
+
+  /// No description provided for @communityStatusPendingHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Only you can see this until a moderator approves it.'**
+  String get communityStatusPendingHint;
+
+  /// No description provided for @communityStatusPendingReviewHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Moderators check every review before it\'s published. Only you can see it for now.'**
+  String get communityStatusPendingReviewHint;
+
+  /// No description provided for @communityStatusRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Not approved'**
+  String get communityStatusRejected;
+
+  /// No description provided for @communityStatusRejectedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'It doesn\'t follow the community guidelines, so only you can see it. You can edit or delete it.'**
+  String get communityStatusRejectedHint;
+
+  /// No description provided for @communityStatusUnknownTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t check your account status'**
+  String get communityStatusUnknownTitle;
+
+  /// No description provided for @communitySubmitReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit for review'**
+  String get communitySubmitReview;
+
+  /// No description provided for @communityTapToRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the stars to rate'**
+  String get communityTapToRate;
+
+  /// No description provided for @communityTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'At most {max} characters.'**
+  String communityTooLong(int max);
+
+  /// No description provided for @communityTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Write at least {min} characters.'**
+  String communityTooShort(int min);
+
+  /// No description provided for @communityTrimLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Trim'**
+  String get communityTrimLabel;
+
+  /// No description provided for @communityTrimSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Trim: {trim}. Tap to change'**
+  String communityTrimSemantics(String trim);
+
+  /// No description provided for @communityUnaccept.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove acceptance'**
+  String get communityUnaccept;
+
+  /// No description provided for @communityUnblock.
+  ///
+  /// In en, this message translates to:
+  /// **'Unblock'**
+  String get communityUnblock;
+
+  /// No description provided for @communityUnblocked.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} unblocked'**
+  String communityUnblocked(String name);
+
+  /// No description provided for @communityUndo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get communityUndo;
+
+  /// No description provided for @communityVerifiedAlready.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'ve verified it'**
+  String get communityVerifiedAlready;
+
+  /// No description provided for @communityVerifiedOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified owners only'**
+  String get communityVerifiedOnly;
+
+  /// No description provided for @communityVerifiedOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified owner'**
+  String get communityVerifiedOwner;
+
+  /// No description provided for @communityVerifiedOwnerCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 verified owner} other{{count} verified owners}}'**
+  String communityVerifiedOwnerCount(int count);
+
+  /// No description provided for @communityVerifiedOwnerExplainer.
+  ///
+  /// In en, this message translates to:
+  /// **'The \"Verified owner\" badge can\'t be chosen: it appears only after our team actually verifies that you own the car.'**
+  String get communityVerifiedOwnerExplainer;
+
+  /// No description provided for @communityVerifiedOwnerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Our team verified that the author owns this car.'**
+  String get communityVerifiedOwnerHint;
+
+  /// No description provided for @communityVerifyEmailAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify e-mail'**
+  String get communityVerifyEmailAction;
+
+  /// No description provided for @communityVerifyEmailMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'To post in the community, {email} must be verified. Open the message we sent or request a new one.'**
+  String communityVerifyEmailMessage(String email);
+
+  /// No description provided for @communityVerifyEmailTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify your e-mail first'**
+  String get communityVerifyEmailTitle;
+
+  /// No description provided for @communityViewAllComments.
+  ///
+  /// In en, this message translates to:
+  /// **'View all comments'**
+  String get communityViewAllComments;
+
+  /// No description provided for @communityViewMoreReplies.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{View 1 more reply} other{View {count} more replies}}'**
+  String communityViewMoreReplies(int count);
+
+  /// No description provided for @communityVoteDownSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Not helpful, no votes} =1{Not helpful, 1 vote} other{Not helpful, {count} votes}}'**
+  String communityVoteDownSemantics(int count);
+
+  /// No description provided for @communityVoteUpSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Helpful, no votes} =1{Helpful, 1 vote} other{Helpful, {count} votes}}'**
+  String communityVoteUpSemantics(int count);
+
   /// No description provided for @communityWriteReviewTitle.
   ///
   /// In en, this message translates to:
   /// **'Write a review'**
   String get communityWriteReviewTitle;
+
+  /// No description provided for @communityYou.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get communityYou;
+
+  /// No description provided for @communityYourAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Your answer'**
+  String get communityYourAnswer;
+
+  /// No description provided for @communityYourReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Your review'**
+  String get communityYourReview;
 
   /// No description provided for @compareAboutRow.
   ///
@@ -6020,6 +8996,12 @@ abstract class AppLocalizations {
   /// **'All'**
   String get encyclopediaAllCategories;
 
+  /// No description provided for @encyclopediaBrowseAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse the encyclopedia'**
+  String get encyclopediaBrowseAll;
+
   /// No description provided for @encyclopediaClearFilters.
   ///
   /// In en, this message translates to:
@@ -6073,6 +9055,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No matching guides'**
   String get encyclopediaNoMatchesTitle;
+
+  /// No description provided for @encyclopediaNotFoundMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'It may have been removed or is being updated after a new technical review.'**
+  String get encyclopediaNotFoundMessage;
+
+  /// No description provided for @encyclopediaNotFoundTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This guide isn\'t available'**
+  String get encyclopediaNotFoundTitle;
 
   /// No description provided for @encyclopediaNotReviewedExplain.
   ///
@@ -6326,11 +9320,125 @@ abstract class AppLocalizations {
   /// **'Undo'**
   String get favoritesUndo;
 
+  /// No description provided for @garageAddButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to my garage'**
+  String get garageAddButton;
+
+  /// No description provided for @garageAddFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Add my first car'**
+  String get garageAddFirst;
+
+  /// No description provided for @garageAddLog.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a charging session'**
+  String get garageAddLog;
+
+  /// No description provided for @garageAddReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a reminder'**
+  String get garageAddReminder;
+
   /// No description provided for @garageAddTitle.
   ///
   /// In en, this message translates to:
   /// **'Add a car'**
   String get garageAddTitle;
+
+  /// No description provided for @garageAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Car added to your garage.'**
+  String get garageAdded;
+
+  /// No description provided for @garageBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get garageBack;
+
+  /// No description provided for @garageCarSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Car'**
+  String get garageCarSection;
+
+  /// No description provided for @garageCarSectionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick the exact trim from the catalog, so specs and compatibility are right.'**
+  String get garageCarSectionHint;
+
+  /// No description provided for @garageChangeCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to change'**
+  String get garageChangeCar;
+
+  /// No description provided for @garageChooseCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose brand, model, year and trim'**
+  String get garageChooseCar;
+
+  /// No description provided for @garageClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get garageClear;
+
+  /// No description provided for @garageCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of {max} cars'**
+  String garageCount(int count, int max);
+
+  /// No description provided for @garageCurrentOdometer.
+  ///
+  /// In en, this message translates to:
+  /// **'Current odometer'**
+  String get garageCurrentOdometer;
+
+  /// No description provided for @garageCurrentOdometerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional. It also updates automatically from your charging log entries.'**
+  String get garageCurrentOdometerHint;
+
+  /// No description provided for @garageDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from garage'**
+  String get garageDelete;
+
+  /// No description provided for @garageDeleteConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Its charging log entries and reminders will be deleted too. This cannot be undone.'**
+  String get garageDeleteConfirmMessage;
+
+  /// No description provided for @garageDeleteConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {name}?'**
+  String garageDeleteConfirmTitle(String name);
+
+  /// No description provided for @garageDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Car removed.'**
+  String get garageDeleted;
+
+  /// No description provided for @garageDetailsSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get garageDetailsSection;
 
   /// No description provided for @garageEditTitle.
   ///
@@ -6338,11 +9446,281 @@ abstract class AppLocalizations {
   /// **'Edit car'**
   String get garageEditTitle;
 
+  /// No description provided for @garageEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your car by choosing its brand, model, model year and trim. You can save up to 20 cars.'**
+  String get garageEmptyMessage;
+
+  /// No description provided for @garageEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your garage is empty'**
+  String get garageEmptyTitle;
+
+  /// No description provided for @garageErrorCurrentBelowInitial.
+  ///
+  /// In en, this message translates to:
+  /// **'The current reading cannot be lower than the reading at purchase.'**
+  String get garageErrorCurrentBelowInitial;
+
+  /// No description provided for @garageErrorNegative.
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot be negative.'**
+  String get garageErrorNegative;
+
+  /// No description provided for @garageErrorNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a number.'**
+  String get garageErrorNumber;
+
+  /// No description provided for @garageErrorPickCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the car first.'**
+  String get garageErrorPickCar;
+
+  /// No description provided for @garageGuestMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to save your cars with their exact trim and market, and use them in the charging log, reminders and calculators.'**
+  String get garageGuestMessage;
+
+  /// No description provided for @garageInitialOdometer.
+  ///
+  /// In en, this message translates to:
+  /// **'Odometer at purchase'**
+  String get garageInitialOdometer;
+
+  /// No description provided for @garageInitialOdometerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional. Used as the starting point of distance reports.'**
+  String get garageInitialOdometerHint;
+
+  /// No description provided for @garageLimitReached.
+  ///
+  /// In en, this message translates to:
+  /// **'You can save up to {max} cars. Remove one to add another.'**
+  String garageLimitReached(int max);
+
+  /// No description provided for @garageLogsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Charging sessions'**
+  String get garageLogsCount;
+
+  /// No description provided for @garageMakePrimary.
+  ///
+  /// In en, this message translates to:
+  /// **'Make it my primary car'**
+  String get garageMakePrimary;
+
+  /// No description provided for @garageMarket.
+  ///
+  /// In en, this message translates to:
+  /// **'Market'**
+  String get garageMarket;
+
+  /// No description provided for @garageMarketHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The country where the car is used. Prices, currency and compatibility follow this market.'**
+  String get garageMarketHint;
+
+  /// No description provided for @garageModelYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Model year'**
+  String get garageModelYear;
+
+  /// No description provided for @garageNickname.
+  ///
+  /// In en, this message translates to:
+  /// **'Nickname'**
+  String get garageNickname;
+
+  /// No description provided for @garageNicknameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional, e.g. \"Family car\".'**
+  String get garageNicknameHint;
+
+  /// No description provided for @garageNotListedExplain.
+  ///
+  /// In en, this message translates to:
+  /// **'This trim has no record in {market}. Local prices and charger compatibility for {market} are therefore not available for it.'**
+  String garageNotListedExplain(String market);
+
+  /// No description provided for @garageNotListedShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Not sold in this market'**
+  String get garageNotListedShort;
+
+  /// No description provided for @garageNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get garageNotes;
+
+  /// No description provided for @garageOdometer.
+  ///
+  /// In en, this message translates to:
+  /// **'Odometer'**
+  String get garageOdometer;
+
+  /// No description provided for @garageOpenCalculators.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculators'**
+  String get garageOpenCalculators;
+
+  /// No description provided for @garageOpenLogs.
+  ///
+  /// In en, this message translates to:
+  /// **'Charging log of this car'**
+  String get garageOpenLogs;
+
+  /// No description provided for @garageOpenSpecs.
+  ///
+  /// In en, this message translates to:
+  /// **'Full specifications'**
+  String get garageOpenSpecs;
+
+  /// No description provided for @garageOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional'**
+  String get garageOptional;
+
+  /// No description provided for @garagePickerAllMarkets.
+  ///
+  /// In en, this message translates to:
+  /// **'Show trims from all markets'**
+  String get garagePickerAllMarkets;
+
+  /// No description provided for @garagePickerAllMarketsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'For imported cars not sold in your market.'**
+  String get garagePickerAllMarketsHint;
+
+  /// No description provided for @garagePickerEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to choose here yet'**
+  String get garagePickerEmpty;
+
+  /// No description provided for @garagePickerProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Step {step} of {total}'**
+  String garagePickerProgress(int step, int total);
+
+  /// No description provided for @garagePickerSearchBrand.
+  ///
+  /// In en, this message translates to:
+  /// **'Search brands'**
+  String get garagePickerSearchBrand;
+
+  /// No description provided for @garagePickerSearchModel.
+  ///
+  /// In en, this message translates to:
+  /// **'Search models'**
+  String get garagePickerSearchModel;
+
+  /// No description provided for @garagePickerStepBrand.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand'**
+  String get garagePickerStepBrand;
+
+  /// No description provided for @garagePickerStepModel.
+  ///
+  /// In en, this message translates to:
+  /// **'Model'**
+  String get garagePickerStepModel;
+
+  /// No description provided for @garagePickerStepTrim.
+  ///
+  /// In en, this message translates to:
+  /// **'Trim'**
+  String get garagePickerStepTrim;
+
+  /// No description provided for @garagePickerStepYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Year'**
+  String get garagePickerStepYear;
+
+  /// No description provided for @garagePickerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your car'**
+  String get garagePickerTitle;
+
+  /// No description provided for @garagePrimary.
+  ///
+  /// In en, this message translates to:
+  /// **'Primary'**
+  String get garagePrimary;
+
+  /// No description provided for @garagePrimarySet.
+  ///
+  /// In en, this message translates to:
+  /// **'Primary car updated.'**
+  String get garagePrimarySet;
+
+  /// No description provided for @garagePrimarySwitch.
+  ///
+  /// In en, this message translates to:
+  /// **'Primary car'**
+  String get garagePrimarySwitch;
+
+  /// No description provided for @garagePrimarySwitchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Used by default in calculators, reports and trip planning.'**
+  String get garagePrimarySwitchHint;
+
+  /// No description provided for @garagePurchaseDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase date'**
+  String get garagePurchaseDate;
+
+  /// No description provided for @garageRemindersCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Open reminders'**
+  String get garageRemindersCount;
+
+  /// No description provided for @garageSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes saved.'**
+  String get garageSaved;
+
+  /// No description provided for @garageShortcutsSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this car'**
+  String get garageShortcutsSection;
+
   /// No description provided for @garageTitle.
   ///
   /// In en, this message translates to:
   /// **'My garage'**
   String get garageTitle;
+
+  /// No description provided for @garageTrim.
+  ///
+  /// In en, this message translates to:
+  /// **'Trim'**
+  String get garageTrim;
 
   /// No description provided for @garageVehicleTitle.
   ///
@@ -7172,11 +10550,251 @@ abstract class AppLocalizations {
   /// **'Watch the video'**
   String get newsWatchVideo;
 
+  /// No description provided for @notificationsActions.
+  ///
+  /// In en, this message translates to:
+  /// **'More actions'**
+  String get notificationsActions;
+
+  /// No description provided for @notificationsChannelEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get notificationsChannelEmail;
+
+  /// No description provided for @notificationsChannelEmailUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Not available yet.'**
+  String get notificationsChannelEmailUnavailable;
+
+  /// No description provided for @notificationsChannelInApp.
+  ///
+  /// In en, this message translates to:
+  /// **'In the app'**
+  String get notificationsChannelInApp;
+
+  /// No description provided for @notificationsChannelInAppHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Always on: every notification is kept in this list.'**
+  String get notificationsChannelInAppHint;
+
+  /// No description provided for @notificationsChannelPush.
+  ///
+  /// In en, this message translates to:
+  /// **'Push notifications'**
+  String get notificationsChannelPush;
+
+  /// No description provided for @notificationsChannelsSection.
+  ///
+  /// In en, this message translates to:
+  /// **'How to reach me'**
+  String get notificationsChannelsSection;
+
+  /// No description provided for @notificationsChooseTopics.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose what to follow'**
+  String get notificationsChooseTopics;
+
+  /// No description provided for @notificationsDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get notificationsDelete;
+
+  /// No description provided for @notificationsDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification deleted.'**
+  String get notificationsDeleted;
+
+  /// No description provided for @notificationsEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow brands, models or news categories to hear when something new is published.'**
+  String get notificationsEmptyMessage;
+
+  /// No description provided for @notificationsEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications yet'**
+  String get notificationsEmptyTitle;
+
+  /// No description provided for @notificationsEmptyUnreadTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You are all caught up'**
+  String get notificationsEmptyUnreadTitle;
+
+  /// No description provided for @notificationsFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get notificationsFilterAll;
+
+  /// No description provided for @notificationsFilterUnread.
+  ///
+  /// In en, this message translates to:
+  /// **'Unread'**
+  String get notificationsFilterUnread;
+
+  /// No description provided for @notificationsFollowBrand.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand'**
+  String get notificationsFollowBrand;
+
+  /// No description provided for @notificationsFollowCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'News category'**
+  String get notificationsFollowCategory;
+
+  /// No description provided for @notificationsFollowMarket.
+  ///
+  /// In en, this message translates to:
+  /// **'Market'**
+  String get notificationsFollowMarket;
+
+  /// No description provided for @notificationsFollowModel.
+  ///
+  /// In en, this message translates to:
+  /// **'Model'**
+  String get notificationsFollowModel;
+
+  /// No description provided for @notificationsFollowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Following {name}.'**
+  String notificationsFollowed(String name);
+
+  /// No description provided for @notificationsGuestMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to get news about the brands, models and topics you follow.'**
+  String get notificationsGuestMessage;
+
+  /// No description provided for @notificationsLoadMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Load more'**
+  String get notificationsLoadMore;
+
+  /// No description provided for @notificationsMarkAllRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark all as read'**
+  String get notificationsMarkAllRead;
+
+  /// No description provided for @notificationsMarkRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as read'**
+  String get notificationsMarkRead;
+
+  /// No description provided for @notificationsMarkUnread.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as unread'**
+  String get notificationsMarkUnread;
+
+  /// No description provided for @notificationsNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get notificationsNew;
+
   /// No description provided for @notificationsPreferencesTitle.
   ///
   /// In en, this message translates to:
   /// **'Notification preferences'**
   String get notificationsPreferencesTitle;
+
+  /// No description provided for @notificationsPushActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active on your registered devices.'**
+  String get notificationsPushActive;
+
+  /// No description provided for @notificationsPushDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Turned off by you.'**
+  String get notificationsPushDisabled;
+
+  /// No description provided for @notificationsPushNoDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'No device registered for push yet.'**
+  String get notificationsPushNoDevice;
+
+  /// No description provided for @notificationsPushNotConfigured.
+  ///
+  /// In en, this message translates to:
+  /// **'Not available: the push service is not set up on the server yet. Notifications still appear in the app.'**
+  String get notificationsPushNotConfigured;
+
+  /// No description provided for @notificationsQuietChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Change times'**
+  String get notificationsQuietChange;
+
+  /// No description provided for @notificationsQuietEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiet hours'**
+  String get notificationsQuietEnabled;
+
+  /// No description provided for @notificationsQuietEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiet until'**
+  String get notificationsQuietEnd;
+
+  /// No description provided for @notificationsQuietHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Push notifications wait until quiet hours end; they still appear in the app.'**
+  String get notificationsQuietHint;
+
+  /// No description provided for @notificationsQuietOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get notificationsQuietOff;
+
+  /// No description provided for @notificationsQuietRange.
+  ///
+  /// In en, this message translates to:
+  /// **'{start} – {end} ({zone})'**
+  String notificationsQuietRange(String start, String end, String zone);
+
+  /// No description provided for @notificationsQuietSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiet hours'**
+  String get notificationsQuietSection;
+
+  /// No description provided for @notificationsQuietStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiet from'**
+  String get notificationsQuietStart;
+
+  /// No description provided for @notificationsReminderNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder alerts on this phone are set in Reminders.'**
+  String get notificationsReminderNote;
+
+  /// No description provided for @notificationsResume.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume notifications'**
+  String get notificationsResume;
 
   /// No description provided for @notificationsTitle.
   ///
@@ -7184,11 +10802,419 @@ abstract class AppLocalizations {
   /// **'Notifications'**
   String get notificationsTitle;
 
+  /// No description provided for @notificationsTopicBrand.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand'**
+  String get notificationsTopicBrand;
+
+  /// No description provided for @notificationsTopicCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'News category'**
+  String get notificationsTopicCategory;
+
+  /// No description provided for @notificationsTopicInMarket.
+  ///
+  /// In en, this message translates to:
+  /// **'in {market}'**
+  String notificationsTopicInMarket(String market);
+
+  /// No description provided for @notificationsTopicMarket.
+  ///
+  /// In en, this message translates to:
+  /// **'Market'**
+  String get notificationsTopicMarket;
+
+  /// No description provided for @notificationsTopicModel.
+  ///
+  /// In en, this message translates to:
+  /// **'Model'**
+  String get notificationsTopicModel;
+
+  /// No description provided for @notificationsTopicPriceAlert.
+  ///
+  /// In en, this message translates to:
+  /// **'Price alert'**
+  String get notificationsTopicPriceAlert;
+
+  /// No description provided for @notificationsTopicStation.
+  ///
+  /// In en, this message translates to:
+  /// **'Station'**
+  String get notificationsTopicStation;
+
+  /// No description provided for @notificationsTopicVariant.
+  ///
+  /// In en, this message translates to:
+  /// **'Trim'**
+  String get notificationsTopicVariant;
+
+  /// No description provided for @notificationsTopicsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not follow anything yet'**
+  String get notificationsTopicsEmpty;
+
+  /// No description provided for @notificationsTopicsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'News published about these is sent to you once, in your language.'**
+  String get notificationsTopicsHint;
+
+  /// No description provided for @notificationsTopicsSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Topics I follow'**
+  String get notificationsTopicsSection;
+
+  /// No description provided for @notificationsTypeCampaigns.
+  ///
+  /// In en, this message translates to:
+  /// **'Announcements'**
+  String get notificationsTypeCampaigns;
+
+  /// No description provided for @notificationsTypeCommunity.
+  ///
+  /// In en, this message translates to:
+  /// **'Community replies'**
+  String get notificationsTypeCommunity;
+
+  /// No description provided for @notificationsTypeNews.
+  ///
+  /// In en, this message translates to:
+  /// **'News about what I follow'**
+  String get notificationsTypeNews;
+
+  /// No description provided for @notificationsTypePriceAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Price alerts'**
+  String get notificationsTypePriceAlerts;
+
+  /// No description provided for @notificationsTypeReminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders'**
+  String get notificationsTypeReminders;
+
+  /// No description provided for @notificationsTypeStations.
+  ///
+  /// In en, this message translates to:
+  /// **'Charging station alerts'**
+  String get notificationsTypeStations;
+
+  /// No description provided for @notificationsTypesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Turning any type on resumes notifications.'**
+  String get notificationsTypesHint;
+
+  /// No description provided for @notificationsTypesSection.
+  ///
+  /// In en, this message translates to:
+  /// **'What to notify me about'**
+  String get notificationsTypesSection;
+
+  /// No description provided for @notificationsUnfollow.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop following {name}'**
+  String notificationsUnfollow(String name);
+
+  /// No description provided for @notificationsUnsubscribeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Unsubscribe from all'**
+  String get notificationsUnsubscribeAll;
+
+  /// No description provided for @notificationsUnsubscribeAllConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Unsubscribe from all notifications?'**
+  String get notificationsUnsubscribeAllConfirm;
+
+  /// No description provided for @notificationsUnsubscribeAllMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You will not receive any notifications until you turn a type back on.'**
+  String get notificationsUnsubscribeAllMessage;
+
+  /// No description provided for @notificationsUnsubscribedAll.
+  ///
+  /// In en, this message translates to:
+  /// **'You unsubscribed from all notifications. Nothing new will be sent until you resume.'**
+  String get notificationsUnsubscribedAll;
+
+  /// No description provided for @remindersAlertHint.
+  ///
+  /// In en, this message translates to:
+  /// **'How early to be reminded.'**
+  String get remindersAlertHint;
+
+  /// No description provided for @remindersAlertSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert'**
+  String get remindersAlertSection;
+
+  /// No description provided for @remindersAlreadyCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'This reminder is completed.'**
+  String get remindersAlreadyCompleted;
+
+  /// No description provided for @remindersCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Car'**
+  String get remindersCar;
+
+  /// No description provided for @remindersCarHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Needed for reminders by odometer.'**
+  String get remindersCarHint;
+
+  /// No description provided for @remindersChannelDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Maintenance, insurance, licence and tyre reminders you created.'**
+  String get remindersChannelDescription;
+
+  /// No description provided for @remindersChannelName.
+  ///
+  /// In en, this message translates to:
+  /// **'Car reminders'**
+  String get remindersChannelName;
+
+  /// No description provided for @remindersCompleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The reminder moves to completed.'**
+  String get remindersCompleteMessage;
+
+  /// No description provided for @remindersCompleteRepeats.
+  ///
+  /// In en, this message translates to:
+  /// **'This reminder repeats: the next one will be created automatically.'**
+  String get remindersCompleteRepeats;
+
+  /// No description provided for @remindersCompleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as done?'**
+  String get remindersCompleteTitle;
+
+  /// No description provided for @remindersCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Done.'**
+  String get remindersCompleted;
+
+  /// No description provided for @remindersCompletedNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Done. Next one: {due}'**
+  String remindersCompletedNext(String due);
+
+  /// No description provided for @remindersDaysLate.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =1{1 day late} other{{days} days late}}'**
+  String remindersDaysLate(int days);
+
+  /// No description provided for @remindersDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete reminder'**
+  String get remindersDelete;
+
+  /// No description provided for @remindersDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this reminder?'**
+  String get remindersDeleteConfirm;
+
+  /// No description provided for @remindersDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Its phone notification will be cancelled too.'**
+  String get remindersDeleteMessage;
+
+  /// No description provided for @remindersDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder deleted.'**
+  String get remindersDeleted;
+
+  /// No description provided for @remindersDeviceNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notify me on this phone'**
+  String get remindersDeviceNotifications;
+
+  /// No description provided for @remindersDeviceNotificationsOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off. Reminders still appear here with their status.'**
+  String get remindersDeviceNotificationsOff;
+
+  /// No description provided for @remindersDeviceNotificationsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'You will get a notification on each reminder\'s alert day.'**
+  String get remindersDeviceNotificationsOn;
+
+  /// No description provided for @remindersDueAtKm.
+  ///
+  /// In en, this message translates to:
+  /// **'at {km}'**
+  String remindersDueAtKm(String km);
+
+  /// No description provided for @remindersDueDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Due date'**
+  String get remindersDueDate;
+
+  /// No description provided for @remindersDueKm.
+  ///
+  /// In en, this message translates to:
+  /// **'Due at odometer'**
+  String get remindersDueKm;
+
+  /// No description provided for @remindersDueKmNeedsCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a car to use the odometer.'**
+  String get remindersDueKmNeedsCar;
+
+  /// No description provided for @remindersDueOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Due {date}'**
+  String remindersDueOn(String date);
+
   /// No description provided for @remindersEditTitle.
   ///
   /// In en, this message translates to:
   /// **'Edit reminder'**
   String get remindersEditTitle;
+
+  /// No description provided for @remindersEmptyCompletedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No completed reminders yet'**
+  String get remindersEmptyCompletedTitle;
+
+  /// No description provided for @remindersEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a reminder for maintenance, insurance, licence renewal or tyres — by date, by odometer, or both.'**
+  String get remindersEmptyMessage;
+
+  /// No description provided for @remindersEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No reminders'**
+  String get remindersEmptyTitle;
+
+  /// No description provided for @remindersEnableAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on'**
+  String get remindersEnableAction;
+
+  /// No description provided for @remindersEnableHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on phone notifications to be alerted on time.'**
+  String get remindersEnableHint;
+
+  /// No description provided for @remindersErrorDue.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a due date or an odometer reading.'**
+  String get remindersErrorDue;
+
+  /// No description provided for @remindersErrorRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Must be between {min} and {max}.'**
+  String remindersErrorRange(int min, int max);
+
+  /// No description provided for @remindersErrorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a title.'**
+  String get remindersErrorTitle;
+
+  /// No description provided for @remindersErrorVehicleForKm.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a car for odometer reminders.'**
+  String get remindersErrorVehicleForKm;
+
+  /// No description provided for @remindersErrorWhole.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a whole number.'**
+  String get remindersErrorWhole;
+
+  /// No description provided for @remindersEveryKm.
+  ///
+  /// In en, this message translates to:
+  /// **'Every {km}'**
+  String remindersEveryKm(String km);
+
+  /// No description provided for @remindersEveryMonths.
+  ///
+  /// In en, this message translates to:
+  /// **'{months, plural, =1{Every month} other{Every {months} months}}'**
+  String remindersEveryMonths(int months);
+
+  /// No description provided for @remindersFilterCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get remindersFilterCompleted;
+
+  /// No description provided for @remindersFilterOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get remindersFilterOpen;
+
+  /// No description provided for @remindersGuestMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to keep maintenance, insurance and licence reminders for your cars.'**
+  String get remindersGuestMessage;
+
+  /// No description provided for @remindersInDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =0{Today} =1{Tomorrow} other{In {days} days}}'**
+  String remindersInDays(int days);
+
+  /// No description provided for @remindersInKm.
+  ///
+  /// In en, this message translates to:
+  /// **'In {km}'**
+  String remindersInKm(String km);
+
+  /// No description provided for @remindersKmLate.
+  ///
+  /// In en, this message translates to:
+  /// **'{km} over'**
+  String remindersKmLate(String km);
+
+  /// No description provided for @remindersMarkDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as done'**
+  String get remindersMarkDone;
 
   /// No description provided for @remindersNewTitle.
   ///
@@ -7196,11 +11222,155 @@ abstract class AppLocalizations {
   /// **'New reminder'**
   String get remindersNewTitle;
 
+  /// No description provided for @remindersNoCar.
+  ///
+  /// In en, this message translates to:
+  /// **'No specific car'**
+  String get remindersNoCar;
+
+  /// No description provided for @remindersNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get remindersNotes;
+
+  /// No description provided for @remindersNotificationsUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone notifications are not available here. Reminders still appear in this list.'**
+  String get remindersNotificationsUnsupported;
+
+  /// No description provided for @remindersNotifyDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Days before'**
+  String get remindersNotifyDays;
+
+  /// No description provided for @remindersNotifyKm.
+  ///
+  /// In en, this message translates to:
+  /// **'Km before'**
+  String get remindersNotifyKm;
+
+  /// No description provided for @remindersOdometerNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Odometer now'**
+  String get remindersOdometerNow;
+
+  /// No description provided for @remindersOdometerNowHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional. Used to schedule the next reminder by distance.'**
+  String get remindersOdometerNowHint;
+
+  /// No description provided for @remindersPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are blocked for this app. Allow them in your phone settings to get alerts; your reminders still show here.'**
+  String get remindersPermissionDenied;
+
+  /// No description provided for @remindersRepeatKm.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat every'**
+  String get remindersRepeatKm;
+
+  /// No description provided for @remindersRepeatMonths.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat every (months)'**
+  String get remindersRepeatMonths;
+
+  /// No description provided for @remindersSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder saved.'**
+  String get remindersSaved;
+
+  /// No description provided for @remindersStatusCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get remindersStatusCompleted;
+
+  /// No description provided for @remindersStatusDueSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Due soon'**
+  String get remindersStatusDueSoon;
+
+  /// No description provided for @remindersStatusOverdue.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get remindersStatusOverdue;
+
+  /// No description provided for @remindersStatusUpcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get remindersStatusUpcoming;
+
   /// No description provided for @remindersTitle.
   ///
   /// In en, this message translates to:
   /// **'Reminders'**
   String get remindersTitle;
+
+  /// No description provided for @remindersTitleField.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get remindersTitleField;
+
+  /// No description provided for @remindersTypeCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get remindersTypeCustom;
+
+  /// No description provided for @remindersTypeInsurance.
+  ///
+  /// In en, this message translates to:
+  /// **'Insurance'**
+  String get remindersTypeInsurance;
+
+  /// No description provided for @remindersTypeLicence.
+  ///
+  /// In en, this message translates to:
+  /// **'Licence'**
+  String get remindersTypeLicence;
+
+  /// No description provided for @remindersTypeMaintenance.
+  ///
+  /// In en, this message translates to:
+  /// **'Maintenance'**
+  String get remindersTypeMaintenance;
+
+  /// No description provided for @remindersTypeTyres.
+  ///
+  /// In en, this message translates to:
+  /// **'Tyres'**
+  String get remindersTypeTyres;
+
+  /// No description provided for @remindersWhatSection.
+  ///
+  /// In en, this message translates to:
+  /// **'What'**
+  String get remindersWhatSection;
+
+  /// No description provided for @remindersWhenHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a date, an odometer reading, or both.'**
+  String get remindersWhenHint;
+
+  /// No description provided for @remindersWhenSection.
+  ///
+  /// In en, this message translates to:
+  /// **'When'**
+  String get remindersWhenSection;
 
   /// No description provided for @searchAllGroups.
   ///
@@ -7484,6 +11654,12 @@ abstract class AppLocalizations {
   /// **'Brands served'**
   String get servicesDirectoryBrandsTitle;
 
+  /// No description provided for @servicesDirectoryBrowseAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse the directory'**
+  String get servicesDirectoryBrowseAll;
+
   /// No description provided for @servicesDirectoryCall.
   ///
   /// In en, this message translates to:
@@ -7699,6 +11875,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No matching providers'**
   String get servicesDirectoryNoMatchesTitle;
+
+  /// No description provided for @servicesDirectoryNotFoundMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'It may have been removed from the directory. Browse other providers near you.'**
+  String get servicesDirectoryNotFoundMessage;
+
+  /// No description provided for @servicesDirectoryNotFoundTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This provider isn\'t listed anymore'**
+  String get servicesDirectoryNotFoundTitle;
 
   /// No description provided for @servicesDirectoryNotVerified.
   ///
@@ -8714,11 +12902,467 @@ abstract class AppLocalizations {
   /// **'Zoom out'**
   String get toursZoomOut;
 
+  /// No description provided for @tripsAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Access'**
+  String get tripsAccess;
+
+  /// No description provided for @tripsAlternative.
+  ///
+  /// In en, this message translates to:
+  /// **'Alternative station'**
+  String get tripsAlternative;
+
+  /// No description provided for @tripsArrivalSoc.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery on arrival'**
+  String get tripsArrivalSoc;
+
+  /// No description provided for @tripsAssumptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Assumptions'**
+  String get tripsAssumptions;
+
+  /// No description provided for @tripsAssumptionsEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Assumptions'**
+  String get tripsAssumptionsEdit;
+
+  /// No description provided for @tripsAssumptionsEditHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional: leave empty to use the catalog and defaults shown in the result.'**
+  String get tripsAssumptionsEditHint;
+
+  /// No description provided for @tripsAtKm.
+  ///
+  /// In en, this message translates to:
+  /// **'At'**
+  String get tripsAtKm;
+
+  /// No description provided for @tripsAvailabilityUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Availability unknown'**
+  String get tripsAvailabilityUnknown;
+
+  /// No description provided for @tripsAvailableNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Available now (not at arrival)'**
+  String get tripsAvailableNow;
+
+  /// No description provided for @tripsBatterySection.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery'**
+  String get tripsBatterySection;
+
+  /// No description provided for @tripsCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Car'**
+  String get tripsCar;
+
+  /// No description provided for @tripsChargeEnergy.
+  ///
+  /// In en, this message translates to:
+  /// **'Energy to charge'**
+  String get tripsChargeEnergy;
+
+  /// No description provided for @tripsChargeFromTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Charge'**
+  String get tripsChargeFromTo;
+
+  /// No description provided for @tripsChargeTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Charging'**
+  String get tripsChargeTime;
+
+  /// No description provided for @tripsChargeTimeUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'No plan: the charging time at the stations cannot be estimated.'**
+  String get tripsChargeTimeUnknown;
+
+  /// No description provided for @tripsChargeTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Charge up to'**
+  String get tripsChargeTo;
+
+  /// No description provided for @tripsChargeToHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Empty = 80%.'**
+  String get tripsChargeToHint;
+
+  /// No description provided for @tripsChoose.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose'**
+  String get tripsChoose;
+
+  /// No description provided for @tripsClosedAtEta.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed at arrival'**
+  String get tripsClosedAtEta;
+
+  /// No description provided for @tripsConsumptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Overrides the catalog value.'**
+  String get tripsConsumptionHint;
+
+  /// No description provided for @tripsCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Approximate cost'**
+  String get tripsCost;
+
+  /// No description provided for @tripsCostNotCalculated.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a price to calculate'**
+  String get tripsCostNotCalculated;
+
+  /// No description provided for @tripsCurrentSoc.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery now'**
+  String get tripsCurrentSoc;
+
+  /// No description provided for @tripsDeleteSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete saved trip'**
+  String get tripsDeleteSaved;
+
+  /// No description provided for @tripsDepartureSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Departure'**
+  String get tripsDepartureSection;
+
+  /// No description provided for @tripsDetour.
+  ///
+  /// In en, this message translates to:
+  /// **'Detour'**
+  String get tripsDetour;
+
+  /// No description provided for @tripsDirections.
+  ///
+  /// In en, this message translates to:
+  /// **'Directions'**
+  String get tripsDirections;
+
+  /// No description provided for @tripsDriveTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Driving'**
+  String get tripsDriveTime;
+
+  /// No description provided for @tripsEnergyUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'Energy used'**
+  String get tripsEnergyUsed;
+
+  /// No description provided for @tripsErrorCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the car.'**
+  String get tripsErrorCar;
+
+  /// No description provided for @tripsErrorDestination.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your destination.'**
+  String get tripsErrorDestination;
+
+  /// No description provided for @tripsErrorMinSoc.
+  ///
+  /// In en, this message translates to:
+  /// **'Must be below the battery level now.'**
+  String get tripsErrorMinSoc;
+
+  /// No description provided for @tripsErrorOrigin.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose where you start.'**
+  String get tripsErrorOrigin;
+
+  /// No description provided for @tripsEta.
+  ///
+  /// In en, this message translates to:
+  /// **'Expected arrival'**
+  String get tripsEta;
+
+  /// No description provided for @tripsFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get tripsFrom;
+
+  /// No description provided for @tripsHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening hours'**
+  String get tripsHours;
+
+  /// No description provided for @tripsHoursUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Hours unknown'**
+  String get tripsHoursUnknown;
+
+  /// No description provided for @tripsIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'The route and road distances come from a routing service. Stops are suggested with a battery reserve and an alternative; arrival and a free charger are never guaranteed.'**
+  String get tripsIntro;
+
+  /// No description provided for @tripsLeaveNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave now'**
+  String get tripsLeaveNow;
+
+  /// No description provided for @tripsLegN.
+  ///
+  /// In en, this message translates to:
+  /// **'Leg {n}'**
+  String tripsLegN(int n);
+
+  /// No description provided for @tripsLegs.
+  ///
+  /// In en, this message translates to:
+  /// **'Road legs'**
+  String get tripsLegs;
+
+  /// No description provided for @tripsLocationDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Location is off or not allowed. Choose a city or a point on the map instead.'**
+  String get tripsLocationDenied;
+
+  /// No description provided for @tripsLocationFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not get your location. Choose a city instead.'**
+  String get tripsLocationFailed;
+
+  /// No description provided for @tripsMargin.
+  ///
+  /// In en, this message translates to:
+  /// **'Consumption safety margin'**
+  String get tripsMargin;
+
+  /// No description provided for @tripsMarginHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Empty = 10%. Covers hills, heat, cold and speed.'**
+  String get tripsMarginHint;
+
+  /// No description provided for @tripsMinArrivalSoc.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep at least'**
+  String get tripsMinArrivalSoc;
+
+  /// No description provided for @tripsMissingInlets.
+  ///
+  /// In en, this message translates to:
+  /// **'charging inlets'**
+  String get tripsMissingInlets;
+
+  /// No description provided for @tripsMyLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'My current location'**
+  String get tripsMyLocation;
+
+  /// No description provided for @tripsMyLocationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Used once for this plan, not stored.'**
+  String get tripsMyLocationHint;
+
+  /// No description provided for @tripsNoReachableStation.
+  ///
+  /// In en, this message translates to:
+  /// **'No plan: no compatible, open station is reachable with the reserve you asked for. Try a higher battery level or a lower reserve.'**
+  String get tripsNoReachableStation;
+
+  /// No description provided for @tripsNoStopsNeeded.
+  ///
+  /// In en, this message translates to:
+  /// **'No charging stop is needed with the values you entered.'**
+  String get tripsNoStopsNeeded;
+
+  /// No description provided for @tripsNotConfigured.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip planning is not available: no routing service is configured yet. You can still get directions to any station from the charging map.'**
+  String get tripsNotConfigured;
+
+  /// No description provided for @tripsOccupiedNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Occupied now'**
+  String get tripsOccupiedNow;
+
+  /// No description provided for @tripsOpenAtEta.
+  ///
+  /// In en, this message translates to:
+  /// **'Open at arrival'**
+  String get tripsOpenAtEta;
+
+  /// No description provided for @tripsOutOfOrderNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Out of order now'**
+  String get tripsOutOfOrderNow;
+
+  /// No description provided for @tripsPickOnMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick on the map'**
+  String get tripsPickOnMap;
+
+  /// No description provided for @tripsPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan my trip'**
+  String get tripsPlan;
+
+  /// No description provided for @tripsPointOnMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Point {lat}, {lng}'**
+  String tripsPointOnMap(String lat, String lng);
+
+  /// No description provided for @tripsPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Electricity price'**
+  String get tripsPrice;
+
+  /// No description provided for @tripsPriceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional. Without it the cost is not calculated (no assumed prices).'**
+  String get tripsPriceHint;
+
+  /// No description provided for @tripsRough.
+  ///
+  /// In en, this message translates to:
+  /// **'Rough'**
+  String get tripsRough;
+
+  /// No description provided for @tripsRouteNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No road route was found between these points.'**
+  String get tripsRouteNotFound;
+
+  /// No description provided for @tripsRoutingBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Route: {provider}'**
+  String tripsRoutingBy(String provider);
+
+  /// No description provided for @tripsSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save this plan'**
+  String get tripsSave;
+
+  /// No description provided for @tripsSaveHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Only saved when you ask; visible only to you.'**
+  String get tripsSaveHint;
+
+  /// No description provided for @tripsSaveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Name (optional)'**
+  String get tripsSaveTitle;
+
+  /// No description provided for @tripsSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'My saved trips'**
+  String get tripsSaved;
+
+  /// No description provided for @tripsSavedEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No saved trips'**
+  String get tripsSavedEmpty;
+
+  /// No description provided for @tripsSavedStale.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved plan: station status and hours may have changed since.'**
+  String get tripsSavedStale;
+
+  /// No description provided for @tripsStopChargeTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Charging time'**
+  String get tripsStopChargeTime;
+
+  /// No description provided for @tripsStopN.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop {n}: {name}'**
+  String tripsStopN(int n, String name);
+
+  /// No description provided for @tripsStopsSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{stops, plural, =0{No charging stops} =1{1 charging stop} other{{stops} charging stops}} · {distance}'**
+  String tripsStopsSummary(int stops, String distance);
+
   /// No description provided for @tripsTitle.
   ///
   /// In en, this message translates to:
   /// **'Trip planner'**
   String get tripsTitle;
+
+  /// No description provided for @tripsTo.
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get tripsTo;
+
+  /// No description provided for @tripsTooManyStops.
+  ///
+  /// In en, this message translates to:
+  /// **'No plan: the trip would need too many charging stops.'**
+  String get tripsTooManyStops;
+
+  /// No description provided for @tripsUsePoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this point'**
+  String get tripsUsePoint;
+
+  /// No description provided for @tripsVehicleDataMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'No plan: this car is missing verified data ({missing}). Enter it under Assumptions if you know it.'**
+  String tripsVehicleDataMissing(String missing);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

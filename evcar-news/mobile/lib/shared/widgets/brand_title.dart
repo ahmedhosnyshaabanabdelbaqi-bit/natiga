@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/app_config/app_config_controller.dart';
+import 'app_mark.dart';
 
 /// Builds the image provider of the branding logo. Disk-cached network image
 /// by default; tests override it (no network in widget tests).
@@ -26,7 +27,17 @@ class BrandTitle extends ConsumerWidget {
     final url = branding.logoUrl;
     final validUrl = url != null && (url.startsWith('https://') || url.startsWith('http://'));
     final name = Text(branding.appName, overflow: TextOverflow.ellipsis);
-    if (!validUrl) return name;
+    if (!validUrl) {
+      // No server logo: the built-in brand mark (same art as the app icon).
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const AppMark(size: logoHeight + 4),
+          const SizedBox(width: 10),
+          Flexible(child: name),
+        ],
+      );
+    }
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [

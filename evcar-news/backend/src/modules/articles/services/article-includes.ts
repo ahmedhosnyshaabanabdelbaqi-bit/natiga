@@ -67,6 +67,7 @@ export const ARTICLE_LIST_INCLUDE = {
   translations: {
     select: {
       locale: true,
+      slug: true,
       title: true,
       summary: true,
       bodyText: true,

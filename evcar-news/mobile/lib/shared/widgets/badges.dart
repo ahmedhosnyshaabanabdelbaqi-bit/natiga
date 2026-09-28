@@ -76,6 +76,32 @@ class Pill extends StatelessWidget {
   }
 }
 
+/// Decorative icon in a soft rounded square, coloured by [tone] — the leading
+/// visual of list rows and cards (charging sessions, reminders, tools), so
+/// every list uses the same shape instead of mixed circles and squares.
+///
+/// Decorative only: the row always says the same thing in text.
+class IconBadge extends StatelessWidget {
+  const IconBadge({super.key, required this.icon, this.tone = AppTone.brand, this.size = 40});
+
+  final IconData icon;
+  final AppTone tone;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.palette.tone(tone);
+    return ExcludeSemantics(
+      child: Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(color: colors.container, borderRadius: BorderRadius.circular(size * 0.3)),
+        child: Icon(icon, size: size * 0.52, color: colors.onContainer),
+      ),
+    );
+  }
+}
+
 /// "بيانات تجريبية / Demo data" — mandatory on every `isDemo=true` record
 /// (news, cars, stations, panoramas, reviews). Demo data must never look real.
 class DemoBadge extends StatelessWidget {

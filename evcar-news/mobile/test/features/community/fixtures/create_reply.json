@@ -1,0 +1,28 @@
+{
+    "data": {
+        "id": "01a0e8dc-1f13-75bd-a452-3c7aaa0323f1",
+        "target": {
+            "type": "article",
+            "id": "d0000000-0000-4000-8000-000000000021"
+        },
+        "parentId": "01a0e8dc-1ed9-7261-a3dd-e7e8dced8f12",
+        "body": "Test reply from Sara",
+        "author": {
+            "id": "01a0e8db-bd51-71cf-8207-b6f4e0688383",
+            "displayName": "Sara",
+            "isDeleted": false
+        },
+        "votes": {
+            "up": 0,
+            "down": 0,
+            "score": 0,
+            "myVote": null
+        },
+        "status": "approved",
+        "isMine": true,
+        "replyCount": 0,
+        "replies": [],
+        "editedAt": null,
+        "createdAt": "2026-09-28T16:32:15.123Z"
+    }
+}

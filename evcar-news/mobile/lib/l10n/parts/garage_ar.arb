@@ -3,5 +3,110 @@
   "garageTitle": "جراجي",
   "garageVehicleTitle": "سيارتي",
   "garageAddTitle": "إضافة سيارة",
-  "garageEditTitle": "تعديل السيارة"
+  "garageEditTitle": "تعديل السيارة",
+  "garageGuestMessage": "سجّل الدخول لحفظ سياراتك بفئتها وسوقها بدقة، واستخدامها في سجل الشحن والتذكيرات والحاسبات.",
+  "garageEmptyTitle": "جراجك فارغ",
+  "garageEmptyMessage": "أضف سيارتك باختيار الماركة والموديل وسنة الطراز والفئة. يمكنك حفظ حتى 20 سيارة.",
+  "garageAddFirst": "أضف سيارتي الأولى",
+  "garageAddButton": "أضف إلى جراجي",
+  "garageCount": "{count} من {max} سيارة",
+  "@garageCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "garageLimitReached": "يمكنك حفظ حتى {max} سيارة. احذف سيارة لإضافة أخرى.",
+  "@garageLimitReached": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "garagePrimary": "الأساسية",
+  "garageNotListedShort": "غير مطروحة في هذا السوق",
+  "garageNotListedExplain": "لا يوجد سجل لهذه الفئة في {market}، لذلك لا تتوفر لها الأسعار المحلية وتوافق الشواحن في {market}.",
+  "@garageNotListedExplain": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "garageOdometer": "العداد",
+  "garageLogsCount": "جلسات الشحن",
+  "garageRemindersCount": "تذكيرات قائمة",
+  "garageDetailsSection": "التفاصيل",
+  "garageTrim": "الفئة",
+  "garageModelYear": "سنة الطراز",
+  "garageMarket": "السوق",
+  "garageMarketHint": "الدولة التي تُستخدم فيها السيارة. الأسعار والعملة والتوافق تتبع هذا السوق.",
+  "garagePurchaseDate": "تاريخ الشراء",
+  "garageInitialOdometer": "العداد عند الشراء",
+  "garageInitialOdometerHint": "اختياري. يُستخدم كنقطة بداية لتقارير المسافة.",
+  "garageCurrentOdometer": "العداد الحالي",
+  "garageCurrentOdometerHint": "اختياري. يتحدّث تلقائيًا أيضًا من إدخالات سجل الشحن.",
+  "garageShortcutsSection": "استخدم هذه السيارة",
+  "garageOpenLogs": "سجل شحن هذه السيارة",
+  "garageAddLog": "إضافة جلسة شحن",
+  "garageAddReminder": "إضافة تذكير",
+  "garageOpenCalculators": "الحاسبات",
+  "garageOpenSpecs": "المواصفات الكاملة",
+  "garageMakePrimary": "اجعلها سيارتي الأساسية",
+  "garagePrimarySet": "تم تحديث السيارة الأساسية.",
+  "garageDelete": "إزالة من الجراج",
+  "garageDeleteConfirmTitle": "إزالة {name}؟",
+  "@garageDeleteConfirmTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "garageDeleteConfirmMessage": "ستُحذف أيضًا إدخالات سجل الشحن والتذكيرات الخاصة بها. لا يمكن التراجع عن ذلك.",
+  "garageDeleted": "تمت إزالة السيارة.",
+  "garageAdded": "تمت إضافة السيارة إلى جراجك.",
+  "garageSaved": "تم حفظ التغييرات.",
+  "garageCarSection": "السيارة",
+  "garageCarSectionHint": "اختر الفئة بالضبط من الدليل لتكون المواصفات والتوافق صحيحة.",
+  "garageChooseCar": "اختر الماركة والموديل والسنة والفئة",
+  "garageChangeCar": "اضغط للتغيير",
+  "garageNickname": "اسم مختصر",
+  "garageNicknameHint": "اختياري، مثل \"سيارة العائلة\".",
+  "garageNotes": "ملاحظات",
+  "garageClear": "مسح",
+  "garageOptional": "اختياري",
+  "garagePrimarySwitch": "السيارة الأساسية",
+  "garagePrimarySwitchHint": "تُستخدم افتراضيًا في الحاسبات والتقارير وتخطيط الرحلات.",
+  "garageErrorNegative": "لا يمكن أن تكون القيمة سالبة.",
+  "garageErrorNumber": "أدخل رقمًا.",
+  "garageErrorPickCar": "اختر السيارة أولًا.",
+  "garageErrorCurrentBelowInitial": "لا يمكن أن تكون القراءة الحالية أقل من القراءة عند الشراء.",
+  "garagePickerTitle": "اختر سيارتك",
+  "garagePickerStepBrand": "الماركة",
+  "garagePickerStepModel": "الموديل",
+  "garagePickerStepYear": "السنة",
+  "garagePickerStepTrim": "الفئة",
+  "garagePickerProgress": "الخطوة {step} من {total}",
+  "@garagePickerProgress": {
+    "placeholders": {
+      "step": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "garagePickerAllMarkets": "عرض فئات كل الأسواق",
+  "garagePickerAllMarketsHint": "للسيارات المستوردة غير المطروحة في سوقك.",
+  "garagePickerSearchBrand": "ابحث في الماركات",
+  "garagePickerSearchModel": "ابحث في الموديلات",
+  "garagePickerEmpty": "لا توجد خيارات هنا بعد",
+  "garageBack": "رجوع"
 }

@@ -5,5 +5,463 @@
   "communityCommentsTitle": "التعليقات",
   "communityQuestionsTitle": "أسئلة وأجوبة",
   "communityQuestionTitle": "سؤال",
-  "communityAskTitle": "اطرح سؤالًا"
+  "communityAskTitle": "اطرح سؤالًا",
+  "communityYou": "أنت",
+  "communityAnonymous": "مستخدم",
+  "communityDeletedUser": "مستخدم محذوف",
+  "communityEdited": "معدَّل",
+  "communityOptional": "اختياري",
+  "communityShowMore": "عرض المزيد",
+  "communityShowLess": "عرض أقل",
+  "communityLoadMore": "تحميل المزيد",
+  "communityLoadMoreComments": "تعليقات أخرى",
+  "communityLoadMoreReviews": "تقييمات أخرى",
+  "communityLoadMoreQuestions": "أسئلة أخرى",
+  "communityLoadMoreAnswers": "إجابات أخرى",
+  "communityMoreActions": "إجراءات أخرى",
+  "communityEdit": "تعديل",
+  "communityDelete": "حذف",
+  "communityDeleted": "تم الحذف",
+  "communityDeleteMessage": "لا يمكن التراجع عن الحذف.",
+  "communitySave": "حفظ",
+  "communitySend": "إرسال",
+  "communityDone": "تم",
+  "communityUndo": "تراجع",
+  "communityFieldRequired": "هذا الحقل مطلوب.",
+  "communityTooShort": "اكتب {min} حرفًا على الأقل.",
+  "@communityTooShort": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "communityTooLong": "الحد الأقصى {max} حرف.",
+  "@communityTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "communityFormHasErrors": "يرجى تصحيح الحقول المميزة.",
+  "communityDemoTargetNotice": "هذه بيانات تجريبية للاختبار وليست سيارة أو مقالًا حقيقيًا.",
+  "communitySignIn": "تسجيل الدخول",
+  "communityCreateAccount": "إنشاء حساب",
+  "communityJoinTitle": "شارك في النقاش",
+  "communitySignInToParticipate": "القراءة متاحة للجميع. سجّل الدخول للمشاركة في المجتمع.",
+  "communitySignInToComment": "سجّل الدخول لكتابة تعليق أو الرد.",
+  "communitySignInToVote": "سجّل الدخول لتقييم مدى فائدة المشاركات.",
+  "communitySignInToReport": "سجّل الدخول للإبلاغ عن محتوى.",
+  "communitySignInToReview": "سجّل الدخول لكتابة تقييمك كمالك لهذه السيارة.",
+  "communitySignInToAsk": "سجّل الدخول لطرح سؤال على المجتمع.",
+  "communitySignInToAnswer": "سجّل الدخول لإضافة إجابة.",
+  "communityVerifyEmailTitle": "أكّد بريدك الإلكتروني أولًا",
+  "communityVerifyEmailMessage": "للنشر في المجتمع يجب تأكيد {email}. افتح الرسالة التي أرسلناها أو اطلب رسالة جديدة.",
+  "@communityVerifyEmailMessage": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "communityVerifyEmailAction": "تأكيد البريد",
+  "communityVerifiedAlready": "أكّدته بالفعل",
+  "communityBlockedTitle": "النشر موقوف لحسابك",
+  "communityBlockedIndefinite": "أوقف أحد المشرفين النشر من حسابك حتى إشعار آخر. ما زال بإمكانك القراءة.",
+  "communityBlockedUntil": "أوقف أحد المشرفين النشر من حسابك حتى {until}. ما زال بإمكانك القراءة.",
+  "@communityBlockedUntil": {
+    "placeholders": {
+      "until": {
+        "type": "String"
+      }
+    }
+  },
+  "communityBlockedReason": "السبب: {reason}",
+  "@communityBlockedReason": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "communityStatusUnknownTitle": "تعذّر التحقق من حالة حسابك",
+  "communityNewAccountNote": "حسابك جديد: تُراجع مشاركاتك قبل ظهورها، ولا يمكن إضافة روابط خلال الأيام الأولى.",
+  "communityStatusPending": "بانتظار المراجعة",
+  "communityStatusPendingHint": "لا يراه غيرك حتى يوافق عليه مشرف.",
+  "communityStatusPendingReviewHint": "يراجع المشرفون كل تقييم قبل نشره. لا يراه غيرك حتى الآن.",
+  "communityStatusHidden": "مخفي بواسطة المشرفين",
+  "communityStatusHiddenHint": "لم يعد ظاهرًا للآخرين (مثلًا بعد بلاغات). يراه المشرفون ويمكنهم إعادته.",
+  "communityStatusRejected": "لم تتم الموافقة عليه",
+  "communityStatusRejectedHint": "لا يتوافق مع إرشادات المجتمع، لذلك لا يراه غيرك. يمكنك تعديله أو حذفه.",
+  "communityPostedPending": "تم الإرسال — سيظهر للآخرين بعد المراجعة.",
+  "communityHelpful": "مفيد",
+  "communityNotHelpful": "غير مفيد",
+  "communityHelpfulCount": "مفيد ({count})",
+  "@communityHelpfulCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "communityVoteUpSemantics": "{count, plural, =0{مفيد، لا توجد أصوات} =1{مفيد، صوت واحد} =2{مفيد، صوتان} few{مفيد، {count} أصوات} many{مفيد، {count} صوتًا} other{مفيد، {count} صوت}}",
+  "@communityVoteUpSemantics": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityVoteDownSemantics": "{count, plural, =0{غير مفيد، لا توجد أصوات} =1{غير مفيد، صوت واحد} =2{غير مفيد، صوتان} few{غير مفيد، {count} أصوات} many{غير مفيد، {count} صوتًا} other{غير مفيد، {count} صوت}}",
+  "@communityVoteDownSemantics": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityReport": "إبلاغ",
+  "communityReportTitle": "الإبلاغ عن محتوى",
+  "communityReportUserTitle": "الإبلاغ عن مستخدم",
+  "communityReportIntro": "اختر السبب. يراجع المشرفون البلاغات ولا يُعرض اسمك لصاحب المحتوى.",
+  "communityReportDetails": "التفاصيل (مطلوبة)",
+  "communityReportDetailsOptional": "تفاصيل إضافية (اختياري)",
+  "communityReportDetailsRequired": "اكتب بضع كلمات توضح السبب.",
+  "communityReportSend": "إرسال البلاغ",
+  "communityReportSent": "شكرًا، وصل بلاغك إلى المشرفين.",
+  "communityBlockUser": "حظر هذا المستخدم",
+  "communityBlockTitle": "حظر {name}؟",
+  "@communityBlockTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "communityBlockMessage": "لن ترى تقييماته وتعليقاته وأسئلته وإجاباته بعد الآن. لن يُبلَّغ بذلك، ويمكنك إلغاء الحظر في أي وقت.",
+  "communityBlockConfirm": "حظر",
+  "communityBlocked": "تم حظر {name}",
+  "@communityBlocked": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "communityUnblock": "إلغاء الحظر",
+  "communityUnblocked": "أُلغي حظر {name}",
+  "@communityUnblocked": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "communityBlockedUsersTitle": "المستخدمون المحظورون",
+  "communityBlockedUsersIntro": "لا ترى مشاركات هؤلاء المستخدمين في المجتمع.",
+  "communityNoBlockedTitle": "لا يوجد مستخدمون محظورون",
+  "communityNoBlockedMessage": "يمكنك حظر أي مستخدم من قائمة الإجراءات بجانب مشاركته.",
+  "communityErrEmailNotVerified": "أكّد بريدك الإلكتروني قبل النشر.",
+  "communityErrRateLimited": "نشرت كثيرًا خلال وقت قصير. حاول لاحقًا.",
+  "communityErrRateLimitedMinutes": "{minutes, plural, =1{نشرت كثيرًا خلال وقت قصير. حاول بعد دقيقة.} =2{نشرت كثيرًا خلال وقت قصير. حاول بعد دقيقتين.} few{نشرت كثيرًا خلال وقت قصير. حاول بعد {minutes} دقائق.} many{نشرت كثيرًا خلال وقت قصير. حاول بعد {minutes} دقيقة.} other{نشرت كثيرًا خلال وقت قصير. حاول بعد {minutes} دقيقة.}}",
+  "@communityErrRateLimitedMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "communityErrReportDuplicate": "أبلغت عن هذا المحتوى من قبل، وبلاغك قيد المراجعة.",
+  "communityErrSelfVote": "لا يمكنك التصويت على مشاركتك.",
+  "communityErrSelfReport": "لا يمكنك الإبلاغ عن مشاركتك.",
+  "communityErrSignInAgain": "انتهت جلستك. سجّل الدخول مرة أخرى.",
+  "communityCommentsWithCount": "التعليقات ({count})",
+  "@communityCommentsWithCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "communityCommentHint": "اكتب تعليقًا…",
+  "communityReplyHint": "اكتب ردًا…",
+  "communityReply": "رد",
+  "communityReplyingTo": "رد على {name}",
+  "@communityReplyingTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "communityCancelReply": "إلغاء الرد",
+  "communityCommentPosted": "نُشر تعليقك",
+  "communityReplyPosted": "نُشر ردك",
+  "communityCommentsClosed": "التعليقات مغلقة هنا.",
+  "communityNoCommentsTitle": "لا توجد تعليقات بعد",
+  "communityNoCommentsMessage": "ابدأ النقاش بأول تعليق.",
+  "communityViewAllComments": "كل التعليقات",
+  "communityViewMoreReplies": "{count, plural, =1{عرض رد آخر} =2{عرض ردين آخرين} few{عرض {count} ردود أخرى} many{عرض {count} ردًا آخر} other{عرض {count} رد آخر}}",
+  "@communityViewMoreReplies": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityEditComment": "تعديل التعليق",
+  "communityDeleteCommentTitle": "حذف التعليق؟",
+  "communitySortNewest": "الأحدث",
+  "communitySortOldest": "الأقدم",
+  "communitySortTop": "الأكثر فائدة",
+  "communityOnArticleLabel": "تعليقات على المقال",
+  "communityOnArticle": "تعليقات على المقال: {title}. افتح المقال",
+  "@communityOnArticle": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "communityEditReviewTitle": "تعديل تقييمك",
+  "communityEditMyReview": "تعديل تقييمي",
+  "communityYourReview": "تقييمك",
+  "communityAllReviews": "كل التقييمات",
+  "communityTrimLabel": "الفئة",
+  "communityChooseTrim": "اختر الفئة",
+  "communityTrimSemantics": "الفئة: {trim}. اضغط للتغيير",
+  "@communityTrimSemantics": {
+    "placeholders": {
+      "trim": {
+        "type": "String"
+      }
+    }
+  },
+  "communityNoTrimsTitle": "لا توجد فئات معروضة",
+  "communityNoTrimsMessage": "لا تتوفر فئات لهذه السيارة في سوقك الحالي، لذلك لا يمكن عرض التقييمات أو كتابتها هنا.",
+  "communityNoReviewsTitle": "لا توجد تقييمات ملاك بعد",
+  "communityNoReviewsMessage": "لم ينشر أي مالك تقييمًا لهذه الفئة حتى الآن.",
+  "communityBeFirstToReview": "كن أول من يقيّم",
+  "communityNoFilteredReviewsTitle": "لا تقييمات مطابقة",
+  "communityNoFilteredReviewsMessage": "جرّب إزالة بعض عوامل التصفية.",
+  "communityClearFilters": "مسح عوامل التصفية",
+  "communityReviewCount": "{count, plural, =0{لا توجد تقييمات} =1{تقييم واحد} =2{تقييمان} few{{count} تقييمات} many{{count} تقييمًا} other{{count} تقييم}}",
+  "@communityReviewCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityDistributionRow": "{stars} نجوم: {count}",
+  "@communityDistributionRow": {
+    "placeholders": {
+      "stars": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityVerifiedOwnerCount": "{count, plural, =1{مالك موثّق واحد} =2{مالكان موثّقان} few{{count} ملاك موثّقين} many{{count} مالكًا موثّقًا} other{{count} مالك موثّق}}",
+  "@communityVerifiedOwnerCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityDimensionsTitle": "التقييم حسب الجانب",
+  "communityDimensionsHint": "اختياري: قيّم جوانب محددة",
+  "communityDimensionValue": "{value} من 5، {count} تقييم",
+  "@communityDimensionValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityDimensionScore": "{dimension}: {score} من 5",
+  "@communityDimensionScore": {
+    "placeholders": {
+      "dimension": {
+        "type": "String"
+      },
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "communityDimRange": "المدى الفعلي",
+  "communityDimCharging": "الشحن",
+  "communityDimComfort": "الراحة",
+  "communityDimTechnology": "التقنية",
+  "communityDimBuildQuality": "جودة التصنيع",
+  "communityDimValue": "القيمة مقابل السعر",
+  "communityDimReliability": "الاعتمادية",
+  "communityDimAfterSales": "خدمة ما بعد البيع",
+  "communityVerifiedOwner": "مالك موثّق",
+  "communityVerifiedOwnerHint": "تحقق فريقنا من ملكية الكاتب لهذه السيارة.",
+  "communityVerifiedOwnerExplainer": "شارة «مالك موثّق» لا تُختار: تظهر فقط بعد أن يتحقق فريقنا فعليًا من ملكيتك للسيارة.",
+  "communityStarsSemantics": "{rating} من 5 نجوم",
+  "@communityStarsSemantics": {
+    "placeholders": {
+      "rating": {
+        "type": "String"
+      }
+    }
+  },
+  "communityStarOption": "{count, plural, =1{نجمة واحدة} =2{نجمتان} few{{count} نجوم} other{{count} نجمة}}",
+  "@communityStarOption": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityVerifiedOnly": "ملاك موثّقون فقط",
+  "communitySortHelpful": "الأكثر فائدة",
+  "communitySortRecent": "الأحدث",
+  "communitySortRatingHigh": "الأعلى تقييمًا",
+  "communitySortRatingLow": "الأدنى تقييمًا",
+  "communityOwnedMonths": "{count, plural, =0{أقل من شهر ملكية} =1{ملكية شهر واحد} =2{ملكية شهرين} few{ملكية {count} أشهر} many{ملكية {count} شهرًا} other{ملكية {count} شهر}}",
+  "@communityOwnedMonths": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityOwnedYears": "{count, plural, =1{ملكية سنة واحدة} =2{ملكية سنتين} few{ملكية {count} سنوات} many{ملكية {count} سنة} other{ملكية {count} سنة}}",
+  "@communityOwnedYears": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityOwnedYearsMonths": "ملكية {years} سنة و{months} شهر",
+  "@communityOwnedYearsMonths": {
+    "placeholders": {
+      "years": {
+        "type": "int"
+      },
+      "months": {
+        "type": "int"
+      }
+    }
+  },
+  "communityReviewsDisclaimer": "التقييمات آراء وتجارب شخصية لملاك، يراجعها المشرفون قبل النشر، وليست بيانات رسمية أو قياسات معتمدة.",
+  "communityDeleteReview": "حذف التقييم",
+  "communityDeleteReviewTitle": "حذف تقييمك؟",
+  "communityOverallRating": "التقييم العام",
+  "communityRatingRequired": "اختر تقييمًا من 1 إلى 5 نجوم.",
+  "communityTapToRate": "اضغط على النجوم للتقييم",
+  "communityRating1": "سيئ",
+  "communityRating2": "مقبول",
+  "communityRating3": "جيد",
+  "communityRating4": "جيد جدًا",
+  "communityRating5": "ممتاز",
+  "communityReviewTitleLabel": "العنوان",
+  "communityReviewTitleHint": "خلاصة تجربتك في جملة",
+  "communityReviewBodyLabel": "تجربتك",
+  "communityReviewBodyHint": "كيف تستخدم السيارة؟ ما المدى الذي تحصل عليه فعليًا؟ كيف الشحن والصيانة؟",
+  "communityReviewBodyHelper": "20 حرفًا على الأقل. اكتب عن تجربتك الشخصية فقط، دون بيانات شخصية لأحد.",
+  "communityPros": "الإيجابيات",
+  "communityCons": "السلبيات",
+  "communityProsHint": "ما الذي أعجبك؟",
+  "communityConsHint": "ما الذي لم يعجبك؟",
+  "communityOwnershipLabel": "مدة الملكية",
+  "communityOwnershipHint": "مثال: 8",
+  "communityMonthsUnit": "شهر",
+  "communityOwnershipInvalid": "أدخل عدد أشهر بين 0 و600.",
+  "communityClearRating": "مسح",
+  "communityReviewModerated": "يراجع المشرفون كل تقييم قبل نشره.",
+  "communityEditRemoderated": "بعد التعديل يعود تقييمك إلى المراجعة قبل ظهوره مجددًا.",
+  "communityReviewGuidelines": "كن محددًا وصادقًا، ولا تنشر روابط أو إعلانات أو بيانات شخصية.",
+  "communitySubmitReview": "إرسال للمراجعة",
+  "communitySaveReview": "حفظ وإرسال للمراجعة",
+  "communityReviewSubmittedTitle": "تم استلام تقييمك",
+  "communityReviewSubmittedMessage": "شكرًا! سيظهر تقييمك للآخرين بعد أن يراجعه المشرفون. يمكنك رؤيته وتعديله من صفحة التقييمات.",
+  "communityReviewExistsTitle": "لديك تقييم لهذه الفئة",
+  "communityReviewExistsMessage": "يمكن لكل مالك كتابة تقييم واحد لكل فئة. هل تريد تعديل تقييمك الحالي؟",
+  "communityAboutCar": "عن: {car}",
+  "@communityAboutCar": {
+    "placeholders": {
+      "car": {
+        "type": "String"
+      }
+    }
+  },
+  "communityShowAllQuestions": "عرض كل الأسئلة",
+  "communityAskGeneral": "سؤال عام",
+  "communitySearchQuestions": "ابحث في الأسئلة",
+  "communityFilterAll": "الكل",
+  "communityFilterAnswered": "تمت الإجابة",
+  "communityFilterUnanswered": "بلا إجابة مقبولة",
+  "communitySortVotes": "الأكثر تصويتًا",
+  "communitySortActive": "الأنشط",
+  "communityNoQuestionsTitle": "لا توجد أسئلة بعد",
+  "communityNoQuestionsMessage": "اسأل الملاك والمهتمين عن الشحن والمدى والصيانة.",
+  "communityNoMatchingQuestionsTitle": "لا أسئلة مطابقة",
+  "communityNoMatchingQuestionsMessage": "جرّب كلمات أخرى أو غيّر عامل التصفية — أو اطرح سؤالك.",
+  "communityAnswered": "تمت الإجابة",
+  "communityNotAnsweredYet": "بانتظار إجابة مقبولة",
+  "communityNoAnswersYet": "لا إجابات بعد",
+  "communityAnswerCount": "{count, plural, =0{لا إجابات} =1{إجابة واحدة} =2{إجابتان} few{{count} إجابات} many{{count} إجابة} other{{count} إجابة}}",
+  "@communityAnswerCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityAskedBy": "سأل {name}",
+  "@communityAskedBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "communityGeneralQuestion": "سؤال عام",
+  "communityAskTips": "اكتب سؤالًا واضحًا ومحددًا (10 أحرف على الأقل)، واذكر السوق والفئة إن كان ذلك مهمًا. لا تضع روابط أو بيانات شخصية.",
+  "communityQuestionTitleLabel": "سؤالك",
+  "communityQuestionTitleHint": "مثال: كم يستغرق الشحن المنزلي من 20 إلى 80%؟",
+  "communityQuestionBodyLabel": "تفاصيل",
+  "communityQuestionBodyHint": "أضف ما يساعد على الإجابة: الاستخدام، نوع الشاحن…",
+  "communityPostQuestion": "نشر السؤال",
+  "communityQuestionPosted": "نُشر سؤالك",
+  "communityQuestionUnavailableTitle": "السؤال غير متاح",
+  "communityQuestionUnavailableMessage": "ربما حُذف أو ما زال قيد المراجعة.",
+  "communityAnswersTitle": "الإجابات",
+  "communityAnswersWithCount": "الإجابات ({count})",
+  "@communityAnswersWithCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "communityNoAnswersTitle": "لا إجابات بعد",
+  "communityNoAnswersMessage": "هل تعرف الإجابة؟ شارك بما جرّبته.",
+  "communityNoAnswersMineMessage": "سنعرض الإجابات هنا عند وصولها.",
+  "communityAcceptedAnswer": "الإجابة المقبولة",
+  "communityAccept": "قبول الإجابة",
+  "communityUnaccept": "إلغاء القبول",
+  "communityAccepted": "تم قبول الإجابة",
+  "communityAcceptCleared": "أُلغي قبول الإجابة",
+  "communityYourAnswer": "إجابتك",
+  "communityAnswerHint": "اكتب إجابتك…",
+  "communityPostAnswer": "نشر الإجابة",
+  "communityAnswerPosted": "نُشرت إجابتك",
+  "communityEditAnswer": "تعديل الإجابة",
+  "communityEditQuestion": "تعديل السؤال",
+  "communityDeleteAnswerTitle": "حذف الإجابة؟",
+  "communityDeleteQuestionTitle": "حذف السؤال؟"
 }

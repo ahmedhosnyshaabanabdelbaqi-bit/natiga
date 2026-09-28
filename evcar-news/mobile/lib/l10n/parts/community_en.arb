@@ -5,5 +5,463 @@
   "communityCommentsTitle": "Comments",
   "communityQuestionsTitle": "Questions & answers",
   "communityQuestionTitle": "Question",
-  "communityAskTitle": "Ask a question"
+  "communityAskTitle": "Ask a question",
+  "communityYou": "You",
+  "communityAnonymous": "User",
+  "communityDeletedUser": "Deleted user",
+  "communityEdited": "edited",
+  "communityOptional": "optional",
+  "communityShowMore": "Show more",
+  "communityShowLess": "Show less",
+  "communityLoadMore": "Load more",
+  "communityLoadMoreComments": "More comments",
+  "communityLoadMoreReviews": "More reviews",
+  "communityLoadMoreQuestions": "More questions",
+  "communityLoadMoreAnswers": "More answers",
+  "communityMoreActions": "More actions",
+  "communityEdit": "Edit",
+  "communityDelete": "Delete",
+  "communityDeleted": "Deleted",
+  "communityDeleteMessage": "This can't be undone.",
+  "communitySave": "Save",
+  "communitySend": "Send",
+  "communityDone": "Done",
+  "communityUndo": "Undo",
+  "communityFieldRequired": "This field is required.",
+  "communityTooShort": "Write at least {min} characters.",
+  "@communityTooShort": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "communityTooLong": "At most {max} characters.",
+  "@communityTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "communityFormHasErrors": "Please fix the highlighted fields.",
+  "communityDemoTargetNotice": "This is demo data for testing, not a real car or article.",
+  "communitySignIn": "Sign in",
+  "communityCreateAccount": "Create account",
+  "communityJoinTitle": "Join the conversation",
+  "communitySignInToParticipate": "Anyone can read. Sign in to take part in the community.",
+  "communitySignInToComment": "Sign in to comment or reply.",
+  "communitySignInToVote": "Sign in to mark posts as helpful.",
+  "communitySignInToReport": "Sign in to report content.",
+  "communitySignInToReview": "Sign in to write your owner review of this car.",
+  "communitySignInToAsk": "Sign in to ask the community a question.",
+  "communitySignInToAnswer": "Sign in to add an answer.",
+  "communityVerifyEmailTitle": "Verify your e-mail first",
+  "communityVerifyEmailMessage": "To post in the community, {email} must be verified. Open the message we sent or request a new one.",
+  "@communityVerifyEmailMessage": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "communityVerifyEmailAction": "Verify e-mail",
+  "communityVerifiedAlready": "I've verified it",
+  "communityBlockedTitle": "Posting is paused for your account",
+  "communityBlockedIndefinite": "A moderator paused posting from your account until further notice. You can still read.",
+  "communityBlockedUntil": "A moderator paused posting from your account until {until}. You can still read.",
+  "@communityBlockedUntil": {
+    "placeholders": {
+      "until": {
+        "type": "String"
+      }
+    }
+  },
+  "communityBlockedReason": "Reason: {reason}",
+  "@communityBlockedReason": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "communityStatusUnknownTitle": "Couldn't check your account status",
+  "communityNewAccountNote": "Your account is new: your posts are reviewed before they appear, and links aren't allowed for the first few days.",
+  "communityStatusPending": "Awaiting review",
+  "communityStatusPendingHint": "Only you can see this until a moderator approves it.",
+  "communityStatusPendingReviewHint": "Moderators check every review before it's published. Only you can see it for now.",
+  "communityStatusHidden": "Hidden by moderators",
+  "communityStatusHiddenHint": "It's no longer visible to others (for example after reports). Moderators can restore it.",
+  "communityStatusRejected": "Not approved",
+  "communityStatusRejectedHint": "It doesn't follow the community guidelines, so only you can see it. You can edit or delete it.",
+  "communityPostedPending": "Sent — it will appear to others after review.",
+  "communityHelpful": "Helpful",
+  "communityNotHelpful": "Not helpful",
+  "communityHelpfulCount": "Helpful ({count})",
+  "@communityHelpfulCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "communityVoteUpSemantics": "{count, plural, =0{Helpful, no votes} =1{Helpful, 1 vote} other{Helpful, {count} votes}}",
+  "@communityVoteUpSemantics": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityVoteDownSemantics": "{count, plural, =0{Not helpful, no votes} =1{Not helpful, 1 vote} other{Not helpful, {count} votes}}",
+  "@communityVoteDownSemantics": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityReport": "Report",
+  "communityReportTitle": "Report content",
+  "communityReportUserTitle": "Report a user",
+  "communityReportIntro": "Choose a reason. Moderators review reports; the author won't see your name.",
+  "communityReportDetails": "Details (required)",
+  "communityReportDetailsOptional": "More details (optional)",
+  "communityReportDetailsRequired": "Add a few words to explain.",
+  "communityReportSend": "Send report",
+  "communityReportSent": "Thanks — your report reached the moderators.",
+  "communityBlockUser": "Block this user",
+  "communityBlockTitle": "Block {name}?",
+  "@communityBlockTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "communityBlockMessage": "You won't see their reviews, comments, questions or answers any more. They won't be told, and you can unblock at any time.",
+  "communityBlockConfirm": "Block",
+  "communityBlocked": "{name} blocked",
+  "@communityBlocked": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "communityUnblock": "Unblock",
+  "communityUnblocked": "{name} unblocked",
+  "@communityUnblocked": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "communityBlockedUsersTitle": "Blocked users",
+  "communityBlockedUsersIntro": "You don't see these users' community posts.",
+  "communityNoBlockedTitle": "No blocked users",
+  "communityNoBlockedMessage": "You can block anyone from the actions menu next to their post.",
+  "communityErrEmailNotVerified": "Verify your e-mail before posting.",
+  "communityErrRateLimited": "You've posted a lot in a short time. Please try again later.",
+  "communityErrRateLimitedMinutes": "{minutes, plural, =1{You've posted a lot in a short time. Try again in a minute.} other{You've posted a lot in a short time. Try again in {minutes} minutes.}}",
+  "@communityErrRateLimitedMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "communityErrReportDuplicate": "You already reported this; your report is being reviewed.",
+  "communityErrSelfVote": "You can't vote on your own post.",
+  "communityErrSelfReport": "You can't report your own post.",
+  "communityErrSignInAgain": "Your session ended. Please sign in again.",
+  "communityCommentsWithCount": "Comments ({count})",
+  "@communityCommentsWithCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "communityCommentHint": "Write a comment…",
+  "communityReplyHint": "Write a reply…",
+  "communityReply": "Reply",
+  "communityReplyingTo": "Replying to {name}",
+  "@communityReplyingTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "communityCancelReply": "Cancel reply",
+  "communityCommentPosted": "Your comment is posted",
+  "communityReplyPosted": "Your reply is posted",
+  "communityCommentsClosed": "Comments are closed here.",
+  "communityNoCommentsTitle": "No comments yet",
+  "communityNoCommentsMessage": "Start the conversation with the first comment.",
+  "communityViewAllComments": "View all comments",
+  "communityViewMoreReplies": "{count, plural, =1{View 1 more reply} other{View {count} more replies}}",
+  "@communityViewMoreReplies": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityEditComment": "Edit comment",
+  "communityDeleteCommentTitle": "Delete comment?",
+  "communitySortNewest": "Newest",
+  "communitySortOldest": "Oldest",
+  "communitySortTop": "Most helpful",
+  "communityOnArticleLabel": "Comments on",
+  "communityOnArticle": "Comments on: {title}. Open the article",
+  "@communityOnArticle": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "communityEditReviewTitle": "Edit your review",
+  "communityEditMyReview": "Edit my review",
+  "communityYourReview": "Your review",
+  "communityAllReviews": "All reviews",
+  "communityTrimLabel": "Trim",
+  "communityChooseTrim": "Choose a trim",
+  "communityTrimSemantics": "Trim: {trim}. Tap to change",
+  "@communityTrimSemantics": {
+    "placeholders": {
+      "trim": {
+        "type": "String"
+      }
+    }
+  },
+  "communityNoTrimsTitle": "No trims listed",
+  "communityNoTrimsMessage": "This car has no trims listed in your current market, so reviews can't be shown or written here.",
+  "communityNoReviewsTitle": "No owner reviews yet",
+  "communityNoReviewsMessage": "No owner has published a review of this trim yet.",
+  "communityBeFirstToReview": "Be the first to review",
+  "communityNoFilteredReviewsTitle": "No matching reviews",
+  "communityNoFilteredReviewsMessage": "Try removing some filters.",
+  "communityClearFilters": "Clear filters",
+  "communityReviewCount": "{count, plural, =0{No reviews} =1{1 review} other{{count} reviews}}",
+  "@communityReviewCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityDistributionRow": "{stars} stars: {count}",
+  "@communityDistributionRow": {
+    "placeholders": {
+      "stars": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityVerifiedOwnerCount": "{count, plural, =1{1 verified owner} other{{count} verified owners}}",
+  "@communityVerifiedOwnerCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityDimensionsTitle": "Ratings by aspect",
+  "communityDimensionsHint": "Optional: rate specific aspects",
+  "communityDimensionValue": "{value} out of 5, {count} ratings",
+  "@communityDimensionValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityDimensionScore": "{dimension}: {score} out of 5",
+  "@communityDimensionScore": {
+    "placeholders": {
+      "dimension": {
+        "type": "String"
+      },
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "communityDimRange": "Real-world range",
+  "communityDimCharging": "Charging",
+  "communityDimComfort": "Comfort",
+  "communityDimTechnology": "Technology",
+  "communityDimBuildQuality": "Build quality",
+  "communityDimValue": "Value for money",
+  "communityDimReliability": "Reliability",
+  "communityDimAfterSales": "After-sales service",
+  "communityVerifiedOwner": "Verified owner",
+  "communityVerifiedOwnerHint": "Our team verified that the author owns this car.",
+  "communityVerifiedOwnerExplainer": "The \"Verified owner\" badge can't be chosen: it appears only after our team actually verifies that you own the car.",
+  "communityStarsSemantics": "{rating} out of 5 stars",
+  "@communityStarsSemantics": {
+    "placeholders": {
+      "rating": {
+        "type": "String"
+      }
+    }
+  },
+  "communityStarOption": "{count, plural, =1{1 star} other{{count} stars}}",
+  "@communityStarOption": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityVerifiedOnly": "Verified owners only",
+  "communitySortHelpful": "Most helpful",
+  "communitySortRecent": "Most recent",
+  "communitySortRatingHigh": "Highest rating",
+  "communitySortRatingLow": "Lowest rating",
+  "communityOwnedMonths": "{count, plural, =0{Owned under a month} =1{Owned 1 month} other{Owned {count} months}}",
+  "@communityOwnedMonths": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityOwnedYears": "{count, plural, =1{Owned 1 year} other{Owned {count} years}}",
+  "@communityOwnedYears": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityOwnedYearsMonths": "Owned {years} yr {months} mo",
+  "@communityOwnedYearsMonths": {
+    "placeholders": {
+      "years": {
+        "type": "int"
+      },
+      "months": {
+        "type": "int"
+      }
+    }
+  },
+  "communityReviewsDisclaimer": "Reviews are owners' personal opinions and experiences, checked by moderators before publishing — not official data or certified measurements.",
+  "communityDeleteReview": "Delete review",
+  "communityDeleteReviewTitle": "Delete your review?",
+  "communityOverallRating": "Overall rating",
+  "communityRatingRequired": "Choose a rating from 1 to 5 stars.",
+  "communityTapToRate": "Tap the stars to rate",
+  "communityRating1": "Poor",
+  "communityRating2": "Fair",
+  "communityRating3": "Good",
+  "communityRating4": "Very good",
+  "communityRating5": "Excellent",
+  "communityReviewTitleLabel": "Title",
+  "communityReviewTitleHint": "Your experience in one line",
+  "communityReviewBodyLabel": "Your experience",
+  "communityReviewBodyHint": "How do you use the car? What range do you really get? How are charging and servicing?",
+  "communityReviewBodyHelper": "At least 20 characters. Write about your own experience only, with no one's personal data.",
+  "communityPros": "Pros",
+  "communityCons": "Cons",
+  "communityProsHint": "What did you like?",
+  "communityConsHint": "What didn't you like?",
+  "communityOwnershipLabel": "How long you've owned it",
+  "communityOwnershipHint": "e.g. 8",
+  "communityMonthsUnit": "months",
+  "communityOwnershipInvalid": "Enter a number of months from 0 to 600.",
+  "communityClearRating": "Clear",
+  "communityReviewModerated": "Moderators check every review before it's published.",
+  "communityEditRemoderated": "After editing, your review goes back to review before it appears again.",
+  "communityReviewGuidelines": "Be specific and honest; no links, ads or personal data.",
+  "communitySubmitReview": "Submit for review",
+  "communitySaveReview": "Save and resubmit",
+  "communityReviewSubmittedTitle": "Review received",
+  "communityReviewSubmittedMessage": "Thank you! Your review will appear to others after moderators check it. You can see and edit it on the reviews page.",
+  "communityReviewExistsTitle": "You already reviewed this trim",
+  "communityReviewExistsMessage": "Each owner can write one review per trim. Do you want to edit your existing review?",
+  "communityAboutCar": "About: {car}",
+  "@communityAboutCar": {
+    "placeholders": {
+      "car": {
+        "type": "String"
+      }
+    }
+  },
+  "communityShowAllQuestions": "Show all questions",
+  "communityAskGeneral": "General question",
+  "communitySearchQuestions": "Search questions",
+  "communityFilterAll": "All",
+  "communityFilterAnswered": "Answered",
+  "communityFilterUnanswered": "Unanswered",
+  "communitySortVotes": "Most votes",
+  "communitySortActive": "Most active",
+  "communityNoQuestionsTitle": "No questions yet",
+  "communityNoQuestionsMessage": "Ask owners and enthusiasts about charging, range and servicing.",
+  "communityNoMatchingQuestionsTitle": "No matching questions",
+  "communityNoMatchingQuestionsMessage": "Try other words or change the filter — or ask your question.",
+  "communityAnswered": "Answered",
+  "communityNotAnsweredYet": "Awaiting an accepted answer",
+  "communityNoAnswersYet": "No answers yet",
+  "communityAnswerCount": "{count, plural, =0{No answers} =1{1 answer} other{{count} answers}}",
+  "@communityAnswerCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityAskedBy": "Asked by {name}",
+  "@communityAskedBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "communityGeneralQuestion": "General question",
+  "communityAskTips": "Write a clear, specific question (at least 10 characters) and mention the market and trim if they matter. No links or personal data.",
+  "communityQuestionTitleLabel": "Your question",
+  "communityQuestionTitleHint": "e.g. How long does home charging take from 20 to 80%?",
+  "communityQuestionBodyLabel": "Details",
+  "communityQuestionBodyHint": "Add anything that helps answer it: usage, charger type…",
+  "communityPostQuestion": "Post question",
+  "communityQuestionPosted": "Your question is posted",
+  "communityQuestionUnavailableTitle": "Question not available",
+  "communityQuestionUnavailableMessage": "It may have been removed or is still being reviewed.",
+  "communityAnswersTitle": "Answers",
+  "communityAnswersWithCount": "Answers ({count})",
+  "@communityAnswersWithCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "communityNoAnswersTitle": "No answers yet",
+  "communityNoAnswersMessage": "Know the answer? Share what you've experienced.",
+  "communityNoAnswersMineMessage": "Answers will appear here when they arrive.",
+  "communityAcceptedAnswer": "Accepted answer",
+  "communityAccept": "Accept answer",
+  "communityUnaccept": "Remove acceptance",
+  "communityAccepted": "Answer accepted",
+  "communityAcceptCleared": "Acceptance removed",
+  "communityYourAnswer": "Your answer",
+  "communityAnswerHint": "Write your answer…",
+  "communityPostAnswer": "Post answer",
+  "communityAnswerPosted": "Your answer is posted",
+  "communityEditAnswer": "Edit answer",
+  "communityEditQuestion": "Edit question",
+  "communityDeleteAnswerTitle": "Delete answer?",
+  "communityDeleteQuestionTitle": "Delete question?"
 }

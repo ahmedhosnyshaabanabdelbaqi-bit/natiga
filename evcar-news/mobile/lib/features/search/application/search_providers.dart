@@ -8,6 +8,7 @@ import '../../../app/di/providers.dart';
 import '../../../core/cache/cached_fetch.dart';
 import '../data/search_repository.dart';
 import '../domain/search_models.dart';
+import 'locale_key.dart';
 import 'paged_state.dart';
 
 /// Delay between the last keystroke and the suggestion request.
@@ -46,14 +47,12 @@ class RecentSearchesController extends Notifier<List<String>> {
   }
 }
 
-final recentSearchesProvider = NotifierProvider<RecentSearchesController, List<String>>(
-  RecentSearchesController.new,
-);
+final recentSearchesProvider = NotifierProvider<RecentSearchesController, List<String>>(RecentSearchesController.new);
 
 /// Suggestions for the text being typed (debounced; the previous request is
 /// cancelled when the text changes).
 final searchSuggestionsProvider = FutureProvider.autoDispose.family<List<SearchSuggestion>, String>((ref, q) async {
-  ref.watch(requestLocaleProvider);
+  ref.watch(requestLocaleProvider.select(localeKey));
   if (!isSearchableQuery(q)) return const [];
   final cancel = CancelToken();
   ref.onDispose(cancel.cancel);
@@ -64,7 +63,7 @@ final searchSuggestionsProvider = FutureProvider.autoDispose.family<List<SearchS
 
 /// Grouped results of a submitted query (5 per group).
 final searchResultsProvider = FutureProvider.autoDispose.family<SearchResults, String>((ref, q) {
-  ref.watch(requestLocaleProvider);
+  ref.watch(requestLocaleProvider.select(localeKey));
   final cancel = CancelToken();
   ref.onDispose(cancel.cancel);
   return ref.read(searchRepositoryProvider).search(q.trim(), cancel: cancel);
@@ -93,7 +92,7 @@ class SearchGroupController extends PagedController<SearchHit> {
   static const pageSize = 20;
 
   @override
-  void watchDependencies() => ref.watch(requestLocaleProvider);
+  void watchDependencies() => ref.watch(requestLocaleProvider.select(localeKey));
 
   @override
   Future<CachedResult<PageChunk<SearchHit>>> fetchPage(int page) async {

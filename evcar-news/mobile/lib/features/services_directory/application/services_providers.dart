@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../app/di/providers.dart';
 import '../../../core/cache/cached_fetch.dart';
 import '../../charging/data/location_service.dart';
+import '../../search/application/locale_key.dart';
 import '../../search/application/paged_state.dart';
 import '../data/services_repository.dart';
 import '../domain/service_models.dart';
@@ -57,12 +58,10 @@ class ServiceFiltersController extends Notifier<ServiceFilters> {
   }
 }
 
-final serviceFiltersProvider = NotifierProvider<ServiceFiltersController, ServiceFilters>(
-  ServiceFiltersController.new,
-);
+final serviceFiltersProvider = NotifierProvider<ServiceFiltersController, ServiceFilters>(ServiceFiltersController.new);
 
 final serviceTypesProvider = FutureProvider.autoDispose<CachedResult<List<ServiceTypeCount>>>((ref) {
-  ref.watch(requestLocaleProvider);
+  ref.watch(requestLocaleProvider.select(localeKey));
   return ref.watch(servicesRepositoryProvider).types();
 });
 
@@ -73,7 +72,7 @@ class ServicesListController extends PagedController<ServiceProvider> {
 
   @override
   void watchDependencies() {
-    ref.watch(requestLocaleProvider);
+    ref.watch(requestLocaleProvider.select(localeKey));
     ref.watch(servicesRepositoryProvider);
   }
 
@@ -99,7 +98,7 @@ final serviceProviderDetailProvider = FutureProvider.autoDispose.family<CachedRe
   ref,
   id,
 ) {
-  ref.watch(requestLocaleProvider);
+  ref.watch(requestLocaleProvider.select(localeKey));
   final f = ref.watch(serviceFiltersProvider.select((f) => (lat: f.lat, lng: f.lng)));
   return ref.watch(servicesRepositoryProvider).detail(id, lat: f.lat, lng: f.lng);
 });

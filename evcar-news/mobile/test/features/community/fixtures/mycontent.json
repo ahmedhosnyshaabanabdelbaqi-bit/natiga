@@ -1,0 +1,28 @@
+{
+    "data": [
+        {
+            "type": "review",
+            "id": "01a0e8dc-1eb1-7367-bb1b-ab3917372ae3",
+            "target": {
+                "type": "variant",
+                "id": "d0000000-0000-4000-8000-000000000014"
+            },
+            "title": "Test review title",
+            "excerpt": "This is a test review body written for the demo database only.",
+            "status": "approved",
+            "votes": {
+                "up": 0,
+                "down": 0,
+                "score": 0,
+                "myVote": null
+            },
+            "createdAt": "2026-09-28T16:32:15.025Z"
+        }
+    ],
+    "meta": {
+        "page": 1,
+        "pageSize": 20,
+        "total": 1,
+        "totalPages": 1
+    }
+}

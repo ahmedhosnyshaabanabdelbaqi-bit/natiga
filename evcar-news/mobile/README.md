@@ -5,11 +5,13 @@ interior tours and charging stations. Contract: `docs/ARCHITECTURE.md` §6 and
 the API contract §4.4.1; product rules: `docs/REQUIREMENTS_AR.md`.
 Version choices and trade-offs: `docs/decisions/mobile.md`.
 
-> **Status (foundation stage):** app shell, routing, core networking/auth,
-> offline cache, settings, app-config, localization, design system and the
-> account screens are implemented and tested. Every other screen is an honest
-> "قيد التنفيذ / Under construction" placeholder in its own feature folder
-> (no data, nothing pretends to work).
+> **Status (2026-09-28):** every routed screen is implemented (home, news, cars,
+> comparisons, 360° tours, charging, calculators, garage, charging log, reminders,
+> notifications, trips, favorites, search, encyclopedia, services, community,
+> account, settings) and verified live against the backend
+> (`docs/screenshots/app/`, `docs/decisions/integration-2.md`). A feature is shown
+> only when `/app-config` announces it. Building APK/AAB/IPA:
+> `docs/MOBILE_BUILD.md`.
 
 ## Quick start
 
@@ -186,7 +188,7 @@ Android App Links are declared for `/n/`, `/cars/`, `/compare/`.
 * Google/Apple sign-in are **not implemented** in the app (no native SDK
   plugins yet; backend returns 503 until configured) — no buttons are shown.
 
-## 360° viewer (skeleton)
+## 360° viewer
 
 `assets/panorama/viewer.html` loads only bundled files (Pannellum in
 `assets/panorama/pannellum/`, CSP meta, no remote scripts). `viewer.js`
@@ -196,10 +198,11 @@ sends `init / setScene / resetView / setOrientation / destroy` through
 `EvcarBridge` JavaScript channel (`ready / sceneLoaded / sceneChanged /
 hotspotClicked / orientation / error`). All URLs must be https on the
 configured media origin (the CSP is tightened to it at init); hotspot text is
-set with `textContent`. The Flutter side (`TourViewerScreen` with
-`webview_flutter`, navigation delegate allowing only the bundled page, sensor
-stop on dispose) is **not implemented yet** (tours feature). Media must be
-served with CORS (`Access-Control-Allow-Origin`) for WebGL textures.
+set with `textContent`. The Flutter side is `features/tours/presentation/tour_viewer_screen.dart`
+(`webview_flutter`, navigation delegate allowing only the bundled page, sensor
+stop on dispose) — details in `docs/decisions/mobile-tours.md`. Media must be
+served with CORS (`Access-Control-Allow-Origin`) for WebGL textures; the local
+`/media` route of the backend sends `*`.
 
 Headless check of the bridge (no WebGL):
 

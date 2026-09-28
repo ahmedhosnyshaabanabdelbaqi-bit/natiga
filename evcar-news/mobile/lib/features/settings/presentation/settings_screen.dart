@@ -43,7 +43,7 @@ class SettingsScreen extends ConsumerWidget {
           RadioGroup<String>(
             groupValue: settings.languageCode ?? 'system',
             onChanged: (v) => controller.setLanguage(v == null || v == 'system' ? null : v),
-            child: Column(
+            child: _Group(
               children: [
                 RadioListTile<String>(value: 'system', title: Text(l10n.settingsLanguageSystem)),
                 RadioListTile<String>(value: 'ar', title: Text(l10n.settingsLanguageArabic)),
@@ -60,7 +60,7 @@ class SettingsScreen extends ConsumerWidget {
             RadioGroup<String>(
               groupValue: market.code,
               onChanged: (v) => controller.setMarket(v),
-              child: Column(
+              child: _Group(
                 children: [
                   for (final m in markets)
                     RadioListTile<String>(
@@ -153,68 +153,81 @@ class SettingsScreen extends ConsumerWidget {
               ),
             ),
           ),
-          SwitchListTile(
-            value: settings.arabicIndicDigits,
-            onChanged: controller.setArabicIndicDigits,
-            title: Text(l10n.settingsDigitsTitle),
-            subtitle: Text(l10n.settingsDigitsSubtitle),
+          const SizedBox(height: 12),
+          _Group(
+            children: [
+              SwitchListTile(
+                value: settings.arabicIndicDigits,
+                onChanged: controller.setArabicIndicDigits,
+                title: Text(l10n.settingsDigitsTitle),
+                subtitle: Text(l10n.settingsDigitsSubtitle),
+              ),
+            ],
           ),
 
           // ---------------------------------------------------------------- Data
           SectionHeader(title: l10n.settingsDataSection),
-          ListTile(
-            leading: const Icon(Icons.cleaning_services_outlined),
-            title: Text(l10n.settingsClearCache),
-            subtitle: Text(l10n.settingsClearCacheSubtitle),
-            onTap: () => _clearCache(context, ref),
+          _Group(
+            children: [
+              ListTile(
+                leading: const Icon(Icons.cleaning_services_outlined),
+                title: Text(l10n.settingsClearCache),
+                subtitle: Text(l10n.settingsClearCacheSubtitle),
+                onTap: () => _clearCache(context, ref),
+              ),
+            ],
           ),
 
           // ---------------------------------------------------------------- About
           SectionHeader(title: l10n.settingsAboutSection),
-          ListTile(
-            leading: const Icon(Icons.info_outline),
-            title: Text(version == null ? l10n.settingsVersionUnknown : l10n.settingsVersion(version)),
-          ),
-          if (configState != null)
-            ListTile(
-              leading: Icon(switch (configState.source) {
-                AppConfigSource.network => Icons.cloud_done_outlined,
-                AppConfigSource.cache => Icons.history,
-                AppConfigSource.fallback => Icons.cloud_off_outlined,
-              }),
-              title: Text(switch (configState.source) {
-                AppConfigSource.network => l10n.settingsConfigNetwork(fmt.dateTime(configState.savedAt) ?? ''),
-                AppConfigSource.cache => l10n.settingsConfigCache(fmt.dateTime(configState.savedAt) ?? ''),
-                AppConfigSource.fallback => l10n.settingsConfigFallback,
-              }),
-              trailing: IconButton(
-                tooltip: l10n.settingsConfigRefresh,
-                icon: const Icon(Icons.refresh),
-                onPressed: () => ref.read(appConfigControllerProvider.notifier).refresh(),
+          _Group(
+            children: [
+              ListTile(
+                leading: const Icon(Icons.info_outline),
+                title: Text(version == null ? l10n.settingsVersionUnknown : l10n.settingsVersion(version)),
               ),
-            ),
-          if (config.legal.privacyUrl != null)
-            ListTile(
-              leading: const Icon(Icons.privacy_tip_outlined),
-              title: Text(l10n.settingsPrivacy),
-              trailing: const Icon(Icons.open_in_new),
-              onTap: () => openExternalUrl(context, config.legal.privacyUrl!),
-            ),
-          if (config.legal.termsUrl != null)
-            ListTile(
-              leading: const Icon(Icons.gavel_outlined),
-              title: Text(l10n.settingsTerms),
-              trailing: const Icon(Icons.open_in_new),
-              onTap: () => openExternalUrl(context, config.legal.termsUrl!),
-            ),
-          ListTile(
-            leading: const Icon(Icons.description_outlined),
-            title: Text(l10n.settingsLicenses),
-            onTap: () => showLicensePage(
-              context: context,
-              applicationName: config.branding.appName,
-              applicationVersion: version,
-            ),
+              if (configState != null)
+                ListTile(
+                  leading: Icon(switch (configState.source) {
+                    AppConfigSource.network => Icons.cloud_done_outlined,
+                    AppConfigSource.cache => Icons.history,
+                    AppConfigSource.fallback => Icons.cloud_off_outlined,
+                  }),
+                  title: Text(switch (configState.source) {
+                    AppConfigSource.network => l10n.settingsConfigNetwork(fmt.dateTime(configState.savedAt) ?? ''),
+                    AppConfigSource.cache => l10n.settingsConfigCache(fmt.dateTime(configState.savedAt) ?? ''),
+                    AppConfigSource.fallback => l10n.settingsConfigFallback,
+                  }),
+                  trailing: IconButton(
+                    tooltip: l10n.settingsConfigRefresh,
+                    icon: const Icon(Icons.refresh),
+                    onPressed: () => ref.read(appConfigControllerProvider.notifier).refresh(),
+                  ),
+                ),
+              if (config.legal.privacyUrl != null)
+                ListTile(
+                  leading: const Icon(Icons.privacy_tip_outlined),
+                  title: Text(l10n.settingsPrivacy),
+                  trailing: const Icon(Icons.open_in_new),
+                  onTap: () => openExternalUrl(context, config.legal.privacyUrl!),
+                ),
+              if (config.legal.termsUrl != null)
+                ListTile(
+                  leading: const Icon(Icons.gavel_outlined),
+                  title: Text(l10n.settingsTerms),
+                  trailing: const Icon(Icons.open_in_new),
+                  onTap: () => openExternalUrl(context, config.legal.termsUrl!),
+                ),
+              ListTile(
+                leading: const Icon(Icons.description_outlined),
+                title: Text(l10n.settingsLicenses),
+                onTap: () => showLicensePage(
+                  context: context,
+                  applicationName: config.branding.appName,
+                  applicationVersion: version,
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -246,5 +259,32 @@ class SettingsScreen extends ConsumerWidget {
       await cache.put(AppConfigController.cacheKey, configState.config.toJson());
     }
     messenger.showSnackBar(SnackBar(content: Text(l10n.settingsClearCacheDone)));
+  }
+}
+
+/// Settings rows grouped on one card (same pattern as the account screen).
+class _Group extends StatelessWidget {
+  const _Group({required this.children});
+
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    if (children.isEmpty) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: AppCard(
+        padding: EdgeInsets.zero,
+        clip: true,
+        child: Column(
+          children: [
+            for (var i = 0; i < children.length; i++) ...[
+              if (i > 0) const Divider(height: 1, indent: 16, endIndent: 16),
+              children[i],
+            ],
+          ],
+        ),
+      ),
+    );
   }
 }

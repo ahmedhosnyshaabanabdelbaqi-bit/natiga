@@ -333,6 +333,11 @@ nothing published by import, non-feed answer → FEED_INVALID.
 
 ## 12. Schema change requests
 
+> **Applied 2026-09-28 by the integrator** (`docs/decisions/integration-2.md` §1):
+> migration `20260929000000_article_translation_slugs`, per-language slugs generated
+> from each title and locked after publication, `/articles/:slug` resolves them,
+> summaries expose `slugs: {ar?, en?}` and `shareUrl` uses the served language's slug.
+
 1. **Per-language slugs** (task: "per-language slugs"): add to
    `ArticleTranslation` `slug String? @db.VarChar(200)` with a unique index
    `article_translations_slug_key` on `slug` (NULLs allowed), plus a CHECK

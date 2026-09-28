@@ -47,5 +47,8 @@
   "encyclopediaLanguageAr": "Arabic",
   "encyclopediaLanguageEn": "English",
   "encyclopediaSafetyTitle": "Electrical safety",
-  "encyclopediaRelated": "Related guides"
+  "encyclopediaRelated": "Related guides",
+  "encyclopediaNotFoundTitle": "This guide isn't available",
+  "encyclopediaNotFoundMessage": "It may have been removed or is being updated after a new technical review.",
+  "encyclopediaBrowseAll": "Browse the encyclopedia"
 }

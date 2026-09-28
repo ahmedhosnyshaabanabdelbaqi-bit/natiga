@@ -1,0 +1,9 @@
+{
+    "data": {
+        "canPost": true,
+        "emailVerified": true,
+        "isNewAccount": false,
+        "newAccountUntil": null,
+        "block": null
+    }
+}

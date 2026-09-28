@@ -6,6 +6,14 @@ abstract final class AppColors {
   static const electricBlue = Color(0xFF0A5CFF);
   static const cyan = Color(0xFF00C2E0);
 
+  /// Deep cyan-blue: the end of the text-safe brand gradient. White text on
+  /// it passes WCAG AA (4.8:1); pure [cyan] (2.1:1) never carries text.
+  static const deepCyan = Color(0xFF0077BE);
+
+  /// Brand blue for text and icons on dark surfaces (7.8:1 on
+  /// [darkSurface]); filled controls keep [electricBlue] with white text.
+  static const electricBlueOnDark = Color(0xFF86ADFF);
+
   static const lightBackground = Color(0xFFF4F7FC);
   static const lightSurface = Color(0xFFFFFFFF);
   static const darkBackground = Color(0xFF0A1020);

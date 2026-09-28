@@ -67,5 +67,8 @@
   "servicesDirectoryLocationDenied": "لم يُسمح بالوصول إلى الموقع. يمكنك اختيار مدينة بدلًا من ذلك.",
   "servicesDirectoryLocationUnavailable": "تعذّر تحديد موقعك. يمكنك اختيار مدينة بدلًا من ذلك.",
   "servicesDirectoryLocationDeniedForever": "الوصول إلى الموقع متوقف لهذا التطبيق. فعّله من الإعدادات أو اختر مدينة.",
-  "servicesDirectoryLocationServiceOff": "خدمات الموقع متوقفة على هذا الجهاز. فعّلها أو اختر مدينة."
+  "servicesDirectoryLocationServiceOff": "خدمات الموقع متوقفة على هذا الجهاز. فعّلها أو اختر مدينة.",
+  "servicesDirectoryNotFoundTitle": "مقدّم الخدمة هذا لم يعد مدرجًا",
+  "servicesDirectoryNotFoundMessage": "ربما أُزيل من الدليل. تصفّح مقدّمي خدمة آخرين بالقرب منك.",
+  "servicesDirectoryBrowseAll": "تصفّح الدليل"
 }

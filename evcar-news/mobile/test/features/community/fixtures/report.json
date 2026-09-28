@@ -1,0 +1,12 @@
+{
+    "data": {
+        "id": "01a0e8dc-2095-766c-8ab9-171670122308",
+        "targetType": "answer",
+        "targetId": "01a0e8dc-1f6e-740e-9a11-0b71e99cba92",
+        "reason": "spam",
+        "reasonLabel": "رسائل مزعجة أو إعلان",
+        "details": null,
+        "status": "open",
+        "createdAt": "2026-09-28T16:32:15.509Z"
+    }
+}

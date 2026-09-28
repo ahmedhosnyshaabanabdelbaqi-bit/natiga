@@ -10,10 +10,11 @@
 # Trigger: a push whose commit message contains "[apk]" (so work-in-progress
 # pushes don't publish a release each time), or a manual run.
 #
-# API base URL: set the repository variable EVCAR_API_BASE_URL
+# API base URL: the repository variable EVCAR_API_BASE_URL is REQUIRED
 # (Settings → Secrets and variables → Actions → Variables), e.g.
-# https://api.evcar.news/api/v1. Without a reachable backend the app shows
-# its offline / "cannot connect" states.
+# https://api.example.com/api/v1. There is no default: without it the job
+# fails instead of publishing an APK that points at a host that does not
+# exist. Without a reachable backend the app shows its "cannot connect" state.
 name: evcar-android
 
 on:
@@ -38,8 +39,16 @@ jobs:
       run:
         working-directory: evcar-news/mobile
     env:
-      API_BASE_URL: ${{ vars.EVCAR_API_BASE_URL || 'https://api.evcar.news/api/v1' }}
+      API_BASE_URL: ${{ vars.EVCAR_API_BASE_URL }}
     steps:
+      - name: Require the API address (repository variable EVCAR_API_BASE_URL)
+        working-directory: .
+        run: |
+          case "$API_BASE_URL" in
+            https://*/api/v1) echo "API: $API_BASE_URL" ;;
+            '') echo "::error::Set the repository variable EVCAR_API_BASE_URL (e.g. https://api.example.com/api/v1) before building an APK."; exit 1 ;;
+            *) echo "::error::EVCAR_API_BASE_URL must be an https URL ending in /api/v1 (got: $API_BASE_URL)."; exit 1 ;;
+          esac
       - uses: actions/checkout@v7
       - uses: actions/setup-java@v6
         with:

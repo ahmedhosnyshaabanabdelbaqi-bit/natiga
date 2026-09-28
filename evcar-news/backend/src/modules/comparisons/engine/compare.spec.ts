@@ -347,6 +347,46 @@ describe('comparison engine — charging (SoC windows, peak ≠ average)', () =>
     expect(m.comparabilityNote).toMatch(/50 kW vs 350 kW/);
   });
 
+  it('a charger-limited time vs a time on an unknown charger is not comparable (review 3)', () => {
+    const m = metric(
+      [
+        car('a', {
+          specs: { 'charging.dc_peak_kw': point(150, 'kW') },
+          chargingTimes: [time('DC', 10, 80, 62, { chargerPowerKw: 50 })],
+        }),
+        car('b', {
+          specs: { 'charging.dc_peak_kw': point(150, 'kW') },
+          chargingTimes: [time('DC', 10, 80, 25, { chargerPowerKw: null })],
+        }),
+      ],
+      'charging.dc_time',
+    );
+    expect(m).toMatchObject({
+      comparability: 'not_comparable_conditions',
+      outcome: 'no_winner',
+      winners: [],
+    });
+    expect(m.values.map((v) => v.value)).toEqual([62, 25]);
+    expect(m.comparabilityNote).toMatch(/unknown charger/);
+  });
+
+  it('same charger power on both cars stays comparable even when it limited them', () => {
+    const m = metric(
+      [
+        car('a', {
+          specs: { 'charging.dc_peak_kw': point(150, 'kW') },
+          chargingTimes: [time('DC', 10, 80, 62, { chargerPowerKw: 50 })],
+        }),
+        car('b', {
+          specs: { 'charging.dc_peak_kw': point(150, 'kW') },
+          chargingTimes: [time('DC', 10, 80, 60, { chargerPowerKw: 50 })],
+        }),
+      ],
+      'charging.dc_time',
+    );
+    expect(m).toMatchObject({ comparability: 'comparable', winners: ['b@EG'] });
+  });
+
   it('peak DC power and average DC power are separate rows with their own winners', () => {
     const cars = [
       car('a', {
@@ -498,26 +538,69 @@ describe('comparison engine — directions and battery', () => {
   });
 });
 
-describe('comparison engine — price', () => {
-  it('lower price wins in the same currency, with type, date and source kept', () => {
+describe('comparison engine — placeholder zeros (review 3)', () => {
+  it('a stored 0 s acceleration is missing, not a winning value', () => {
     const m = metric(
       [
-        car('a', { price: price('1500000.00') }),
-        car('b', { price: price('1450000.00', 'EGP', 'dealer') }),
+        car('a', { specs: { 'performance.accel_0_100_s': point(0, 's') } }),
+        car('b', { specs: { 'performance.accel_0_100_s': point(6, 's') } }),
       ],
+      'performance.accel_0_100_s',
+    );
+    expect(m).toMatchObject({ comparability: 'missing_data', outcome: 'no_winner', winners: [] });
+    expect(m.values[0]).toMatchObject({ status: 'missing', value: null });
+  });
+
+  it('a stored 0 kW DC peak falls back to the inlet data / missing, never wins', () => {
+    const m = metric(
+      [
+        car('a', { specs: { 'charging.dc_peak_kw': point(0, 'kW') } }),
+        car('b', { specs: { 'charging.dc_peak_kw': point(150, 'kW') } }),
+      ],
+      'charging.dc_peak_kw',
+    );
+    expect(m.winners).not.toContain('a@EG');
+    expect(m.values[0].value).not.toBe(0);
+  });
+});
+
+describe('comparison engine — price', () => {
+  it('lower price wins in the same currency and price type, with type, date and source kept', () => {
+    const m = metric(
+      [car('a', { price: price('1500000.00') }), car('b', { price: price('1450000.00') })],
       'price.current',
     );
     expect(m).toMatchObject({
       comparability: 'comparable',
+      outcome: 'winner',
       winners: ['b@EG'],
       unit: 'EGP',
       kind: 'money',
+      basis: { currency: 'EGP', priceType: 'official_msrp' },
     });
     expect(m.values[0]).toMatchObject({
       value: '1500000.00',
       condition: { priceType: 'official_msrp', currency: 'EGP', effectiveFrom: '2026-01-01' },
     });
-    expect(m.comparabilityNote).toMatch(/different price types/);
+    expect(m.comparabilityNote).toBeNull();
+  });
+
+  it.each([
+    ['dealer', '1450000.00'],
+    ['market_estimate', '1400000.00'],
+  ])('official MSRP vs %s: values shown, no winner (review 3)', (type, amount) => {
+    const m = metric(
+      [car('a', { price: price('1500000.00') }), car('b', { price: price(amount, 'EGP', type) })],
+      'price.current',
+    );
+    expect(m).toMatchObject({
+      comparability: 'not_comparable_conditions',
+      outcome: 'no_winner',
+      winners: [],
+    });
+    expect(m.values.map((v) => v.value)).toEqual(['1500000.00', amount]);
+    expect(m.values.map((v) => v.condition?.priceType)).toEqual(['official_msrp', type]);
+    expect(m.comparabilityNote).toMatch(/different price types/i);
   });
 
   it('different currencies are never converted and never decide a winner', () => {

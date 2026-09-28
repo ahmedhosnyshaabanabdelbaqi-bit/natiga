@@ -1,0 +1,30 @@
+{
+    "data": {
+        "id": "01a0e8dc-1f32-7662-8484-fc78f3041324",
+        "target": {
+            "type": "model",
+            "id": "d0000000-0000-4000-8000-000000000011"
+        },
+        "title": "Test question about home charging?",
+        "body": "Test body",
+        "locale": "en",
+        "author": {
+            "id": "01a0e8db-beee-763b-8ce3-9d8d942492a4",
+            "displayName": "Omar",
+            "isDeleted": false
+        },
+        "votes": {
+            "up": 0,
+            "down": 0,
+            "score": 0,
+            "myVote": null
+        },
+        "answerCount": 0,
+        "acceptedAnswerId": null,
+        "status": "approved",
+        "isMine": true,
+        "editedAt": null,
+        "createdAt": "2026-09-28T16:32:15.154Z",
+        "acceptedAnswer": null
+    }
+}

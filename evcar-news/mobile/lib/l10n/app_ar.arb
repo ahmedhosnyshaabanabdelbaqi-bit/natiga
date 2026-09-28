@@ -1,5 +1,13 @@
 {
   "@@locale": "ar",
+  "accountCarsCount": "{count, plural, =1{سيارة واحدة} =2{سيارتان} few{{count} سيارات} other{{count} سيارة}}",
+  "@accountCarsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "accountDeleteAccount": "حذف الحساب",
   "accountDeleteAcknowledge": "أفهم أن الحذف نهائي ولا يمكن التراجع عنه.",
   "accountDeleteButton": "حذف الحساب نهائيًا",
@@ -35,6 +43,16 @@
   "accountSessionsTitle": "الأجهزة والجلسات",
   "accountSettingsSection": "الإعدادات والخصوصية",
   "accountTitle": "حسابي",
+  "accountTripPlannerExplain": "يحتاج تخطيط الرحلات إلى خدمة مسارات للطرق، وهي غير مهيأة على الخادم بعد. لا نرسم خطوطًا مستقيمة كمسارات قيادة ولا نختلق خططًا، لذلك يبقى المخطط مخفيًا حتى تُهيأ. في الأثناء، تتيح كل صفحة محطة فتح الاتجاهات في تطبيق الملاحة.",
+  "accountTripPlannerUnavailable": "غير متاح بعد",
+  "accountUnreadCount": "{count} جديد",
+  "@accountUnreadCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "accountVerifyNow": "تأكيد الآن",
   "authBackToLogin": "العودة لتسجيل الدخول",
   "authConfirmPasswordLabel": "تأكيد كلمة المرور",
@@ -76,8 +94,231 @@
   "authVerifySuccess": "تم تأكيد بريدك الإلكتروني.",
   "authVerifyTitle": "تأكيد البريد الإلكتروني",
   "authVerifyTokenLabel": "رمز التأكيد",
+  "calculatorsAcLimitHint": "غالبًا 7.4 أو 11 أو 22 كيلوواط. غير معروف = ثقة أقل.",
+  "calculatorsAssumptions": "القيم والافتراضات المستخدمة",
+  "calculatorsAssumptionsHint": "غيّر أيًا منها في الأعلى وأعد الحساب.",
+  "calculatorsBasisBattery": "مضافة للبطارية",
+  "calculatorsBasisBatteryConsumption": "من شاشة السيارة",
+  "calculatorsBasisGrid": "من العداد / الشاحن",
+  "calculatorsBasisGridConsumption": "من المقبس (WLTP/EPA)",
+  "calculatorsCalculate": "احسب",
   "calculatorsCalculatorTitle": "الحاسبة",
+  "calculatorsCarNeedsNetwork": "استخدام بيانات السيارة يتطلب اتصالًا. أزل السيارة لتحسب دون إنترنت بقيمك.",
+  "calculatorsCarOptional": "اختياري: املأ القيم الناقصة من سيارة",
+  "calculatorsCarSelectedHint": "الحقول الفارغة تُملأ من بيانات هذه السيارة في الدليل",
+  "calculatorsChooseCar": "استخدم بيانات سيارة",
+  "calculatorsChooseCarHint": "تُملأ القيم الناقصة (البطارية وقدرة الشحن والاستهلاك) من الدليل مع مصدرها. القيم التي تكتبها لها الأولوية دائمًا. يتطلب اتصالًا بالإنترنت.",
+  "calculatorsCompareFuelCar": "قارن بسيارة وقود",
+  "calculatorsConfidenceHigh": "ثقة عالية",
+  "calculatorsConfidenceLow": "ثقة منخفضة",
+  "calculatorsConfidenceMedium": "ثقة متوسطة",
+  "calculatorsConsumptionBasis": "الاستهلاك الذي أُدخله مقيس",
+  "calculatorsConsumptionHint": "من سيارتك أو من معيار مثل WLTP. لا يتم التحويل بين الدورات.",
+  "calculatorsCostEnergy": "الطاقة",
+  "calculatorsCostIdle": "رسوم الانتظار",
+  "calculatorsCostParking": "الوقوف",
+  "calculatorsCostPer100": "التكلفة لكل 100 كم",
+  "calculatorsCostPerKm": "التكلفة لكل كم",
+  "calculatorsCostPerKwhAdded": "التكلفة لكل كيلوواط ساعة مضافة",
+  "calculatorsCostSession": "رسوم الجلسة",
+  "calculatorsCostTime": "الوقت",
+  "calculatorsCurrency": "العملة",
+  "calculatorsDcCurveHint": "الزمن الدقيق للشحن السريع DC يحتاج منحنى الشحن الموثّق للسيارة، ويأتي من الدليل عند اختيار سيارة. بدونه تحصل على نطاق منخفض الثقة.",
+  "calculatorsDifferenceHint": "تكلفة الوقود ناقص تكلفة الكهرباء؛ القيمة السالبة تعني أن الكهربائية أغلى.",
+  "calculatorsDifferencePer100": "توفيرك لكل 100 كم",
+  "calculatorsDifferencePerMonth": "الفرق شهريًا",
+  "calculatorsDifferencePerYear": "الفرق سنويًا",
+  "calculatorsDuration": "مدة الشحن",
+  "calculatorsDurationRange": "النطاق التقديري",
+  "calculatorsEffectiveFrom": "ساري من {date}",
+  "@calculatorsEffectiveFrom": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "calculatorsEfficiencyHint": "كسر عشري، مثل 0.9 = 90%. فارغ = 0.9 ويظهر كافتراض قابل للتعديل.",
+  "calculatorsEnergyAdded": "الطاقة المضافة للبطارية",
+  "calculatorsEnergyCost": "الطاقة / الوقود",
+  "calculatorsEnergyPerMonth": "تكلفة الطاقة الشهرية",
+  "calculatorsEnterMyOwn": "أدخل سعري",
+  "calculatorsEv": "كهربائية",
+  "calculatorsEvPer100": "الكهرباء لكل 100 كم",
+  "calculatorsEvPerMonth": "الكهرباء شهريًا",
+  "calculatorsEvTotal": "إجمالي السيارة الكهربائية",
+  "calculatorsFees": "الترخيص والرسوم",
+  "calculatorsFieldAcLimit": "الشاحن الداخلي للسيارة AC",
+  "calculatorsFieldAmps": "التيار لكل طور",
+  "calculatorsFieldChargingMinutes": "مدة الشحن",
+  "calculatorsFieldConsumption": "الاستهلاك",
+  "calculatorsFieldDcPeak": "أقصى قدرة DC للسيارة",
+  "calculatorsFieldEfficiency": "كفاءة الشحن",
+  "calculatorsFieldElectricityPrice": "سعر الكهرباء الأساسي (المنزل)",
+  "calculatorsFieldEnergy": "الطاقة",
+  "calculatorsFieldFees": "الترخيص والرسوم سنويًا",
+  "calculatorsFieldFixedFees": "رسوم شهرية ثابتة",
+  "calculatorsFieldFromSoc": "الشحن من",
+  "calculatorsFieldFuelConsumption": "استهلاك الوقود",
+  "calculatorsFieldFuelPrice": "سعر لتر الوقود",
+  "calculatorsFieldHomePrice": "سعر كهرباء المنزل",
+  "calculatorsFieldIdleGrace": "دقائق انتظار مجانية",
+  "calculatorsFieldIdleMinutes": "مدة الانتظار بعد الشحن",
+  "calculatorsFieldIdlePrice": "رسوم الانتظار لكل دقيقة",
+  "calculatorsFieldIncentives": "الحوافز",
+  "calculatorsFieldInsurance": "التأمين سنويًا",
+  "calculatorsFieldKmPerDay": "المسافة اليومية",
+  "calculatorsFieldKmPerMonth": "المسافة الشهرية",
+  "calculatorsFieldKmPerYear": "المسافة السنوية",
+  "calculatorsFieldMaintenance": "الصيانة سنويًا",
+  "calculatorsFieldOneOff": "تكاليف لمرة واحدة",
+  "calculatorsFieldParkingFlat": "رسوم وقوف ثابتة",
+  "calculatorsFieldParkingMinutes": "مدة الوقوف",
+  "calculatorsFieldParkingPerHour": "الوقوف لكل ساعة",
+  "calculatorsFieldPublicEnergyPrice": "السعر لكل كيلوواط ساعة",
+  "calculatorsFieldPublicPrice": "سعر الشحن العام",
+  "calculatorsFieldPublicShare": "نسبة الشحن العام",
+  "calculatorsFieldPurchase": "سعر الشراء",
+  "calculatorsFieldResidual": "قيمة إعادة البيع في النهاية",
+  "calculatorsFieldSessionFee": "رسوم الجلسة",
+  "calculatorsFieldStationPower": "قدرة الشاحن / المحطة",
+  "calculatorsFieldTimePrice": "السعر لكل دقيقة شحن",
+  "calculatorsFieldToSoc": "الشحن إلى",
+  "calculatorsFieldUsable": "السعة القابلة للاستخدام",
+  "calculatorsFieldVolts": "الجهد لكل طور",
+  "calculatorsFieldYears": "سنوات الملكية",
+  "calculatorsFixedFees": "الرسوم الثابتة",
+  "calculatorsFromCarHint": "اتركه فارغًا لاستخدام قيمة السيارة من الدليل.",
+  "calculatorsFuelCar": "وقود",
+  "calculatorsFuelPer100": "الوقود لكل 100 كم",
+  "calculatorsFuelPerMonth": "الوقود شهريًا",
+  "calculatorsGridConsumption": "الاستهلاك من الشبكة",
+  "calculatorsGridEnergy": "الطاقة من الشبكة",
+  "calculatorsHomeDescription": "الطاقة المضافة والطاقة المسحوبة من الشبكة مع الفاقد، والتكلفة حسب تعرفة منزلك.",
+  "calculatorsHomeTitle": "تكلفة الشحن المنزلي",
+  "calculatorsHowCalculated": "طريقة الحساب",
+  "calculatorsIncentives": "الحوافز",
+  "calculatorsInsurance": "التأمين",
+  "calculatorsIntro": "تُحسب النتائج من القيم التي تُدخلها بنفس معادلات الخادم. لا توجد أسعار مدمجة: أدخل أسعار اليوم أو اختر سعرًا مرجعيًا من الإدارة بتاريخه ومصدره.",
+  "calculatorsKmPerMonth": "المسافة الشهرية",
+  "calculatorsKwhPerMonth": "الطاقة الشهرية",
+  "calculatorsLimitCurve": "منحنى الشحن",
+  "calculatorsLimitStation": "الشاحن",
+  "calculatorsLimitSupply": "مصدر الكهرباء المنزلي",
+  "calculatorsLimitVehicle": "السيارة",
+  "calculatorsLimitingFactor": "المحدِّد",
+  "calculatorsLosses": "فاقد الشحن",
+  "calculatorsMaintenance": "الصيانة",
+  "calculatorsModeEnergy": "طاقة أعرفها",
+  "calculatorsModeSoc": "البطارية ونسب الشحن",
+  "calculatorsMonthlyDescription": "تكلفة الطاقة الشهرية والسنوية حسب المسافة والاستهلاك.",
+  "calculatorsMonthlyTitle": "التكلفة الشهرية",
+  "calculatorsNo": "لا",
+  "calculatorsNoCar": "بدون سيارة",
+  "calculatorsNoCarSelected": "لم تُختر سيارة",
+  "calculatorsNoDefaultPrices": "الأسعار تتغير: تعرض النتيجة تاريخ الأسعار التي استخدمتها.",
+  "calculatorsNoReferencePrices": "لا توجد أسعار مرجعية لهذا السوق",
+  "calculatorsNoReferencePricesHint": "أدخل السعر الذي تدفعه. لا نفترض أي سعر.",
+  "calculatorsNonEnergy": "كل شيء عدا الطاقة",
+  "calculatorsNotIncluded": "غير محتسب",
+  "calculatorsOnDevice": "محسوبة على هذا الهاتف",
+  "calculatorsOnServer": "محسوبة ببيانات الدليل",
+  "calculatorsOneOff": "تكاليف لمرة واحدة",
+  "calculatorsOneOffHint": "مثل تركيب شاحن منزلي.",
+  "calculatorsOriginCatalog": "من الدليل",
+  "calculatorsOriginDefault": "افتراضية",
+  "calculatorsOriginReference": "سعر مرجعي",
+  "calculatorsOriginUser": "أدخلتها",
+  "calculatorsPer100Description": "كم تكلفك 100 كم من الكهرباء، مع مزج أسعار المنزل والشحن العام حسب استخدامك.",
+  "calculatorsPer100Title": "التكلفة لكل 100 كم",
+  "calculatorsPerDayMode": "يوميًا",
+  "calculatorsPerKm": "لكل كم",
+  "calculatorsPerMonth": "شهريًا",
+  "calculatorsPerMonthMode": "شهريًا",
+  "calculatorsPerMonthTotal": "شهريًا",
+  "calculatorsPerYear": "سنويًا",
+  "calculatorsPerYearValue": "{amount} سنويًا",
+  "@calculatorsPerYearValue": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "calculatorsPickTrim": "اختر فئة من الدليل",
+  "calculatorsPossiblyOutdated": "قد يكون قديمًا",
+  "calculatorsPower": "القدرة المستخدمة",
+  "calculatorsPriceDate": "تاريخ السعر",
+  "calculatorsPriceDateFromReference": "فارغ = تاريخ سريان السعر المرجعي.",
+  "calculatorsPriceDateHint": "متى كانت هذه الأسعار سارية. بدون تاريخ تذكر النتيجة ذلك.",
+  "calculatorsPriceDateMissing": "لم يُحدد تاريخ السعر",
+  "calculatorsPriceDateNotSet": "غير محدد",
+  "calculatorsPricePerKwh": "سعر الكيلوواط ساعة المستخدم",
+  "calculatorsPricesAsOf": "الأسعار بتاريخ {date}",
+  "@calculatorsPricesAsOf": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "calculatorsPublicDescription": "رسوم الكيلوواط ساعة والدقيقة والجلسة والوقوف والانتظار كما يحتسبها المشغّل.",
+  "calculatorsPublicTitle": "تكلفة الشحن العام",
+  "calculatorsPurchase": "الشراء",
+  "calculatorsReferencePrices": "الأسعار المرجعية",
+  "calculatorsReferenceUsed": "سعر مرجعي: {label}، ساري من {date}",
+  "@calculatorsReferenceUsed": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "calculatorsResidual": "قيمة إعادة البيع",
+  "calculatorsResult": "النتيجة",
+  "calculatorsRoughEstimate": "تقدير تقريبي — ليس زمنًا دقيقًا",
+  "calculatorsSavingPercent": "نسبة التوفير",
+  "calculatorsSectionConsumption": "الاستهلاك",
+  "calculatorsSectionDriving": "القيادة",
+  "calculatorsSectionDrivingOptional": "القيادة (اختياري، للأرقام الشهرية)",
+  "calculatorsSectionDurations": "الأوقات عند الشاحن",
+  "calculatorsSectionEnergy": "البطارية والطاقة",
+  "calculatorsSectionEvCosts": "تكاليف السيارة الكهربائية",
+  "calculatorsSectionFuel": "سيارة الوقود",
+  "calculatorsSectionFuelCar": "تكاليف سيارة الوقود",
+  "calculatorsSectionOwnership": "الملكية",
+  "calculatorsSectionPower": "القدرة",
+  "calculatorsSectionPrices": "العملة وتاريخ السعر",
+  "calculatorsSectionTariff": "الأسعار",
+  "calculatorsSupplyLimit": "حد مصدر الكهرباء المنزلي",
+  "calculatorsSupplyNone": "غير محدد",
+  "calculatorsSupplyOne": "طور واحد",
+  "calculatorsSupplyThree": "ثلاثة أطوار",
+  "calculatorsTcoDescription": "الشراء والحوافز وإعادة البيع والطاقة والتأمين والصيانة خلال السنوات التي تختارها.",
+  "calculatorsTcoDifference": "سيارة الوقود ناقص الكهربائية: {amount}",
+  "@calculatorsTcoDifference": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "calculatorsTcoTitle": "التكلفة الكلية للملكية",
+  "calculatorsTimeDescription": "مدة AC من حد القدرة الفعلي؛ وDC من منحنى موثّق، وإلا فنطاق تقديري منخفض الثقة.",
+  "calculatorsTimeTitle": "مدة الشحن",
   "calculatorsTitle": "حاسبات الشحن والتشغيل",
+  "calculatorsTotal": "الإجمالي",
+  "calculatorsTotalCost": "التكلفة الإجمالية",
+  "calculatorsTotalKm": "المسافة الإجمالية",
+  "calculatorsUnknown": "هذه الحاسبة غير موجودة.",
+  "calculatorsUseReference": "استخدم سعرًا مرجعيًا",
+  "calculatorsVoltsHint": "فارغ = 230 فولت (يظهر كافتراض).",
+  "calculatorsVsFuelDescription": "تكلفة طاقة سيارتك الكهربائية مقارنة بسيارة وقود لكل 100 كم وشهريًا.",
+  "calculatorsVsFuelTitle": "الكهرباء مقابل البنزين",
+  "calculatorsYes": "نعم",
   "carsAbout": "عن {name}",
   "@carsAbout": {
     "placeholders": {
@@ -122,7 +363,7 @@
   "carsBodyOther": "هيكل آخر",
   "carsBodyPickup": "بيك أب",
   "carsBodySedan": "سيدان",
-  "carsBodySuv": "دفع رباعي (SUV)",
+  "carsBodySuv": "SUV رياضية متعددة الاستخدامات",
   "carsBodyVan": "فان",
   "carsBodyWagon": "ستيشن",
   "carsBrandCountry": "المنشأ: {country}",
@@ -833,10 +1074,133 @@
   "chargingLocationServiceOff": "خدمات الموقع متوقفة على هذا الجهاز. فعّلها، أو اختر مدينة أو نقطة بدلًا من ذلك.",
   "chargingLocationTitle": "اختر مكانًا",
   "chargingLocationUnavailable": "تعذر تحديد موقعك. اختر مكانًا بدلًا من ذلك.",
+  "chargingLogsAdd": "إضافة جلسة",
+  "chargingLogsAdded": "تمت إضافة الجلسة.",
+  "chargingLogsAllCars": "كل السيارات",
+  "chargingLogsAvgPerKwh": "المتوسط لكل كيلوواط ساعة",
+  "chargingLogsByLocation": "أين تشحن",
+  "chargingLogsCar": "السيارة",
+  "chargingLogsConfidenceLow": "ثقة منخفضة",
+  "chargingLogsConfidenceMedium": "ثقة متوسطة",
+  "chargingLogsConsumption": "الاستهلاك",
+  "chargingLogsCost": "المبلغ المدفوع",
+  "chargingLogsCostHint": "اختياري. اتركه فارغًا إن لم تعرفه — لن يُحسب كشحن مجاني.",
+  "chargingLogsCostPer100": "التكلفة لكل 100 كم",
+  "chargingLogsCostSection": "التكلفة",
+  "chargingLogsCurrency": "العملة",
+  "chargingLogsCurrentType": "نوع التيار",
+  "chargingLogsCurrentUnknown": "غير متأكد",
+  "chargingLogsDate": "التاريخ والوقت",
+  "chargingLogsDelete": "حذف الجلسة",
+  "chargingLogsDeleteConfirm": "حذف هذه الجلسة؟",
+  "chargingLogsDeleteMessage": "ستُزال من تقاريرك.",
+  "chargingLogsDeleted": "تم حذف الجلسة.",
+  "chargingLogsDistance": "المسافة",
+  "chargingLogsDuration": "المدة",
   "chargingLogsEditTitle": "تعديل جلسة الشحن",
+  "chargingLogsEmptyMessage": "سجّل الطاقة والتكلفة وقراءة العداد لكل شحنة. التقارير تُبنى فقط مما تدخله.",
+  "chargingLogsEmptyTitle": "لا توجد جلسات شحن بعد",
+  "chargingLogsEnergy": "الطاقة المشحونة",
+  "chargingLogsEnergyHint": "كما يظهر في الشاحن أو التطبيق أو العداد.",
+  "chargingLogsErrorMax": "يجب ألا تتجاوز {max}.",
+  "@chargingLogsErrorMax": {
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingLogsErrorPositive": "يجب أن تكون القيمة أكبر من صفر.",
+  "chargingLogsErrorRequired": "مطلوب.",
+  "chargingLogsErrorSoc": "يجب أن تكون نسبة الانتهاء أعلى من نسبة البدء.",
+  "chargingLogsGuestMessage": "سجّل الدخول لتحتفظ بسجل خاص لجلسات الشحن وترى إنفاقك واستهلاكك الفعليين.",
+  "chargingLogsInCurrency": "بعملة {currency}",
+  "@chargingLogsInCurrency": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingLogsLoadMore": "تحميل المزيد",
+  "chargingLogsLocation": "المكان",
+  "chargingLogsLocationHome": "المنزل",
+  "chargingLogsLocationOther": "أخرى",
+  "chargingLogsLocationPublic": "عام",
+  "chargingLogsLocationWork": "العمل",
+  "chargingLogsLowConfidenceHint": "مبني على قراءات قليلة أو مسافة قصيرة. سجّل جلسات أكثر مع قراءة العداد لرقم أدق.",
+  "chargingLogsMethod": "طريقة الحساب",
+  "chargingLogsMixedCurrencies": "دفعت بأكثر من عملة. المبالغ معروضة لكل عملة على حدة ولا تُحوّل.",
+  "chargingLogsMonthlyEnergy": "الطاقة الشهرية",
+  "chargingLogsMonthlySpend": "الإنفاق الشهري",
+  "chargingLogsMoreHint": "اختيارية. قراءة العداد تتيح تقارير الاستهلاك.",
+  "chargingLogsMoreSection": "تفاصيل إضافية",
   "chargingLogsNewTitle": "جلسة شحن جديدة",
+  "chargingLogsNoCarMessage": "كل جلسة شحن تخص سيارة في جراجك.",
+  "chargingLogsNoCarTitle": "أضف سيارتك أولًا",
+  "chargingLogsNoCost": "لم تُدخل تكلفة",
+  "chargingLogsNoSpendData": "لم تُدخل تكاليف في هذه الفترة.",
+  "chargingLogsNotes": "ملاحظات",
+  "chargingLogsOdometer": "العداد",
+  "chargingLogsOdometerHint": "يجب ألا تقل عن جلسة سابقة لهذه السيارة.",
+  "chargingLogsPerKwh": "{price}/كيلوواط ساعة",
+  "@chargingLogsPerKwh": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingLogsPeriod12": "12 شهرًا",
+  "chargingLogsPeriod3": "3 أشهر",
+  "chargingLogsPeriod6": "6 أشهر",
+  "chargingLogsPeriodAll": "كل الفترات",
+  "chargingLogsPower": "قدرة الشاحن",
+  "chargingLogsReasonMissingCosts": "بيانات غير كافية: تكاليف ناقصة",
+  "chargingLogsReasonMixedCurrencies": "غير معروض: عملات مختلفة",
+  "chargingLogsReasonNoDistance": "بيانات غير كافية: لا مسافة بين القراءات",
+  "chargingLogsReasonNoSessions": "بيانات غير كافية: لا جلسات",
+  "chargingLogsReasonOdometer": "بيانات غير كافية: تحتاج قراءتين للعداد على الأقل",
+  "chargingLogsReasonUnknown": "بيانات غير كافية",
+  "chargingLogsReportEmptyMessage": "التقارير تعتمد فقط على الجلسات التي تسجلها. أضف جلسة أو اختر فترة أطول.",
+  "chargingLogsReportEmptyTitle": "لا توجد جلسات في هذه الفترة",
   "chargingLogsReportsTitle": "الإنفاق والاستهلاك",
+  "chargingLogsSaved": "تم حفظ الجلسة.",
+  "chargingLogsSessionSection": "الجلسة",
+  "chargingLogsSessions": "الجلسات",
+  "chargingLogsSessionsCount": "{count, plural, =0{لا جلسات} =1{جلسة واحدة} =2{جلستان} few{{count} جلسات} many{{count} جلسة} other{{count} جلسة}}",
+  "@chargingLogsSessionsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingLogsSessionsWithoutCost": "{count, plural, =1{جلسة واحدة بلا تكلفة وغير محسوبة في الإنفاق.} =2{جلستان بلا تكلفة وغير محسوبتين في الإنفاق.} few{{count} جلسات بلا تكلفة وغير محسوبة في الإنفاق.} other{{count} جلسة بلا تكلفة وغير محسوبة في الإنفاق.}}",
+  "@chargingLogsSessionsWithoutCost": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingLogsShowTable": "عرض الأرقام",
+  "chargingLogsSocEnd": "البطارية عند الانتهاء",
+  "chargingLogsSocStart": "البطارية عند البدء",
   "chargingLogsTitle": "سجل الشحن",
+  "chargingLogsTotalEnergy": "الطاقة",
+  "chargingLogsTotalSpend": "الإنفاق",
+  "chargingLogsVehicleSummary": "{sessions, plural, =1{جلسة واحدة} =2{جلستان} few{{sessions} جلسات} other{{sessions} جلسة}} · {energy}",
+  "@chargingLogsVehicleSummary": {
+    "placeholders": {
+      "sessions": {
+        "type": "int"
+      },
+      "energy": {
+        "type": "String"
+      }
+    }
+  },
   "chargingLongitude": "خط الطول",
   "chargingMapNotConfigured": "لم تُهيأ الخريطة بعد، لذا تُعرض المحطات كقائمة.",
   "chargingMapSemantics": "خريطة محطات الشحن، {count} محطة",
@@ -1118,12 +1482,470 @@
   "commonUnknown": "غير معروف",
   "commonVerifiedOn": "تاريخ التحقق: {date}",
   "commonWebPreviewBanner": "معاينة ويب",
+  "communityAboutCar": "عن: {car}",
+  "@communityAboutCar": {
+    "placeholders": {
+      "car": {
+        "type": "String"
+      }
+    }
+  },
+  "communityAccept": "قبول الإجابة",
+  "communityAcceptCleared": "أُلغي قبول الإجابة",
+  "communityAccepted": "تم قبول الإجابة",
+  "communityAcceptedAnswer": "الإجابة المقبولة",
+  "communityAllReviews": "كل التقييمات",
+  "communityAnonymous": "مستخدم",
+  "communityAnswerCount": "{count, plural, =0{لا إجابات} =1{إجابة واحدة} =2{إجابتان} few{{count} إجابات} many{{count} إجابة} other{{count} إجابة}}",
+  "@communityAnswerCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityAnswerHint": "اكتب إجابتك…",
+  "communityAnswerPosted": "نُشرت إجابتك",
+  "communityAnswered": "تمت الإجابة",
+  "communityAnswersTitle": "الإجابات",
+  "communityAnswersWithCount": "الإجابات ({count})",
+  "@communityAnswersWithCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "communityAskGeneral": "سؤال عام",
+  "communityAskTips": "اكتب سؤالًا واضحًا ومحددًا (10 أحرف على الأقل)، واذكر السوق والفئة إن كان ذلك مهمًا. لا تضع روابط أو بيانات شخصية.",
   "communityAskTitle": "اطرح سؤالًا",
+  "communityAskedBy": "سأل {name}",
+  "@communityAskedBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "communityBeFirstToReview": "كن أول من يقيّم",
+  "communityBlockConfirm": "حظر",
+  "communityBlockMessage": "لن ترى تقييماته وتعليقاته وأسئلته وإجاباته بعد الآن. لن يُبلَّغ بذلك، ويمكنك إلغاء الحظر في أي وقت.",
+  "communityBlockTitle": "حظر {name}؟",
+  "@communityBlockTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "communityBlockUser": "حظر هذا المستخدم",
+  "communityBlocked": "تم حظر {name}",
+  "@communityBlocked": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "communityBlockedIndefinite": "أوقف أحد المشرفين النشر من حسابك حتى إشعار آخر. ما زال بإمكانك القراءة.",
+  "communityBlockedReason": "السبب: {reason}",
+  "@communityBlockedReason": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "communityBlockedTitle": "النشر موقوف لحسابك",
+  "communityBlockedUntil": "أوقف أحد المشرفين النشر من حسابك حتى {until}. ما زال بإمكانك القراءة.",
+  "@communityBlockedUntil": {
+    "placeholders": {
+      "until": {
+        "type": "String"
+      }
+    }
+  },
+  "communityBlockedUsersIntro": "لا ترى مشاركات هؤلاء المستخدمين في المجتمع.",
+  "communityBlockedUsersTitle": "المستخدمون المحظورون",
+  "communityCancelReply": "إلغاء الرد",
   "communityCarReviewsTitle": "تقييمات الملاك",
+  "communityChooseTrim": "اختر الفئة",
+  "communityClearFilters": "مسح عوامل التصفية",
+  "communityClearRating": "مسح",
+  "communityCommentHint": "اكتب تعليقًا…",
+  "communityCommentPosted": "نُشر تعليقك",
+  "communityCommentsClosed": "التعليقات مغلقة هنا.",
   "communityCommentsTitle": "التعليقات",
+  "communityCommentsWithCount": "التعليقات ({count})",
+  "@communityCommentsWithCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "communityCons": "السلبيات",
+  "communityConsHint": "ما الذي لم يعجبك؟",
+  "communityCreateAccount": "إنشاء حساب",
+  "communityDelete": "حذف",
+  "communityDeleteAnswerTitle": "حذف الإجابة؟",
+  "communityDeleteCommentTitle": "حذف التعليق؟",
+  "communityDeleteMessage": "لا يمكن التراجع عن الحذف.",
+  "communityDeleteQuestionTitle": "حذف السؤال؟",
+  "communityDeleteReview": "حذف التقييم",
+  "communityDeleteReviewTitle": "حذف تقييمك؟",
+  "communityDeleted": "تم الحذف",
+  "communityDeletedUser": "مستخدم محذوف",
+  "communityDemoTargetNotice": "هذه بيانات تجريبية للاختبار وليست سيارة أو مقالًا حقيقيًا.",
+  "communityDimAfterSales": "خدمة ما بعد البيع",
+  "communityDimBuildQuality": "جودة التصنيع",
+  "communityDimCharging": "الشحن",
+  "communityDimComfort": "الراحة",
+  "communityDimRange": "المدى الفعلي",
+  "communityDimReliability": "الاعتمادية",
+  "communityDimTechnology": "التقنية",
+  "communityDimValue": "القيمة مقابل السعر",
+  "communityDimensionScore": "{dimension}: {score} من 5",
+  "@communityDimensionScore": {
+    "placeholders": {
+      "dimension": {
+        "type": "String"
+      },
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "communityDimensionValue": "{value} من 5، {count} تقييم",
+  "@communityDimensionValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityDimensionsHint": "اختياري: قيّم جوانب محددة",
+  "communityDimensionsTitle": "التقييم حسب الجانب",
+  "communityDistributionRow": "{stars} نجوم: {count}",
+  "@communityDistributionRow": {
+    "placeholders": {
+      "stars": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityDone": "تم",
+  "communityEdit": "تعديل",
+  "communityEditAnswer": "تعديل الإجابة",
+  "communityEditComment": "تعديل التعليق",
+  "communityEditMyReview": "تعديل تقييمي",
+  "communityEditQuestion": "تعديل السؤال",
+  "communityEditRemoderated": "بعد التعديل يعود تقييمك إلى المراجعة قبل ظهوره مجددًا.",
+  "communityEditReviewTitle": "تعديل تقييمك",
+  "communityEdited": "معدَّل",
+  "communityErrEmailNotVerified": "أكّد بريدك الإلكتروني قبل النشر.",
+  "communityErrRateLimited": "نشرت كثيرًا خلال وقت قصير. حاول لاحقًا.",
+  "communityErrRateLimitedMinutes": "{minutes, plural, =1{نشرت كثيرًا خلال وقت قصير. حاول بعد دقيقة.} =2{نشرت كثيرًا خلال وقت قصير. حاول بعد دقيقتين.} few{نشرت كثيرًا خلال وقت قصير. حاول بعد {minutes} دقائق.} many{نشرت كثيرًا خلال وقت قصير. حاول بعد {minutes} دقيقة.} other{نشرت كثيرًا خلال وقت قصير. حاول بعد {minutes} دقيقة.}}",
+  "@communityErrRateLimitedMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "communityErrReportDuplicate": "أبلغت عن هذا المحتوى من قبل، وبلاغك قيد المراجعة.",
+  "communityErrSelfReport": "لا يمكنك الإبلاغ عن مشاركتك.",
+  "communityErrSelfVote": "لا يمكنك التصويت على مشاركتك.",
+  "communityErrSignInAgain": "انتهت جلستك. سجّل الدخول مرة أخرى.",
+  "communityFieldRequired": "هذا الحقل مطلوب.",
+  "communityFilterAll": "الكل",
+  "communityFilterAnswered": "تمت الإجابة",
+  "communityFilterUnanswered": "بلا إجابة مقبولة",
+  "communityFormHasErrors": "يرجى تصحيح الحقول المميزة.",
+  "communityGeneralQuestion": "سؤال عام",
+  "communityHelpful": "مفيد",
+  "communityHelpfulCount": "مفيد ({count})",
+  "@communityHelpfulCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "communityJoinTitle": "شارك في النقاش",
+  "communityLoadMore": "تحميل المزيد",
+  "communityLoadMoreAnswers": "إجابات أخرى",
+  "communityLoadMoreComments": "تعليقات أخرى",
+  "communityLoadMoreQuestions": "أسئلة أخرى",
+  "communityLoadMoreReviews": "تقييمات أخرى",
+  "communityMonthsUnit": "شهر",
+  "communityMoreActions": "إجراءات أخرى",
+  "communityNewAccountNote": "حسابك جديد: تُراجع مشاركاتك قبل ظهورها، ولا يمكن إضافة روابط خلال الأيام الأولى.",
+  "communityNoAnswersMessage": "هل تعرف الإجابة؟ شارك بما جرّبته.",
+  "communityNoAnswersMineMessage": "سنعرض الإجابات هنا عند وصولها.",
+  "communityNoAnswersTitle": "لا إجابات بعد",
+  "communityNoAnswersYet": "لا إجابات بعد",
+  "communityNoBlockedMessage": "يمكنك حظر أي مستخدم من قائمة الإجراءات بجانب مشاركته.",
+  "communityNoBlockedTitle": "لا يوجد مستخدمون محظورون",
+  "communityNoCommentsMessage": "ابدأ النقاش بأول تعليق.",
+  "communityNoCommentsTitle": "لا توجد تعليقات بعد",
+  "communityNoFilteredReviewsMessage": "جرّب إزالة بعض عوامل التصفية.",
+  "communityNoFilteredReviewsTitle": "لا تقييمات مطابقة",
+  "communityNoMatchingQuestionsMessage": "جرّب كلمات أخرى أو غيّر عامل التصفية — أو اطرح سؤالك.",
+  "communityNoMatchingQuestionsTitle": "لا أسئلة مطابقة",
+  "communityNoQuestionsMessage": "اسأل الملاك والمهتمين عن الشحن والمدى والصيانة.",
+  "communityNoQuestionsTitle": "لا توجد أسئلة بعد",
+  "communityNoReviewsMessage": "لم ينشر أي مالك تقييمًا لهذه الفئة حتى الآن.",
+  "communityNoReviewsTitle": "لا توجد تقييمات ملاك بعد",
+  "communityNoTrimsMessage": "لا تتوفر فئات لهذه السيارة في سوقك الحالي، لذلك لا يمكن عرض التقييمات أو كتابتها هنا.",
+  "communityNoTrimsTitle": "لا توجد فئات معروضة",
+  "communityNotAnsweredYet": "بانتظار إجابة مقبولة",
+  "communityNotHelpful": "غير مفيد",
+  "communityOnArticle": "تعليقات على المقال: {title}. افتح المقال",
+  "@communityOnArticle": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "communityOnArticleLabel": "تعليقات على المقال",
+  "communityOptional": "اختياري",
+  "communityOverallRating": "التقييم العام",
+  "communityOwnedMonths": "{count, plural, =0{أقل من شهر ملكية} =1{ملكية شهر واحد} =2{ملكية شهرين} few{ملكية {count} أشهر} many{ملكية {count} شهرًا} other{ملكية {count} شهر}}",
+  "@communityOwnedMonths": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityOwnedYears": "{count, plural, =1{ملكية سنة واحدة} =2{ملكية سنتين} few{ملكية {count} سنوات} many{ملكية {count} سنة} other{ملكية {count} سنة}}",
+  "@communityOwnedYears": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityOwnedYearsMonths": "ملكية {years} سنة و{months} شهر",
+  "@communityOwnedYearsMonths": {
+    "placeholders": {
+      "years": {
+        "type": "int"
+      },
+      "months": {
+        "type": "int"
+      }
+    }
+  },
+  "communityOwnershipHint": "مثال: 8",
+  "communityOwnershipInvalid": "أدخل عدد أشهر بين 0 و600.",
+  "communityOwnershipLabel": "مدة الملكية",
+  "communityPostAnswer": "نشر الإجابة",
+  "communityPostQuestion": "نشر السؤال",
+  "communityPostedPending": "تم الإرسال — سيظهر للآخرين بعد المراجعة.",
+  "communityPros": "الإيجابيات",
+  "communityProsHint": "ما الذي أعجبك؟",
+  "communityQuestionBodyHint": "أضف ما يساعد على الإجابة: الاستخدام، نوع الشاحن…",
+  "communityQuestionBodyLabel": "تفاصيل",
+  "communityQuestionPosted": "نُشر سؤالك",
   "communityQuestionTitle": "سؤال",
+  "communityQuestionTitleHint": "مثال: كم يستغرق الشحن المنزلي من 20 إلى 80%؟",
+  "communityQuestionTitleLabel": "سؤالك",
+  "communityQuestionUnavailableMessage": "ربما حُذف أو ما زال قيد المراجعة.",
+  "communityQuestionUnavailableTitle": "السؤال غير متاح",
   "communityQuestionsTitle": "أسئلة وأجوبة",
+  "communityRating1": "سيئ",
+  "communityRating2": "مقبول",
+  "communityRating3": "جيد",
+  "communityRating4": "جيد جدًا",
+  "communityRating5": "ممتاز",
+  "communityRatingRequired": "اختر تقييمًا من 1 إلى 5 نجوم.",
+  "communityReply": "رد",
+  "communityReplyHint": "اكتب ردًا…",
+  "communityReplyPosted": "نُشر ردك",
+  "communityReplyingTo": "رد على {name}",
+  "@communityReplyingTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "communityReport": "إبلاغ",
+  "communityReportDetails": "التفاصيل (مطلوبة)",
+  "communityReportDetailsOptional": "تفاصيل إضافية (اختياري)",
+  "communityReportDetailsRequired": "اكتب بضع كلمات توضح السبب.",
+  "communityReportIntro": "اختر السبب. يراجع المشرفون البلاغات ولا يُعرض اسمك لصاحب المحتوى.",
+  "communityReportSend": "إرسال البلاغ",
+  "communityReportSent": "شكرًا، وصل بلاغك إلى المشرفين.",
+  "communityReportTitle": "الإبلاغ عن محتوى",
+  "communityReportUserTitle": "الإبلاغ عن مستخدم",
+  "communityReviewBodyHelper": "20 حرفًا على الأقل. اكتب عن تجربتك الشخصية فقط، دون بيانات شخصية لأحد.",
+  "communityReviewBodyHint": "كيف تستخدم السيارة؟ ما المدى الذي تحصل عليه فعليًا؟ كيف الشحن والصيانة؟",
+  "communityReviewBodyLabel": "تجربتك",
+  "communityReviewCount": "{count, plural, =0{لا توجد تقييمات} =1{تقييم واحد} =2{تقييمان} few{{count} تقييمات} many{{count} تقييمًا} other{{count} تقييم}}",
+  "@communityReviewCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityReviewExistsMessage": "يمكن لكل مالك كتابة تقييم واحد لكل فئة. هل تريد تعديل تقييمك الحالي؟",
+  "communityReviewExistsTitle": "لديك تقييم لهذه الفئة",
+  "communityReviewGuidelines": "كن محددًا وصادقًا، ولا تنشر روابط أو إعلانات أو بيانات شخصية.",
+  "communityReviewModerated": "يراجع المشرفون كل تقييم قبل نشره.",
+  "communityReviewSubmittedMessage": "شكرًا! سيظهر تقييمك للآخرين بعد أن يراجعه المشرفون. يمكنك رؤيته وتعديله من صفحة التقييمات.",
+  "communityReviewSubmittedTitle": "تم استلام تقييمك",
+  "communityReviewTitleHint": "خلاصة تجربتك في جملة",
+  "communityReviewTitleLabel": "العنوان",
+  "communityReviewsDisclaimer": "التقييمات آراء وتجارب شخصية لملاك، يراجعها المشرفون قبل النشر، وليست بيانات رسمية أو قياسات معتمدة.",
+  "communitySave": "حفظ",
+  "communitySaveReview": "حفظ وإرسال للمراجعة",
+  "communitySearchQuestions": "ابحث في الأسئلة",
+  "communitySend": "إرسال",
+  "communityShowAllQuestions": "عرض كل الأسئلة",
+  "communityShowLess": "عرض أقل",
+  "communityShowMore": "عرض المزيد",
+  "communitySignIn": "تسجيل الدخول",
+  "communitySignInToAnswer": "سجّل الدخول لإضافة إجابة.",
+  "communitySignInToAsk": "سجّل الدخول لطرح سؤال على المجتمع.",
+  "communitySignInToComment": "سجّل الدخول لكتابة تعليق أو الرد.",
+  "communitySignInToParticipate": "القراءة متاحة للجميع. سجّل الدخول للمشاركة في المجتمع.",
+  "communitySignInToReport": "سجّل الدخول للإبلاغ عن محتوى.",
+  "communitySignInToReview": "سجّل الدخول لكتابة تقييمك كمالك لهذه السيارة.",
+  "communitySignInToVote": "سجّل الدخول لتقييم مدى فائدة المشاركات.",
+  "communitySortActive": "الأنشط",
+  "communitySortHelpful": "الأكثر فائدة",
+  "communitySortNewest": "الأحدث",
+  "communitySortOldest": "الأقدم",
+  "communitySortRatingHigh": "الأعلى تقييمًا",
+  "communitySortRatingLow": "الأدنى تقييمًا",
+  "communitySortRecent": "الأحدث",
+  "communitySortTop": "الأكثر فائدة",
+  "communitySortVotes": "الأكثر تصويتًا",
+  "communityStarOption": "{count, plural, =1{نجمة واحدة} =2{نجمتان} few{{count} نجوم} other{{count} نجمة}}",
+  "@communityStarOption": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityStarsSemantics": "{rating} من 5 نجوم",
+  "@communityStarsSemantics": {
+    "placeholders": {
+      "rating": {
+        "type": "String"
+      }
+    }
+  },
+  "communityStatusHidden": "مخفي بواسطة المشرفين",
+  "communityStatusHiddenHint": "لم يعد ظاهرًا للآخرين (مثلًا بعد بلاغات). يراه المشرفون ويمكنهم إعادته.",
+  "communityStatusPending": "بانتظار المراجعة",
+  "communityStatusPendingHint": "لا يراه غيرك حتى يوافق عليه مشرف.",
+  "communityStatusPendingReviewHint": "يراجع المشرفون كل تقييم قبل نشره. لا يراه غيرك حتى الآن.",
+  "communityStatusRejected": "لم تتم الموافقة عليه",
+  "communityStatusRejectedHint": "لا يتوافق مع إرشادات المجتمع، لذلك لا يراه غيرك. يمكنك تعديله أو حذفه.",
+  "communityStatusUnknownTitle": "تعذّر التحقق من حالة حسابك",
+  "communitySubmitReview": "إرسال للمراجعة",
+  "communityTapToRate": "اضغط على النجوم للتقييم",
+  "communityTooLong": "الحد الأقصى {max} حرف.",
+  "@communityTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "communityTooShort": "اكتب {min} حرفًا على الأقل.",
+  "@communityTooShort": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "communityTrimLabel": "الفئة",
+  "communityTrimSemantics": "الفئة: {trim}. اضغط للتغيير",
+  "@communityTrimSemantics": {
+    "placeholders": {
+      "trim": {
+        "type": "String"
+      }
+    }
+  },
+  "communityUnaccept": "إلغاء القبول",
+  "communityUnblock": "إلغاء الحظر",
+  "communityUnblocked": "أُلغي حظر {name}",
+  "@communityUnblocked": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "communityUndo": "تراجع",
+  "communityVerifiedAlready": "أكّدته بالفعل",
+  "communityVerifiedOnly": "ملاك موثّقون فقط",
+  "communityVerifiedOwner": "مالك موثّق",
+  "communityVerifiedOwnerCount": "{count, plural, =1{مالك موثّق واحد} =2{مالكان موثّقان} few{{count} ملاك موثّقين} many{{count} مالكًا موثّقًا} other{{count} مالك موثّق}}",
+  "@communityVerifiedOwnerCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityVerifiedOwnerExplainer": "شارة «مالك موثّق» لا تُختار: تظهر فقط بعد أن يتحقق فريقنا فعليًا من ملكيتك للسيارة.",
+  "communityVerifiedOwnerHint": "تحقق فريقنا من ملكية الكاتب لهذه السيارة.",
+  "communityVerifyEmailAction": "تأكيد البريد",
+  "communityVerifyEmailMessage": "للنشر في المجتمع يجب تأكيد {email}. افتح الرسالة التي أرسلناها أو اطلب رسالة جديدة.",
+  "@communityVerifyEmailMessage": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "communityVerifyEmailTitle": "أكّد بريدك الإلكتروني أولًا",
+  "communityViewAllComments": "كل التعليقات",
+  "communityViewMoreReplies": "{count, plural, =1{عرض رد آخر} =2{عرض ردين آخرين} few{عرض {count} ردود أخرى} many{عرض {count} ردًا آخر} other{عرض {count} رد آخر}}",
+  "@communityViewMoreReplies": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityVoteDownSemantics": "{count, plural, =0{غير مفيد، لا توجد أصوات} =1{غير مفيد، صوت واحد} =2{غير مفيد، صوتان} few{غير مفيد، {count} أصوات} many{غير مفيد، {count} صوتًا} other{غير مفيد، {count} صوت}}",
+  "@communityVoteDownSemantics": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "communityVoteUpSemantics": "{count, plural, =0{مفيد، لا توجد أصوات} =1{مفيد، صوت واحد} =2{مفيد، صوتان} few{مفيد، {count} أصوات} many{مفيد، {count} صوتًا} other{مفيد، {count} صوت}}",
+  "@communityVoteUpSemantics": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "communityWriteReviewTitle": "اكتب تقييمًا",
+  "communityYou": "أنت",
+  "communityYourAnswer": "إجابتك",
+  "communityYourReview": "تقييمك",
   "compareAboutRow": "عن «{label}»",
   "compareAddCarCount": "أضف سيارة ({count} من {max})",
   "compareAddCarHint": "العلامة والطراز والسنة والفئة والسوق",
@@ -1396,6 +2218,7 @@
   "compareYears": "{count, plural, =1{سنة واحدة} =2{سنتان} few{{count} سنوات} many{{count} سنة} other{{count} سنة}}",
   "compareYes": "نعم",
   "encyclopediaAllCategories": "الكل",
+  "encyclopediaBrowseAll": "تصفّح الموسوعة",
   "encyclopediaClearFilters": "مسح عوامل التصفية",
   "encyclopediaEmptyMessage": "تظهر الأدلة هنا بعد أن يراجعها مختص تقني.",
   "encyclopediaEmptyTitle": "لا أدلة بعد",
@@ -1405,6 +2228,8 @@
   "encyclopediaLanguageEn": "الإنجليزية",
   "encyclopediaNoMatchesMessage": "جرّب كلمة أو تصنيفًا آخر.",
   "encyclopediaNoMatchesTitle": "لا أدلة مطابقة",
+  "encyclopediaNotFoundMessage": "ربما حُذف أو يجري تحديثه بعد مراجعة تقنية جديدة.",
+  "encyclopediaNotFoundTitle": "هذا الدليل غير متاح",
   "encyclopediaNotReviewedExplain": "لا تتوفر معلومات مراجعة تقنية لهذا الدليل.",
   "encyclopediaReadingMinutes": "{minutes, plural, =1{قراءة في دقيقة} =2{قراءة في دقيقتين} few{قراءة في {formatted} دقائق} other{قراءة في {formatted} دقيقة}}",
   "encyclopediaRelated": "أدلة ذات صلة",
@@ -1447,9 +2272,114 @@
   "favoritesTitle": "المفضلة",
   "favoritesUnavailable": "لم يعد متاحًا",
   "favoritesUndo": "تراجع",
+  "garageAddButton": "أضف إلى جراجي",
+  "garageAddFirst": "أضف سيارتي الأولى",
+  "garageAddLog": "إضافة جلسة شحن",
+  "garageAddReminder": "إضافة تذكير",
   "garageAddTitle": "إضافة سيارة",
+  "garageAdded": "تمت إضافة السيارة إلى جراجك.",
+  "garageBack": "رجوع",
+  "garageCarSection": "السيارة",
+  "garageCarSectionHint": "اختر الفئة بالضبط من الدليل لتكون المواصفات والتوافق صحيحة.",
+  "garageChangeCar": "اضغط للتغيير",
+  "garageChooseCar": "اختر الماركة والموديل والسنة والفئة",
+  "garageClear": "مسح",
+  "garageCount": "{count} من {max} سيارة",
+  "@garageCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "garageCurrentOdometer": "العداد الحالي",
+  "garageCurrentOdometerHint": "اختياري. يتحدّث تلقائيًا أيضًا من إدخالات سجل الشحن.",
+  "garageDelete": "إزالة من الجراج",
+  "garageDeleteConfirmMessage": "ستُحذف أيضًا إدخالات سجل الشحن والتذكيرات الخاصة بها. لا يمكن التراجع عن ذلك.",
+  "garageDeleteConfirmTitle": "إزالة {name}؟",
+  "@garageDeleteConfirmTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "garageDeleted": "تمت إزالة السيارة.",
+  "garageDetailsSection": "التفاصيل",
   "garageEditTitle": "تعديل السيارة",
+  "garageEmptyMessage": "أضف سيارتك باختيار الماركة والموديل وسنة الطراز والفئة. يمكنك حفظ حتى 20 سيارة.",
+  "garageEmptyTitle": "جراجك فارغ",
+  "garageErrorCurrentBelowInitial": "لا يمكن أن تكون القراءة الحالية أقل من القراءة عند الشراء.",
+  "garageErrorNegative": "لا يمكن أن تكون القيمة سالبة.",
+  "garageErrorNumber": "أدخل رقمًا.",
+  "garageErrorPickCar": "اختر السيارة أولًا.",
+  "garageGuestMessage": "سجّل الدخول لحفظ سياراتك بفئتها وسوقها بدقة، واستخدامها في سجل الشحن والتذكيرات والحاسبات.",
+  "garageInitialOdometer": "العداد عند الشراء",
+  "garageInitialOdometerHint": "اختياري. يُستخدم كنقطة بداية لتقارير المسافة.",
+  "garageLimitReached": "يمكنك حفظ حتى {max} سيارة. احذف سيارة لإضافة أخرى.",
+  "@garageLimitReached": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "garageLogsCount": "جلسات الشحن",
+  "garageMakePrimary": "اجعلها سيارتي الأساسية",
+  "garageMarket": "السوق",
+  "garageMarketHint": "الدولة التي تُستخدم فيها السيارة. الأسعار والعملة والتوافق تتبع هذا السوق.",
+  "garageModelYear": "سنة الطراز",
+  "garageNickname": "اسم مختصر",
+  "garageNicknameHint": "اختياري، مثل \"سيارة العائلة\".",
+  "garageNotListedExplain": "لا يوجد سجل لهذه الفئة في {market}، لذلك لا تتوفر لها الأسعار المحلية وتوافق الشواحن في {market}.",
+  "@garageNotListedExplain": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "garageNotListedShort": "غير مطروحة في هذا السوق",
+  "garageNotes": "ملاحظات",
+  "garageOdometer": "العداد",
+  "garageOpenCalculators": "الحاسبات",
+  "garageOpenLogs": "سجل شحن هذه السيارة",
+  "garageOpenSpecs": "المواصفات الكاملة",
+  "garageOptional": "اختياري",
+  "garagePickerAllMarkets": "عرض فئات كل الأسواق",
+  "garagePickerAllMarketsHint": "للسيارات المستوردة غير المطروحة في سوقك.",
+  "garagePickerEmpty": "لا توجد خيارات هنا بعد",
+  "garagePickerProgress": "الخطوة {step} من {total}",
+  "@garagePickerProgress": {
+    "placeholders": {
+      "step": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "garagePickerSearchBrand": "ابحث في الماركات",
+  "garagePickerSearchModel": "ابحث في الموديلات",
+  "garagePickerStepBrand": "الماركة",
+  "garagePickerStepModel": "الموديل",
+  "garagePickerStepTrim": "الفئة",
+  "garagePickerStepYear": "السنة",
+  "garagePickerTitle": "اختر سيارتك",
+  "garagePrimary": "الأساسية",
+  "garagePrimarySet": "تم تحديث السيارة الأساسية.",
+  "garagePrimarySwitch": "السيارة الأساسية",
+  "garagePrimarySwitchHint": "تُستخدم افتراضيًا في الحاسبات والتقارير وتخطيط الرحلات.",
+  "garagePurchaseDate": "تاريخ الشراء",
+  "garageRemindersCount": "تذكيرات قائمة",
+  "garageSaved": "تم حفظ التغييرات.",
+  "garageShortcutsSection": "استخدم هذه السيارة",
   "garageTitle": "جراجي",
+  "garageTrim": "الفئة",
   "garageVehicleTitle": "سيارتي",
   "homeAllTours": "كل الجولات 360°",
   "homeChangePlace": "تغيير",
@@ -1731,11 +2661,250 @@
     }
   },
   "newsWatchVideo": "شاهد الفيديو",
+  "notificationsActions": "إجراءات أخرى",
+  "notificationsChannelEmail": "البريد الإلكتروني",
+  "notificationsChannelEmailUnavailable": "غير متاح بعد.",
+  "notificationsChannelInApp": "داخل التطبيق",
+  "notificationsChannelInAppHint": "مفعّل دائمًا: كل إشعار يُحفظ في هذه القائمة.",
+  "notificationsChannelPush": "إشعارات الهاتف الفورية",
+  "notificationsChannelsSection": "طريقة الوصول إليّ",
+  "notificationsChooseTopics": "اختر ما تتابعه",
+  "notificationsDelete": "حذف",
+  "notificationsDeleted": "تم حذف الإشعار.",
+  "notificationsEmptyMessage": "تابع ماركات أو موديلات أو تصنيفات أخبار ليصلك إشعار عند نشر جديد.",
+  "notificationsEmptyTitle": "لا توجد إشعارات بعد",
+  "notificationsEmptyUnreadTitle": "لا توجد إشعارات غير مقروءة",
+  "notificationsFilterAll": "الكل",
+  "notificationsFilterUnread": "غير المقروءة",
+  "notificationsFollowBrand": "ماركة",
+  "notificationsFollowCategory": "تصنيف أخبار",
+  "notificationsFollowMarket": "سوق",
+  "notificationsFollowModel": "موديل",
+  "notificationsFollowed": "تتابع الآن {name}.",
+  "@notificationsFollowed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationsGuestMessage": "سجّل الدخول لتصلك أخبار الماركات والموديلات والموضوعات التي تتابعها.",
+  "notificationsLoadMore": "تحميل المزيد",
+  "notificationsMarkAllRead": "تعليم الكل كمقروء",
+  "notificationsMarkRead": "تعليم كمقروء",
+  "notificationsMarkUnread": "تعليم كغير مقروء",
+  "notificationsNew": "جديد",
   "notificationsPreferencesTitle": "تفضيلات الإشعارات",
+  "notificationsPushActive": "مفعّلة على أجهزتك المسجلة.",
+  "notificationsPushDisabled": "أوقفتها أنت.",
+  "notificationsPushNoDevice": "لا يوجد جهاز مسجل للإشعارات الفورية بعد.",
+  "notificationsPushNotConfigured": "غير متاحة: خدمة الإشعارات الفورية غير مهيأة على الخادم بعد. تظهر الإشعارات داخل التطبيق.",
+  "notificationsQuietChange": "تغيير الأوقات",
+  "notificationsQuietEnabled": "ساعات الهدوء",
+  "notificationsQuietEnd": "الهدوء حتى",
+  "notificationsQuietHint": "تنتظر الإشعارات الفورية حتى انتهاء ساعات الهدوء، وتظهر داخل التطبيق.",
+  "notificationsQuietOff": "متوقفة",
+  "notificationsQuietRange": "{start} – {end} ({zone})",
+  "@notificationsQuietRange": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      },
+      "zone": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationsQuietSection": "ساعات الهدوء",
+  "notificationsQuietStart": "الهدوء من",
+  "notificationsReminderNote": "تنبيهات التذكيرات على هذا الهاتف تُضبط من شاشة التذكيرات.",
+  "notificationsResume": "استئناف الإشعارات",
   "notificationsTitle": "الإشعارات",
+  "notificationsTopicBrand": "ماركة",
+  "notificationsTopicCategory": "تصنيف أخبار",
+  "notificationsTopicInMarket": "في {market}",
+  "@notificationsTopicInMarket": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationsTopicMarket": "سوق",
+  "notificationsTopicModel": "موديل",
+  "notificationsTopicPriceAlert": "تنبيه سعر",
+  "notificationsTopicStation": "محطة",
+  "notificationsTopicVariant": "فئة",
+  "notificationsTopicsEmpty": "لا تتابع أي شيء بعد",
+  "notificationsTopicsHint": "الأخبار المنشورة عنها تصلك مرة واحدة وبلغتك.",
+  "notificationsTopicsSection": "الموضوعات التي أتابعها",
+  "notificationsTypeCampaigns": "إعلانات الخدمة",
+  "notificationsTypeCommunity": "ردود المجتمع",
+  "notificationsTypeNews": "أخبار ما أتابعه",
+  "notificationsTypePriceAlerts": "تنبيهات الأسعار",
+  "notificationsTypeReminders": "التذكيرات",
+  "notificationsTypeStations": "تنبيهات محطات الشحن",
+  "notificationsTypesHint": "تفعيل أي نوع يستأنف الإشعارات.",
+  "notificationsTypesSection": "ما الذي أريد إشعارًا به",
+  "notificationsUnfollow": "إلغاء متابعة {name}",
+  "@notificationsUnfollow": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notificationsUnsubscribeAll": "إلغاء الاشتراك في الكل",
+  "notificationsUnsubscribeAllConfirm": "إلغاء الاشتراك في كل الإشعارات؟",
+  "notificationsUnsubscribeAllMessage": "لن تصلك أي إشعارات حتى تعيد تفعيل أحد الأنواع.",
+  "notificationsUnsubscribedAll": "ألغيت الاشتراك في كل الإشعارات. لن يُرسل أي جديد حتى تستأنف.",
+  "remindersAlertHint": "متى تريد أن يتم تنبيهك مسبقًا.",
+  "remindersAlertSection": "التنبيه",
+  "remindersAlreadyCompleted": "هذا التذكير مكتمل.",
+  "remindersCar": "السيارة",
+  "remindersCarHint": "مطلوبة للتذكير حسب العداد.",
+  "remindersChannelDescription": "تذكيرات الصيانة والتأمين والترخيص والإطارات التي أنشأتها.",
+  "remindersChannelName": "تذكيرات السيارة",
+  "remindersCompleteMessage": "سينتقل التذكير إلى المكتملة.",
+  "remindersCompleteRepeats": "هذا التذكير متكرر: سيُنشأ التالي تلقائيًا.",
+  "remindersCompleteTitle": "تأكيد الإنجاز؟",
+  "remindersCompleted": "تم.",
+  "remindersCompletedNext": "تم. التالي: {due}",
+  "@remindersCompletedNext": {
+    "placeholders": {
+      "due": {
+        "type": "String"
+      }
+    }
+  },
+  "remindersDaysLate": "{days, plural, =1{متأخر يومًا واحدًا} =2{متأخر يومين} few{متأخر {days} أيام} other{متأخر {days} يومًا}}",
+  "@remindersDaysLate": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "remindersDelete": "حذف التذكير",
+  "remindersDeleteConfirm": "حذف هذا التذكير؟",
+  "remindersDeleteMessage": "سيُلغى إشعاره على الهاتف أيضًا.",
+  "remindersDeleted": "تم حذف التذكير.",
+  "remindersDeviceNotifications": "نبّهني على هذا الهاتف",
+  "remindersDeviceNotificationsOff": "متوقف. تبقى التذكيرات ظاهرة هنا مع حالتها.",
+  "remindersDeviceNotificationsOn": "ستصلك إشعارات في يوم التنبيه لكل تذكير.",
+  "remindersDueAtKm": "عند {km}",
+  "@remindersDueAtKm": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "remindersDueDate": "تاريخ الاستحقاق",
+  "remindersDueKm": "عند قراءة العداد",
+  "remindersDueKmNeedsCar": "اختر سيارة لاستخدام العداد.",
+  "remindersDueOn": "الموعد {date}",
+  "@remindersDueOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "remindersEditTitle": "تعديل التذكير",
+  "remindersEmptyCompletedTitle": "لا توجد تذكيرات مكتملة بعد",
+  "remindersEmptyMessage": "أضف تذكيرًا للصيانة أو التأمين أو تجديد الترخيص أو الإطارات — بالتاريخ أو بالعداد أو بكليهما.",
+  "remindersEmptyTitle": "لا توجد تذكيرات",
+  "remindersEnableAction": "تفعيل",
+  "remindersEnableHint": "فعّل إشعارات الهاتف ليصلك التنبيه في موعده.",
+  "remindersErrorDue": "أدخل تاريخ استحقاق أو قراءة عداد.",
+  "remindersErrorRange": "يجب أن تكون القيمة بين {min} و{max}.",
+  "@remindersErrorRange": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "remindersErrorTitle": "أدخل عنوانًا.",
+  "remindersErrorVehicleForKm": "اختر سيارة للتذكير حسب العداد.",
+  "remindersErrorWhole": "أدخل رقمًا صحيحًا.",
+  "remindersEveryKm": "كل {km}",
+  "@remindersEveryKm": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "remindersEveryMonths": "{months, plural, =1{كل شهر} =2{كل شهرين} few{كل {months} أشهر} other{كل {months} شهرًا}}",
+  "@remindersEveryMonths": {
+    "placeholders": {
+      "months": {
+        "type": "int"
+      }
+    }
+  },
+  "remindersFilterCompleted": "المكتملة",
+  "remindersFilterOpen": "القائمة",
+  "remindersGuestMessage": "سجّل الدخول لحفظ تذكيرات الصيانة والتأمين والترخيص لسياراتك.",
+  "remindersInDays": "{days, plural, =0{اليوم} =1{غدًا} =2{بعد يومين} few{بعد {days} أيام} other{بعد {days} يومًا}}",
+  "@remindersInDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "remindersInKm": "بعد {km}",
+  "@remindersInKm": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "remindersKmLate": "تجاوز بمقدار {km}",
+  "@remindersKmLate": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "remindersMarkDone": "تم",
   "remindersNewTitle": "تذكير جديد",
+  "remindersNoCar": "بدون سيارة محددة",
+  "remindersNotes": "ملاحظات",
+  "remindersNotificationsUnsupported": "إشعارات الهاتف غير متاحة هنا. تبقى التذكيرات ظاهرة في هذه القائمة.",
+  "remindersNotifyDays": "أيام قبلها",
+  "remindersNotifyKm": "كم قبلها",
+  "remindersOdometerNow": "العداد الآن",
+  "remindersOdometerNowHint": "اختياري. يُستخدم لجدولة التذكير التالي حسب المسافة.",
+  "remindersPermissionDenied": "الإشعارات محظورة لهذا التطبيق. اسمح بها من إعدادات الهاتف لتصلك التنبيهات؛ تبقى تذكيراتك ظاهرة هنا.",
+  "remindersRepeatKm": "التكرار كل",
+  "remindersRepeatMonths": "التكرار كل (شهر)",
+  "remindersSaved": "تم حفظ التذكير.",
+  "remindersStatusCompleted": "مكتمل",
+  "remindersStatusDueSoon": "قريبًا",
+  "remindersStatusOverdue": "متأخر",
+  "remindersStatusUpcoming": "قادم",
   "remindersTitle": "التذكيرات",
+  "remindersTitleField": "العنوان",
+  "remindersTypeCustom": "أخرى",
+  "remindersTypeInsurance": "تأمين",
+  "remindersTypeLicence": "ترخيص",
+  "remindersTypeMaintenance": "صيانة",
+  "remindersTypeTyres": "إطارات",
+  "remindersWhatSection": "ماذا",
+  "remindersWhenHint": "أدخل تاريخًا أو قراءة عداد أو كليهما.",
+  "remindersWhenSection": "متى",
   "searchAllGroups": "كل النتائج",
   "searchAlsoMatched": "شمل البحث أيضًا: {terms}",
   "searchBrowseBrands": "الماركات",
@@ -1783,6 +2952,7 @@
   "servicesDirectoryAlwaysOpen": "مفتوح على مدار الساعة",
   "servicesDirectoryAnyCity": "أي مدينة",
   "servicesDirectoryBrandsTitle": "الماركات المخدومة",
+  "servicesDirectoryBrowseAll": "تصفّح الدليل",
   "servicesDirectoryCall": "اتصال",
   "servicesDirectoryCheckBeforeVisit": "اتصل للتأكد قبل الزيارة.",
   "servicesDirectoryChooseCity": "اختر مدينة",
@@ -1819,6 +2989,8 @@
   "servicesDirectoryNoContact": "لا توجد بيانات تواصل منشورة.",
   "servicesDirectoryNoMatchesMessage": "جرّب نوعًا أو مدينة أخرى، أو أوقف «مفتوح الآن».",
   "servicesDirectoryNoMatchesTitle": "لا نتائج مطابقة",
+  "servicesDirectoryNotFoundMessage": "ربما أُزيل من الدليل. تصفّح مقدّمي خدمة آخرين بالقرب منك.",
+  "servicesDirectoryNotFoundTitle": "مقدّم الخدمة هذا لم يعد مدرجًا",
   "servicesDirectoryNotVerified": "لم يتم التحقق من بيانات التواصل",
   "servicesDirectoryOpenNow": "مفتوح الآن",
   "servicesDirectoryOrderDistance": "الأقرب أولًا. الرعاية لا تغيّر هذا الترتيب.",
@@ -2079,5 +3251,132 @@
   "toursWebglTitle": "هذا الجهاز لا يدعم العرض 360°",
   "toursZoomIn": "تكبير",
   "toursZoomOut": "تصغير",
-  "tripsTitle": "مخطط الرحلات"
+  "tripsAccess": "الدخول",
+  "tripsAlternative": "محطة بديلة",
+  "tripsArrivalSoc": "البطارية عند الوصول",
+  "tripsAssumptions": "الافتراضات",
+  "tripsAssumptionsEdit": "الافتراضات",
+  "tripsAssumptionsEditHint": "اختياري: اتركها فارغة لاستخدام الدليل والقيم الافتراضية المعروضة في النتيجة.",
+  "tripsAtKm": "عند",
+  "tripsAvailabilityUnknown": "التوفر غير معروف",
+  "tripsAvailableNow": "متاحة الآن (وليس عند الوصول)",
+  "tripsBatterySection": "البطارية",
+  "tripsCar": "السيارة",
+  "tripsChargeEnergy": "الطاقة المطلوبة",
+  "tripsChargeFromTo": "الشحن",
+  "tripsChargeTime": "الشحن",
+  "tripsChargeTimeUnknown": "لا توجد خطة: تعذر تقدير زمن الشحن في المحطات.",
+  "tripsChargeTo": "الشحن حتى",
+  "tripsChargeToHint": "فارغ = 80%.",
+  "tripsChoose": "اختر",
+  "tripsClosedAtEta": "مغلقة عند الوصول",
+  "tripsConsumptionHint": "تحل محل قيمة الدليل.",
+  "tripsCost": "التكلفة التقريبية",
+  "tripsCostNotCalculated": "أدخل سعرًا لحسابها",
+  "tripsCurrentSoc": "البطارية الآن",
+  "tripsDeleteSaved": "حذف الرحلة المحفوظة",
+  "tripsDepartureSection": "المغادرة",
+  "tripsDetour": "الانحراف عن الطريق",
+  "tripsDirections": "الاتجاهات",
+  "tripsDriveTime": "القيادة",
+  "tripsEnergyUsed": "الطاقة المستهلكة",
+  "tripsErrorCar": "اختر السيارة.",
+  "tripsErrorDestination": "اختر وجهتك.",
+  "tripsErrorMinSoc": "يجب أن تكون أقل من نسبة البطارية الحالية.",
+  "tripsErrorOrigin": "اختر نقطة البداية.",
+  "tripsEta": "الوصول المتوقع",
+  "tripsFrom": "من",
+  "tripsHours": "ساعات العمل",
+  "tripsHoursUnknown": "ساعات العمل غير معروفة",
+  "tripsIntro": "يأتي المسار ومسافات الطرق من خدمة مسارات. تُقترح التوقفات مع احتياطي بطارية ومحطة بديلة؛ ولا يُضمن الوصول أو توفر شاحن متاح.",
+  "tripsLeaveNow": "المغادرة الآن",
+  "tripsLegN": "المرحلة {n}",
+  "@tripsLegN": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "tripsLegs": "مراحل الطريق",
+  "tripsLocationDenied": "الموقع متوقف أو غير مسموح. اختر مدينة أو نقطة على الخريطة بدلًا منه.",
+  "tripsLocationFailed": "تعذر تحديد موقعك. اختر مدينة بدلًا منه.",
+  "tripsMargin": "هامش أمان الاستهلاك",
+  "tripsMarginHint": "فارغ = 10%. يغطي المرتفعات والحر والبرد والسرعة.",
+  "tripsMinArrivalSoc": "احتفظ على الأقل بـ",
+  "tripsMissingInlets": "منافذ الشحن",
+  "tripsMyLocation": "موقعي الحالي",
+  "tripsMyLocationHint": "يُستخدم مرة واحدة لهذه الخطة ولا يُحفظ.",
+  "tripsNoReachableStation": "لا توجد خطة: لا توجد محطة متوافقة ومفتوحة يمكن الوصول إليها بالاحتياطي المطلوب. جرّب نسبة بطارية أعلى أو احتياطيًا أقل.",
+  "tripsNoStopsNeeded": "لا حاجة لتوقف شحن بالقيم التي أدخلتها.",
+  "tripsNotConfigured": "تخطيط الرحلات غير متاح: لم تُهيأ خدمة مسارات بعد. يمكنك الحصول على الاتجاهات لأي محطة من خريطة الشحن.",
+  "tripsOccupiedNow": "مشغولة الآن",
+  "tripsOpenAtEta": "مفتوحة عند الوصول",
+  "tripsOutOfOrderNow": "معطلة الآن",
+  "tripsPickOnMap": "اختر على الخريطة",
+  "tripsPlan": "خطط رحلتي",
+  "tripsPointOnMap": "نقطة {lat}، {lng}",
+  "@tripsPointOnMap": {
+    "placeholders": {
+      "lat": {
+        "type": "String"
+      },
+      "lng": {
+        "type": "String"
+      }
+    }
+  },
+  "tripsPrice": "سعر الكهرباء",
+  "tripsPriceHint": "اختياري. بدونه لا تُحسب التكلفة (لا أسعار مفترضة).",
+  "tripsRough": "تقريبي",
+  "tripsRouteNotFound": "لم يُعثر على طريق بين هاتين النقطتين.",
+  "tripsRoutingBy": "المسار: {provider}",
+  "@tripsRoutingBy": {
+    "placeholders": {
+      "provider": {
+        "type": "String"
+      }
+    }
+  },
+  "tripsSave": "احفظ هذه الخطة",
+  "tripsSaveHint": "تُحفظ فقط عند طلبك، ولا يراها غيرك.",
+  "tripsSaveTitle": "الاسم (اختياري)",
+  "tripsSaved": "رحلاتي المحفوظة",
+  "tripsSavedEmpty": "لا توجد رحلات محفوظة",
+  "tripsSavedStale": "خطة محفوظة: قد تكون حالة المحطات وساعات العمل تغيّرت منذ ذلك الحين.",
+  "tripsStopChargeTime": "مدة الشحن",
+  "tripsStopN": "التوقف {n}: {name}",
+  "@tripsStopN": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "tripsStopsSummary": "{stops, plural, =0{بدون توقف للشحن} =1{توقف شحن واحد} =2{توقفا شحن} few{{stops} توقفات شحن} other{{stops} توقف شحن}} · {distance}",
+  "@tripsStopsSummary": {
+    "placeholders": {
+      "stops": {
+        "type": "int"
+      },
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "tripsTitle": "مخطط الرحلات",
+  "tripsTo": "إلى",
+  "tripsTooManyStops": "لا توجد خطة: ستحتاج الرحلة إلى عدد كبير جدًا من التوقفات.",
+  "tripsUsePoint": "استخدم هذه النقطة",
+  "tripsVehicleDataMissing": "لا توجد خطة: تنقص هذه السيارة بيانات موثّقة ({missing}). أدخلها في الافتراضات إن كنت تعرفها.",
+  "@tripsVehicleDataMissing": {
+    "placeholders": {
+      "missing": {
+        "type": "String"
+      }
+    }
+  }
 }

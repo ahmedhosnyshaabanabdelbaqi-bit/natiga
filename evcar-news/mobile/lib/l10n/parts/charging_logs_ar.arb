@@ -3,5 +3,128 @@
   "chargingLogsTitle": "سجل الشحن",
   "chargingLogsNewTitle": "جلسة شحن جديدة",
   "chargingLogsEditTitle": "تعديل جلسة الشحن",
-  "chargingLogsReportsTitle": "الإنفاق والاستهلاك"
+  "chargingLogsReportsTitle": "الإنفاق والاستهلاك",
+  "chargingLogsGuestMessage": "سجّل الدخول لتحتفظ بسجل خاص لجلسات الشحن وترى إنفاقك واستهلاكك الفعليين.",
+  "chargingLogsAdd": "إضافة جلسة",
+  "chargingLogsAllCars": "كل السيارات",
+  "chargingLogsNoCarTitle": "أضف سيارتك أولًا",
+  "chargingLogsNoCarMessage": "كل جلسة شحن تخص سيارة في جراجك.",
+  "chargingLogsEmptyTitle": "لا توجد جلسات شحن بعد",
+  "chargingLogsEmptyMessage": "سجّل الطاقة والتكلفة وقراءة العداد لكل شحنة. التقارير تُبنى فقط مما تدخله.",
+  "chargingLogsLoadMore": "تحميل المزيد",
+  "chargingLogsNoCost": "لم تُدخل تكلفة",
+  "chargingLogsPerKwh": "{price}/كيلوواط ساعة",
+  "@chargingLogsPerKwh": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingLogsLocationHome": "المنزل",
+  "chargingLogsLocationPublic": "عام",
+  "chargingLogsLocationWork": "العمل",
+  "chargingLogsLocationOther": "أخرى",
+  "chargingLogsSessionSection": "الجلسة",
+  "chargingLogsCar": "السيارة",
+  "chargingLogsDate": "التاريخ والوقت",
+  "chargingLogsEnergy": "الطاقة المشحونة",
+  "chargingLogsEnergyHint": "كما يظهر في الشاحن أو التطبيق أو العداد.",
+  "chargingLogsLocation": "المكان",
+  "chargingLogsCostSection": "التكلفة",
+  "chargingLogsCostHint": "اختياري. اتركه فارغًا إن لم تعرفه — لن يُحسب كشحن مجاني.",
+  "chargingLogsCost": "المبلغ المدفوع",
+  "chargingLogsCurrency": "العملة",
+  "chargingLogsMoreSection": "تفاصيل إضافية",
+  "chargingLogsMoreHint": "اختيارية. قراءة العداد تتيح تقارير الاستهلاك.",
+  "chargingLogsOdometer": "العداد",
+  "chargingLogsOdometerHint": "يجب ألا تقل عن جلسة سابقة لهذه السيارة.",
+  "chargingLogsSocStart": "البطارية عند البدء",
+  "chargingLogsSocEnd": "البطارية عند الانتهاء",
+  "chargingLogsDuration": "المدة",
+  "chargingLogsPower": "قدرة الشاحن",
+  "chargingLogsCurrentType": "نوع التيار",
+  "chargingLogsCurrentUnknown": "غير متأكد",
+  "chargingLogsNotes": "ملاحظات",
+  "chargingLogsErrorRequired": "مطلوب.",
+  "chargingLogsErrorPositive": "يجب أن تكون القيمة أكبر من صفر.",
+  "chargingLogsErrorMax": "يجب ألا تتجاوز {max}.",
+  "@chargingLogsErrorMax": {
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingLogsErrorSoc": "يجب أن تكون نسبة الانتهاء أعلى من نسبة البدء.",
+  "chargingLogsAdded": "تمت إضافة الجلسة.",
+  "chargingLogsSaved": "تم حفظ الجلسة.",
+  "chargingLogsDelete": "حذف الجلسة",
+  "chargingLogsDeleteConfirm": "حذف هذه الجلسة؟",
+  "chargingLogsDeleteMessage": "ستُزال من تقاريرك.",
+  "chargingLogsDeleted": "تم حذف الجلسة.",
+  "chargingLogsPeriod3": "3 أشهر",
+  "chargingLogsPeriod6": "6 أشهر",
+  "chargingLogsPeriod12": "12 شهرًا",
+  "chargingLogsPeriodAll": "كل الفترات",
+  "chargingLogsReportEmptyTitle": "لا توجد جلسات في هذه الفترة",
+  "chargingLogsReportEmptyMessage": "التقارير تعتمد فقط على الجلسات التي تسجلها. أضف جلسة أو اختر فترة أطول.",
+  "chargingLogsTotalEnergy": "الطاقة",
+  "chargingLogsSessions": "الجلسات",
+  "chargingLogsSessionsCount": "{count, plural, =0{لا جلسات} =1{جلسة واحدة} =2{جلستان} few{{count} جلسات} many{{count} جلسة} other{{count} جلسة}}",
+  "@chargingLogsSessionsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingLogsTotalSpend": "الإنفاق",
+  "chargingLogsAvgPerKwh": "المتوسط لكل كيلوواط ساعة",
+  "chargingLogsSessionsWithoutCost": "{count, plural, =1{جلسة واحدة بلا تكلفة وغير محسوبة في الإنفاق.} =2{جلستان بلا تكلفة وغير محسوبتين في الإنفاق.} few{{count} جلسات بلا تكلفة وغير محسوبة في الإنفاق.} other{{count} جلسة بلا تكلفة وغير محسوبة في الإنفاق.}}",
+  "@chargingLogsSessionsWithoutCost": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chargingLogsMixedCurrencies": "دفعت بأكثر من عملة. المبالغ معروضة لكل عملة على حدة ولا تُحوّل.",
+  "chargingLogsMonthlySpend": "الإنفاق الشهري",
+  "chargingLogsInCurrency": "بعملة {currency}",
+  "@chargingLogsInCurrency": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingLogsNoSpendData": "لم تُدخل تكاليف في هذه الفترة.",
+  "chargingLogsMonthlyEnergy": "الطاقة الشهرية",
+  "chargingLogsShowTable": "عرض الأرقام",
+  "chargingLogsByLocation": "أين تشحن",
+  "chargingLogsMethod": "طريقة الحساب",
+  "chargingLogsVehicleSummary": "{sessions, plural, =1{جلسة واحدة} =2{جلستان} few{{sessions} جلسات} other{{sessions} جلسة}} · {energy}",
+  "@chargingLogsVehicleSummary": {
+    "placeholders": {
+      "sessions": {
+        "type": "int"
+      },
+      "energy": {
+        "type": "String"
+      }
+    }
+  },
+  "chargingLogsDistance": "المسافة",
+  "chargingLogsConsumption": "الاستهلاك",
+  "chargingLogsCostPer100": "التكلفة لكل 100 كم",
+  "chargingLogsConfidenceMedium": "ثقة متوسطة",
+  "chargingLogsConfidenceLow": "ثقة منخفضة",
+  "chargingLogsLowConfidenceHint": "مبني على قراءات قليلة أو مسافة قصيرة. سجّل جلسات أكثر مع قراءة العداد لرقم أدق.",
+  "chargingLogsReasonNoSessions": "بيانات غير كافية: لا جلسات",
+  "chargingLogsReasonOdometer": "بيانات غير كافية: تحتاج قراءتين للعداد على الأقل",
+  "chargingLogsReasonNoDistance": "بيانات غير كافية: لا مسافة بين القراءات",
+  "chargingLogsReasonMissingCosts": "بيانات غير كافية: تكاليف ناقصة",
+  "chargingLogsReasonMixedCurrencies": "غير معروض: عملات مختلفة",
+  "chargingLogsReasonUnknown": "بيانات غير كافية"
 }

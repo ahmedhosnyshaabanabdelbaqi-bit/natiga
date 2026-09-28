@@ -10,6 +10,32 @@ import '../../../charging/presentation/widgets/charging_labels.dart' show distan
 import '../../../charging/presentation/widgets/directions_sheet.dart';
 import '../../domain/service_models.dart';
 
+/// Sponsorship label of a directory entry. The server's `sponsorLabel` is
+/// the complete label chosen by the admin (it falls back to "مُموَّل /
+/// Sponsored"), not a sponsor name, so it is shown as-is — never wrapped in
+/// "Sponsored by …". Icon + text + tooltip, never colour only.
+class DirectorySponsoredLabel extends StatelessWidget {
+  const DirectorySponsoredLabel({super.key, this.label, this.dense = true});
+
+  final String? label;
+  final bool dense;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final text = label?.trim();
+    final shown = text == null || text.isEmpty ? l10n.commonSponsoredLabel : text;
+    return Pill(
+      label: shown,
+      icon: Icons.campaign_outlined,
+      tone: AppTone.sponsored,
+      dense: dense,
+      tooltip: l10n.commonSponsoredDescription,
+      semanticLabel: '$shown. ${l10n.commonSponsoredDescription}',
+    );
+  }
+}
+
 IconData serviceTypeIcon(String type) => switch (type) {
   ServiceTypes.serviceCenter => Icons.build_outlined,
   ServiceTypes.dealer => Icons.storefront_outlined,
@@ -44,7 +70,8 @@ class ContactVerificationPill extends StatelessWidget {
         icon: Icons.history,
         tone: AppTone.warning,
         dense: dense,
-        label: contact.label ??
+        label:
+            contact.label ??
             (date == null ? l10n.servicesDirectoryVerifiedLongAgo : l10n.servicesDirectoryVerifiedStale(date)),
       );
     }
@@ -68,7 +95,12 @@ class ServiceOpenPill extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     if (alwaysOpen ?? false) {
-      return Pill(icon: Icons.all_inclusive, tone: AppTone.success, dense: true, label: l10n.servicesDirectoryAlwaysOpen);
+      return Pill(
+        icon: Icons.all_inclusive,
+        tone: AppTone.success,
+        dense: true,
+        label: l10n.servicesDirectoryAlwaysOpen,
+      );
     }
     return switch (state) {
       ServiceOpenState.open => Pill(
@@ -83,7 +115,11 @@ class ServiceOpenPill extends StatelessWidget {
         dense: true,
         label: l10n.servicesDirectoryClosedNow,
       ),
-      ServiceOpenState.unknown => Pill(icon: Icons.help_outline, dense: true, label: l10n.servicesDirectoryHoursUnknown),
+      ServiceOpenState.unknown => Pill(
+        icon: Icons.help_outline,
+        dense: true,
+        label: l10n.servicesDirectoryHoursUnknown,
+      ),
     };
   }
 }
@@ -139,11 +175,18 @@ class ServiceContactActions extends ConsumerWidget {
     final l10n = context.l10n;
     final p = provider;
     if (p.isDemo) {
+      // The card / page already carries the demo badge: explain, don't repeat it.
+      final theme = Theme.of(context);
       return Row(
         children: [
-          const DemoBadge(dense: true),
+          Icon(Icons.phone_disabled_outlined, size: 18, color: theme.colorScheme.onSurfaceVariant),
           const SizedBox(width: AppSpacing.sm),
-          Expanded(child: Text(l10n.servicesDirectoryDemoNoContact, style: Theme.of(context).textTheme.bodySmall)),
+          Expanded(
+            child: Text(
+              l10n.servicesDirectoryDemoNoContact,
+              style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+            ),
+          ),
         ],
       );
     }
@@ -300,16 +343,13 @@ class ServiceProviderCard extends StatelessWidget {
             spacing: AppSpacing.xs,
             runSpacing: AppSpacing.xs,
             children: [
-              if (p.isSponsored) SponsoredLabel(sponsorName: p.sponsorLabel, dense: true),
+              if (p.isSponsored) DirectorySponsoredLabel(label: p.sponsorLabel),
               if (p.isDemo) const DemoBadge(dense: true),
               ContactVerificationPill(contact: p.contact),
               ServiceOpenPill(state: p.openNow, alwaysOpen: p.isAlwaysOpen),
             ],
           ),
-          if (showActions) ...[
-            const SizedBox(height: AppSpacing.md),
-            ServiceContactActions(provider: p),
-          ],
+          if (showActions) ...[const SizedBox(height: AppSpacing.md), ServiceContactActions(provider: p)],
         ],
       ),
     );

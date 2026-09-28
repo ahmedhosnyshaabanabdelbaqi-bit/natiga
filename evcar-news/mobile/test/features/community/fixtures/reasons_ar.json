@@ -1,0 +1,52 @@
+{
+    "data": [
+        {
+            "code": "spam",
+            "label": "رسائل مزعجة أو إعلان",
+            "description": "محتوى دعائي أو متكرر.",
+            "requiresDetails": false
+        },
+        {
+            "code": "abuse",
+            "label": "إساءة أو كراهية",
+            "description": "إهانة أو تحرش أو خطاب كراهية.",
+            "requiresDetails": false
+        },
+        {
+            "code": "off_topic",
+            "label": "خارج الموضوع",
+            "description": "لا علاقة له بالموضوع.",
+            "requiresDetails": false
+        },
+        {
+            "code": "misinformation",
+            "label": "معلومات مضللة",
+            "description": "معلومات خاطئة أو مضللة.",
+            "requiresDetails": false
+        },
+        {
+            "code": "personal_data",
+            "label": "بيانات شخصية",
+            "description": "ينشر بيانات شخصية لشخص آخر.",
+            "requiresDetails": false
+        },
+        {
+            "code": "copyright",
+            "label": "حقوق ملكية",
+            "description": "يستخدم محتوى محميًا دون إذن.",
+            "requiresDetails": false
+        },
+        {
+            "code": "other",
+            "label": "سبب آخر",
+            "description": "اكتب سبب البلاغ.",
+            "requiresDetails": true
+        }
+    ],
+    "meta": {
+        "page": 1,
+        "pageSize": 7,
+        "total": 7,
+        "totalPages": 1
+    }
+}

@@ -22,12 +22,7 @@ class SearchRepository {
       api.getData(
         '/search',
         SearchResults.fromData,
-        query: {
-          'q': q,
-          if (types != null && types.isNotEmpty) 'types': types.join(','),
-          'limit': limit,
-          'page': page,
-        },
+        query: {'q': q, if (types != null && types.isNotEmpty) 'types': types.join(','), 'limit': limit, 'page': page},
         cancelToken: cancel,
       );
 
@@ -46,7 +41,9 @@ class SearchRepository {
 /// server answers 422 otherwise).
 bool isSearchableQuery(String q) {
   final t = q.trim();
-  return t.isNotEmpty && t.length <= SearchRepository.maxQueryLength && RegExp(r'[\p{L}\p{N}]', unicode: true).hasMatch(t);
+  return t.isNotEmpty &&
+      t.length <= SearchRepository.maxQueryLength &&
+      RegExp(r'[\p{L}\p{N}]', unicode: true).hasMatch(t);
 }
 
 final searchRepositoryProvider = Provider<SearchRepository>((ref) => SearchRepository(ref.watch(apiClientProvider)));

@@ -141,6 +141,20 @@ describe('360° tours: admin workflow and public API (e2e)', () => {
         differenceNoteEn: 'x',
       });
       expect(sameTrim.status).toBe(422);
+      // Review 3: the reference trim must be a nearby trim (same model + generation).
+      const otherModel = await catalogTrim(t);
+      const foreign = await post(staff.manager, {
+        ...base,
+        matchType: 'reference_similar_trim',
+        referenceVariantId: otherModel.variantId,
+        differenceNoteAr: 'x',
+        differenceNoteEn: 'x',
+      });
+      expect(foreign.status).toBe(422);
+      expect(foreign.body.error.details[0]).toMatchObject({
+        field: 'referenceVariantId',
+        constraints: { sameModel: expect.any(String) },
+      });
       expect((await post(staff.editor, base)).status).toBe(403);
       expect((await post(staff.user, base)).status).toBe(403);
       expect((await t.http().post('/api/v1/admin/tours').send(base)).status).toBe(401);

@@ -17,6 +17,7 @@ import { resolveErrorMessage } from '../../modules/i18n/server-messages';
 import { resolveLanguage } from '../i18n/language';
 import { RequestContext } from '../context/request-context';
 import type { SupportedLanguage } from '../../config/app-config';
+import { redactUrl } from '../logging/logging';
 
 export interface ErrorEnvelope {
   error: {
@@ -75,7 +76,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
         {
           err: exception,
           requestId: requestIdOf(req, res),
-          path: req.originalUrl?.split('?')[0],
+          path: redactUrl(req.originalUrl?.split('?')[0]),
           method: req.method,
         },
         'Unhandled exception',

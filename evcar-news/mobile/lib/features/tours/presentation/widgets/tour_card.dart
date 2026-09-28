@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/app_routes.dart';
+import '../../../../app/theme/app_colors.dart';
 import '../../../../shared/widgets/kit.dart';
 import '../../domain/tour_models.dart';
 import 'tour_facts.dart';
@@ -65,9 +66,9 @@ class TourListCard extends StatelessWidget {
                     fallbackIcon: Icons.threesixty,
                     showFallbackText: false,
                   ),
-                  Positioned.fill(
-                    child: DecoratedBox(decoration: BoxDecoration(gradient: context.palette.imageScrim)),
-                  ),
+                  // No full-image scrim: no text sits on the image (badges
+                  // carry their own backgrounds), and a scrim over the
+                  // loading/fallback surface looked like a dirty gradient.
                   PositionedDirectional(
                     top: AppSpacing.sm,
                     start: AppSpacing.sm,
@@ -79,7 +80,12 @@ class TourListCard extends StatelessWidget {
                         const Tour360Badge(dense: true),
                         if (card.isDemo) const DemoBadge(dense: true),
                         if (card.isReferenceForSimilarTrim)
-                          Pill(label: l10n.toursReferenceBadge, icon: Icons.compare_arrows, tone: AppTone.warning, dense: true),
+                          Pill(
+                            label: l10n.toursReferenceBadge,
+                            icon: Icons.compare_arrows,
+                            tone: AppTone.warning,
+                            dense: true,
+                          ),
                       ],
                     ),
                   ),
@@ -88,11 +94,9 @@ class TourListCard extends StatelessWidget {
                     end: AppSpacing.sm,
                     child: Container(
                       padding: const EdgeInsets.all(AppSpacing.sm),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.92),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(Icons.threesixty, color: theme.colorScheme.primary),
+                      decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.92), shape: BoxShape.circle),
+                      // Fixed brand blue: the chip is white in both themes.
+                      child: const Icon(Icons.threesixty, color: AppColors.electricBlue),
                     ),
                   ),
                 ],
@@ -126,7 +130,11 @@ class TourListCard extends StatelessWidget {
                         runSpacing: AppSpacing.xs,
                         children: [
                           for (final s in card.seatScenes)
-                            Pill(label: TourLabels.seatRef(l10n, s), icon: TourLabels.seatIcon(s.position), dense: true),
+                            Pill(
+                              label: TourLabels.seatRef(l10n, s),
+                              icon: TourLabels.seatIcon(s.position),
+                              dense: true,
+                            ),
                         ],
                       ),
                     ],

@@ -8,6 +8,8 @@ import '../../../core/app_config/app_config_controller.dart';
 import '../../../core/app_config/features.dart';
 import '../../../core/cache/cached_fetch.dart';
 import '../../../shared/widgets/kit.dart';
+import '../../community/domain/community_models.dart';
+import '../../community/presentation/widgets/comments_section.dart';
 import '../application/cars_providers.dart';
 import '../data/cars_repository.dart';
 import '../domain/catalog_models.dart';
@@ -90,7 +92,7 @@ class _CarDetailScreenState extends ConsumerState<CarDetailScreen> with SingleTi
     return AppScaffold.slivers(
       title: car?.name ?? l10n.carsDetailTitle,
       flexibleHeader: car == null ? null : _Hero(car: car),
-      expandedHeight: 240,
+      expandedHeight: 300,
       onRefresh: () => _refresh(key, variant),
       bottomBar: const CompareTrayBar(),
       actions: [
@@ -198,6 +200,9 @@ class _CarDetailScreenState extends ConsumerState<CarDetailScreen> with SingleTi
             _TrimLine(variant: variant, marketName: _marketName(car, market)),
             const SizedBox(height: AppSpacing.md),
             OwnerReviewsSection(carSlug: car.slug, variantId: variant.id),
+            const SizedBox(height: AppSpacing.xl),
+            // Discussion about the model (renders nothing while community is off).
+            CommentsSection(targetType: CommunityTargetTypes.model, targetId: car.id, padding: EdgeInsets.zero),
           ],
         );
       case CarTab.competitors:
@@ -412,15 +417,25 @@ class _Hero extends StatelessWidget {
         PositionedDirectional(
           start: context.pageGutter,
           end: context.pageGutter,
-          bottom: kTextTabBarHeight + AppSpacing.md,
+          bottom: AppSpacing.lg,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 car.brand.name,
-                style: theme.textTheme.labelLarge?.copyWith(color: Colors.white, fontWeight: FontWeight.w700),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.labelLarge?.copyWith(color: Colors.white.withValues(alpha: 0.9)),
               ),
+              // The toolbar title only appears once the hero is collapsed.
+              Text(
+                car.name,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.headlineSmall?.copyWith(color: Colors.white, fontWeight: FontWeight.w700),
+              ),
+              const SizedBox(height: AppSpacing.sm),
               Wrap(
                 spacing: 6,
                 runSpacing: 4,

@@ -3,5 +3,110 @@
   "garageTitle": "My garage",
   "garageVehicleTitle": "My car",
   "garageAddTitle": "Add a car",
-  "garageEditTitle": "Edit car"
+  "garageEditTitle": "Edit car",
+  "garageGuestMessage": "Sign in to save your cars with their exact trim and market, and use them in the charging log, reminders and calculators.",
+  "garageEmptyTitle": "Your garage is empty",
+  "garageEmptyMessage": "Add your car by choosing its brand, model, model year and trim. You can save up to 20 cars.",
+  "garageAddFirst": "Add my first car",
+  "garageAddButton": "Add to my garage",
+  "garageCount": "{count} of {max} cars",
+  "@garageCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "garageLimitReached": "You can save up to {max} cars. Remove one to add another.",
+  "@garageLimitReached": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "garagePrimary": "Primary",
+  "garageNotListedShort": "Not sold in this market",
+  "garageNotListedExplain": "This trim has no record in {market}. Local prices and charger compatibility for {market} are therefore not available for it.",
+  "@garageNotListedExplain": {
+    "placeholders": {
+      "market": {
+        "type": "String"
+      }
+    }
+  },
+  "garageOdometer": "Odometer",
+  "garageLogsCount": "Charging sessions",
+  "garageRemindersCount": "Open reminders",
+  "garageDetailsSection": "Details",
+  "garageTrim": "Trim",
+  "garageModelYear": "Model year",
+  "garageMarket": "Market",
+  "garageMarketHint": "The country where the car is used. Prices, currency and compatibility follow this market.",
+  "garagePurchaseDate": "Purchase date",
+  "garageInitialOdometer": "Odometer at purchase",
+  "garageInitialOdometerHint": "Optional. Used as the starting point of distance reports.",
+  "garageCurrentOdometer": "Current odometer",
+  "garageCurrentOdometerHint": "Optional. It also updates automatically from your charging log entries.",
+  "garageShortcutsSection": "Use this car",
+  "garageOpenLogs": "Charging log of this car",
+  "garageAddLog": "Add a charging session",
+  "garageAddReminder": "Add a reminder",
+  "garageOpenCalculators": "Calculators",
+  "garageOpenSpecs": "Full specifications",
+  "garageMakePrimary": "Make it my primary car",
+  "garagePrimarySet": "Primary car updated.",
+  "garageDelete": "Remove from garage",
+  "garageDeleteConfirmTitle": "Remove {name}?",
+  "@garageDeleteConfirmTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "garageDeleteConfirmMessage": "Its charging log entries and reminders will be deleted too. This cannot be undone.",
+  "garageDeleted": "Car removed.",
+  "garageAdded": "Car added to your garage.",
+  "garageSaved": "Changes saved.",
+  "garageCarSection": "Car",
+  "garageCarSectionHint": "Pick the exact trim from the catalog, so specs and compatibility are right.",
+  "garageChooseCar": "Choose brand, model, year and trim",
+  "garageChangeCar": "Tap to change",
+  "garageNickname": "Nickname",
+  "garageNicknameHint": "Optional, e.g. \"Family car\".",
+  "garageNotes": "Notes",
+  "garageClear": "Clear",
+  "garageOptional": "Optional",
+  "garagePrimarySwitch": "Primary car",
+  "garagePrimarySwitchHint": "Used by default in calculators, reports and trip planning.",
+  "garageErrorNegative": "Cannot be negative.",
+  "garageErrorNumber": "Enter a number.",
+  "garageErrorPickCar": "Choose the car first.",
+  "garageErrorCurrentBelowInitial": "The current reading cannot be lower than the reading at purchase.",
+  "garagePickerTitle": "Choose your car",
+  "garagePickerStepBrand": "Brand",
+  "garagePickerStepModel": "Model",
+  "garagePickerStepYear": "Year",
+  "garagePickerStepTrim": "Trim",
+  "garagePickerProgress": "Step {step} of {total}",
+  "@garagePickerProgress": {
+    "placeholders": {
+      "step": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "garagePickerAllMarkets": "Show trims from all markets",
+  "garagePickerAllMarketsHint": "For imported cars not sold in your market.",
+  "garagePickerSearchBrand": "Search brands",
+  "garagePickerSearchModel": "Search models",
+  "garagePickerEmpty": "Nothing to choose here yet",
+  "garageBack": "Back"
 }

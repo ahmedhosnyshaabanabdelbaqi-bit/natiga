@@ -130,17 +130,25 @@ describe('GET /app-config shape (ARCHITECTURE §4.4.1)', () => {
     expect(Object.entries(some.features).filter(([, v]) => v)).toEqual([['news', true]]);
   });
 
-  it('seeds every feature flag off (nothing is built yet)', () => {
+  it('seeds every feature flag off (an admin turns shipped features on)', () => {
     expect(Object.values(SETTING_DEFAULTS.features).every((v) => v === false)).toBe(true);
   });
 
   it('warns when enabled flags are hidden because their module does not exist', () => {
     const warnings = settingWarnings(
       'features',
-      { ...SETTING_DEFAULTS.features, news: true },
+      { ...SETTING_DEFAULTS.features, exteriorSpin: true },
       { routingConfigured: false, assistantConfigured: false, isProduction: false },
     );
     expect(warnings).toContain('features_not_implemented_hidden');
+    // Shipped modules do not warn.
+    expect(
+      settingWarnings(
+        'features',
+        { ...SETTING_DEFAULTS.features, news: true, cars: true, stations: true },
+        { routingConfigured: false, assistantConfigured: false, isProduction: false },
+      ),
+    ).toEqual([]);
   });
 
   it('reports the map as not configured without tiles or attribution', () => {

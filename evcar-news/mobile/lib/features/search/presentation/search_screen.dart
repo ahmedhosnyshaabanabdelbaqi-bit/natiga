@@ -72,7 +72,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       return;
     }
     if (_controller.text != t) {
-      _controller.value = TextEditingValue(text: t, selection: TextSelection.collapsed(offset: t.length));
+      _controller.value = TextEditingValue(
+        text: t,
+        selection: TextSelection.collapsed(offset: t.length),
+      );
     }
     _focus.unfocus();
     ref.read(recentSearchesProvider.notifier).add(t);
@@ -132,7 +135,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         else
           IconButton(tooltip: l10n.searchTitle, icon: const Icon(Icons.search), onPressed: () => _submit(_text)),
       ],
-      body: AnimatedSwitcher(duration: AppMotion.of(context, AppMotion.fast), child: KeyedSubtree(key: ValueKey(body.runtimeType), child: body)),
+      body: AnimatedSwitcher(
+        duration: AppMotion.of(context, AppMotion.fast),
+        child: KeyedSubtree(key: ValueKey(body.runtimeType), child: body),
+      ),
     );
   }
 }
@@ -236,19 +242,31 @@ class _StartView extends ConsumerWidget {
 // Typing: suggestions
 // ---------------------------------------------------------------------------
 
-class _SuggestionsView extends ConsumerWidget {
+class _SuggestionsView extends ConsumerStatefulWidget {
   const _SuggestionsView({required this.query, required this.onSearch});
 
   final String query;
   final ValueChanged<String> onSearch;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_SuggestionsView> createState() => _SuggestionsViewState();
+}
+
+class _SuggestionsViewState extends ConsumerState<_SuggestionsView> {
+  /// Last suggestions received: each keystroke is a new request (new family
+  /// key, no previous value), so the list would otherwise flicker empty.
+  List<SearchSuggestion> _last = const [];
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final q = query.trim();
+    final q = widget.query.trim();
+    final onSearch = widget.onSearch;
     final value = ref.watch(searchSuggestionsProvider(q));
-    // Previous suggestions stay visible while the next ones load.
-    final items = value.value ?? const <SearchSuggestion>[];
+    // Previous suggestions stay visible while the next ones load; a failed
+    // suggestion request is silent (the "search for" row still works).
+    if (value.hasValue && !value.isLoading) _last = value.value!;
+    final items = value.hasValue && !value.isLoading ? value.value! : _last;
     return ListView(
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
@@ -360,7 +378,9 @@ class _ResultsView extends ConsumerWidget {
                   title: searchGroupLabel(l10n, g.type),
                   icon: searchTypeIcon(g.type),
                   padding: const EdgeInsetsDirectional.only(top: AppSpacing.lg, bottom: AppSpacing.xs),
-                  actionLabel: g.total > g.items.length ? l10n.searchSeeAllCount(fmt.number(g.total) ?? '${g.total}') : null,
+                  actionLabel: g.total > g.items.length
+                      ? l10n.searchSeeAllCount(fmt.number(g.total) ?? '${g.total}')
+                      : null,
                   onSeeAll: g.total > g.items.length ? () => onSeeAll(g.type) : null,
                 ),
                 for (final h in g.items) SearchHitTile(hit: h),
@@ -398,7 +418,12 @@ class _GroupView extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(context.pageGutter - AppSpacing.sm, AppSpacing.xs, context.pageGutter, 0),
+            padding: EdgeInsetsDirectional.fromSTEB(
+              context.pageGutter - AppSpacing.sm,
+              AppSpacing.xs,
+              context.pageGutter,
+              0,
+            ),
             child: Row(
               children: [
                 TextButton.icon(

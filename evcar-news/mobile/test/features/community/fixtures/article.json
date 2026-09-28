@@ -1,0 +1,63 @@
+{
+    "data": {
+        "id": "d0000000-0000-4000-8000-000000000021",
+        "slug": "demo-sample-article",
+        "type": "news",
+        "title": "[تجريبي] مقال تجريبي لاختبار واجهة الأخبار",
+        "summary": "هذا نص تجريبي وهمي لاختبار عرض الأخبار فقط، وليس خبرًا حقيقيًا.",
+        "language": "ar",
+        "requestedLanguage": "ar",
+        "isFallback": false,
+        "availableLanguages": [
+            "ar",
+            "en"
+        ],
+        "category": {
+            "id": "d0000000-0000-4000-8000-000000000020",
+            "slug": "demo",
+            "name": "تجريبي"
+        },
+        "tags": [
+            {
+                "id": "d0000000-0000-4000-8000-000000000022",
+                "slug": "demo-tag",
+                "name": "وسم تجريبي"
+            }
+        ],
+        "coverImage": null,
+        "author": {
+            "name": "Demo"
+        },
+        "publishedAt": "2025-01-01T00:00:00.000Z",
+        "contentUpdatedAt": null,
+        "eventDate": null,
+        "readingMinutes": 1,
+        "isFeatured": false,
+        "isSponsored": false,
+        "sponsorName": null,
+        "isDemo": true,
+        "marketCodes": [],
+        "shareUrl": "https://evcar.news/n/demo-sample-article",
+        "bodyHtml": "<p>هذا مقال تجريبي وهمي أُنشئ لاختبار التصميم والقراءة. لا يحتوي على معلومات حقيقية.</p>",
+        "seoTitle": null,
+        "seoDescription": null,
+        "machineTranslated": false,
+        "source": null,
+        "corrections": [],
+        "relatedArticles": [],
+        "relatedVehicles": [
+            {
+                "type": "variant",
+                "id": "d0000000-0000-4000-8000-000000000014",
+                "slug": "demo-ev-one-2025-standard-bev",
+                "name": "ديمو EV ون (تجريبي) ستاندرد (تجريبي)",
+                "brandName": "ديمو موتورز (تجريبي)",
+                "modelSlug": "demo-motors-ev-one",
+                "modelYear": 2025
+            }
+        ],
+        "marketMatch": true,
+        "allowComments": true,
+        "updatedAt": "2026-09-28T16:31:29.086Z"
+    }
+}

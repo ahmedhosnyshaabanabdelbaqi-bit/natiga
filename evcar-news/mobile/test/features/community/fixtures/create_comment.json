@@ -1,0 +1,28 @@
+{
+    "data": {
+        "id": "01a0e8dc-1ed9-7261-a3dd-e7e8dced8f12",
+        "target": {
+            "type": "article",
+            "id": "d0000000-0000-4000-8000-000000000021"
+        },
+        "parentId": null,
+        "body": "Test comment from Omar",
+        "author": {
+            "id": "01a0e8db-beee-763b-8ce3-9d8d942492a4",
+            "displayName": "Omar",
+            "isDeleted": false
+        },
+        "votes": {
+            "up": 0,
+            "down": 0,
+            "score": 0,
+            "myVote": null
+        },
+        "status": "approved",
+        "isMine": true,
+        "replyCount": 0,
+        "replies": [],
+        "editedAt": null,
+        "createdAt": "2026-09-28T16:32:15.065Z"
+    }
+}

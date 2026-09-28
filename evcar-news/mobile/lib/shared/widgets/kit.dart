@@ -18,6 +18,7 @@ export '../favorites/favorite_item.dart';
 export '../favorites/favorites_controller.dart';
 export 'app_card.dart';
 export 'app_chip.dart';
+export 'app_mark.dart';
 export 'app_scaffold.dart';
 export 'async_state_view.dart';
 export 'badges.dart';

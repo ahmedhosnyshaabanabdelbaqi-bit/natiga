@@ -33,6 +33,24 @@ export interface StoredSpecValue {
 
 export const SPEC_TEXT_MAX = 500;
 
+/**
+ * Measured quantities with a unit (kW, kWh, s, mm, kg…) are physically > 0;
+ * a 0 there is a placeholder, and a placeholder must never become a value
+ * that wins a comparison (REQUIREMENTS §22, review 3). Exceptions where 0 is a
+ * real value: no front trunk, not rated for towing. Unit-less counts (airbags,
+ * NCAP stars, motors, phases) may be 0.
+ * (Schema change request: `spec_definitions.allow_zero` — see
+ * docs/decisions/review-fixes-3.md; until then this list is the source.)
+ */
+export const ZERO_ALLOWED_SPEC_KEYS: ReadonlySet<string> = new Set([
+  'practicality.frunk_l',
+  'practicality.towing_braked_kg',
+]);
+
+export function specAllowsZero(def: { key: string; unit: string | null }): boolean {
+  return def.unit === null || ZERO_ALLOWED_SPEC_KEYS.has(def.key);
+}
+
 export function normalizeSpecValue(
   def: SpecDefinitionLike,
   input: SpecValueInput,
@@ -53,6 +71,9 @@ export function normalizeSpecValue(
         });
       }
       if (input.value < 0) throw fieldError(valueField, 'min', Msg.nonNegative);
+      if (input.value === 0 && !specAllowsZero(def)) {
+        throw fieldError(valueField, 'positive', Msg.positive);
+      }
       if (def.unit === null && !Number.isInteger(input.value)) {
         throw fieldError(valueField, 'isInt', {
           ar: 'هذه المواصفة عدد صحيح.',

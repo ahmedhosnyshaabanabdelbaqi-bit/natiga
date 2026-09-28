@@ -320,7 +320,7 @@ class _CurveChart extends StatelessWidget {
                 barWidth: 3,
                 // fl_chart builds the shader without a TextDirection, so the
                 // (directional) brand gradient is restated left → right.
-                gradient: LinearGradient(colors: context.palette.brandGradient.colors),
+                gradient: LinearGradient(colors: context.palette.accentGradient.colors),
                 dotData: FlDotData(
                   getDotPainter: (spot, _, _, _) => FlDotCirclePainter(
                     radius: 3.5,

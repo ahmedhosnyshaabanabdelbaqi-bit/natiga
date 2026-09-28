@@ -228,6 +228,8 @@ describe('Personal: notifications (e2e)', () => {
         unsubscribedAll: false,
         unsubscribedAt: null,
         push: { configured: true, registeredDevices: 0, status: 'no_device' },
+        // Review 3: only switches / topics with a real producer are announced.
+        supported: { types: ['news'], topicTypes: ['brand', 'model', 'variant', 'category'] },
       });
     });
 

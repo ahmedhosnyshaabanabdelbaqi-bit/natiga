@@ -64,14 +64,22 @@ class ServicesRepository {
   }
 
   Future<CachedResult<ServicesPage>> list(ServiceFilters filters, {int page = 1}) {
-    Future<Object?> fetch() => api.getJson('/services', query: filters.toQuery(page: page, pageSize: pageSize));
+    Future<Object?> fetch() => api.getJson(
+      '/services',
+      query: filters.toQuery(page: page, pageSize: pageSize),
+    );
     final text = filters.q?.trim() ?? '';
     if (page > 1 || filters.nearMe || text.isNotEmpty) {
       return fetch().then(
         (json) => CachedResult(data: parseServicesPage(json), savedAt: DateTime.now().toUtc(), fromCache: false),
       );
     }
-    return fetchWithCache(cache: cache, key: _key('/services', filters.cacheKey), fetch: fetch, parse: parseServicesPage);
+    return fetchWithCache(
+      cache: cache,
+      key: _key('/services', filters.cacheKey),
+      fetch: fetch,
+      parse: parseServicesPage,
+    );
   }
 
   Future<CachedResult<List<ServiceTypeCount>>> types() => fetchWithCache(

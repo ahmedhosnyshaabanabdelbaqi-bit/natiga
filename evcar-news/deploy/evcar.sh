@@ -54,7 +54,8 @@ Stack
 
 Database & data
   migrate                   apply database migrations (prisma migrate deploy)
-  seed                      reference seed (idempotent). Demo data is REFUSED in production.
+  seed [--enable-features]  reference seed (idempotent); --enable-features switches on every implemented
+                            app feature (all start off). Demo data is REFUSED in production.
   create-owner --email E [--name N] [--set-password]
                             first owner; prints a one-time password-setup link
   backup [--db-only] [--offsite|--no-offsite]
@@ -557,9 +558,10 @@ cmd_migrate() {
 }
 
 cmd_seed() {
-  local arg
+  local arg enable_features=0
   for arg in "$@"; do
     case $arg in
+      --enable-features) enable_features=1 ;;
       --demo)
         die "demo data is fictional and is NEVER loaded in production (NODE_ENV=production). Use a local development environment for demos."
         ;;
@@ -572,8 +574,15 @@ cmd_seed() {
   render_backend_env
   compose_setup
   ensure_data_services
-  dc run --rm --no-deps -e RUN_MIGRATIONS=false -e RUN_REFERENCE_SEED=true api true
-  ok "reference seed applied (roles, permissions, markets, currencies, settings...)"
+  if ((enable_features)); then
+    dc run --rm --no-deps -e RUN_MIGRATIONS=false -e RUN_REFERENCE_SEED=false api \
+      node dist/cli/seed.js --enable-implemented-features
+    ok "reference seed applied and implemented features switched on"
+  else
+    dc run --rm --no-deps -e RUN_MIGRATIONS=false -e RUN_REFERENCE_SEED=true api true
+    ok "reference seed applied (roles, permissions, markets, currencies, settings...)"
+    warn "all app features start OFF: run 'sudo evcar seed --enable-features' (or switch them on in the admin settings)"
+  fi
 }
 
 cmd_create_owner() {

@@ -94,7 +94,9 @@ class _SyncBanner extends ConsumerWidget {
           children: [
             Icon(icon, color: c.onContainer, size: 20),
             const SizedBox(width: AppSpacing.sm),
-            Expanded(child: Text(text, style: theme.textTheme.bodySmall?.copyWith(color: c.onContainer))),
+            Expanded(
+              child: Text(text, style: theme.textTheme.bodySmall?.copyWith(color: c.onContainer)),
+            ),
             ?action,
           ],
         ),
@@ -134,10 +136,7 @@ class _SyncBanner extends ConsumerWidget {
         icon: Icons.sync_problem,
         tone: AppTone.warning,
         text: '${l10n.favoritesSyncFailed} ${errorMessage(l10n, state.syncError!)}',
-        action: TextButton(
-          onPressed: () => ref.read(favoritesProvider.notifier).sync(),
-          child: Text(l10n.commonRetry),
-        ),
+        action: TextButton(onPressed: () => ref.read(favoritesProvider.notifier).sync(), child: Text(l10n.commonRetry)),
       );
     }
     return const SizedBox.shrink();
@@ -205,7 +204,12 @@ class _FavoritesList extends ConsumerWidget {
                   title: title,
                   message: message,
                   actions: [
-                    StateAction(label: action, icon: Icons.arrow_forward, primary: true, onPressed: () => context.go(route)),
+                    StateAction(
+                      label: action,
+                      icon: Icons.arrow_forward,
+                      primary: true,
+                      onPressed: () => context.go(route),
+                    ),
                   ],
                 ),
               ),
@@ -309,7 +313,12 @@ class FavoriteTile extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(item.title, maxLines: 3, overflow: TextOverflow.ellipsis, style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
+                Text(
+                  item.title,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
+                ),
                 if (item.subtitle != null && item.subtitle!.trim().isNotEmpty) ...[
                   const SizedBox(height: 2),
                   Text(

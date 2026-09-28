@@ -14,6 +14,7 @@ export type ShareUrlBuilder = (slug: string) => string;
 
 type TranslationLike = {
   locale: string;
+  slug?: string | null;
   title: string;
   summary: string | null;
   bodyText: string | null;
@@ -90,7 +91,12 @@ export class ArticlePresenter {
       sponsorName: row.sponsorName,
       isDemo: row.isDemo,
       marketCodes: row.markets.map((m) => m.marketCode).sort(),
-      shareUrl: shareUrl(row.slug),
+      slugs: Object.fromEntries(
+        row.translations
+          .filter((x) => chosen.available.includes(x.locale) && x.slug)
+          .map((x) => [x.locale, x.slug as string]),
+      ),
+      shareUrl: shareUrl(t.slug ?? row.slug),
     };
   }
 }

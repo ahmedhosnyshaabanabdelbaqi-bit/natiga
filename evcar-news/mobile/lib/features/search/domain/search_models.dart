@@ -45,7 +45,8 @@ class HighlightRange {
 List<(String, bool)> highlightRuns(String text, List<HighlightRange> ranges) {
   final valid = [
     for (final r in ranges)
-      if (r.end > r.start && r.start < text.length && r.end > 0) HighlightRange(r.start.clamp(0, text.length), r.end.clamp(0, text.length)),
+      if (r.end > r.start && r.start < text.length && r.end > 0)
+        HighlightRange(r.start.clamp(0, text.length), r.end.clamp(0, text.length)),
   ]..sort((a, b) => a.start.compareTo(b.start));
   final merged = <HighlightRange>[];
   for (final r in valid) {

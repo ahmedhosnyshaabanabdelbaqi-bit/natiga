@@ -156,7 +156,19 @@ export class PublicArticleSummaryDto {
   @ApiProperty({ description: 'Demo content: show a visible "demo" label.' }) isDemo!: boolean;
   @ApiProperty({ type: [String], description: 'Target markets ([] = every market).' })
   marketCodes!: string[];
-  @ApiProperty({ example: 'https://evcar.news/n/byd-seal-launch' }) shareUrl!: string;
+  @ApiProperty({
+    type: 'object',
+    additionalProperties: { type: 'string' },
+    example: { ar: 'اطلاق-سيارة', en: 'car-launch' },
+    description:
+      'Per-language slugs of the languages readers can see (each also opens /articles/:slug).',
+  })
+  slugs!: Record<string, string>;
+  @ApiProperty({
+    example: 'https://evcar.news/n/byd-seal-launch',
+    description: 'Share link using the slug of the served language (article slug as fallback).',
+  })
+  shareUrl!: string;
 }
 
 export class ArticleSourceDto {

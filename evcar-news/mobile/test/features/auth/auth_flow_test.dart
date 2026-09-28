@@ -6,6 +6,7 @@ import 'package:evcar_news/core/auth/token_storage.dart';
 import 'package:evcar_news/features/auth/domain/auth_state.dart';
 import 'package:evcar_news/features/auth/presentation/auth_controller.dart';
 import 'package:evcar_news/features/auth/presentation/verify_email_screen.dart';
+import 'package:evcar_news/shared/widgets/sign_in_required_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -116,8 +117,9 @@ void main() {
     expect(tokens!.accessToken, 'a1');
     expect(tokens.refreshToken, 'r1');
     expect(tester.container().read(authControllerProvider).user!.displayName, 'Sara');
-    // Returned to /garage, which now shows the (placeholder) feature, not the sign-in prompt.
-    expect(find.widgetWithText(AppBar, 'My garage'), findsOneWidget);
+    // Returned to /garage, which now shows the feature (large collapsing title), not the sign-in prompt.
+    expect(find.widgetWithText(AppBar, 'My garage'), findsWidgets);
+    expect(find.byType(SignInRequiredView), findsNothing);
     expect(find.text('Sign in to continue'), findsNothing);
   });
 

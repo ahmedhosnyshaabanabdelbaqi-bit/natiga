@@ -1,4 +1,131 @@
 {
   "@@locale": "ar",
-  "tripsTitle": "مخطط الرحلات"
+  "tripsTitle": "مخطط الرحلات",
+  "tripsIntro": "يأتي المسار ومسافات الطرق من خدمة مسارات. تُقترح التوقفات مع احتياطي بطارية ومحطة بديلة؛ ولا يُضمن الوصول أو توفر شاحن متاح.",
+  "tripsFrom": "من",
+  "tripsTo": "إلى",
+  "tripsCar": "السيارة",
+  "tripsChoose": "اختر",
+  "tripsMyLocation": "موقعي الحالي",
+  "tripsMyLocationHint": "يُستخدم مرة واحدة لهذه الخطة ولا يُحفظ.",
+  "tripsPickOnMap": "اختر على الخريطة",
+  "tripsUsePoint": "استخدم هذه النقطة",
+  "tripsPointOnMap": "نقطة {lat}، {lng}",
+  "@tripsPointOnMap": {
+    "placeholders": {
+      "lat": {
+        "type": "String"
+      },
+      "lng": {
+        "type": "String"
+      }
+    }
+  },
+  "tripsLocationDenied": "الموقع متوقف أو غير مسموح. اختر مدينة أو نقطة على الخريطة بدلًا منه.",
+  "tripsLocationFailed": "تعذر تحديد موقعك. اختر مدينة بدلًا منه.",
+  "tripsBatterySection": "البطارية",
+  "tripsCurrentSoc": "البطارية الآن",
+  "tripsMinArrivalSoc": "احتفظ على الأقل بـ",
+  "tripsDepartureSection": "المغادرة",
+  "tripsLeaveNow": "المغادرة الآن",
+  "tripsAssumptionsEdit": "الافتراضات",
+  "tripsAssumptionsEditHint": "اختياري: اتركها فارغة لاستخدام الدليل والقيم الافتراضية المعروضة في النتيجة.",
+  "tripsConsumptionHint": "تحل محل قيمة الدليل.",
+  "tripsMargin": "هامش أمان الاستهلاك",
+  "tripsMarginHint": "فارغ = 10%. يغطي المرتفعات والحر والبرد والسرعة.",
+  "tripsChargeTo": "الشحن حتى",
+  "tripsChargeToHint": "فارغ = 80%.",
+  "tripsPrice": "سعر الكهرباء",
+  "tripsPriceHint": "اختياري. بدونه لا تُحسب التكلفة (لا أسعار مفترضة).",
+  "tripsSave": "احفظ هذه الخطة",
+  "tripsSaveHint": "تُحفظ فقط عند طلبك، ولا يراها غيرك.",
+  "tripsSaveTitle": "الاسم (اختياري)",
+  "tripsPlan": "خطط رحلتي",
+  "tripsErrorOrigin": "اختر نقطة البداية.",
+  "tripsErrorDestination": "اختر وجهتك.",
+  "tripsErrorCar": "اختر السيارة.",
+  "tripsErrorMinSoc": "يجب أن تكون أقل من نسبة البطارية الحالية.",
+  "tripsNotConfigured": "تخطيط الرحلات غير متاح: لم تُهيأ خدمة مسارات بعد. يمكنك الحصول على الاتجاهات لأي محطة من خريطة الشحن.",
+  "tripsVehicleDataMissing": "لا توجد خطة: تنقص هذه السيارة بيانات موثّقة ({missing}). أدخلها في الافتراضات إن كنت تعرفها.",
+  "@tripsVehicleDataMissing": {
+    "placeholders": {
+      "missing": {
+        "type": "String"
+      }
+    }
+  },
+  "tripsMissingInlets": "منافذ الشحن",
+  "tripsNoReachableStation": "لا توجد خطة: لا توجد محطة متوافقة ومفتوحة يمكن الوصول إليها بالاحتياطي المطلوب. جرّب نسبة بطارية أعلى أو احتياطيًا أقل.",
+  "tripsTooManyStops": "لا توجد خطة: ستحتاج الرحلة إلى عدد كبير جدًا من التوقفات.",
+  "tripsChargeTimeUnknown": "لا توجد خطة: تعذر تقدير زمن الشحن في المحطات.",
+  "tripsRouteNotFound": "لم يُعثر على طريق بين هاتين النقطتين.",
+  "tripsStopsSummary": "{stops, plural, =0{بدون توقف للشحن} =1{توقف شحن واحد} =2{توقفا شحن} few{{stops} توقفات شحن} other{{stops} توقف شحن}} · {distance}",
+  "@tripsStopsSummary": {
+    "placeholders": {
+      "stops": {
+        "type": "int"
+      },
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "tripsDriveTime": "القيادة",
+  "tripsChargeTime": "الشحن",
+  "tripsEnergyUsed": "الطاقة المستهلكة",
+  "tripsArrivalSoc": "البطارية عند الوصول",
+  "tripsCost": "التكلفة التقريبية",
+  "tripsCostNotCalculated": "أدخل سعرًا لحسابها",
+  "tripsNoStopsNeeded": "لا حاجة لتوقف شحن بالقيم التي أدخلتها.",
+  "tripsStopN": "التوقف {n}: {name}",
+  "@tripsStopN": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "tripsAtKm": "عند",
+  "tripsDetour": "الانحراف عن الطريق",
+  "tripsChargeFromTo": "الشحن",
+  "tripsChargeEnergy": "الطاقة المطلوبة",
+  "tripsStopChargeTime": "مدة الشحن",
+  "tripsRough": "تقريبي",
+  "tripsEta": "الوصول المتوقع",
+  "tripsAccess": "الدخول",
+  "tripsHours": "ساعات العمل",
+  "tripsOpenAtEta": "مفتوحة عند الوصول",
+  "tripsClosedAtEta": "مغلقة عند الوصول",
+  "tripsHoursUnknown": "ساعات العمل غير معروفة",
+  "tripsAvailabilityUnknown": "التوفر غير معروف",
+  "tripsAvailableNow": "متاحة الآن (وليس عند الوصول)",
+  "tripsOccupiedNow": "مشغولة الآن",
+  "tripsOutOfOrderNow": "معطلة الآن",
+  "tripsAlternative": "محطة بديلة",
+  "tripsDirections": "الاتجاهات",
+  "tripsLegs": "مراحل الطريق",
+  "tripsLegN": "المرحلة {n}",
+  "@tripsLegN": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "tripsAssumptions": "الافتراضات",
+  "tripsRoutingBy": "المسار: {provider}",
+  "@tripsRoutingBy": {
+    "placeholders": {
+      "provider": {
+        "type": "String"
+      }
+    }
+  },
+  "tripsSaved": "رحلاتي المحفوظة",
+  "tripsSavedEmpty": "لا توجد رحلات محفوظة",
+  "tripsSavedStale": "خطة محفوظة: قد تكون حالة المحطات وساعات العمل تغيّرت منذ ذلك الحين.",
+  "tripsDeleteSaved": "حذف الرحلة المحفوظة"
 }

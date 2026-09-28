@@ -37,6 +37,7 @@ import '../../features/charging_logs/presentation/charging_logs_screen.dart';
 import '../../features/community/presentation/article_comments_screen.dart';
 import '../../features/community/presentation/ask_question_screen.dart';
 import '../../features/community/presentation/car_reviews_screen.dart';
+import '../../features/community/presentation/muted_users_screen.dart';
 import '../../features/community/presentation/question_detail_screen.dart';
 import '../../features/community/presentation/questions_screen.dart';
 import '../../features/community/presentation/write_review_screen.dart';
@@ -80,13 +81,20 @@ final routerProvider = Provider<GoRouter>((ref) {
   ref.listen(authControllerProvider, (_, _) => authChanges.value++);
   // Feature flags can change when /app-config is (re)loaded.
   ref.listen(appConfigProvider.select((c) => c.features), (_, _) => authChanges.value++);
+  // The first resolution (network, cache or fallback) re-runs the redirect.
+  ref.listen(appConfigControllerProvider.select((s) => s.hasValue), (_, _) => authChanges.value++);
 
   final router = createAppRouter(
     refreshListenable: authChanges,
     redirect: (context, state) => appRedirect(
       state.uri,
       ref.read(authControllerProvider),
-      isFeatureEnabled: (flag) => ref.read(appConfigProvider).isFeatureEnabled(flag),
+      // Until /app-config has resolved once, every flag would read as off and
+      // a cold-start deep link (e.g. /news/<slug>) would be replaced by Home.
+      // The check runs as soon as the config (or the offline fallback) is in.
+      isFeatureEnabled: ref.read(appConfigControllerProvider).hasValue
+          ? (flag) => ref.read(appConfigProvider).isFeatureEnabled(flag)
+          : null,
     ),
   );
   ref.onDispose(() {
@@ -147,6 +155,7 @@ GoRouter createAppRouter({
                   GoRoute(path: 'profile', builder: (context, state) => const ProfileScreen()),
                   GoRoute(path: 'sessions', builder: (context, state) => const SessionsScreen()),
                   GoRoute(path: 'delete', builder: (context, state) => const DeleteAccountScreen()),
+                  GoRoute(path: 'blocked-users', builder: (context, state) => const MutedUsersScreen()),
                 ],
               ),
             ],

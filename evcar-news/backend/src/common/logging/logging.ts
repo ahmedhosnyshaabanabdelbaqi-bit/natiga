@@ -28,20 +28,50 @@ export const LOG_REDACT_PATHS = [
 const SENSITIVE_QUERY_PARAMS =
   /^(token|access_token|refresh_token|key|api_key|apikey|signature|sig|code|password|secret)$/i;
 
-/** Redacts sensitive query parameter values from a request URL. */
+/**
+ * Query parameters that carry a position (device location, map viewport, trip
+ * origin/destination). REQUIREMENTS §19: no precise location is stored without
+ * need, so logs keep them rounded to 2 decimals (≈ 1 km).
+ */
+const LOCATION_QUERY_PARAMS =
+  /^(lat|lng|lon|latitude|longitude|bbox|near|point|origin|destination|\w+(Lat|Lng|Lon|Latitude|Longitude))$/i;
+
+/** Path segments that are secrets (e.g. unpublished-article preview tokens). */
+const SECRET_PATH_SEGMENTS: RegExp[] = [/(\/articles\/preview\/)[^/?#]+/i];
+
+/** Rounds every number in a coordinate value (`30.0444`, `29.9,31.1,30.2,31.4`) to 2 decimals. */
+function coarsen(value: string): string {
+  return value.replace(/-?\d+(\.\d+)?/g, (n) => {
+    const v = Number(n);
+    return Number.isFinite(v) ? (Math.round(v * 100) / 100).toFixed(2) : '[REDACTED]';
+  });
+}
+
+/**
+ * Makes a request URL safe to log: secret query parameters and secret path
+ * segments become `[REDACTED]`, coordinates are rounded to ≈ 1 km.
+ */
 export function redactUrl(url: string | undefined): string | undefined {
   if (!url) return url;
   const q = url.indexOf('?');
-  if (q === -1) return url;
+  let path = q === -1 ? url : url.slice(0, q);
+  for (const re of SECRET_PATH_SEGMENTS) path = path.replace(re, '$1[REDACTED]');
+  if (q === -1) return path;
   const params = new URLSearchParams(url.slice(q + 1));
   let changed = false;
-  for (const key of [...params.keys()]) {
+  const out = new URLSearchParams();
+  for (const [key, value] of params) {
     if (SENSITIVE_QUERY_PARAMS.test(key)) {
-      params.set(key, '[REDACTED]');
+      out.append(key, '[REDACTED]');
       changed = true;
+    } else if (LOCATION_QUERY_PARAMS.test(key)) {
+      out.append(key, coarsen(value));
+      changed = true;
+    } else {
+      out.append(key, value);
     }
   }
-  return changed ? `${url.slice(0, q)}?${params.toString()}` : url;
+  return changed ? `${path}?${out.toString()}` : `${path}${url.slice(q)}`;
 }
 
 export function buildLoggerParams(config: AppConfig): Params {

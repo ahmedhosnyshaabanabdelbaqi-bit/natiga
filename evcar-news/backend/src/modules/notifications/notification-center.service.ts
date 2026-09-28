@@ -5,7 +5,7 @@ import { Prisma } from '../../generated/prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import { PUSH_GATEWAY, type PushGateway } from '../../providers';
 import { fieldError, notFound } from '../garage/common/personal-errors';
-import { isValidZone } from './notification-rules';
+import { isValidZone, PRODUCED_PREFERENCE_TYPES, PRODUCED_TOPIC_TYPES } from './notification-rules';
 import type {
   CreateSubscriptionDto,
   ListNotificationsQueryDto,
@@ -156,6 +156,10 @@ export class NotificationCenterService {
       unsubscribedAll: !!p?.unsubscribedAt,
       unsubscribedAt: p?.unsubscribedAt?.toISOString() ?? null,
       push: { configured, registeredDevices: devices.length, status },
+      supported: {
+        types: [...PRODUCED_PREFERENCE_TYPES],
+        topicTypes: [...PRODUCED_TOPIC_TYPES],
+      },
     };
   }
 

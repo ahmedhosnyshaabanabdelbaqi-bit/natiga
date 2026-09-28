@@ -1,4 +1,131 @@
 {
   "@@locale": "en",
-  "tripsTitle": "Trip planner"
+  "tripsTitle": "Trip planner",
+  "tripsIntro": "The route and road distances come from a routing service. Stops are suggested with a battery reserve and an alternative; arrival and a free charger are never guaranteed.",
+  "tripsFrom": "From",
+  "tripsTo": "To",
+  "tripsCar": "Car",
+  "tripsChoose": "Choose",
+  "tripsMyLocation": "My current location",
+  "tripsMyLocationHint": "Used once for this plan, not stored.",
+  "tripsPickOnMap": "Pick on the map",
+  "tripsUsePoint": "Use this point",
+  "tripsPointOnMap": "Point {lat}, {lng}",
+  "@tripsPointOnMap": {
+    "placeholders": {
+      "lat": {
+        "type": "String"
+      },
+      "lng": {
+        "type": "String"
+      }
+    }
+  },
+  "tripsLocationDenied": "Location is off or not allowed. Choose a city or a point on the map instead.",
+  "tripsLocationFailed": "Could not get your location. Choose a city instead.",
+  "tripsBatterySection": "Battery",
+  "tripsCurrentSoc": "Battery now",
+  "tripsMinArrivalSoc": "Keep at least",
+  "tripsDepartureSection": "Departure",
+  "tripsLeaveNow": "Leave now",
+  "tripsAssumptionsEdit": "Assumptions",
+  "tripsAssumptionsEditHint": "Optional: leave empty to use the catalog and defaults shown in the result.",
+  "tripsConsumptionHint": "Overrides the catalog value.",
+  "tripsMargin": "Consumption safety margin",
+  "tripsMarginHint": "Empty = 10%. Covers hills, heat, cold and speed.",
+  "tripsChargeTo": "Charge up to",
+  "tripsChargeToHint": "Empty = 80%.",
+  "tripsPrice": "Electricity price",
+  "tripsPriceHint": "Optional. Without it the cost is not calculated (no assumed prices).",
+  "tripsSave": "Save this plan",
+  "tripsSaveHint": "Only saved when you ask; visible only to you.",
+  "tripsSaveTitle": "Name (optional)",
+  "tripsPlan": "Plan my trip",
+  "tripsErrorOrigin": "Choose where you start.",
+  "tripsErrorDestination": "Choose your destination.",
+  "tripsErrorCar": "Choose the car.",
+  "tripsErrorMinSoc": "Must be below the battery level now.",
+  "tripsNotConfigured": "Trip planning is not available: no routing service is configured yet. You can still get directions to any station from the charging map.",
+  "tripsVehicleDataMissing": "No plan: this car is missing verified data ({missing}). Enter it under Assumptions if you know it.",
+  "@tripsVehicleDataMissing": {
+    "placeholders": {
+      "missing": {
+        "type": "String"
+      }
+    }
+  },
+  "tripsMissingInlets": "charging inlets",
+  "tripsNoReachableStation": "No plan: no compatible, open station is reachable with the reserve you asked for. Try a higher battery level or a lower reserve.",
+  "tripsTooManyStops": "No plan: the trip would need too many charging stops.",
+  "tripsChargeTimeUnknown": "No plan: the charging time at the stations cannot be estimated.",
+  "tripsRouteNotFound": "No road route was found between these points.",
+  "tripsStopsSummary": "{stops, plural, =0{No charging stops} =1{1 charging stop} other{{stops} charging stops}} · {distance}",
+  "@tripsStopsSummary": {
+    "placeholders": {
+      "stops": {
+        "type": "int"
+      },
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "tripsDriveTime": "Driving",
+  "tripsChargeTime": "Charging",
+  "tripsEnergyUsed": "Energy used",
+  "tripsArrivalSoc": "Battery on arrival",
+  "tripsCost": "Approximate cost",
+  "tripsCostNotCalculated": "Enter a price to calculate",
+  "tripsNoStopsNeeded": "No charging stop is needed with the values you entered.",
+  "tripsStopN": "Stop {n}: {name}",
+  "@tripsStopN": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "tripsAtKm": "At",
+  "tripsDetour": "Detour",
+  "tripsChargeFromTo": "Charge",
+  "tripsChargeEnergy": "Energy to charge",
+  "tripsStopChargeTime": "Charging time",
+  "tripsRough": "Rough",
+  "tripsEta": "Expected arrival",
+  "tripsAccess": "Access",
+  "tripsHours": "Opening hours",
+  "tripsOpenAtEta": "Open at arrival",
+  "tripsClosedAtEta": "Closed at arrival",
+  "tripsHoursUnknown": "Hours unknown",
+  "tripsAvailabilityUnknown": "Availability unknown",
+  "tripsAvailableNow": "Available now (not at arrival)",
+  "tripsOccupiedNow": "Occupied now",
+  "tripsOutOfOrderNow": "Out of order now",
+  "tripsAlternative": "Alternative station",
+  "tripsDirections": "Directions",
+  "tripsLegs": "Road legs",
+  "tripsLegN": "Leg {n}",
+  "@tripsLegN": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "tripsAssumptions": "Assumptions",
+  "tripsRoutingBy": "Route: {provider}",
+  "@tripsRoutingBy": {
+    "placeholders": {
+      "provider": {
+        "type": "String"
+      }
+    }
+  },
+  "tripsSaved": "My saved trips",
+  "tripsSavedEmpty": "No saved trips",
+  "tripsSavedStale": "Saved plan: station status and hours may have changed since.",
+  "tripsDeleteSaved": "Delete saved trip"
 }

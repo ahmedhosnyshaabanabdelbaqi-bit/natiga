@@ -199,4 +199,18 @@ export class PreferencesDto {
     },
   })
   push!: { configured: boolean; registeredDevices: number; status: string };
+  @ApiProperty({
+    description:
+      'What the server can actually produce today (review 3). Clients show only these preference switches (`types` keys) and offer only these topic types to follow; the other stored switches are kept for when their producers ship.',
+    type: 'object',
+    properties: {
+      types: { type: 'array', items: { type: 'string' }, example: ['news'] },
+      topicTypes: {
+        type: 'array',
+        items: { type: 'string' },
+        example: ['brand', 'model', 'variant', 'category'],
+      },
+    },
+  })
+  supported!: { types: string[]; topicTypes: string[] };
 }

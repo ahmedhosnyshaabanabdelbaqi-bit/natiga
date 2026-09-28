@@ -1,0 +1,23 @@
+{
+    "data": {
+        "id": "01a0e8dc-1f6e-740e-9a11-0b71e99cba92",
+        "questionId": "01a0e8dc-1f32-7662-8484-fc78f3041324",
+        "body": "Test answer from Sara",
+        "author": {
+            "id": "01a0e8db-bd51-71cf-8207-b6f4e0688383",
+            "displayName": "Sara",
+            "isDeleted": false
+        },
+        "votes": {
+            "up": 0,
+            "down": 0,
+            "score": 0,
+            "myVote": null
+        },
+        "isAccepted": false,
+        "status": "approved",
+        "isMine": true,
+        "editedAt": null,
+        "createdAt": "2026-09-28T16:32:15.214Z"
+    }
+}

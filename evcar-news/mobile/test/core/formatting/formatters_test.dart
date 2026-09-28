@@ -101,6 +101,29 @@ void main() {
     });
   });
 
+  group('rate (unit prices with up to 4 decimals, review 3)', () {
+    test('a non-zero tariff rate never formats as 0.00', () {
+      expect(en.rate('0.0040', 'EGP'), 'EGP 0.004');
+      expect(ar.rate('0.0040', 'EGP'), '0.004 ج.م');
+      expect(en.rate('0.0550', 'EGP'), 'EGP 0.055');
+      expect(en.rate('0.1234', 'USD'), 'USD 0.1234');
+      expect(en.rate('1.50', 'EGP'), 'EGP 1.50');
+      expect(en.rate('5.0000', 'EGP'), 'EGP 5');
+      for (final a in ['0.0040', '0.0001', '0.00004']) {
+        expect(en.rate(a, 'EGP'), isNot(contains('0.00 ')));
+        expect(en.rate(a, 'EGP'), isNot(endsWith(' 0.00')));
+      }
+      expect(en.rate('0.00004', 'EGP'), '< EGP 0.0001');
+    });
+
+    test('a real zero stays zero; missing stays missing', () {
+      expect(en.rate('0', 'EGP'), 'EGP 0');
+      expect(en.rate(null, 'EGP'), isNull);
+      expect(en.rate('1', null), isNull);
+      expect(en.rate('x', 'EGP'), isNull);
+    });
+  });
+
   group('dates', () {
     test('localized medium dates', () {
       final d = DateTime(2026, 9, 25, 14, 5);
@@ -116,6 +139,21 @@ void main() {
       expect(toArabicIndicDigits('2026-09-25'), '٢٠٢٦-٠٩-٢٥');
       expect(toWesternDigits('٢٠٢٦٫٥'), '2026.5');
       expect(toWesternDigits('۱۲۳'), '123');
+    });
+  });
+
+  group('design review: digits and ranges', () {
+    test('dates never mix digit systems with numbers', () {
+      // Flutter's Arabic date symbols use Arabic-Indic digits; numbers use
+      // Western ones unless the user asked for Arabic-Indic everywhere.
+      expect(ar.shapeDate('٢٨ سبتمبر ٢٠٢٦'), '28 سبتمبر 2026');
+      expect(arIndic.shapeDate('28 سبتمبر 2026'), '٢٨ سبتمبر ٢٠٢٦');
+      expect(en.shapeDate('Sep 28, 2026'), 'Sep 28, 2026');
+    });
+
+    test('ranges read in the reading direction', () {
+      expect(en.range('20%', '80%'), '20% → 80%');
+      expect(ar.range('20%', '80%'), '20% ← 80%');
     });
   });
 }

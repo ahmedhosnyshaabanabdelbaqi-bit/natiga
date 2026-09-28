@@ -229,6 +229,10 @@ model ArticleTranslation {
   id                  String    @id @default(uuid(7)) @db.Uuid
   articleId           String    @map("article_id") @db.Uuid
   locale              String    @db.VarChar(10)
+  /// Per-language slug (e.g. Arabic slug for the Arabic text). Generated from
+  /// the title, locked once the article was published; `/articles/:slug`
+  /// resolves it as well as `articles.slug`.
+  slug                String?   @unique @db.VarChar(200)
   title               String    @db.VarChar(300)
   summary             String?
   bodyHtml            String    @default("") @map("body_html")

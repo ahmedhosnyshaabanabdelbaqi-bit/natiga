@@ -146,11 +146,7 @@ class _ChargingScreenState extends ConsumerState<ChargingScreen> {
       }
     });
 
-    final header = _Header(
-      search: _search,
-      locating: _locating,
-      onUseLocation: _useMyLocation,
-    );
+    final header = _Header(search: _search, locating: _locating, onUseLocation: _useMyLocation);
 
     final list = _StationsList(
       mapUsable: mapUsable,
@@ -182,18 +178,13 @@ class _ChargingScreenState extends ConsumerState<ChargingScreen> {
       appBar: AppBar(
         title: Text(l10n.chargingTitle),
         actions: [
+          // One toggle showing the other view (map ⇄ list): a two-segment
+          // control here truncated the title on phones.
           if (mapUsable && !wide)
-            Padding(
-              padding: const EdgeInsetsDirectional.only(end: AppSpacing.xs),
-              child: SegmentedButton<bool>(
-                showSelectedIcon: false,
-                segments: [
-                  ButtonSegment(value: true, icon: const Icon(Icons.map_outlined), tooltip: l10n.chargingViewMap),
-                  ButtonSegment(value: false, icon: const Icon(Icons.view_list_outlined), tooltip: l10n.chargingViewList),
-                ],
-                selected: {showMap},
-                onSelectionChanged: (s) => setState(() => _showMap = s.first),
-              ),
+            IconButton(
+              tooltip: showMap ? l10n.chargingViewList : l10n.chargingViewMap,
+              icon: Icon(showMap ? Icons.view_list_outlined : Icons.map_outlined),
+              onPressed: () => setState(() => _showMap = !showMap),
             ),
           if (showSearch)
             IconButton(
@@ -357,11 +348,7 @@ class _ChargingScreenState extends ConsumerState<ChargingScreen> {
 // ---------------------------------------------------------------------------
 
 class _Header extends ConsumerWidget {
-  const _Header({
-    required this.search,
-    required this.locating,
-    required this.onUseLocation,
-  });
+  const _Header({required this.search, required this.locating, required this.onUseLocation});
 
   final TextEditingController search;
   final bool locating;
@@ -521,7 +508,10 @@ class _MapSummaryBar extends StatelessWidget {
                 ],
                 if (onShowList != null) ...[
                   const SizedBox(width: AppSpacing.xs),
-                  Text(l10n.chargingViewList, style: theme.textTheme.labelLarge?.copyWith(color: theme.colorScheme.primary)),
+                  Text(
+                    l10n.chargingViewList,
+                    style: theme.textTheme.labelLarge?.copyWith(color: theme.colorScheme.primary),
+                  ),
                   Icon(Icons.chevron_right, color: theme.colorScheme.primary),
                 ],
               ],
@@ -568,12 +558,13 @@ class _StationsList extends ConsumerWidget {
           if (!mapUsable) SliverToBoxAdapter(child: _Notice.mapNotConfigured(context)),
           SliverToBoxAdapter(child: _AreaBanner(onUseLocation: onUseLocation)),
           if (state?.fromCache ?? false)
-            SliverToBoxAdapter(child: CachedDataNotice(savedAt: state!.fetchedAt, onRetry: refresh)),
+            SliverToBoxAdapter(
+              child: CachedDataNotice(savedAt: state!.fetchedAt, onRetry: refresh),
+            ),
           if (state?.fromCache ?? false) SliverToBoxAdapter(child: _Notice.noLiveOffline(context)),
           if (filters.vehicle != null && state?.compatibility != null)
             SliverToBoxAdapter(child: _Notice.compatibility(context, state!.compatibility!, filters.vehicle!.name)),
-          if (state?.truncated ?? false)
-            SliverToBoxAdapter(child: _Notice.truncated(context)),
+          if (state?.truncated ?? false) SliverToBoxAdapter(child: _Notice.truncated(context)),
           if (search.hasError && !search.isLoading && isCompatibilityUnknown(search.error))
             SliverFillRemaining(
               hasScrollBody: false,
@@ -593,70 +584,73 @@ class _StationsList extends ConsumerWidget {
               ),
             )
           else
-          SliverAsyncStateView<StationSearchState>(
-            value: search,
-            onRetry: () => ref.invalidate(stationSearchProvider),
-            loading: Padding(
-              padding: EdgeInsets.all(gutter),
-              child: Column(
-                children: [
-                  for (var i = 0; i < 3; i++) ...[const StationCardSkeleton(), const SizedBox(height: AppSpacing.cardGap)],
-                ],
+            SliverAsyncStateView<StationSearchState>(
+              value: search,
+              onRetry: () => ref.invalidate(stationSearchProvider),
+              loading: Padding(
+                padding: EdgeInsets.all(gutter),
+                child: Column(
+                  children: [
+                    for (var i = 0; i < 3; i++) ...[
+                      const StationCardSkeleton(),
+                      const SizedBox(height: AppSpacing.cardGap),
+                    ],
+                  ],
+                ),
               ),
+              isEmpty: (s) => visibleStations(s, filters).isEmpty,
+              emptyIcon: Icons.ev_station_outlined,
+              emptyTitle: l10n.chargingEmptyTitle,
+              emptyMessage: filters.isEmpty ? l10n.chargingEmptyMessage : l10n.chargingEmptyFilteredMessage,
+              emptyActions: [
+                if (!filters.isEmpty)
+                  StateAction(
+                    label: l10n.chargingClearFilters,
+                    icon: Icons.filter_alt_off_outlined,
+                    primary: true,
+                    onPressed: () {
+                      ref.read(chargingFiltersProvider.notifier).clear();
+                    },
+                  ),
+                if (area.bounds == null && (area.radiusKm ?? 0) < 100)
+                  StateAction(
+                    label: l10n.chargingWidenSearch,
+                    icon: Icons.zoom_out_map,
+                    onPressed: () => ref.read(chargingAreaProvider.notifier).aroundPlace(radiusKm: 100),
+                  ),
+                StateAction(
+                  label: l10n.chargingSuggestTitle,
+                  icon: Icons.add_location_alt_outlined,
+                  onPressed: () => context.push(AppRoutes.chargingSuggest),
+                ),
+              ],
+              builder: (context, s) {
+                final items = visibleStations(s, filters);
+                return SliverPadding(
+                  padding: EdgeInsetsDirectional.fromSTEB(gutter, AppSpacing.sm, gutter, AppSpacing.xxxl * 2),
+                  sliver: SliverList.separated(
+                    itemCount: items.length + 1,
+                    separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.cardGap),
+                    itemBuilder: (context, i) {
+                      if (i == items.length) return _ListFooter(state: s);
+                      if (i >= items.length - 5 && s.hasMore && !s.loadingMore && s.loadMoreError == null) {
+                        Future.microtask(() => ref.read(stationSearchProvider.notifier).loadMore());
+                      }
+                      final item = items[i];
+                      return StationCard(
+                        station: item,
+                        fetchedAt: s.fetchedAt,
+                        now: now,
+                        offlineCopy: s.fromCache,
+                        connectorName: meta?.connectorName,
+                        selected: item.id == selectedId,
+                        onTap: onSelect == null ? null : () => onSelect!(item),
+                      );
+                    },
+                  ),
+                );
+              },
             ),
-            isEmpty: (s) => visibleStations(s, filters).isEmpty,
-            emptyIcon: Icons.ev_station_outlined,
-            emptyTitle: l10n.chargingEmptyTitle,
-            emptyMessage: filters.isEmpty ? l10n.chargingEmptyMessage : l10n.chargingEmptyFilteredMessage,
-            emptyActions: [
-              if (!filters.isEmpty)
-                StateAction(
-                  label: l10n.chargingClearFilters,
-                  icon: Icons.filter_alt_off_outlined,
-                  primary: true,
-                  onPressed: () {
-                    ref.read(chargingFiltersProvider.notifier).clear();
-                  },
-                ),
-              if (area.bounds == null && (area.radiusKm ?? 0) < 100)
-                StateAction(
-                  label: l10n.chargingWidenSearch,
-                  icon: Icons.zoom_out_map,
-                  onPressed: () => ref.read(chargingAreaProvider.notifier).aroundPlace(radiusKm: 100),
-                ),
-              StateAction(
-                label: l10n.chargingSuggestTitle,
-                icon: Icons.add_location_alt_outlined,
-                onPressed: () => context.push(AppRoutes.chargingSuggest),
-              ),
-            ],
-            builder: (context, s) {
-              final items = visibleStations(s, filters);
-              return SliverPadding(
-                padding: EdgeInsetsDirectional.fromSTEB(gutter, AppSpacing.sm, gutter, AppSpacing.xxxl * 2),
-                sliver: SliverList.separated(
-                  itemCount: items.length + 1,
-                  separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.cardGap),
-                  itemBuilder: (context, i) {
-                    if (i == items.length) return _ListFooter(state: s);
-                    if (i >= items.length - 5 && s.hasMore && !s.loadingMore && s.loadMoreError == null) {
-                      Future.microtask(() => ref.read(stationSearchProvider.notifier).loadMore());
-                    }
-                    final item = items[i];
-                    return StationCard(
-                      station: item,
-                      fetchedAt: s.fetchedAt,
-                      now: now,
-                      offlineCopy: s.fromCache,
-                      connectorName: meta?.connectorName,
-                      selected: item.id == selectedId,
-                      onTap: onSelect == null ? null : () => onSelect!(item),
-                    );
-                  },
-                ),
-              );
-            },
-          ),
         ],
       ),
     );
@@ -740,7 +734,9 @@ class _AreaBanner extends ConsumerWidget {
             children: [
               Icon(area.bounds != null ? Icons.crop_free : Icons.radar, size: 18, color: theme.colorScheme.primary),
               const SizedBox(width: AppSpacing.sm),
-              Expanded(child: Text(text, style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600))),
+              Expanded(
+                child: Text(text, style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
+              ),
             ],
           ),
           if (isDefault) ...[
@@ -844,7 +840,9 @@ class HelpNote extends StatelessWidget {
       children: [
         Icon(icon, size: 18, color: color),
         const SizedBox(width: AppSpacing.sm),
-        Expanded(child: Text(text, style: theme.textTheme.bodySmall?.copyWith(color: color))),
+        Expanded(
+          child: Text(text, style: theme.textTheme.bodySmall?.copyWith(color: color)),
+        ),
       ],
     );
   }

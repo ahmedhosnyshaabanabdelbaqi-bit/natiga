@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { CalculatorsModule } from '../calculators/calculators.module';
+import { RoutingGuardService } from './routing-guard.service';
 import { TripsController } from './trips.controller';
 import { TripsService } from './trips.service';
 
@@ -12,6 +13,6 @@ import { TripsService } from './trips.service';
 @Module({
   imports: [CalculatorsModule],
   controllers: [TripsController],
-  providers: [TripsService],
+  providers: [TripsService, RoutingGuardService],
 })
 export class TripsModule {}

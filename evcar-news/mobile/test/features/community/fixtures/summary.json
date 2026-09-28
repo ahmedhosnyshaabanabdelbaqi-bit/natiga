@@ -1,0 +1,83 @@
+{
+    "data": {
+        "target": {
+            "type": "variant",
+            "id": "d0000000-0000-4000-8000-000000000014"
+        },
+        "count": 1,
+        "average": 4,
+        "distribution": [
+            {
+                "rating": 5,
+                "count": 0
+            },
+            {
+                "rating": 4,
+                "count": 1
+            },
+            {
+                "rating": 3,
+                "count": 0
+            },
+            {
+                "rating": 2,
+                "count": 0
+            },
+            {
+                "rating": 1,
+                "count": 0
+            }
+        ],
+        "verifiedOwnerCount": 0,
+        "dimensions": [
+            {
+                "dimension": "range_real_world",
+                "label": "المدى الفعلي",
+                "average": null,
+                "count": 0
+            },
+            {
+                "dimension": "charging",
+                "label": "الشحن",
+                "average": 3,
+                "count": 1
+            },
+            {
+                "dimension": "comfort",
+                "label": "الراحة",
+                "average": 5,
+                "count": 1
+            },
+            {
+                "dimension": "technology",
+                "label": "التقنية",
+                "average": null,
+                "count": 0
+            },
+            {
+                "dimension": "build_quality",
+                "label": "جودة التصنيع",
+                "average": null,
+                "count": 0
+            },
+            {
+                "dimension": "value_for_money",
+                "label": "القيمة مقابل السعر",
+                "average": null,
+                "count": 0
+            },
+            {
+                "dimension": "reliability",
+                "label": "الاعتمادية",
+                "average": null,
+                "count": 0
+            },
+            {
+                "dimension": "after_sales",
+                "label": "خدمة ما بعد البيع",
+                "average": null,
+                "count": 0
+            }
+        ]
+    }
+}

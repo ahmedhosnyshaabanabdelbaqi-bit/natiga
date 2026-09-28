@@ -444,6 +444,28 @@ export const ENV_SCHEMA: readonly EnvVarSpec[] = [
     description: 'OpenRouteService API key.',
   },
   {
+    key: 'ROUTING_DAILY_BUDGET',
+    type: 'int',
+    min: 0,
+    default: '1500',
+    description:
+      'Max upstream routing calls per UTC day, all users together (cache hits are free; 0 = unlimited, e.g. self-hosted OSRM). Keeps a keyed provider (openrouteservice) below its quota.',
+  },
+  {
+    key: 'ROUTING_MINUTE_BUDGET',
+    type: 'int',
+    min: 0,
+    default: '30',
+    description: 'Max upstream routing calls per minute, all users together (0 = unlimited).',
+  },
+  {
+    key: 'ROUTING_CACHE_TTL_SECONDS',
+    type: 'int',
+    min: 0,
+    default: '21600',
+    description: 'How long a computed road route is reused for the same waypoints (0 = no cache).',
+  },
+  {
     key: 'GOOGLE_ROUTES_API_KEY',
     type: 'string',
     default: '',

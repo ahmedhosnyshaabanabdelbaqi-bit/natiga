@@ -67,9 +67,10 @@ class _DeleteFormState extends ConsumerState<_DeleteForm> {
     final theme = Theme.of(context);
     final err = _error;
     final apiErr = err is ApiException ? err : null;
-    return Center(
+    return Align(
+      alignment: Alignment.topCenter,
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 480),
           child: Column(

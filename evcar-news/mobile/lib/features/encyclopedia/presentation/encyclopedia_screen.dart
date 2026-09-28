@@ -118,7 +118,9 @@ class _EncyclopediaScreenState extends ConsumerState<EncyclopediaScreen> {
                     const SizedBox(width: AppSpacing.sm),
                     AppFilterChip(
                       icon: encyclopediaCategoryIcon(c.iconKey, c.key),
-                      label: c.entryCount == null ? c.name : '${c.name} (${AppFormatters.of(context).number(c.entryCount)})',
+                      label: c.entryCount == null
+                          ? c.name
+                          : '${c.name} (${AppFormatters.of(context).number(c.entryCount)})',
                       selected: _category == c.key,
                       onSelected: (on) => setState(() => _category = on ? c.key : null),
                     ),

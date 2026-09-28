@@ -1,0 +1,222 @@
+{
+    "data": {
+        "id": "d0000000-0000-4000-8000-000000000011",
+        "slug": "demo-motors-ev-one",
+        "title": "Demo Motors Demo EV One",
+        "name": "Demo EV One",
+        "nameAr": "ديمو EV ون (تجريبي)",
+        "nameEn": "Demo EV One",
+        "description": null,
+        "bodyType": "crossover",
+        "segment": null,
+        "brand": {
+            "id": "d0000000-0000-4000-8000-000000000010",
+            "slug": "demo-motors",
+            "name": "Demo Motors",
+            "logo": null
+        },
+        "heroImage": null,
+        "images": [],
+        "marketCode": "EG",
+        "availableInMarket": true,
+        "availableMarkets": [
+            {
+                "code": "EG",
+                "name": "Egypt",
+                "availability": "available"
+            }
+        ],
+        "powertrainTypes": [
+            "BEV",
+            "PHEV"
+        ],
+        "priceFrom": {
+            "amount": {
+                "amount": "1500000.00",
+                "currency": "EGP"
+            },
+            "priceType": "official_msrp",
+            "priceTypeLabel": "Official price (MSRP)",
+            "effectiveFrom": "2025-01-01",
+            "variantId": "d0000000-0000-4000-8000-000000000014"
+        },
+        "priceTo": {
+            "amount": {
+                "amount": "1500000.00",
+                "currency": "EGP"
+            },
+            "priceType": "official_msrp",
+            "priceTypeLabel": "Official price (MSRP)",
+            "effectiveFrom": "2025-01-01",
+            "variantId": "d0000000-0000-4000-8000-000000000014"
+        },
+        "generations": [
+            {
+                "id": "d0000000-0000-4000-8000-000000000012",
+                "slug": "gen-1",
+                "name": "First generation (demo)",
+                "code": null,
+                "startYear": 2025,
+                "endYear": null,
+                "years": [
+                    {
+                        "id": "d0000000-0000-4000-8000-000000000013",
+                        "year": 2025,
+                        "variants": [
+                            {
+                                "id": "d0000000-0000-4000-8000-000000000014",
+                                "slug": "demo-ev-one-2025-standard-bev",
+                                "name": "Standard (demo)",
+                                "localName": null,
+                                "trimCode": null,
+                                "powertrainType": "BEV",
+                                "bodyType": "crossover",
+                                "driveType": "fwd",
+                                "seats": 5,
+                                "modelYear": 2025,
+                                "availability": "available",
+                                "currentPrice": {
+                                    "id": "01a0e8db-6b29-72a8-9c02-d187a49886f8",
+                                    "marketCode": "EG",
+                                    "amount": {
+                                        "amount": "1500000.00",
+                                        "currency": "EGP"
+                                    },
+                                    "priceType": "official_msrp",
+                                    "priceTypeLabel": "Official price (MSRP)",
+                                    "effectiveFrom": "2025-01-01",
+                                    "effectiveTo": null,
+                                    "isCurrent": true,
+                                    "inMarketCurrency": true,
+                                    "notes": "FICTIONAL demo data for testing layouts — not a real product, price or place.",
+                                    "reliability": "unverified",
+                                    "verifiedAt": null,
+                                    "source": {
+                                        "id": "d0000000-0000-4000-8000-000000000001",
+                                        "type": "other",
+                                        "title": "Demo data (fictional)",
+                                        "publisher": null,
+                                        "url": null,
+                                        "documentDate": null,
+                                        "accessedAt": null,
+                                        "marketCode": null
+                                    }
+                                },
+                                "keyFacts": {
+                                    "usableBatteryKwh": 60,
+                                    "grossBatteryKwh": 64,
+                                    "powerKw": 150,
+                                    "accel0100S": null,
+                                    "acMaxKw": 11,
+                                    "dcPeakKw": 150,
+                                    "ranges": [
+                                        {
+                                            "cycle": "WLTP",
+                                            "rangeType": "electric",
+                                            "minKm": 420,
+                                            "maxKm": 420
+                                        }
+                                    ]
+                                },
+                                "hasTour": true,
+                                "isDemo": true
+                            },
+                            {
+                                "id": "d0000000-0000-4000-8000-000000000015",
+                                "slug": "demo-ev-one-2025-standard-phev",
+                                "name": "Standard (demo)",
+                                "localName": null,
+                                "trimCode": null,
+                                "powertrainType": "PHEV",
+                                "bodyType": "crossover",
+                                "driveType": "fwd",
+                                "seats": 5,
+                                "modelYear": 2025,
+                                "availability": "available",
+                                "currentPrice": null,
+                                "keyFacts": {
+                                    "usableBatteryKwh": 18,
+                                    "grossBatteryKwh": null,
+                                    "powerKw": null,
+                                    "accel0100S": null,
+                                    "acMaxKw": 6.6,
+                                    "dcPeakKw": null,
+                                    "ranges": [
+                                        {
+                                            "cycle": "WLTP",
+                                            "rangeType": "electric",
+                                            "minKm": 90,
+                                            "maxKm": 90
+                                        },
+                                        {
+                                            "cycle": "WLTP",
+                                            "rangeType": "total",
+                                            "minKm": 900,
+                                            "maxKm": 900
+                                        }
+                                    ]
+                                },
+                                "hasTour": false,
+                                "isDemo": true
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "defaultVariantId": "d0000000-0000-4000-8000-000000000014",
+        "tours": {
+            "available": true,
+            "tours": [
+                {
+                    "id": "d0000000-0000-4000-8000-000000000053",
+                    "slug": "demo-ev-one-2025-standard-bev-eg-demo-grey",
+                    "title": "[DEMO] Synthetic 360° test panorama — not a real car interior",
+                    "variantId": "d0000000-0000-4000-8000-000000000014",
+                    "marketCode": "EG",
+                    "driveSide": "lhd",
+                    "interiorColorName": "Demo grey (fictional)",
+                    "interiorColorHex": "#8A8F98",
+                    "seatScenes": [
+                        {
+                            "id": "d0000000-0000-4000-8000-000000000054",
+                            "key": "driver",
+                            "position": "driver",
+                            "title": "Driver seat (demo)"
+                        },
+                        {
+                            "id": "d0000000-0000-4000-8000-000000000055",
+                            "key": "rear",
+                            "position": "rear",
+                            "title": "Rear seats (demo)"
+                        }
+                    ],
+                    "isReferenceForSimilarTrim": false,
+                    "differenceNote": null,
+                    "referenceVariantName": null,
+                    "previewUrl": "http://localhost:3000/media/demo/panoramas/d0000000-0000-4000-8000-000000000051/preview-1024.jpg",
+                    "isDemo": true
+                }
+            ],
+            "unavailableLabel": "The interior tour is not available for this trim"
+        },
+        "competitors": [],
+        "relatedArticles": [
+            {
+                "id": "d0000000-0000-4000-8000-000000000021",
+                "slug": "demo-sample-article",
+                "type": "news",
+                "title": "[DEMO] Sample article for testing the news layout",
+                "summary": "Fictional placeholder text for layout testing only. Not real news.",
+                "language": "en",
+                "coverImage": null,
+                "publishedAt": "2025-01-01T00:00:00.000Z",
+                "isSponsored": false,
+                "sponsorName": null,
+                "isDemo": true
+            }
+        ],
+        "isDemo": true,
+        "notAvailableLabel": "Not available"
+    }
+}

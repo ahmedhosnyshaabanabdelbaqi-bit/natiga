@@ -39,7 +39,7 @@ String? featureForLocation(String path) {
   // Community content nested in other features' paths (checked first).
   if (RegExp(r'^/cars/[^/]+/reviews(/|$)').hasMatch(path)) return Features.community;
   if (RegExp(r'^/news/[^/]+/comments$').hasMatch(path)) return Features.community;
-  if (under('/questions')) return Features.community;
+  if (under('/questions') || path == '/account/blocked-users') return Features.community;
 
   if (under('/news')) return Features.news;
   if (RegExp(r'^/cars/[^/]+/tour/').hasMatch(path) || under('/tours')) return Features.interiorTours;

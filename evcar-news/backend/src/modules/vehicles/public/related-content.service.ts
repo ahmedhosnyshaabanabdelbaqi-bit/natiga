@@ -6,6 +6,7 @@ import { PrismaService } from '../../../prisma/prisma.service';
 import { IMAGE_ASSET_INCLUDE, MediaUrlService } from '../common/media-urls';
 import { nameIn, textIn } from '../common/values';
 import type { ArticleCardDto, TourCardDto, ToursSummaryDto } from '../dto/public.dto';
+import { publicTourWhere } from '../../tours/domain/public-tour-where';
 
 export const TOUR_UNAVAILABLE_LABEL = {
   ar: 'الجولة غير متاحة لهذه الفئة',
@@ -69,12 +70,7 @@ export class RelatedContentService {
   async tourRows(variantIds: string[], market: string): Promise<TourRow[]> {
     if (variantIds.length === 0) return [];
     return this.prisma.interiorTour.findMany({
-      where: {
-        variantId: { in: variantIds },
-        marketCode: market,
-        status: ContentStatus.published,
-        deletedAt: null,
-      },
+      where: { ...publicTourWhere(), variantId: { in: variantIds }, marketCode: market },
       include: TOUR_INCLUDE,
       orderBy: [{ matchType: 'asc' }, { publishedAt: 'desc' }],
     });
@@ -84,12 +80,7 @@ export class RelatedContentService {
   async variantsWithTours(variantIds: string[], market: string): Promise<Set<string>> {
     if (variantIds.length === 0) return new Set();
     const rows = await this.prisma.interiorTour.findMany({
-      where: {
-        variantId: { in: variantIds },
-        marketCode: market,
-        status: ContentStatus.published,
-        deletedAt: null,
-      },
+      where: { ...publicTourWhere(), variantId: { in: variantIds }, marketCode: market },
       select: { variantId: true },
       distinct: ['variantId'],
     });

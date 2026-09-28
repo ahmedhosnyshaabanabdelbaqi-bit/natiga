@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ArticlesModule } from '../articles/articles.module';
 import { VehiclesModule } from '../vehicles/vehicles.module';
 import {
   AdminEncyclopediaController,
@@ -13,7 +14,7 @@ import { EncyclopediaPublicService } from './services/encyclopedia-public.servic
  *   /api/v1/admin/encyclopedia/… entries CRUD + technical review workflow, categories
  */
 @Module({
-  imports: [VehiclesModule],
+  imports: [VehiclesModule, ArticlesModule],
   controllers: [PublicEncyclopediaController, AdminEncyclopediaController],
   providers: [EncyclopediaPublicService, EncyclopediaAdminService],
   exports: [EncyclopediaPublicService],

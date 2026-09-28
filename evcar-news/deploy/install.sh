@@ -1167,9 +1167,11 @@ $admin_line
 Next steps:
    1. Create the first owner (prints a one-time link):
         sudo evcar create-owner --email $ACME_EMAIL --name "Owner"
-   2. Check everything:     sudo evcar status
-   3. Mobile app: GitHub → Settings → Secrets and variables → Actions → Variables:
-        EVCAR_API_BASE_URL = https://$API_DOMAIN/api/v1
+   2. Switch on the app features (all start OFF; the app then shows only Home/Account):
+        sudo evcar seed --enable-features
+   3. Check everything:     sudo evcar status
+   4. Mobile app: GitHub → Settings → Secrets and variables → Actions → Variables:
+        EVCAR_API_BASE_URL = https://$API_DOMAIN/api/v1   (required: the workflow refuses to build without it)
       then Actions → evcar-android → Run workflow (new APK).
 EOF
   if [[ $(env_read SMTP_HOST) == mailpit || (-z $SMTP_HOST && ! -f $ENV_FILE) ]]; then

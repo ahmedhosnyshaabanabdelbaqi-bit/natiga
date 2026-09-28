@@ -10,20 +10,18 @@ import '../helpers/test_app.dart';
 
 /// Every planned screen and the feature that owns it. Placeholders must
 /// exist for all of them so feature teams only edit their own folder.
-final _public = <String, String>{
-  AppRoutes.trips: Features.tripPlanner,
-  AppRoutes.calculators: Features.calculators,
-  AppRoutes.calculator(CalculatorKinds.homeCharging): Features.calculators,
-  AppRoutes.carReviews('byd-atto-3'): Features.community,
-  AppRoutes.articleComments('a1'): Features.community,
-  AppRoutes.questions(): Features.community,
-  AppRoutes.question('q1'): Features.community,
-  AppRoutes.notifications: Features.notifications,
-};
+final _public = <String, String>{};
 
 /// Planned screens that are implemented now (no placeholder any more);
 /// still checked for their feature flag.
 final _implemented = <String, String>{
+  AppRoutes.carReviews('byd-atto-3'): Features.community,
+  AppRoutes.articleComments('a1'): Features.community,
+  AppRoutes.questions(): Features.community,
+  AppRoutes.question('q1'): Features.community,
+  AppRoutes.trips: Features.tripPlanner,
+  AppRoutes.calculators: Features.calculators,
+  AppRoutes.calculator(CalculatorKinds.homeCharging): Features.calculators,
   AppRoutes.comparePicker: Features.comparisons,
   AppRoutes.sharedComparison('AbCdEf12'): Features.comparisons,
   AppRoutes.recommendations: Features.comparisons,
@@ -60,6 +58,7 @@ final _personal = <String, String>{
   AppRoutes.reminders: Features.reminders,
   AppRoutes.reminderNew: Features.reminders,
   AppRoutes.reminderEdit('r1'): Features.reminders,
+  AppRoutes.notifications: Features.notifications,
   AppRoutes.notificationPreferences: Features.notifications,
   AppRoutes.writeCarReview('byd-atto-3'): Features.community,
   AppRoutes.askQuestion: Features.community,
@@ -69,6 +68,11 @@ final _personal = <String, String>{
 };
 
 void main() {
+  test('account-area community screens follow the community flag and need sign-in', () {
+    expect(featureForLocation(AppRoutes.blockedUsers), Features.community);
+    expect(AppRoutes.requiresAuth(AppRoutes.blockedUsers), isTrue);
+  });
+
   test('every planned location maps to its feature flag', () {
     for (final e in {..._public, ..._implemented, ..._personal}.entries) {
       expect(featureForLocation(Uri.parse(e.key).path), e.value, reason: e.key);

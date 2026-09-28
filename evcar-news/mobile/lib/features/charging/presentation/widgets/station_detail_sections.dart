@@ -16,7 +16,8 @@ String? stationClock(BuildContext context, DateTime? utc, String? zone, {bool wi
   final loc = TimeZones.location(zone);
   final lang = context.languageCode;
   final DateTime local = loc == null ? utc.toLocal() : tz.TZDateTime.from(utc, loc);
-  final t = DateFormat.jm(lang).format(local);
+  final fmt = AppFormatters.of(context);
+  final t = fmt.shapeDate(DateFormat.jm(lang).format(local));
   if (!withDay) return t;
   return '${DateFormat.EEEE(lang).format(local)} $t';
 }
@@ -132,7 +133,10 @@ class InfoRow extends StatelessWidget {
           : InkWell(
               onTap: onTap,
               borderRadius: const BorderRadius.all(Radius.circular(AppRadii.xs)),
-              child: ConstrainedBox(constraints: const BoxConstraints(minHeight: kMinTouchTarget), child: content),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(minHeight: kMinTouchTarget),
+                child: content,
+              ),
             ),
     );
   }
@@ -180,7 +184,10 @@ class _StatusRow extends StatelessWidget {
                   Text(kind, style: theme.textTheme.labelMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
                   Text(look.label, style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
                   for (final d in details)
-                    Padding(padding: const EdgeInsets.only(top: AppSpacing.xxs), child: HelpText(d)),
+                    Padding(
+                      padding: const EdgeInsets.only(top: AppSpacing.xxs),
+                      child: HelpText(d),
+                    ),
                 ],
               ),
             ),
@@ -229,7 +236,11 @@ class StationStatusSection extends StatelessWidget {
     if (hours.timezone != null) openDetails.add(l10n.chargingStationTimezone(hours.timezone!));
 
     // 3. Live availability (live provider only; expiry enforced on device).
-    final avail = stationAvailability([for (final c in s.allConnectors) c.availability], now: now, offlineCopy: offlineCopy);
+    final avail = stationAvailability(
+      [for (final c in s.allConnectors) c.availability],
+      now: now,
+      offlineCopy: offlineCopy,
+    );
     final a = s.availability;
     final availDetails = <String>[];
     if (offlineCopy) {
@@ -237,7 +248,9 @@ class StationStatusSection extends StatelessWidget {
     } else if (!a.liveProviderConfigured && avail != AvailabilityDisplay.available) {
       availDetails.add(l10n.chargingNoLiveSourceForStation);
     } else {
-      if (avail == AvailabilityDisplay.available || avail == AvailabilityDisplay.occupied || avail == AvailabilityDisplay.outOfOrder) {
+      if (avail == AvailabilityDisplay.available ||
+          avail == AvailabilityDisplay.occupied ||
+          avail == AvailabilityDisplay.outOfOrder) {
         availDetails.add(
           l10n.chargingAvailCounts(
             fmt.number(a.available)!,
@@ -348,7 +361,10 @@ class _PointHeader extends StatelessWidget {
           runSpacing: AppSpacing.xs,
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
-            Text(point.label ?? l10n.chargingPointUnnamed, style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
+            Text(
+              point.label ?? l10n.chargingPointUnnamed,
+              style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
+            ),
             if (point.operationalStatus != OperationalStatus.operational)
               StatusPill(look: op, kind: l10n.chargingStatusOperational),
           ],
@@ -389,9 +405,10 @@ class _ConnectorTile extends StatelessWidget {
         if (a.observedAt != null) l10n.chargingAvailObserved(fmt.dateTime(a.observedAt)!),
         if (a.expiresAt != null) l10n.chargingAvailValidUntil(fmt.dateTime(a.expiresAt)!),
       ].join(' · '),
-      AvailabilityDisplay.uncertain => a.observedAt == null
-          ? l10n.chargingAvailExpiredExplain
-          : l10n.chargingAvailLastReading(fmt.dateTime(a.observedAt)!),
+      AvailabilityDisplay.uncertain =>
+        a.observedAt == null
+            ? l10n.chargingAvailExpiredExplain
+            : l10n.chargingAvailLastReading(fmt.dateTime(a.observedAt)!),
       _ => '',
     };
     final compat = c.compatibility;
@@ -427,8 +444,12 @@ class _ConnectorTile extends StatelessWidget {
                     runSpacing: AppSpacing.xs,
                     children: [
                       StatusPill(look: availabilityLook(l10n, avail), kind: l10n.chargingStatusLive),
-                      if (c.operationalStatus != OperationalStatus.operational && c.operationalStatus != OperationalStatus.unknown)
-                        StatusPill(look: operationalLook(l10n, c.operationalStatus), kind: l10n.chargingStatusOperational),
+                      if (c.operationalStatus != OperationalStatus.operational &&
+                          c.operationalStatus != OperationalStatus.unknown)
+                        StatusPill(
+                          look: operationalLook(l10n, c.operationalStatus),
+                          kind: l10n.chargingStatusOperational,
+                        ),
                       if (compat != null)
                         Pill(
                           dense: true,
@@ -443,7 +464,10 @@ class _ConnectorTile extends StatelessWidget {
                     ],
                   ),
                   if (availDetail.isNotEmpty)
-                    Padding(padding: const EdgeInsets.only(top: AppSpacing.xxs), child: HelpText(availDetail)),
+                    Padding(
+                      padding: const EdgeInsets.only(top: AppSpacing.xxs),
+                      child: HelpText(availDetail),
+                    ),
                 ],
               ),
             ),
@@ -480,7 +504,12 @@ class HoursSection extends StatelessWidget {
             Text(l10n.chargingOpen24h, style: theme.textTheme.bodyLarge)
           else if (weekly != null)
             for (final d in weekly)
-              _DayRow(day: d, isToday: today != null && const ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'].indexOf(d.day) == today - 1)
+              _DayRow(
+                day: d,
+                isToday:
+                    today != null &&
+                    const ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'].indexOf(d.day) == today - 1,
+              )
           else
             Text(l10n.chargingHoursNotPublished),
           if (hours.openingHoursText != null) ...[
@@ -531,7 +560,12 @@ class _DayRow extends StatelessWidget {
               ),
             ),
             Flexible(
-              child: Text(value, style: style, textAlign: TextAlign.end, textDirection: w == null || w.isEmpty ? null : TextDirection.ltr),
+              child: Text(
+                value,
+                style: style,
+                textAlign: TextAlign.end,
+                textDirection: w == null || w.isEmpty ? null : TextDirection.ltr,
+              ),
             ),
           ],
         ),
@@ -616,9 +650,13 @@ class _TariffCard extends StatelessWidget {
             runSpacing: AppSpacing.xs,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
-              Text(t.name ?? l10n.chargingTariffUnnamed, style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
+              Text(
+                t.name ?? l10n.chargingTariffUnnamed,
+                style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
+              ),
               if (t.isDemo) const DemoBadge(dense: true),
-              if (!t.isCurrent) Pill(label: l10n.chargingTariffNotCurrent, icon: Icons.history, dense: true, tone: AppTone.warning),
+              if (!t.isCurrent)
+                Pill(label: l10n.chargingTariffNotCurrent, icon: Icons.history, dense: true, tone: AppTone.warning),
               if (reliability != null) ReliabilityBadge(reliability: reliability, dense: true),
             ],
           ),
@@ -628,7 +666,11 @@ class _TariffCard extends StatelessWidget {
           const SizedBox(height: AppSpacing.xs),
           HelpText(tax, icon: Icons.receipt_long_outlined),
           if (validity.isNotEmpty) HelpText(validity, icon: Icons.event_outlined),
-          if (t.notes != null) Padding(padding: const EdgeInsets.only(top: AppSpacing.xs), child: HelpText(t.notes!)),
+          if (t.notes != null)
+            Padding(
+              padding: const EdgeInsets.only(top: AppSpacing.xs),
+              child: HelpText(t.notes!),
+            ),
           const SizedBox(height: AppSpacing.xs),
           SourceBadge(
             sourceName: t.source == null ? null : [t.source!.title, ?t.source!.publisher].join(' — '),
@@ -653,7 +695,8 @@ class _ElementRow extends StatelessWidget {
     final fmt = AppFormatters.of(context);
     final theme = Theme.of(context);
     final e = element;
-    final price = fmt.money(e.price?.amount, e.price?.currency);
+    // Tariff prices are unit rates with up to 4 decimals (review 3: never 0.00).
+    final price = fmt.rate(e.price?.amount, e.price?.currency);
     final conditions = [
       if (e.graceMinutes != null) l10n.chargingGraceMinutes(fmt.number(e.graceMinutes)!),
       if (e.stepSize != null) l10n.chargingStepSize(fmt.number(e.stepSize)!),
@@ -811,7 +854,11 @@ class _CheckinRow extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(ok ? Icons.check_circle_outline : Icons.cancel_outlined, size: 20, color: theme.colorScheme.onSurfaceVariant),
+          Icon(
+            ok ? Icons.check_circle_outline : Icons.cancel_outlined,
+            size: 20,
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
           const SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Column(
@@ -857,7 +904,8 @@ class SourceSection extends StatelessWidget {
           if (src.attribution != null) InfoRow(label: l10n.chargingAttribution, value: src.attribution),
           InfoRow(label: l10n.chargingLicense, value: src.license),
           InfoRow(label: l10n.chargingLastVerified, value: fmt.date(src.lastVerifiedAt)),
-          if (src.sourceUpdatedAt != null) InfoRow(label: l10n.chargingSourceUpdated, value: fmt.date(src.sourceUpdatedAt)),
+          if (src.sourceUpdatedAt != null)
+            InfoRow(label: l10n.chargingSourceUpdated, value: fmt.date(src.sourceUpdatedAt)),
           const SizedBox(height: AppSpacing.xs),
           LastUpdatedText(time: src.lastUpdated ?? station.updatedAt, staleAfter: const Duration(days: 365)),
           for (final p in src.providers) ...[
